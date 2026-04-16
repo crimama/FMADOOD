@@ -1,0 +1,20 @@
+__pycache__/
+*.pyc
+*.pth
+results/
+results_remote/
+results_dir/
+results_VAND2025_superad/
+*.tar.gz
+*.zip
+
+# private env files with passwords
+configs/remote/*.env
+!configs/remote/*.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# Claude
+.claude/

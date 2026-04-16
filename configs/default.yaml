@@ -1,0 +1,28 @@
+# FMAD-OOD Default Configuration
+# Override any field via CLI: python run.py --config configs/default.yaml --seed 1
+
+method: superad
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+
+# data_root: /path/to/mvtec_ad_2    # REQUIRED — set via CLI or override here
+output_dir: ./results
+seed: 0
+device: "cuda:0"
+
+dataset_config:
+  preprocess: agnostic
+  # objects: null  # null = all objects; or ["can", "fabric"]
+
+method_config:
+  shots: 16
+  knn_metric: L2_normalized
+  k_neighbors: 1
+  faiss_on_cpu: false
+  warmup_iters: 25
+  mask_ref_images: false
+
+evaluation:
+  eval_segm: true
+  eval_clf: false
+  pro_integration_limit: 0.05
