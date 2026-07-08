@@ -1,5 +1,20 @@
 # Skill Graph Log
 
+- 2026-07-08: Implemented and ran score-field and layer-wise structural
+  diagnostics for the current H+ DVT FlowTTE branch on all-eight MVTec AD2
+  using dsba3 `hun_fsad_tta_012` GPUs 0,1,2. Support-position calibration was
+  harmful (`support_position_center=0.785133/0.429653`,
+  `support_position_zscore=0.701830/0.278144` vs baseline
+  `0.836739/0.527427`). Support feature-energy foreground prior was
+  baseline-tied (`0.834598/0.526807`) and not robust. Layer-wise score fusion
+  also underperformed: no-context `0.828210/0.499110`, CLS topM4 routed
+  `0.829923/0.508863`. Conclusion: the current fused normalized multi-layer
+  feature is a stabilizer; separate per-layer Flow banks and simple
+  support-stat score-field correction are not main performance drivers.
+  Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`.
+  Reports:
+  `skill_graph/experiments/2026-07-08_flowtte_scorefield_structural/report.md`,
+  `skill_graph/experiments/2026-07-08_flowtte_layerwise_context_routed/report.md`.
 - 2026-07-08: Diagnosed the current FlowTTE structural bottleneck from the
   accumulated component, DVT, register, H+ backbone, SuperADD-style setting,
   and H+ priority experiments. Conclusion: the strongest branch is a good

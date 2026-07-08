@@ -14,6 +14,21 @@ CLEANUP_MAPS="${CLEANUP_MAPS:-1}"
 FLOW_TRANSFORM_MODE="${FLOW_TRANSFORM_MODE:-flow}"
 DENSITY_WEIGHT="${DENSITY_WEIGHT:-0.25}"
 SCORE_MODE="${SCORE_MODE:-latent_distance}"
+SCORE_FIELD_CALIBRATION_MODE="${SCORE_FIELD_CALIBRATION_MODE:-none}"
+SCORE_FIELD_CALIBRATION_ALPHA="${SCORE_FIELD_CALIBRATION_ALPHA:-1.0}"
+SCORE_FIELD_POSITION_STD_FLOOR="${SCORE_FIELD_POSITION_STD_FLOOR:-0.25}"
+SCORE_FIELD_FOREGROUND_MODE="${SCORE_FIELD_FOREGROUND_MODE:-none}"
+SCORE_FIELD_FOREGROUND_QUANTILE="${SCORE_FIELD_FOREGROUND_QUANTILE:-0.20}"
+SCORE_FIELD_BACKGROUND_MULTIPLIER="${SCORE_FIELD_BACKGROUND_MULTIPLIER:-0.50}"
+SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL="${SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL:-5}"
+NORMALITY_MODE="${NORMALITY_MODE:-fused}"
+CONTEXT_SOURCE="${CONTEXT_SOURCE:-none}"
+FLOW_CONTEXT_SOURCE="${FLOW_CONTEXT_SOURCE:-auto}"
+MEMORY_CONTEXT_SOURCE="${MEMORY_CONTEXT_SOURCE:-auto}"
+CONTEXT_MODE="${CONTEXT_MODE:-none}"
+CONTEXT_WEIGHT="${CONTEXT_WEIGHT:-0.0}"
+CONTEXT_TOP_M="${CONTEXT_TOP_M:-1}"
+FLOW_CONDITION_MODE="${FLOW_CONDITION_MODE:-none}"
 
 export FMAD_DINOV3_OFFLINE="${FMAD_DINOV3_OFFLINE:-1}"
 
@@ -47,12 +62,24 @@ common_args=(
   --support-selection "${SUPPORT_SELECTION}"
   --support-transforms identity
   --feature-fusion layer_norm_mean
-  --context-source none
-  --context-mode none
-  --flow-condition-mode none
+  --normality-mode "${NORMALITY_MODE}"
+  --context-source "${CONTEXT_SOURCE}"
+  --flow-context-source "${FLOW_CONTEXT_SOURCE}"
+  --memory-context-source "${MEMORY_CONTEXT_SOURCE}"
+  --context-mode "${CONTEXT_MODE}"
+  --context-weight "${CONTEXT_WEIGHT}"
+  --context-top-m "${CONTEXT_TOP_M}"
+  --flow-condition-mode "${FLOW_CONDITION_MODE}"
   --flow-transform-mode "${FLOW_TRANSFORM_MODE}"
   --dvt-denoise-mode position_mean
   --dvt-denoise-alpha "${DVT_ALPHA}"
+  --score-field-calibration-mode "${SCORE_FIELD_CALIBRATION_MODE}"
+  --score-field-calibration-alpha "${SCORE_FIELD_CALIBRATION_ALPHA}"
+  --score-field-position-std-floor "${SCORE_FIELD_POSITION_STD_FLOOR}"
+  --score-field-foreground-mode "${SCORE_FIELD_FOREGROUND_MODE}"
+  --score-field-foreground-quantile "${SCORE_FIELD_FOREGROUND_QUANTILE}"
+  --score-field-background-multiplier "${SCORE_FIELD_BACKGROUND_MULTIPLIER}"
+  --score-field-foreground-smooth-kernel "${SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL}"
 )
 
 if [[ "${CLEANUP_MAPS}" == "1" ]]; then
@@ -84,7 +111,13 @@ wait "${pid0}"
 wait "${pid1}"
 wait "${pid2}"
 
-printf 'run_name=%s\nbackbone=%s\nfeature_layers=%s\nsupport_selection=%s\ndvt_alpha=%s\nflow_transform_mode=%s\ndensity_weight=%s\nscore_mode=%s\n' \
+printf 'run_name=%s\nbackbone=%s\nfeature_layers=%s\nsupport_selection=%s\ndvt_alpha=%s\nnormality_mode=%s\ncontext_source=%s\nflow_context_source=%s\nmemory_context_source=%s\ncontext_mode=%s\ncontext_weight=%s\ncontext_top_m=%s\nflow_condition_mode=%s\nflow_transform_mode=%s\ndensity_weight=%s\nscore_mode=%s\nscore_field_calibration_mode=%s\nscore_field_calibration_alpha=%s\nscore_field_position_std_floor=%s\nscore_field_foreground_mode=%s\nscore_field_foreground_quantile=%s\nscore_field_background_multiplier=%s\nscore_field_foreground_smooth_kernel=%s\n' \
   "${RUN_NAME}" "${BACKBONE_MODEL}" "${FEATURE_LAYERS}" "${SUPPORT_SELECTION}" "${DVT_ALPHA}" \
+  "${NORMALITY_MODE}" "${CONTEXT_SOURCE}" "${FLOW_CONTEXT_SOURCE}" "${MEMORY_CONTEXT_SOURCE}" \
+  "${CONTEXT_MODE}" "${CONTEXT_WEIGHT}" "${CONTEXT_TOP_M}" "${FLOW_CONDITION_MODE}" \
   "${FLOW_TRANSFORM_MODE}" "${DENSITY_WEIGHT}" "${SCORE_MODE}" \
+  "${SCORE_FIELD_CALIBRATION_MODE}" "${SCORE_FIELD_CALIBRATION_ALPHA}" \
+  "${SCORE_FIELD_POSITION_STD_FLOOR}" "${SCORE_FIELD_FOREGROUND_MODE}" \
+  "${SCORE_FIELD_FOREGROUND_QUANTILE}" "${SCORE_FIELD_BACKGROUND_MULTIPLIER}" \
+  "${SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL}" \
   >"${OUTPUT_ROOT}/remote_run_complete.txt"

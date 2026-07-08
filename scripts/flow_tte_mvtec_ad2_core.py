@@ -5,7 +5,7 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Optional, Protocol, Sequence, Tuple
+from typing import Dict, List, Literal, Optional, Protocol, Sequence, Tuple
 
 import cv2
 import numpy as np
@@ -17,6 +17,13 @@ from flow_tte.denoising import PositionMeanArtifactDenoiser, fit_feature_denoise
 from flow_tte.pipeline import FlowTTE
 
 if __package__:
+    from .flow_tte_score_field import (
+        ScoreFieldConfig,
+        ScoreFieldStats,
+        apply_score_field_transform,
+        fit_score_field_stats,
+        support_leave_one_out_patch_scores,
+    )
     from .flow_tte_superadd_preprocess import (
         BrightnessRange,
         TilingConfig,
@@ -26,11 +33,19 @@ if __package__:
     )
     from .flow_tte_support import (
         merge_layer_features,
+        normalize_layer_features,
         read_rgb,
         select_support_paths_for_backbone,
         transform_rgb,
     )
 else:
+    from flow_tte_score_field import (
+        ScoreFieldConfig,
+        ScoreFieldStats,
+        apply_score_field_transform,
+        fit_score_field_stats,
+        support_leave_one_out_patch_scores,
+    )
     from flow_tte_superadd_preprocess import (
         BrightnessRange,
         TilingConfig,
@@ -40,6 +55,7 @@ else:
     )
     from flow_tte_support import (
         merge_layer_features,
+        normalize_layer_features,
         read_rgb,
         select_support_paths_for_backbone,
         transform_rgb,
@@ -121,6 +137,17 @@ class RunConfig:
     context_mode: str = "auto"
     context_weight: float = 0.0
     context_top_m: int = 1
+    score_field_calibration_mode: Literal[
+        "none",
+        "support_position_center",
+        "support_position_zscore",
+    ] = "none"
+    score_field_calibration_alpha: float = 1.0
+    score_field_position_std_floor: float = 0.25
+    score_field_foreground_mode: Literal["none", "support_feature_energy"] = "none"
+    score_field_foreground_quantile: float = 0.20
+    score_field_background_multiplier: float = 0.50
+    score_field_foreground_smooth_kernel: int = 5
     backbone_model: str = "dinov2_vitl14"
     backbone_resolution: Optional[int] = None
     preprocess_recipe: str = "fmad_shorter_edge"
@@ -137,6 +164,7 @@ class RunConfig:
     support_brightness_range: BrightnessRange = field(default_factory=BrightnessRange)
     dvt_denoise_mode: str = "none"
     dvt_denoise_alpha: float = 1.0
+    normality_mode: Literal["fused", "layer_wise"] = "fused"
 
 
 @dataclass(frozen=True)
@@ -168,9 +196,41 @@ class FeatureMap:
 
 
 @dataclass(frozen=True)
+class LayeredFeatureMap:
+    layers: Tuple[FeatureMap, ...]
+
+
+@dataclass(frozen=True)
 class SupportFeatures:
     values: np.ndarray
     contexts: Optional[np.ndarray]
+
+
+@dataclass(frozen=True)
+class LayerWiseState:
+    pipeline: FlowTTE
+    feature_denoiser: Optional[PositionMeanArtifactDenoiser]
+    score_field_stats: Optional[ScoreFieldStats]
+    train_nll_mean: float
+    train_nll_std: float
+    density_threshold: float
+
+
+@dataclass(frozen=True)
+class LayerWiseItemScore:
+    patch_scores: np.ndarray
+    image_shape: Tuple[int, int]
+    selected_count: int
+    memory_size_before: int
+    memory_size_after: int
+
+
+@dataclass(frozen=True)
+class LayerWiseRuntime:
+    backbone: BackboneLike
+    flow_context_source: str
+    memory_context_source: str
+    config: RunConfig
 
 
 @dataclass(frozen=True)
@@ -192,10 +252,24 @@ class ObjectDiagnostics:
     dvt_denoise_mode: str
     dvt_denoise_alpha: float
     dvt_artifact_l2_mean: float
+    score_field_calibration_mode: str
+    score_field_foreground_mode: str
+    normality_mode: str
     elapsed_seconds: float
 
 
 def run_object(
+    dataset: DatasetLike,
+    backbone: BackboneLike,
+    object_name: str,
+    config: RunConfig,
+) -> ObjectDiagnostics:
+    if config.normality_mode == "layer_wise":
+        return run_object_layer_wise(dataset, backbone, object_name, config)
+    return run_object_fused(dataset, backbone, object_name, config)
+
+
+def run_object_fused(
     dataset: DatasetLike,
     backbone: BackboneLike,
     object_name: str,
@@ -218,41 +292,7 @@ def run_object(
 
     flow_context_source = resolve_flow_context_source(config)
     memory_context_source = resolve_memory_context_source(config)
-    pipeline = FlowTTE(
-        FlowTTEConfig(
-            flow=FlowConfig(
-                n_coupling_layers=config.coupling_layers,
-                hidden_multiplier=config.hidden_multiplier,
-                transform_mode=config.flow_transform_mode,
-                condition_mode=config.flow_condition_mode,
-                n_epochs=config.flow_epochs,
-                lr=config.flow_lr,
-                clamp=config.flow_clamp,
-                tail_weight=config.tail_weight,
-                tail_top_k_ratio=config.tail_top_k_ratio,
-                lambda_logdet=config.lambda_logdet,
-                batch_size=512,
-                seed=config.seed,
-            ),
-            expansion=ExpansionConfig(
-                budget=config.expansion_budget,
-                density_quantile=config.density_quantile,
-                random_seed=config.seed,
-            ),
-            score=ScoreConfig(
-                distance_weight=config.distance_weight,
-                density_weight=config.density_weight,
-                score_mode=config.score_mode,
-                context_mode=resolve_score_context_mode(config),
-                context_weight=config.context_weight,
-                context_top_m=config.context_top_m,
-                top_percent=config.top_percent,
-                query_chunk_size=config.query_chunk_size,
-                use_squared_distance=config.use_squared_distance,
-            ),
-            device=config.device,
-        ),
-    )
+    pipeline = build_pipeline(config)
     support_feature_maps = collect_support_feature_maps(
         backbone,
         selected_paths,
@@ -282,6 +322,13 @@ def run_object(
         support_features.values,
         support_contexts=support_features.contexts,
         memory_contexts=support_memory_contexts,
+    )
+    score_field_config = build_score_field_config(config)
+    score_field_stats = fit_support_score_field_stats(
+        pipeline,
+        support_feature_maps,
+        feature_denoiser,
+        score_field_config,
     )
     test_images = dataset.get_test_images(object_name, split="test_public")
     items = stream_test_images(test_images)
@@ -327,8 +374,15 @@ def run_object(
         first_memory_size = first_memory_size or result.memory_size_before
         last_memory_size = result.memory_size_after
         selected_patch_counts.append(result.selected_count)
+        patch_scores = result.patch_scores[0]
+        if score_field_stats is not None:
+            patch_scores = apply_score_field_transform(
+                patch_scores,
+                score_field_stats,
+                score_field_config,
+            )
         score_map = cv2.resize(
-            result.patch_scores[0],
+            patch_scores,
             (feature_map.image_shape[1], feature_map.image_shape[0]),
             interpolation=cv2.INTER_LINEAR,
         )
@@ -353,7 +407,343 @@ def run_object(
         dvt_denoise_mode=config.dvt_denoise_mode,
         dvt_denoise_alpha=config.dvt_denoise_alpha,
         dvt_artifact_l2_mean=artifact_l2_mean(feature_denoiser),
+        score_field_calibration_mode=config.score_field_calibration_mode,
+        score_field_foreground_mode=config.score_field_foreground_mode,
+        normality_mode=config.normality_mode,
         elapsed_seconds=time.time() - started,
+    )
+
+
+def build_pipeline(config: RunConfig) -> FlowTTE:
+    return FlowTTE(
+        FlowTTEConfig(
+            flow=FlowConfig(
+                n_coupling_layers=config.coupling_layers,
+                hidden_multiplier=config.hidden_multiplier,
+                transform_mode=config.flow_transform_mode,
+                condition_mode=config.flow_condition_mode,
+                n_epochs=config.flow_epochs,
+                lr=config.flow_lr,
+                clamp=config.flow_clamp,
+                tail_weight=config.tail_weight,
+                tail_top_k_ratio=config.tail_top_k_ratio,
+                lambda_logdet=config.lambda_logdet,
+                batch_size=512,
+                seed=config.seed,
+            ),
+            expansion=ExpansionConfig(
+                budget=config.expansion_budget,
+                density_quantile=config.density_quantile,
+                random_seed=config.seed,
+            ),
+            score=ScoreConfig(
+                distance_weight=config.distance_weight,
+                density_weight=config.density_weight,
+                score_mode=config.score_mode,
+                context_mode=resolve_score_context_mode(config),
+                context_weight=config.context_weight,
+                context_top_m=config.context_top_m,
+                top_percent=config.top_percent,
+                query_chunk_size=config.query_chunk_size,
+                use_squared_distance=config.use_squared_distance,
+            ),
+            device=config.device,
+        ),
+    )
+
+
+def run_object_layer_wise(
+    dataset: DatasetLike,
+    backbone: BackboneLike,
+    object_name: str,
+    config: RunConfig,
+) -> ObjectDiagnostics:
+    started = time.time()
+    info = dataset.get_object_info(object_name)
+    backbone.set_resolution(config.backbone_resolution or info.resolution)
+    train_paths = [Path(path) for path in dataset.get_train_images(object_name)]
+    selected_paths = select_support_paths_for_backbone(
+        backbone,
+        train_paths,
+        shots=config.shots,
+        policy=config.support_selection,
+        seed=config.support_selection_seed,
+    )
+    if len(selected_paths) < config.shots:
+        message = f"{object_name}: train/good has fewer than {config.shots} images"
+        raise SystemExit(message)
+
+    flow_context_source = resolve_flow_context_source(config)
+    memory_context_source = resolve_memory_context_source(config)
+    support_layered_maps = collect_support_layered_feature_maps(
+        backbone,
+        selected_paths,
+        support_extraction_config(config, flow_context_source),
+    )
+    support_memory_layered_maps = support_layered_maps
+    if memory_context_source != flow_context_source:
+        if memory_context_source == "none":
+            support_memory_layered_maps = []
+        else:
+            support_memory_layered_maps = collect_support_layered_feature_maps(
+                backbone,
+                selected_paths,
+                support_extraction_config(config, memory_context_source),
+            )
+    layer_states = fit_layer_wise_states(
+        support_layered_maps,
+        support_memory_layered_maps,
+        require_flow_contexts=flow_context_source != "none",
+        require_memory_contexts=memory_context_source != "none",
+        config=config,
+    )
+    test_images = dataset.get_test_images(object_name, split="test_public")
+    items = stream_test_images(test_images)
+    selected_patch_counts: List[int] = []
+    first_memory_size = 0
+    last_memory_size = 0
+    runtime = LayerWiseRuntime(
+        backbone=backbone,
+        flow_context_source=flow_context_source,
+        memory_context_source=memory_context_source,
+        config=config,
+    )
+    for item in items:
+        item_score = score_layer_wise_item(
+            runtime,
+            item,
+            layer_states,
+        )
+        first_memory_size = first_memory_size or item_score.memory_size_before
+        last_memory_size = item_score.memory_size_after
+        selected_patch_counts.append(item_score.selected_count)
+        score_map = cv2.resize(
+            item_score.patch_scores,
+            (item_score.image_shape[1], item_score.image_shape[0]),
+            interpolation=cv2.INTER_LINEAR,
+        )
+        save_prediction(config.output_root, object_name, item, score_map)
+    return ObjectDiagnostics(
+        object_name=object_name,
+        resolution=info.resolution,
+        train_good_count=len(train_paths),
+        test_good_count=len(test_images.get("good", [])),
+        test_bad_count=sum(
+            len(paths) for anomaly_type, paths in test_images.items() if anomaly_type != "good"
+        ),
+        selected_support_count=len(selected_paths),
+        selected_support_paths=tuple(str(path) for path in selected_paths),
+        processed_test_count=len(items),
+        mean_selected_patch_count=float(np.mean(selected_patch_counts)),
+        initial_memory_size=first_memory_size,
+        final_memory_size=last_memory_size,
+        train_nll_mean=float(np.mean([state.train_nll_mean for state in layer_states])),
+        train_nll_std=float(np.mean([state.train_nll_std for state in layer_states])),
+        density_threshold=float(np.mean([state.density_threshold for state in layer_states])),
+        dvt_denoise_mode=config.dvt_denoise_mode,
+        dvt_denoise_alpha=config.dvt_denoise_alpha,
+        dvt_artifact_l2_mean=float(
+            np.mean([artifact_l2_mean(state.feature_denoiser) for state in layer_states]),
+        ),
+        score_field_calibration_mode=config.score_field_calibration_mode,
+        score_field_foreground_mode=config.score_field_foreground_mode,
+        normality_mode=config.normality_mode,
+        elapsed_seconds=time.time() - started,
+    )
+
+
+def score_layer_wise_item(
+    runtime: LayerWiseRuntime,
+    item: ImageItem,
+    layer_states: Sequence[LayerWiseState],
+) -> LayerWiseItemScore:
+    image = read_rgb(item.path)
+    layered_map = extract_layer_feature_maps_from_rgb(
+        runtime.backbone,
+        image,
+        FeatureExtractionConfig(
+            feature_fusion=runtime.config.feature_fusion,
+            context_source=runtime.flow_context_source,
+            tiling=tiling_config(runtime.config),
+        ),
+    )
+    memory_layered_map = resolve_memory_layered_map(
+        runtime,
+        image,
+        layered_map,
+    )
+    score_field_config = build_score_field_config(runtime.config)
+    score_parts: List[np.ndarray] = []
+    selected_count = 0
+    memory_before = 0
+    memory_after = 0
+    for layer_index, state in enumerate(layer_states):
+        feature_map = apply_feature_denoiser(
+            layered_map.layers[layer_index],
+            state.feature_denoiser,
+        )
+        batch_contexts = _batch_contexts(feature_map)
+        memory_contexts = layer_memory_contexts(
+            memory_layered_map,
+            layer_index,
+            batch_contexts,
+            runtime.memory_context_source != runtime.flow_context_source,
+        )
+        result = state.pipeline.score_then_expand(
+            feature_map.values[np.newaxis, ...],
+            batch_contexts=batch_contexts,
+            memory_contexts=memory_contexts,
+        )
+        layer_score = result.patch_scores[0]
+        if state.score_field_stats is not None:
+            layer_score = apply_score_field_transform(
+                layer_score,
+                state.score_field_stats,
+                score_field_config,
+            )
+        score_parts.append(layer_score)
+        selected_count += result.selected_count
+        memory_before += result.memory_size_before
+        memory_after += result.memory_size_after
+    patch_scores = np.mean(np.stack(score_parts, axis=0), axis=0).astype(
+        np.float32,
+        copy=False,
+    )
+    return LayerWiseItemScore(
+        patch_scores=patch_scores,
+        image_shape=layered_map.layers[0].image_shape,
+        selected_count=selected_count,
+        memory_size_before=memory_before,
+        memory_size_after=memory_after,
+    )
+
+
+def resolve_memory_layered_map(
+    runtime: LayerWiseRuntime,
+    image: np.ndarray,
+    layered_map: LayeredFeatureMap,
+) -> Optional[LayeredFeatureMap]:
+    if runtime.memory_context_source == runtime.flow_context_source:
+        return layered_map
+    if runtime.memory_context_source == "none":
+        return None
+    return extract_layer_feature_maps_from_rgb(
+        runtime.backbone,
+        image,
+        FeatureExtractionConfig(
+            feature_fusion=runtime.config.feature_fusion,
+            context_source=runtime.memory_context_source,
+            tiling=tiling_config(runtime.config),
+        ),
+    )
+
+
+def layer_memory_contexts(
+    memory_layered_map: Optional[LayeredFeatureMap],
+    layer_index: int,
+    batch_contexts: Optional[np.ndarray],
+    split_context_source: bool,
+) -> Optional[np.ndarray]:
+    if memory_layered_map is None:
+        return None
+    if split_context_source:
+        return _batch_contexts(memory_layered_map.layers[layer_index])
+    return batch_contexts
+
+
+def fit_layer_wise_states(
+    support_layered_maps: Sequence[LayeredFeatureMap],
+    support_memory_layered_maps: Sequence[LayeredFeatureMap],
+    require_flow_contexts: bool,
+    require_memory_contexts: bool,
+    config: RunConfig,
+) -> Tuple[LayerWiseState, ...]:
+    if not support_layered_maps:
+        raise RuntimeError("layer-wise FlowTTE requires support feature maps")
+    layer_count = len(support_layered_maps[0].layers)
+    score_field_config = build_score_field_config(config)
+    states: List[LayerWiseState] = []
+    for layer_index in range(layer_count):
+        support_maps = tuple(layered.layers[layer_index] for layered in support_layered_maps)
+        feature_denoiser = fit_feature_denoiser(
+            config.dvt_denoise_mode,
+            [feature_map.values for feature_map in support_maps],
+            alpha=config.dvt_denoise_alpha,
+        )
+        support_features = flatten_support_feature_maps(
+            support_maps,
+            require_contexts=require_flow_contexts,
+            feature_denoiser=feature_denoiser,
+        )
+        memory_contexts = support_features.contexts
+        if require_memory_contexts and support_memory_layered_maps is not support_layered_maps:
+            memory_maps = tuple(
+                layered.layers[layer_index] for layered in support_memory_layered_maps
+            )
+            memory_contexts = flatten_support_feature_maps(
+                memory_maps,
+                require_contexts=True,
+                feature_denoiser=None,
+            ).contexts
+        elif not require_memory_contexts:
+            memory_contexts = None
+        pipeline = build_pipeline(config)
+        stats = pipeline.fit(
+            support_features.values,
+            support_contexts=support_features.contexts,
+            memory_contexts=memory_contexts,
+        )
+        score_field_stats = fit_support_score_field_stats(
+            pipeline,
+            support_maps,
+            feature_denoiser,
+            score_field_config,
+        )
+        states.append(
+            LayerWiseState(
+                pipeline=pipeline,
+                feature_denoiser=feature_denoiser,
+                score_field_stats=score_field_stats,
+                train_nll_mean=stats.train_nll_mean,
+                train_nll_std=stats.train_nll_std,
+                density_threshold=stats.density_threshold,
+            ),
+        )
+    return tuple(states)
+
+
+def build_score_field_config(config: RunConfig) -> ScoreFieldConfig:
+    return ScoreFieldConfig(
+        calibration_mode=config.score_field_calibration_mode,
+        calibration_alpha=config.score_field_calibration_alpha,
+        position_std_floor=config.score_field_position_std_floor,
+        foreground_mode=config.score_field_foreground_mode,
+        foreground_quantile=config.score_field_foreground_quantile,
+        background_multiplier=config.score_field_background_multiplier,
+        foreground_smooth_kernel=config.score_field_foreground_smooth_kernel,
+    )
+
+
+def fit_support_score_field_stats(
+    pipeline: FlowTTE,
+    support_feature_maps: Sequence[FeatureMap],
+    feature_denoiser: Optional[PositionMeanArtifactDenoiser],
+    score_field_config: ScoreFieldConfig,
+) -> Optional[ScoreFieldStats]:
+    if not score_field_config.enabled:
+        return None
+    denoised_maps = [
+        apply_feature_denoiser(feature_map, feature_denoiser)
+        for feature_map in support_feature_maps
+    ]
+    support_scores = [
+        support_leave_one_out_patch_scores(pipeline, feature_map.values)
+        for feature_map in denoised_maps
+    ]
+    return fit_score_field_stats(
+        support_scores,
+        [feature_map.values for feature_map in denoised_maps],
+        score_field_config,
     )
 
 
@@ -391,6 +781,31 @@ def collect_support_feature_maps(
             transformed = apply_brightness(transformed, brightness_factor)
             feature_maps.append(
                 extract_feature_map_from_rgb(
+                    backbone,
+                    transformed,
+                    extraction_config.feature,
+                ),
+            )
+    return feature_maps
+
+
+def collect_support_layered_feature_maps(
+    backbone: BackboneLike,
+    paths: Sequence[Path],
+    extraction_config: SupportExtractionConfig,
+) -> List[LayeredFeatureMap]:
+    feature_maps: List[LayeredFeatureMap] = []
+    for path in paths:
+        image = read_rgb(path)
+        for transform_name in extraction_config.transform_names:
+            transformed = transform_rgb(image, transform_name)
+            brightness_factor = extraction_config.brightness_range.factor_for(
+                len(feature_maps),
+                extraction_config.brightness_seed,
+            )
+            transformed = apply_brightness(transformed, brightness_factor)
+            feature_maps.append(
+                extract_layer_feature_maps_from_rgb(
                     backbone,
                     transformed,
                     extraction_config.feature,
@@ -454,6 +869,43 @@ def extract_feature_map_from_rgb(
     return extract_single_feature_map_from_rgb(backbone, image, extraction_config)
 
 
+def extract_layer_feature_maps_from_rgb(
+    backbone: BackboneLike,
+    image: np.ndarray,
+    extraction_config: FeatureExtractionConfig,
+) -> LayeredFeatureMap:
+    if extraction_config.tiling.enabled:
+        message = "Layer-wise Flow-LatentBank currently requires non-tiled extraction"
+        raise RuntimeError(message)
+    image_tensor, grid_size = backbone.prepare_image(image)
+    layer_features = backbone.extract_features(image_tensor)
+    if not layer_features:
+        message = "Backbone returned no layer features"
+        raise RuntimeError(message)
+    height, width = grid_size
+    contexts = build_broadcast_contexts(
+        backbone,
+        image_tensor,
+        context_source=extraction_config.context_source,
+        height=height,
+        width=width,
+    )
+    return LayeredFeatureMap(
+        layers=tuple(
+            FeatureMap(
+                values=normalize_layer_features(layer).reshape(
+                    height,
+                    width,
+                    layer.shape[-1],
+                ),
+                image_shape=(int(image.shape[0]), int(image.shape[1])),
+                contexts=contexts,
+            )
+            for layer in layer_features
+        ),
+    )
+
+
 def extract_single_feature_map_from_rgb(
     backbone: BackboneLike,
     image: np.ndarray,
@@ -466,22 +918,44 @@ def extract_single_feature_map_from_rgb(
         raise RuntimeError(message)
     merged = merge_layer_features(layer_features, extraction_config.feature_fusion)
     height, width = grid_size
-    contexts = None
-    if extraction_config.context_source != "none":
-        context_vector = backbone.extract_context_features(
-            image_tensor,
-            extraction_config.context_source,
-        )
-        context_array = context_vector.detach().cpu().numpy().astype(np.float32, copy=False)
-        contexts = np.broadcast_to(
-            context_array.reshape(1, 1, -1),
-            (height, width, context_array.shape[0]),
-        ).copy()
+    contexts = build_broadcast_contexts(
+        backbone,
+        image_tensor,
+        context_source=extraction_config.context_source,
+        height=height,
+        width=width,
+    )
     return FeatureMap(
         values=merged.reshape(height, width, merged.shape[-1]),
         image_shape=(int(image.shape[0]), int(image.shape[1])),
         contexts=contexts,
     )
+
+
+def build_broadcast_contexts(
+    backbone: BackboneLike,
+    image_tensor: torch.Tensor,
+    context_source: str,
+    height: int,
+    width: int,
+) -> Optional[np.ndarray]:
+    if context_source == "none":
+        return None
+    context_vector = backbone.extract_context_features(
+        image_tensor,
+        context_source,
+    )
+    context_array = context_vector.detach().cpu().numpy().astype(np.float32, copy=False)
+    return np.broadcast_to(
+        context_array.reshape(1, 1, -1),
+        (height, width, context_array.shape[0]),
+    ).copy()
+
+
+def _batch_contexts(feature_map: FeatureMap) -> Optional[np.ndarray]:
+    if feature_map.contexts is None:
+        return None
+    return feature_map.contexts[np.newaxis, ...]
 
 
 def extract_tiled_feature_map_from_rgb(

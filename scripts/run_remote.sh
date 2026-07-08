@@ -24,11 +24,18 @@ SYNC_DELETE="${SYNC_DELETE:-0}"
 RSYNC_EXCLUDES=(
   "--exclude=.git"
   "--exclude=.claude"
+  "--exclude=.codegraph"
+  "--exclude=.omx"
+  "--exclude=.ruff_cache"
+  "--exclude=.venv"
   "--exclude=results"
   "--exclude=results_remote"
   "--exclude=__pycache__"
   "--exclude=.pytest_cache"
+  "--exclude=*.pdf"
   "--exclude=*.pth"
+  "--exclude=._*"
+  "--exclude=MEETING_*"
 )
 
 usage() {

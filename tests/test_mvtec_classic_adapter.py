@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional, Sequence, Tuple
+from typing import Optional, Sequence
 
 import numpy as np
 import numpy.typing as npt
@@ -235,7 +235,7 @@ def test_visionad_support_transforms_match_rotations_and_flips() -> None:
 
 
 def test_visionad_feature_fusion_means_then_normalizes() -> None:
-    layers: Tuple[npt.NDArray[np.float32], npt.NDArray[np.float32]] = (
+    layers: tuple[npt.NDArray[np.float32], npt.NDArray[np.float32]] = (
         np.array([[3.0, 0.0], [0.0, 4.0]], dtype=np.float32),
         np.array([[1.0, 0.0], [0.0, 2.0]], dtype=np.float32),
     )

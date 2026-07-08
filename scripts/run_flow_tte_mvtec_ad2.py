@@ -88,6 +88,11 @@ def parse_args(argv: Sequence[str]) -> RunConfig:
     parser.add_argument("--support-transforms", default="identity")
     parser.add_argument("--feature-fusion", default="layer_norm_mean")
     parser.add_argument(
+        "--normality-mode",
+        choices=("fused", "layer_wise"),
+        default="fused",
+    )
+    parser.add_argument(
         "--dvt-denoise-mode",
         choices=("none", "position_mean"),
         default="none",
@@ -120,6 +125,7 @@ def parse_args(argv: Sequence[str]) -> RunConfig:
         choices=("none", "context"),
         default="none",
     )
+    add_score_field_args(parser)
     args = parser.parse_args(list(argv))
     objects = tuple(part for part in args.objects.replace(",", " ").split() if part)
     validate_args(args, objects)
@@ -167,12 +173,20 @@ def parse_args(argv: Sequence[str]) -> RunConfig:
         support_transforms=parse_transform_tuple(args.support_transforms),
         dvt_denoise_mode=args.dvt_denoise_mode,
         dvt_denoise_alpha=args.dvt_denoise_alpha,
+        normality_mode=args.normality_mode,
         context_source=args.context_source,
         flow_context_source=args.flow_context_source,
         memory_context_source=args.memory_context_source,
         context_mode=args.context_mode,
         context_weight=args.context_weight,
         context_top_m=args.context_top_m,
+        score_field_calibration_mode=args.score_field_calibration_mode,
+        score_field_calibration_alpha=args.score_field_calibration_alpha,
+        score_field_position_std_floor=args.score_field_position_std_floor,
+        score_field_foreground_mode=args.score_field_foreground_mode,
+        score_field_foreground_quantile=args.score_field_foreground_quantile,
+        score_field_background_multiplier=args.score_field_background_multiplier,
+        score_field_foreground_smooth_kernel=args.score_field_foreground_smooth_kernel,
     )
 
 
@@ -185,6 +199,9 @@ def validate_args(args: argparse.Namespace, objects: Tuple[str, ...]) -> None:
         raise SystemExit("--context-top-m must be positive")
     if args.dvt_denoise_alpha < 0.0:
         raise SystemExit("--dvt-denoise-alpha must be non-negative")
+    if args.normality_mode == "layer_wise" and args.tile_patch_size > 0:
+        raise SystemExit("--normality-mode layer_wise currently requires non-tiled extraction")
+    validate_score_field_args(args)
     validate_superadd_alignment_args(args)
     flow_context_source = args.flow_context_source
     if flow_context_source == "auto":
@@ -196,6 +213,37 @@ def validate_args(args: argparse.Namespace, objects: Tuple[str, ...]) -> None:
         raise SystemExit("--context-mode requires a memory context source")
     if flow_context_source == "none" and args.flow_condition_mode == "context":
         raise SystemExit("--flow-condition-mode context requires a flow context source")
+
+
+def add_score_field_args(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--score-field-calibration-mode",
+        choices=("none", "support_position_center", "support_position_zscore"),
+        default="none",
+    )
+    parser.add_argument("--score-field-calibration-alpha", type=float, default=1.0)
+    parser.add_argument("--score-field-position-std-floor", type=float, default=0.25)
+    parser.add_argument(
+        "--score-field-foreground-mode",
+        choices=("none", "support_feature_energy"),
+        default="none",
+    )
+    parser.add_argument("--score-field-foreground-quantile", type=float, default=0.20)
+    parser.add_argument("--score-field-background-multiplier", type=float, default=0.50)
+    parser.add_argument("--score-field-foreground-smooth-kernel", type=int, default=5)
+
+
+def validate_score_field_args(args: argparse.Namespace) -> None:
+    if args.score_field_calibration_alpha < 0.0:
+        raise SystemExit("--score-field-calibration-alpha must be non-negative")
+    if args.score_field_position_std_floor <= 0.0:
+        raise SystemExit("--score-field-position-std-floor must be positive")
+    if not 0.0 <= args.score_field_foreground_quantile <= 1.0:
+        raise SystemExit("--score-field-foreground-quantile must be in [0, 1]")
+    if not 0.0 <= args.score_field_background_multiplier <= 1.0:
+        raise SystemExit("--score-field-background-multiplier must be in [0, 1]")
+    if args.score_field_foreground_smooth_kernel <= 0:
+        raise SystemExit("--score-field-foreground-smooth-kernel must be positive")
 
 
 def add_superadd_alignment_args(parser: argparse.ArgumentParser) -> None:
@@ -311,6 +359,7 @@ def write_manifest(
             config.support_brightness_range.max_factor,
         ],
         "feature_fusion": config.feature_fusion,
+        "normality_mode": config.normality_mode,
         "flow_epochs": config.flow_epochs,
         "coupling_layers": config.coupling_layers,
         "hidden_multiplier": config.hidden_multiplier,
@@ -334,6 +383,13 @@ def write_manifest(
         "context_mode": resolve_score_context_mode(config),
         "context_weight": config.context_weight,
         "context_top_m": config.context_top_m,
+        "score_field_calibration_mode": config.score_field_calibration_mode,
+        "score_field_calibration_alpha": config.score_field_calibration_alpha,
+        "score_field_position_std_floor": config.score_field_position_std_floor,
+        "score_field_foreground_mode": config.score_field_foreground_mode,
+        "score_field_foreground_quantile": config.score_field_foreground_quantile,
+        "score_field_background_multiplier": config.score_field_background_multiplier,
+        "score_field_foreground_smooth_kernel": config.score_field_foreground_smooth_kernel,
         "primary_metrics": ["seg_AUROC_0.05", "seg_F1"],
         "reference_budget_matched": (
             config.shots == 16

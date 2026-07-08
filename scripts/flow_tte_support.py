@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import TYPE_CHECKING, List, Protocol, Sequence, Tuple
+from typing import TYPE_CHECKING, Protocol, Sequence, Tuple
 
 try:
     import cv2
@@ -178,11 +178,7 @@ def transform_rgb(image: np.ndarray, transform_name: str) -> np.ndarray:
 
 
 def merge_layer_features(layer_features: Sequence[np.ndarray], feature_fusion: str) -> np.ndarray:
-    normalized: List[np.ndarray] = []
-    for layer in layer_features:
-        values = layer.astype(np.float32, copy=False)
-        norm = np.maximum(np.linalg.norm(values, axis=1, keepdims=True), _EPS)
-        normalized.append(values / norm)
+    normalized = [normalize_layer_features(layer) for layer in layer_features]
     if feature_fusion == "layer_norm_mean":
         return np.mean(np.stack(normalized, axis=0), axis=0).astype(np.float32, copy=False)
     if feature_fusion == "visionad_mean_l2":
@@ -194,3 +190,9 @@ def merge_layer_features(layer_features: Sequence[np.ndarray], feature_fusion: s
         return (merged / norm).astype(np.float32, copy=False)
     message = f"Unknown feature fusion: {feature_fusion}"
     raise RuntimeError(message)
+
+
+def normalize_layer_features(layer: np.ndarray) -> np.ndarray:
+    values = layer.astype(np.float32, copy=False)
+    norm = np.maximum(np.linalg.norm(values, axis=1, keepdims=True), _EPS)
+    return (values / norm).astype(np.float32, copy=False)

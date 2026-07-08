@@ -7,6 +7,17 @@
 
 ## Experiments
 
+- `2026-07-08_flowtte_scorefield_structural`: all-eight H+ DVT FlowTTE
+  score-field structural diagnostic. Support-position calibration was harmful
+  (`0.785133/0.429653` center, `0.701830/0.278144` z-score vs baseline
+  `0.836739/0.527427`), and support feature-energy foreground prior was only
+  baseline-tied (`0.834598/0.526807`). Verdict:
+  `KILL_FOR_CLAIM / NO_CONTINUE`.
+- `2026-07-08_flowtte_layerwise_context_routed`: layer-wise Flow-LatentBank
+  diagnostic with score-level layer fusion. No-context layer-wise scored
+  `0.828210/0.499110`; CLS topM4 routed scored `0.829923/0.508863`, both
+  below the fused H+ DVT baseline `0.836739/0.527427`. Verdict:
+  `KILL_FOR_CLAIM / NO_CONTINUE`.
 - `2026-07-08_flowtte_hplus_priority_sequence`: prioritized H+ diagnostics
   after the backbone-only run. Morphology on saved H+ maps improved mean F1
   from `0.527427` to `0.542316`, but still left an F1 gap to reported

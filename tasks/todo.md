@@ -1,5 +1,43 @@
 # FSAD-TTA Task Log
 
+## 2026-07-08 FlowTTE Score-Field and Layer-wise Structural Diagnostics
+
+- Status: completed
+- Protocol: fmad-experiment-protocol, all-object structural diagnostic lane
+- Target dataset: MVTec AD2 single-image
+- Data root: `/home/hunim/Volume/DATA/mvtec_ad_2`
+- Remote container: `hun_fsad_tta_012`
+- Host GPUs: `0,1,2`; in-container CUDA slots: `0,1,2`
+- Objects: all 8 public MVTec AD2 objects
+- Split: full `test_public/good,bad`
+- Fixed reference: H+ DVT FlowTTE baseline,
+  `dinov3_vith16plus`, layers `[7,15,23,31]`, fixed 16-shot support,
+  no-TTE, DVT position mean denoise `alpha=1.0`
+- Score-field variants:
+  - baseline: `0.836739` AUROC / `0.527427` F1
+  - support_position_center: `0.785133` / `0.429653`
+  - support_position_zscore: `0.701830` / `0.278144`
+  - foreground_energy: `0.834598` / `0.526807`
+  - center_plus_foreground: `0.808839` / `0.471613`
+- Layer-wise variants:
+  - fused baseline: `0.836739` / `0.527427`
+  - layer-wise no-context score fusion: `0.828210` / `0.499110`
+  - layer-wise CLS topM4 routed: `0.829923` / `0.508863`
+- Interpretation: support-position score calibration is harmful; foreground
+  prior is baseline-tied and not robust; per-layer Flow banks with score-level
+  fusion underperform the fused normalized feature. CLS routing partially
+  recovers the layer-wise drop but remains below baseline.
+- Cleanup evidence: all completed local and remote result roots have `0`
+  retained `anomaly_maps/` directories.
+- Local pullbacks:
+  - `results/remote_runs/dsba3/flowtte_scorefield_structural_all8_20260708_v4`
+  - `results/remote_runs/dsba3/flowtte_layerwise_ctx_cls_topm4_all8_20260708_v1`
+  - `results/remote_runs/dsba3/flowtte_layerwise_noctx_all8_20260708_v1`
+- Reports:
+  - `skill_graph/experiments/2026-07-08_flowtte_scorefield_structural/report.md`
+  - `skill_graph/experiments/2026-07-08_flowtte_layerwise_context_routed/report.md`
+- Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`
+
 ## 2026-07-08 FlowTTE H+ Priority Sequence Diagnostic
 
 - Status: completed
