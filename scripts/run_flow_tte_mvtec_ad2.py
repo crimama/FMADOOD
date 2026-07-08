@@ -89,9 +89,17 @@ def parse_args(argv: Sequence[str]) -> RunConfig:
     parser.add_argument("--feature-fusion", default="layer_norm_mean")
     parser.add_argument(
         "--normality-mode",
-        choices=("fused", "layer_wise"),
+        choices=(
+            "fused",
+            "layer_wise",
+            "raw_nn",
+            "raw_layer_wise",
+            "raw_nn_nf_residual",
+            "foreground_raw_nn",
+        ),
         default="fused",
     )
+    parser.add_argument("--residual-weight", type=float, default=0.25)
     parser.add_argument(
         "--dvt-denoise-mode",
         choices=("none", "position_mean"),
@@ -174,6 +182,7 @@ def parse_args(argv: Sequence[str]) -> RunConfig:
         dvt_denoise_mode=args.dvt_denoise_mode,
         dvt_denoise_alpha=args.dvt_denoise_alpha,
         normality_mode=args.normality_mode,
+        residual_weight=args.residual_weight,
         context_source=args.context_source,
         flow_context_source=args.flow_context_source,
         memory_context_source=args.memory_context_source,
@@ -199,8 +208,8 @@ def validate_args(args: argparse.Namespace, objects: Tuple[str, ...]) -> None:
         raise SystemExit("--context-top-m must be positive")
     if args.dvt_denoise_alpha < 0.0:
         raise SystemExit("--dvt-denoise-alpha must be non-negative")
-    if args.normality_mode == "layer_wise" and args.tile_patch_size > 0:
-        raise SystemExit("--normality-mode layer_wise currently requires non-tiled extraction")
+    if args.residual_weight < 0.0:
+        raise SystemExit("--residual-weight must be non-negative")
     validate_score_field_args(args)
     validate_superadd_alignment_args(args)
     flow_context_source = args.flow_context_source
@@ -337,7 +346,7 @@ def write_manifest(
         "created_utc": datetime.now(timezone.utc).isoformat(),
         "target_dataset": "MVTec AD2 single-image",
         "data_root": str(config.data_root),
-        "method": "flow_tte_nf",
+        "method": f"flow_tte_{config.normality_mode}",
         "method_family": "normal_only_adaptation_with_anti_absorption",
         "split": "test_public/good,bad",
         "objects": list(config.objects),
@@ -360,6 +369,7 @@ def write_manifest(
         ],
         "feature_fusion": config.feature_fusion,
         "normality_mode": config.normality_mode,
+        "residual_weight": config.residual_weight,
         "flow_epochs": config.flow_epochs,
         "coupling_layers": config.coupling_layers,
         "hidden_multiplier": config.hidden_multiplier,

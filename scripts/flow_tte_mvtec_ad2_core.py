@@ -5,7 +5,7 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Dict, List, Literal, Optional, Protocol, Sequence, Tuple
+from typing import Dict, List, Literal, Optional, Protocol, Sequence, Tuple, Union
 
 import cv2
 import numpy as np
@@ -17,6 +17,16 @@ from flow_tte.denoising import PositionMeanArtifactDenoiser, fit_feature_denoise
 from flow_tte.pipeline import FlowTTE
 
 if __package__:
+    from .flow_tte_raw_nn import (
+        ForegroundSplitConfig,
+        ForegroundSplitRawNNState,
+        RawNNResult,
+        RawNNState,
+        fit_foreground_split_raw_nn,
+        fit_raw_nn,
+        score_foreground_split_raw_nn,
+        score_raw_nn,
+    )
     from .flow_tte_score_field import (
         ScoreFieldConfig,
         ScoreFieldStats,
@@ -39,6 +49,16 @@ if __package__:
         transform_rgb,
     )
 else:
+    from flow_tte_raw_nn import (
+        ForegroundSplitConfig,
+        ForegroundSplitRawNNState,
+        RawNNResult,
+        RawNNState,
+        fit_foreground_split_raw_nn,
+        fit_raw_nn,
+        score_foreground_split_raw_nn,
+        score_raw_nn,
+    )
     from flow_tte_score_field import (
         ScoreFieldConfig,
         ScoreFieldStats,
@@ -164,7 +184,15 @@ class RunConfig:
     support_brightness_range: BrightnessRange = field(default_factory=BrightnessRange)
     dvt_denoise_mode: str = "none"
     dvt_denoise_alpha: float = 1.0
-    normality_mode: Literal["fused", "layer_wise"] = "fused"
+    normality_mode: Literal[
+        "fused",
+        "layer_wise",
+        "raw_nn",
+        "raw_layer_wise",
+        "raw_nn_nf_residual",
+        "foreground_raw_nn",
+    ] = "fused"
+    residual_weight: float = 0.25
 
 
 @dataclass(frozen=True)
@@ -217,6 +245,30 @@ class LayerWiseState:
 
 
 @dataclass(frozen=True)
+class RawFusedState:
+    scorer: Union[RawNNState, ForegroundSplitRawNNState]  # noqa: UP007
+    feature_denoiser: Optional[PositionMeanArtifactDenoiser]
+    residual_pipeline: Optional[FlowTTE]
+    residual_train_nll_mean: float
+    residual_train_nll_std: float
+    residual_density_threshold: float
+
+
+@dataclass(frozen=True)
+class RawFusedRuntime:
+    backbone: BackboneLike
+    flow_context_source: str
+    memory_context_source: str
+    config: RunConfig
+
+
+@dataclass(frozen=True)
+class RawLayerState:
+    scorer: RawNNState
+    feature_denoiser: Optional[PositionMeanArtifactDenoiser]
+
+
+@dataclass(frozen=True)
 class LayerWiseItemScore:
     patch_scores: np.ndarray
     image_shape: Tuple[int, int]
@@ -266,6 +318,10 @@ def run_object(
 ) -> ObjectDiagnostics:
     if config.normality_mode == "layer_wise":
         return run_object_layer_wise(dataset, backbone, object_name, config)
+    if config.normality_mode == "raw_layer_wise":
+        return run_object_raw_layer_wise(dataset, backbone, object_name, config)
+    if config.normality_mode in ("raw_nn", "raw_nn_nf_residual", "foreground_raw_nn"):
+        return run_object_raw_fused(dataset, backbone, object_name, config)
     return run_object_fused(dataset, backbone, object_name, config)
 
 
@@ -414,6 +470,398 @@ def run_object_fused(
     )
 
 
+def run_object_raw_fused(
+    dataset: DatasetLike,
+    backbone: BackboneLike,
+    object_name: str,
+    config: RunConfig,
+) -> ObjectDiagnostics:
+    started = time.time()
+    info = dataset.get_object_info(object_name)
+    backbone.set_resolution(config.backbone_resolution or info.resolution)
+    train_paths = [Path(path) for path in dataset.get_train_images(object_name)]
+    selected_paths = select_support_paths_for_backbone(
+        backbone,
+        train_paths,
+        shots=config.shots,
+        policy=config.support_selection,
+        seed=config.support_selection_seed,
+    )
+    if len(selected_paths) < config.shots:
+        message = f"{object_name}: train/good has fewer than {config.shots} images"
+        raise SystemExit(message)
+
+    memory_context_source = resolve_memory_context_source(config)
+    flow_context_source = resolve_flow_context_source(config)
+    support_feature_maps = collect_support_feature_maps(
+        backbone,
+        selected_paths,
+        support_extraction_config(config, memory_context_source),
+    )
+    feature_denoiser = fit_feature_denoiser(
+        config.dvt_denoise_mode,
+        [feature_map.values for feature_map in support_feature_maps],
+        alpha=config.dvt_denoise_alpha,
+    )
+    support_features = flatten_support_feature_maps(
+        support_feature_maps,
+        require_contexts=memory_context_source != "none",
+        feature_denoiser=feature_denoiser,
+    )
+    raw_state = fit_raw_fused_state(
+        support_feature_maps,
+        support_features,
+        feature_denoiser,
+        config,
+    )
+    if config.normality_mode == "raw_nn_nf_residual":
+        flow_support_features = support_features
+        if flow_context_source != memory_context_source:
+            flow_maps = collect_support_feature_maps(
+                backbone,
+                selected_paths,
+                support_extraction_config(config, flow_context_source),
+            )
+            flow_support_features = flatten_support_feature_maps(
+                flow_maps,
+                require_contexts=flow_context_source != "none",
+                feature_denoiser=feature_denoiser,
+            )
+        residual_pipeline = build_pipeline(config)
+        residual_stats = residual_pipeline.fit(
+            flow_support_features.values,
+            support_contexts=flow_support_features.contexts,
+            memory_contexts=support_features.contexts,
+        )
+        raw_state = RawFusedState(
+            scorer=raw_state.scorer,
+            feature_denoiser=raw_state.feature_denoiser,
+            residual_pipeline=residual_pipeline,
+            residual_train_nll_mean=residual_stats.train_nll_mean,
+            residual_train_nll_std=residual_stats.train_nll_std,
+            residual_density_threshold=residual_stats.density_threshold,
+        )
+
+    test_images = dataset.get_test_images(object_name, split="test_public")
+    items = stream_test_images(test_images)
+    runtime = RawFusedRuntime(
+        backbone=backbone,
+        flow_context_source=flow_context_source,
+        memory_context_source=memory_context_source,
+        config=config,
+    )
+    for item in items:
+        item_score = score_raw_fused_item(
+            runtime,
+            item,
+            raw_state,
+        )
+        score_map = cv2.resize(
+            item_score.patch_scores,
+            (item_score.image_shape[1], item_score.image_shape[0]),
+            interpolation=cv2.INTER_LINEAR,
+        )
+        save_prediction(config.output_root, object_name, item, score_map)
+    return ObjectDiagnostics(
+        object_name=object_name,
+        resolution=info.resolution,
+        train_good_count=len(train_paths),
+        test_good_count=len(test_images.get("good", [])),
+        test_bad_count=sum(
+            len(paths) for anomaly_type, paths in test_images.items() if anomaly_type != "good"
+        ),
+        selected_support_count=len(selected_paths),
+        selected_support_paths=tuple(str(path) for path in selected_paths),
+        processed_test_count=len(items),
+        mean_selected_patch_count=0.0,
+        initial_memory_size=raw_state.scorer.memory_size,
+        final_memory_size=raw_state.scorer.memory_size,
+        train_nll_mean=raw_state.residual_train_nll_mean,
+        train_nll_std=raw_state.residual_train_nll_std,
+        density_threshold=raw_state.residual_density_threshold,
+        dvt_denoise_mode=config.dvt_denoise_mode,
+        dvt_denoise_alpha=config.dvt_denoise_alpha,
+        dvt_artifact_l2_mean=artifact_l2_mean(feature_denoiser),
+        score_field_calibration_mode=config.score_field_calibration_mode,
+        score_field_foreground_mode=config.score_field_foreground_mode,
+        normality_mode=config.normality_mode,
+        elapsed_seconds=time.time() - started,
+    )
+
+
+def fit_raw_fused_state(
+    support_feature_maps: Sequence[FeatureMap],
+    support_features: SupportFeatures,
+    feature_denoiser: Optional[PositionMeanArtifactDenoiser],
+    config: RunConfig,
+) -> RawFusedState:
+    raw_score_config = build_raw_score_config(config)
+    if config.normality_mode == "foreground_raw_nn":
+        denoised_maps = [
+            apply_feature_denoiser(feature_map, feature_denoiser).values
+            for feature_map in support_feature_maps
+        ]
+        scorer: Union[RawNNState, ForegroundSplitRawNNState] = (  # noqa: UP007
+            fit_foreground_split_raw_nn(
+                support_feature_maps=denoised_maps,
+                support_contexts=support_features.contexts,
+                score_config=raw_score_config,
+                split_config=ForegroundSplitConfig(
+                    foreground_quantile=config.score_field_foreground_quantile,
+                    background_multiplier=config.score_field_background_multiplier,
+                ),
+                device=config.device,
+            )
+        )
+    else:
+        scorer = fit_raw_nn(
+            support_features=support_features.values,
+            memory_contexts=support_features.contexts,
+            score_config=raw_score_config,
+            device=config.device,
+        )
+    return RawFusedState(
+        scorer=scorer,
+        feature_denoiser=feature_denoiser,
+        residual_pipeline=None,
+        residual_train_nll_mean=0.0,
+        residual_train_nll_std=0.0,
+        residual_density_threshold=0.0,
+    )
+
+
+def score_raw_fused_item(
+    runtime: RawFusedRuntime,
+    item: ImageItem,
+    raw_state: RawFusedState,
+) -> LayerWiseItemScore:
+    image = read_rgb(item.path)
+    feature_map = apply_feature_denoiser(
+        extract_feature_map_from_rgb(
+            runtime.backbone,
+            image,
+            FeatureExtractionConfig(
+                feature_fusion=runtime.config.feature_fusion,
+                context_source=runtime.memory_context_source,
+                tiling=tiling_config(runtime.config),
+            ),
+        ),
+        raw_state.feature_denoiser,
+    )
+    raw_result = score_raw_scorer(
+        raw_state.scorer,
+        feature_map.values[np.newaxis, ...],
+        _batch_contexts(feature_map),
+    )
+    patch_scores = raw_result.patch_scores[0]
+    residual_pipeline = raw_state.residual_pipeline
+    if residual_pipeline is not None:
+        residual_map = feature_map
+        if runtime.flow_context_source != runtime.memory_context_source:
+            residual_map = apply_feature_denoiser(
+                extract_feature_map_from_rgb(
+                    runtime.backbone,
+                    image,
+                    FeatureExtractionConfig(
+                        feature_fusion=runtime.config.feature_fusion,
+                        context_source=runtime.flow_context_source,
+                        tiling=tiling_config(runtime.config),
+                    ),
+                ),
+                raw_state.feature_denoiser,
+            )
+        residual_batch_contexts = (
+            _batch_contexts(residual_map) if runtime.flow_context_source != "none" else None
+        )
+        residual_memory_contexts = (
+            _batch_contexts(feature_map) if runtime.memory_context_source != "none" else None
+        )
+        residual = residual_pipeline.score_static(
+            residual_map.values[np.newaxis, ...],
+            batch_contexts=residual_batch_contexts,
+            memory_contexts=residual_memory_contexts,
+        )
+        patch_scores = (
+            patch_scores
+            + np.float32(runtime.config.residual_weight) * residual.patch_scores[0]
+        ).astype(np.float32, copy=False)
+    return LayerWiseItemScore(
+        patch_scores=patch_scores,
+        image_shape=feature_map.image_shape,
+        selected_count=0,
+        memory_size_before=raw_result.memory_size_before,
+        memory_size_after=raw_result.memory_size_after,
+    )
+
+
+def score_raw_scorer(
+    scorer: Union[RawNNState, ForegroundSplitRawNNState],  # noqa: UP007
+    query_features: np.ndarray,
+    query_contexts: Optional[np.ndarray],
+) -> RawNNResult:
+    if isinstance(scorer, ForegroundSplitRawNNState):
+        return score_foreground_split_raw_nn(scorer, query_features, query_contexts)
+    return score_raw_nn(scorer, query_features, query_contexts)
+
+
+def run_object_raw_layer_wise(
+    dataset: DatasetLike,
+    backbone: BackboneLike,
+    object_name: str,
+    config: RunConfig,
+) -> ObjectDiagnostics:
+    started = time.time()
+    info = dataset.get_object_info(object_name)
+    backbone.set_resolution(config.backbone_resolution or info.resolution)
+    train_paths = [Path(path) for path in dataset.get_train_images(object_name)]
+    selected_paths = select_support_paths_for_backbone(
+        backbone,
+        train_paths,
+        shots=config.shots,
+        policy=config.support_selection,
+        seed=config.support_selection_seed,
+    )
+    if len(selected_paths) < config.shots:
+        message = f"{object_name}: train/good has fewer than {config.shots} images"
+        raise SystemExit(message)
+
+    memory_context_source = resolve_memory_context_source(config)
+    support_layered_maps = collect_support_layered_feature_maps(
+        backbone,
+        selected_paths,
+        support_extraction_config(config, memory_context_source),
+    )
+    layer_states = fit_raw_layer_states(
+        support_layered_maps,
+        require_memory_contexts=memory_context_source != "none",
+        config=config,
+    )
+    test_images = dataset.get_test_images(object_name, split="test_public")
+    items = stream_test_images(test_images)
+    initial_memory_size = sum(state.scorer.memory_size for state in layer_states)
+    for item in items:
+        item_score = score_raw_layer_wise_item(
+            backbone,
+            item,
+            layer_states,
+            config,
+            memory_context_source,
+        )
+        score_map = cv2.resize(
+            item_score.patch_scores,
+            (item_score.image_shape[1], item_score.image_shape[0]),
+            interpolation=cv2.INTER_LINEAR,
+        )
+        save_prediction(config.output_root, object_name, item, score_map)
+    return ObjectDiagnostics(
+        object_name=object_name,
+        resolution=info.resolution,
+        train_good_count=len(train_paths),
+        test_good_count=len(test_images.get("good", [])),
+        test_bad_count=sum(
+            len(paths) for anomaly_type, paths in test_images.items() if anomaly_type != "good"
+        ),
+        selected_support_count=len(selected_paths),
+        selected_support_paths=tuple(str(path) for path in selected_paths),
+        processed_test_count=len(items),
+        mean_selected_patch_count=0.0,
+        initial_memory_size=initial_memory_size,
+        final_memory_size=initial_memory_size,
+        train_nll_mean=0.0,
+        train_nll_std=0.0,
+        density_threshold=0.0,
+        dvt_denoise_mode=config.dvt_denoise_mode,
+        dvt_denoise_alpha=config.dvt_denoise_alpha,
+        dvt_artifact_l2_mean=float(
+            np.mean([artifact_l2_mean(state.feature_denoiser) for state in layer_states]),
+        ),
+        score_field_calibration_mode=config.score_field_calibration_mode,
+        score_field_foreground_mode=config.score_field_foreground_mode,
+        normality_mode=config.normality_mode,
+        elapsed_seconds=time.time() - started,
+    )
+
+
+def fit_raw_layer_states(
+    support_layered_maps: Sequence[LayeredFeatureMap],
+    require_memory_contexts: bool,
+    config: RunConfig,
+) -> Tuple[RawLayerState, ...]:
+    if not support_layered_maps:
+        raise RuntimeError("raw layer-wise NN requires support feature maps")
+    layer_count = len(support_layered_maps[0].layers)
+    states: List[RawLayerState] = []
+    for layer_index in range(layer_count):
+        support_maps = tuple(layered.layers[layer_index] for layered in support_layered_maps)
+        feature_denoiser = fit_feature_denoiser(
+            config.dvt_denoise_mode,
+            [feature_map.values for feature_map in support_maps],
+            alpha=config.dvt_denoise_alpha,
+        )
+        support_features = flatten_support_feature_maps(
+            support_maps,
+            require_contexts=require_memory_contexts,
+            feature_denoiser=feature_denoiser,
+        )
+        states.append(
+            RawLayerState(
+                scorer=fit_raw_nn(
+                    support_features=support_features.values,
+                    memory_contexts=support_features.contexts,
+                    score_config=build_raw_score_config(config),
+                    device=config.device,
+                ),
+                feature_denoiser=feature_denoiser,
+            ),
+        )
+    return tuple(states)
+
+
+def score_raw_layer_wise_item(
+    backbone: BackboneLike,
+    item: ImageItem,
+    layer_states: Sequence[RawLayerState],
+    config: RunConfig,
+    memory_context_source: str,
+) -> LayerWiseItemScore:
+    layered_map = extract_layer_feature_maps_from_rgb(
+        backbone,
+        read_rgb(item.path),
+        FeatureExtractionConfig(
+            feature_fusion=config.feature_fusion,
+            context_source=memory_context_source,
+            tiling=tiling_config(config),
+        ),
+    )
+    score_parts: List[np.ndarray] = []
+    memory_before = 0
+    memory_after = 0
+    for layer_index, state in enumerate(layer_states):
+        feature_map = apply_feature_denoiser(
+            layered_map.layers[layer_index],
+            state.feature_denoiser,
+        )
+        result = score_raw_nn(
+            state.scorer,
+            feature_map.values[np.newaxis, ...],
+            _batch_contexts(feature_map),
+        )
+        score_parts.append(result.patch_scores[0])
+        memory_before += result.memory_size_before
+        memory_after += result.memory_size_after
+    patch_scores = np.mean(np.stack(score_parts, axis=0), axis=0).astype(
+        np.float32,
+        copy=False,
+    )
+    return LayerWiseItemScore(
+        patch_scores=patch_scores,
+        image_shape=layered_map.layers[0].image_shape,
+        selected_count=0,
+        memory_size_before=memory_before,
+        memory_size_after=memory_after,
+    )
+
+
 def build_pipeline(config: RunConfig) -> FlowTTE:
     return FlowTTE(
         FlowTTEConfig(
@@ -449,6 +897,20 @@ def build_pipeline(config: RunConfig) -> FlowTTE:
             ),
             device=config.device,
         ),
+    )
+
+
+def build_raw_score_config(config: RunConfig) -> ScoreConfig:
+    return ScoreConfig(
+        distance_weight=config.distance_weight,
+        density_weight=0.0,
+        score_mode="latent_distance",
+        context_mode=resolve_score_context_mode(config),
+        context_weight=config.context_weight,
+        context_top_m=config.context_top_m,
+        top_percent=config.top_percent,
+        query_chunk_size=config.query_chunk_size,
+        use_squared_distance=config.use_squared_distance,
     )
 
 
@@ -875,8 +1337,15 @@ def extract_layer_feature_maps_from_rgb(
     extraction_config: FeatureExtractionConfig,
 ) -> LayeredFeatureMap:
     if extraction_config.tiling.enabled:
-        message = "Layer-wise Flow-LatentBank currently requires non-tiled extraction"
-        raise RuntimeError(message)
+        return extract_tiled_layer_feature_maps_from_rgb(backbone, image, extraction_config)
+    return extract_single_layer_feature_maps_from_rgb(backbone, image, extraction_config)
+
+
+def extract_single_layer_feature_maps_from_rgb(
+    backbone: BackboneLike,
+    image: np.ndarray,
+    extraction_config: FeatureExtractionConfig,
+) -> LayeredFeatureMap:
     image_tensor, grid_size = backbone.prepare_image(image)
     layer_features = backbone.extract_features(image_tensor)
     if not layer_features:
@@ -902,6 +1371,82 @@ def extract_layer_feature_maps_from_rgb(
                 contexts=contexts,
             )
             for layer in layer_features
+        ),
+    )
+
+
+def extract_tiled_layer_feature_maps_from_rgb(
+    backbone: BackboneLike,
+    image: np.ndarray,
+    extraction_config: FeatureExtractionConfig,
+) -> LayeredFeatureMap:
+    if extraction_config.context_source != "none":
+        message = "Tiled layer-wise extraction currently supports patch features only"
+        raise RuntimeError(message)
+    resized = resize_rgb(image, extraction_config.tiling.resize_factor)
+    tile_size = extraction_config.tiling.patch_size
+    if resized.shape[0] <= tile_size and resized.shape[1] <= tile_size:
+        layered = extract_single_layer_feature_maps_from_rgb(
+            backbone,
+            resized,
+            extraction_config,
+        )
+        return LayeredFeatureMap(
+            layers=tuple(
+                FeatureMap(
+                    values=layer.values,
+                    image_shape=(int(image.shape[0]), int(image.shape[1])),
+                    contexts=None,
+                )
+                for layer in layered.layers
+            ),
+        )
+    y_starts = tile_starts(resized.shape[0], tile_size, extraction_config.tiling.overlap)
+    x_starts = tile_starts(resized.shape[1], tile_size, extraction_config.tiling.overlap)
+    accumulators: Optional[List[np.ndarray]] = None
+    counts: Optional[np.ndarray] = None
+    token_stride = 16
+    for y_start in y_starts:
+        for x_start in x_starts:
+            tile = resized[y_start : y_start + tile_size, x_start : x_start + tile_size]
+            tile_layers = extract_single_layer_feature_maps_from_rgb(
+                backbone,
+                tile,
+                FeatureExtractionConfig(
+                    feature_fusion=extraction_config.feature_fusion,
+                    context_source="none",
+                ),
+            )
+            tile_stride = max(1, tile.shape[0] // tile_layers.layers[0].values.shape[0])
+            token_stride = min(token_stride, tile_stride)
+            y_token = y_start // token_stride
+            x_token = x_start // token_stride
+            y_stop = y_token + tile_layers.layers[0].values.shape[0]
+            x_stop = x_token + tile_layers.layers[0].values.shape[1]
+            if accumulators is None:
+                height = max(1, resized.shape[0] // token_stride)
+                width = max(1, resized.shape[1] // token_stride)
+                accumulators = [
+                    np.zeros((height, width, layer.values.shape[-1]), dtype=np.float32)
+                    for layer in tile_layers.layers
+                ]
+                counts = np.zeros((height, width, 1), dtype=np.float32)
+            if counts is None:
+                raise RuntimeError("Tiled layer counts unavailable")
+            for layer_index, layer in enumerate(tile_layers.layers):
+                accumulators[layer_index][y_token:y_stop, x_token:x_stop] += layer.values
+            counts[y_token:y_stop, x_token:x_stop] += 1.0
+    if accumulators is None or counts is None:
+        raise RuntimeError("Tiled layer extraction produced no feature tiles")
+    image_shape = (int(image.shape[0]), int(image.shape[1]))
+    return LayeredFeatureMap(
+        layers=tuple(
+            FeatureMap(
+                values=(values / np.maximum(counts, 1.0)).astype(np.float32, copy=False),
+                image_shape=image_shape,
+                contexts=None,
+            )
+            for values in accumulators
         ),
     )
 

@@ -7,6 +7,14 @@
 
 ## Experiments
 
+- `2026-07-08_flowtte_raw_hardnull`: raw hard-null structural diagnostic
+  under the H+ DVT fixed-support setting. SuperADD-like raw layer-wise tiled
+  NN underperformed badly (`0.759979/0.395241` no-DVT,
+  `0.771061/0.380378` DVT). Raw fused DVT was closer
+  (`0.829365/0.499606`), and raw+NF residual improved it
+  (`0.833266/0.510439`) but still stayed below the H+ DVT NF latent reference
+  (`0.836739/0.527427`). Verdict:
+  `KILL_FOR_MAIN_CLAIM / CONTINUE_AS_DIAGNOSTIC`.
 - `2026-07-08_flowtte_scorefield_structural`: all-eight H+ DVT FlowTTE
   score-field structural diagnostic. Support-position calibration was harmful
   (`0.785133/0.429653` center, `0.701830/0.278144` z-score vs baseline

@@ -1,0 +1,6 @@
+variant	object_count	seg_AUROC	seg_F1	delta_AUROC_vs_hplus_dvt_nf	delta_F1_vs_hplus_dvt_nf	verdict
+foreground_raw_fused_dvt	8	0.799772	0.416134	-0.036967	-0.111294	kill
+raw_fused_dvt	8	0.829365	0.499606	-0.007374	-0.027822	diagnostic_only
+raw_layerwise_tiled_dvt	8	0.771061	0.380378	-0.065678	-0.147050	kill
+raw_layerwise_tiled_no_dvt	8	0.759979	0.395241	-0.076760	-0.132186	kill
+raw_nn_nf_residual_dvt	8	0.833266	0.510439	-0.003473	-0.016989	diagnostic_only

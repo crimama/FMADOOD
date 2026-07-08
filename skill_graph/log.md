@@ -1,5 +1,17 @@
 # Skill Graph Log
 
+- 2026-07-08: Implemented and ran the FlowTTE raw hard-null structural
+  diagnostic on all-eight MVTec AD2 using dsba3 `hun_fsad_tta_012` GPUs
+  0,1,2. Tested SuperADD-like raw layer-wise tiled NN, raw fused NN, raw fused
+  NN plus NF residual, and a support-norm foreground split under the H+
+  backbone/DVT/fixed-support setting. Results: raw layer-wise tiled no-DVT
+  `0.759979/0.395241`, raw layer-wise tiled DVT `0.771061/0.380378`, raw fused
+  DVT `0.829365/0.499606`, raw+NF residual `0.833266/0.510439`, foreground
+  raw fused `0.799772/0.416134`. Conclusion: simply copying raw layer-wise
+  tiled NN is a strong negative control; NF carries useful residual signal but
+  the current H+ DVT NF latent reference `0.836739/0.527427` remains best.
+  Verdict: `KILL_FOR_MAIN_CLAIM / CONTINUE_AS_DIAGNOSTIC`.
+  Report: `skill_graph/experiments/2026-07-08_flowtte_raw_hardnull/report.md`.
 - 2026-07-08: Implemented and ran score-field and layer-wise structural
   diagnostics for the current H+ DVT FlowTTE branch on all-eight MVTec AD2
   using dsba3 `hun_fsad_tta_012` GPUs 0,1,2. Support-position calibration was
