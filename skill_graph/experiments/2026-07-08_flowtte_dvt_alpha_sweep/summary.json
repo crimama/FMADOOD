@@ -1,0 +1,538 @@
+{
+  "alpha_grid": [
+    "0.00",
+    "0.25",
+    "0.50",
+    "0.75",
+    "1.00"
+  ],
+  "candidate": "Flow-LatentBank no-TTE + support position-mean artifact subtraction before latent scoring",
+  "comparison_context_from_component_summary": [],
+  "created_at": "2026-07-08T10:09:35",
+  "data_root_remote": "/home/hunim/Volume/DATA/mvtec_ad_2",
+  "experiment": "FlowTTE DVT position-mean denoise alpha sweep",
+  "launcher": "scripts/run_flow_tte_dvt_alpha_sweep_remote.sh",
+  "metrics": [
+    "seg_AUROC_0.05",
+    "seg_F1"
+  ],
+  "objects": [
+    "can",
+    "fabric",
+    "fruit_jelly",
+    "rice",
+    "vial",
+    "wallplugs",
+    "walnuts",
+    "sheet_metal"
+  ],
+  "oracle_summary": {
+    "oracle_by_AUROC": {
+      "choices": [
+        {
+          "delta_AUROC_vs_no_dvt": 0.0,
+          "object": "can",
+          "seg_AUROC_0.05": 0.6763139609879636,
+          "seg_F1_at_selected_alpha": 0.0029625602096795553,
+          "selected_alpha": "0.00"
+        },
+        {
+          "delta_AUROC_vs_no_dvt": 0.14331160811306531,
+          "object": "fabric",
+          "seg_AUROC_0.05": 0.8984298828419428,
+          "seg_F1_at_selected_alpha": 0.5213577255283824,
+          "selected_alpha": "1.00"
+        },
+        {
+          "delta_AUROC_vs_no_dvt": 0.0,
+          "object": "fruit_jelly",
+          "seg_AUROC_0.05": 0.8130731665878492,
+          "seg_F1_at_selected_alpha": 0.5410887180014757,
+          "selected_alpha": "0.00"
+        },
+        {
+          "delta_AUROC_vs_no_dvt": 0.005419617926040843,
+          "object": "rice",
+          "seg_AUROC_0.05": 0.9515256997248555,
+          "seg_F1_at_selected_alpha": 0.6914153646676322,
+          "selected_alpha": "0.50"
+        },
+        {
+          "delta_AUROC_vs_no_dvt": 0.00899804145653016,
+          "object": "vial",
+          "seg_AUROC_0.05": 0.7140343839935308,
+          "seg_F1_at_selected_alpha": 0.39001933276820444,
+          "selected_alpha": "1.00"
+        },
+        {
+          "delta_AUROC_vs_no_dvt": 0.0,
+          "object": "wallplugs",
+          "seg_AUROC_0.05": 0.8527291488139059,
+          "seg_F1_at_selected_alpha": 0.4187724215272211,
+          "selected_alpha": "0.00"
+        },
+        {
+          "delta_AUROC_vs_no_dvt": 0.004334149923192698,
+          "object": "walnuts",
+          "seg_AUROC_0.05": 0.8720250408636699,
+          "seg_F1_at_selected_alpha": 0.7103096872978575,
+          "selected_alpha": "0.50"
+        },
+        {
+          "delta_AUROC_vs_no_dvt": 0.12286026163666042,
+          "object": "sheet_metal",
+          "seg_AUROC_0.05": 0.8887380496776919,
+          "seg_F1_at_selected_alpha": 0.5174919527062136,
+          "selected_alpha": "1.00"
+        }
+      ],
+      "mean_delta_AUROC_vs_no_dvt": 0.03561545988193618,
+      "mean_seg_AUROC_0.05": 0.8333586666864262,
+      "mean_seg_F1_at_selected_alpha": 0.4741772203383333
+    },
+    "oracle_by_F1": {
+      "choices": [
+        {
+          "delta_F1_vs_no_dvt": 0.00042521547198283395,
+          "object": "can",
+          "seg_AUROC_at_selected_alpha": 0.6428534745219825,
+          "seg_F1": 0.0033877756816623893,
+          "selected_alpha": "0.50"
+        },
+        {
+          "delta_F1_vs_no_dvt": 0.19601089419044204,
+          "object": "fabric",
+          "seg_AUROC_at_selected_alpha": 0.8984298828419428,
+          "seg_F1": 0.5213577255283824,
+          "selected_alpha": "1.00"
+        },
+        {
+          "delta_F1_vs_no_dvt": 0.0,
+          "object": "fruit_jelly",
+          "seg_AUROC_at_selected_alpha": 0.8130731665878492,
+          "seg_F1": 0.5410887180014757,
+          "selected_alpha": "0.00"
+        },
+        {
+          "delta_F1_vs_no_dvt": 0.0,
+          "object": "rice",
+          "seg_AUROC_at_selected_alpha": 0.9461060817988146,
+          "seg_F1": 0.6954596556022505,
+          "selected_alpha": "0.00"
+        },
+        {
+          "delta_F1_vs_no_dvt": 0.0,
+          "object": "vial",
+          "seg_AUROC_at_selected_alpha": 0.7050363425370006,
+          "seg_F1": 0.39446792848769757,
+          "selected_alpha": "0.00"
+        },
+        {
+          "delta_F1_vs_no_dvt": 0.013455180792770194,
+          "object": "wallplugs",
+          "seg_AUROC_at_selected_alpha": 0.8514212809137531,
+          "seg_F1": 0.4322276023199913,
+          "selected_alpha": "1.00"
+        },
+        {
+          "delta_F1_vs_no_dvt": 0.013560995098955364,
+          "object": "walnuts",
+          "seg_AUROC_at_selected_alpha": 0.8720250408636699,
+          "seg_F1": 0.7103096872978575,
+          "selected_alpha": "0.50"
+        },
+        {
+          "delta_F1_vs_no_dvt": 0.08993858191689702,
+          "object": "sheet_metal",
+          "seg_AUROC_at_selected_alpha": 0.8887380496776919,
+          "seg_F1": 0.5174919527062136,
+          "selected_alpha": "1.00"
+        }
+      ],
+      "mean_delta_F1_vs_no_dvt": 0.03917385843388093,
+      "mean_seg_AUROC_at_selected_alpha": 0.8272104149678381,
+      "mean_seg_F1": 0.4769738807031914
+    }
+  },
+  "per_object_rows": [
+    {
+      "alpha": "0.00",
+      "delta_AUROC_vs_no_dvt": 0.0,
+      "delta_F1_vs_no_dvt": 0.0,
+      "object": "can",
+      "seg_AUROC_0.05": 0.6763139609879636,
+      "seg_F1": 0.0029625602096795553
+    },
+    {
+      "alpha": "0.25",
+      "delta_AUROC_vs_no_dvt": -0.020317652196028213,
+      "delta_F1_vs_no_dvt": -0.0001573997730272233,
+      "object": "can",
+      "seg_AUROC_0.05": 0.6559963087919354,
+      "seg_F1": 0.002805160436652332
+    },
+    {
+      "alpha": "0.50",
+      "delta_AUROC_vs_no_dvt": -0.0334604864659811,
+      "delta_F1_vs_no_dvt": 0.00042521547198283395,
+      "object": "can",
+      "seg_AUROC_0.05": 0.6428534745219825,
+      "seg_F1": 0.0033877756816623893
+    },
+    {
+      "alpha": "0.75",
+      "delta_AUROC_vs_no_dvt": -0.033320446455614716,
+      "delta_F1_vs_no_dvt": 7.090153214384543e-05,
+      "object": "can",
+      "seg_AUROC_0.05": 0.6429935145323489,
+      "seg_F1": 0.0030334617418234008
+    },
+    {
+      "alpha": "1.00",
+      "delta_AUROC_vs_no_dvt": -0.02636740990984776,
+      "delta_F1_vs_no_dvt": -0.00038305344144151264,
+      "object": "can",
+      "seg_AUROC_0.05": 0.6499465510781158,
+      "seg_F1": 0.0025795067682380427
+    },
+    {
+      "alpha": "0.00",
+      "delta_AUROC_vs_no_dvt": 0.0,
+      "delta_F1_vs_no_dvt": 0.0,
+      "object": "fabric",
+      "seg_AUROC_0.05": 0.7551182747288775,
+      "seg_F1": 0.3253468313379404
+    },
+    {
+      "alpha": "0.25",
+      "delta_AUROC_vs_no_dvt": 0.03128731907727056,
+      "delta_F1_vs_no_dvt": 0.03952296979674269,
+      "object": "fabric",
+      "seg_AUROC_0.05": 0.786405593806148,
+      "seg_F1": 0.3648698011346831
+    },
+    {
+      "alpha": "0.50",
+      "delta_AUROC_vs_no_dvt": 0.07037154598941031,
+      "delta_F1_vs_no_dvt": 0.08468060616925277,
+      "object": "fabric",
+      "seg_AUROC_0.05": 0.8254898207182878,
+      "seg_F1": 0.41002743750719317
+    },
+    {
+      "alpha": "0.75",
+      "delta_AUROC_vs_no_dvt": 0.11264257254217791,
+      "delta_F1_vs_no_dvt": 0.1392823735646287,
+      "object": "fabric",
+      "seg_AUROC_0.05": 0.8677608472710554,
+      "seg_F1": 0.4646292049025691
+    },
+    {
+      "alpha": "1.00",
+      "delta_AUROC_vs_no_dvt": 0.14331160811306531,
+      "delta_F1_vs_no_dvt": 0.19601089419044204,
+      "object": "fabric",
+      "seg_AUROC_0.05": 0.8984298828419428,
+      "seg_F1": 0.5213577255283824
+    },
+    {
+      "alpha": "0.00",
+      "delta_AUROC_vs_no_dvt": 0.0,
+      "delta_F1_vs_no_dvt": 0.0,
+      "object": "fruit_jelly",
+      "seg_AUROC_0.05": 0.8130731665878492,
+      "seg_F1": 0.5410887180014757
+    },
+    {
+      "alpha": "0.25",
+      "delta_AUROC_vs_no_dvt": -0.0018755132865941881,
+      "delta_F1_vs_no_dvt": -0.005051995985657642,
+      "object": "fruit_jelly",
+      "seg_AUROC_0.05": 0.811197653301255,
+      "seg_F1": 0.5360367220158181
+    },
+    {
+      "alpha": "0.50",
+      "delta_AUROC_vs_no_dvt": -0.0034909106139632273,
+      "delta_F1_vs_no_dvt": -0.009283478217944174,
+      "object": "fruit_jelly",
+      "seg_AUROC_0.05": 0.809582255973886,
+      "seg_F1": 0.5318052397835316
+    },
+    {
+      "alpha": "0.75",
+      "delta_AUROC_vs_no_dvt": -0.005052179693887604,
+      "delta_F1_vs_no_dvt": -0.00291547693373595,
+      "object": "fruit_jelly",
+      "seg_AUROC_0.05": 0.8080209868939616,
+      "seg_F1": 0.5381732410677398
+    },
+    {
+      "alpha": "1.00",
+      "delta_AUROC_vs_no_dvt": -0.014053034977916212,
+      "delta_F1_vs_no_dvt": -0.023381855170172994,
+      "object": "fruit_jelly",
+      "seg_AUROC_0.05": 0.799020131609933,
+      "seg_F1": 0.5177068628313027
+    },
+    {
+      "alpha": "0.00",
+      "delta_AUROC_vs_no_dvt": 0.0,
+      "delta_F1_vs_no_dvt": 0.0,
+      "object": "rice",
+      "seg_AUROC_0.05": 0.9461060817988146,
+      "seg_F1": 0.6954596556022505
+    },
+    {
+      "alpha": "0.25",
+      "delta_AUROC_vs_no_dvt": 0.0033138596763021555,
+      "delta_F1_vs_no_dvt": -0.002221937320292633,
+      "object": "rice",
+      "seg_AUROC_0.05": 0.9494199414751168,
+      "seg_F1": 0.6932377182819579
+    },
+    {
+      "alpha": "0.50",
+      "delta_AUROC_vs_no_dvt": 0.005419617926040843,
+      "delta_F1_vs_no_dvt": -0.004044290934618333,
+      "object": "rice",
+      "seg_AUROC_0.05": 0.9515256997248555,
+      "seg_F1": 0.6914153646676322
+    },
+    {
+      "alpha": "0.75",
+      "delta_AUROC_vs_no_dvt": 0.004875034415375179,
+      "delta_F1_vs_no_dvt": -0.0038442539551130084,
+      "object": "rice",
+      "seg_AUROC_0.05": 0.9509811162141898,
+      "seg_F1": 0.6916154016471375
+    },
+    {
+      "alpha": "1.00",
+      "delta_AUROC_vs_no_dvt": 0.003645999394686128,
+      "delta_F1_vs_no_dvt": -0.002500884994747099,
+      "object": "rice",
+      "seg_AUROC_0.05": 0.9497520811935007,
+      "seg_F1": 0.6929587706075034
+    },
+    {
+      "alpha": "0.00",
+      "delta_AUROC_vs_no_dvt": 0.0,
+      "delta_F1_vs_no_dvt": 0.0,
+      "object": "vial",
+      "seg_AUROC_0.05": 0.7050363425370006,
+      "seg_F1": 0.39446792848769757
+    },
+    {
+      "alpha": "0.25",
+      "delta_AUROC_vs_no_dvt": 6.210348183299796e-05,
+      "delta_F1_vs_no_dvt": -0.0025167861384612356,
+      "object": "vial",
+      "seg_AUROC_0.05": 0.7050984460188336,
+      "seg_F1": 0.39195114234923634
+    },
+    {
+      "alpha": "0.50",
+      "delta_AUROC_vs_no_dvt": 0.0003008551061505216,
+      "delta_F1_vs_no_dvt": -0.008034254200414204,
+      "object": "vial",
+      "seg_AUROC_0.05": 0.7053371976431512,
+      "seg_F1": 0.38643367428728337
+    },
+    {
+      "alpha": "0.75",
+      "delta_AUROC_vs_no_dvt": 0.0042854675191299485,
+      "delta_F1_vs_no_dvt": -0.012552206926049969,
+      "object": "vial",
+      "seg_AUROC_0.05": 0.7093218100561306,
+      "seg_F1": 0.3819157215616476
+    },
+    {
+      "alpha": "1.00",
+      "delta_AUROC_vs_no_dvt": 0.00899804145653016,
+      "delta_F1_vs_no_dvt": -0.004448595719493131,
+      "object": "vial",
+      "seg_AUROC_0.05": 0.7140343839935308,
+      "seg_F1": 0.39001933276820444
+    },
+    {
+      "alpha": "0.00",
+      "delta_AUROC_vs_no_dvt": 0.0,
+      "delta_F1_vs_no_dvt": 0.0,
+      "object": "wallplugs",
+      "seg_AUROC_0.05": 0.8527291488139059,
+      "seg_F1": 0.4187724215272211
+    },
+    {
+      "alpha": "0.25",
+      "delta_AUROC_vs_no_dvt": -0.0015887326628331033,
+      "delta_F1_vs_no_dvt": -0.009235468350738685,
+      "object": "wallplugs",
+      "seg_AUROC_0.05": 0.8511404161510728,
+      "seg_F1": 0.4095369531764824
+    },
+    {
+      "alpha": "0.50",
+      "delta_AUROC_vs_no_dvt": -0.0029865797249568615,
+      "delta_F1_vs_no_dvt": -0.012899546668912132,
+      "object": "wallplugs",
+      "seg_AUROC_0.05": 0.8497425690889491,
+      "seg_F1": 0.405872874858309
+    },
+    {
+      "alpha": "0.75",
+      "delta_AUROC_vs_no_dvt": -0.003035918559290751,
+      "delta_F1_vs_no_dvt": -0.005364394316650256,
+      "object": "wallplugs",
+      "seg_AUROC_0.05": 0.8496932302546152,
+      "seg_F1": 0.41340802721057085
+    },
+    {
+      "alpha": "1.00",
+      "delta_AUROC_vs_no_dvt": -0.0013078679001528037,
+      "delta_F1_vs_no_dvt": 0.013455180792770194,
+      "object": "wallplugs",
+      "seg_AUROC_0.05": 0.8514212809137531,
+      "seg_F1": 0.4322276023199913
+    },
+    {
+      "alpha": "0.00",
+      "delta_AUROC_vs_no_dvt": 0.0,
+      "delta_F1_vs_no_dvt": 0.0,
+      "object": "walnuts",
+      "seg_AUROC_0.05": 0.8676908909404772,
+      "seg_F1": 0.6967486921989021
+    },
+    {
+      "alpha": "0.25",
+      "delta_AUROC_vs_no_dvt": 0.0042282453906143935,
+      "delta_F1_vs_no_dvt": 0.008270329512258034,
+      "object": "walnuts",
+      "seg_AUROC_0.05": 0.8719191363310916,
+      "seg_F1": 0.7050190217111602
+    },
+    {
+      "alpha": "0.50",
+      "delta_AUROC_vs_no_dvt": 0.004334149923192698,
+      "delta_F1_vs_no_dvt": 0.013560995098955364,
+      "object": "walnuts",
+      "seg_AUROC_0.05": 0.8720250408636699,
+      "seg_F1": 0.7103096872978575
+    },
+    {
+      "alpha": "0.75",
+      "delta_AUROC_vs_no_dvt": -0.0016921789067512183,
+      "delta_F1_vs_no_dvt": 0.009131306986581156,
+      "object": "walnuts",
+      "seg_AUROC_0.05": 0.865998712033726,
+      "seg_F1": 0.7058799991854833
+    },
+    {
+      "alpha": "1.00",
+      "delta_AUROC_vs_no_dvt": -0.01737765731328711,
+      "delta_F1_vs_no_dvt": -0.024304254029971606,
+      "object": "walnuts",
+      "seg_AUROC_0.05": 0.8503132336271901,
+      "seg_F1": 0.6724444381689305
+    },
+    {
+      "alpha": "0.00",
+      "delta_AUROC_vs_no_dvt": 0.0,
+      "delta_F1_vs_no_dvt": 0.0,
+      "object": "sheet_metal",
+      "seg_AUROC_0.05": 0.7658777880410315,
+      "seg_F1": 0.4275533707893166
+    },
+    {
+      "alpha": "0.25",
+      "delta_AUROC_vs_no_dvt": 0.006500485291309532,
+      "delta_F1_vs_no_dvt": 0.005644664357186968,
+      "object": "sheet_metal",
+      "seg_AUROC_0.05": 0.772378273332341,
+      "seg_F1": 0.43319803514650357
+    },
+    {
+      "alpha": "0.50",
+      "delta_AUROC_vs_no_dvt": 0.024705527839703922,
+      "delta_F1_vs_no_dvt": 0.007179241805453096,
+      "object": "sheet_metal",
+      "seg_AUROC_0.05": 0.7905833158807354,
+      "seg_F1": 0.4347326125947697
+    },
+    {
+      "alpha": "0.75",
+      "delta_AUROC_vs_no_dvt": 0.11369214646479087,
+      "delta_F1_vs_no_dvt": 0.052501372162386206,
+      "object": "sheet_metal",
+      "seg_AUROC_0.05": 0.8795699345058223,
+      "seg_F1": 0.4800547429517028
+    },
+    {
+      "alpha": "1.00",
+      "delta_AUROC_vs_no_dvt": 0.12286026163666042,
+      "delta_F1_vs_no_dvt": 0.08993858191689702,
+      "object": "sheet_metal",
+      "seg_AUROC_0.05": 0.8887380496776919,
+      "seg_F1": 0.5174919527062136
+    }
+  ],
+  "remote_container": "hun_fsad_tta_012",
+  "remote_gpus": [
+    0,
+    1,
+    2
+  ],
+  "summary_rows": [
+    {
+      "alpha": "0.00",
+      "delta_AUROC_vs_no_dvt": 0.0,
+      "delta_F1_vs_no_dvt": 0.0,
+      "local_path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_notte_dw025_20260707_v1/metrics.json",
+      "mean_seg_AUROC_0.05": 0.7977432068044901,
+      "mean_seg_F1": 0.4378000222693105,
+      "object_wins_AUROC_vs_no_dvt": 0,
+      "object_wins_F1_vs_no_dvt": 0
+    },
+    {
+      "alpha": "0.25",
+      "delta_AUROC_vs_no_dvt": 0.002701264346484211,
+      "delta_F1_vs_no_dvt": 0.004281797012251287,
+      "local_path": "results/remote_runs/dsba3/flowtte_dvt_denoising_all8_a025_20260708_v1",
+      "mean_seg_AUROC_0.05": 0.8004444711509743,
+      "mean_seg_F1": 0.44208181928156176,
+      "object_wins_AUROC_vs_no_dvt": 5,
+      "object_wins_F1_vs_no_dvt": 3
+    },
+    {
+      "alpha": "0.50",
+      "delta_AUROC_vs_no_dvt": 0.008149214997449583,
+      "delta_F1_vs_no_dvt": 0.00894806106546936,
+      "local_path": "results/remote_runs/dsba3/flowtte_dvt_denoising_all8_a05_20260708_v1",
+      "mean_seg_AUROC_0.05": 0.8058924218019397,
+      "mean_seg_F1": 0.44674808333477983,
+      "object_wins_AUROC_vs_no_dvt": 5,
+      "object_wins_F1_vs_no_dvt": 4
+    },
+    {
+      "alpha": "0.75",
+      "delta_AUROC_vs_no_dvt": 0.024049312165741132,
+      "delta_F1_vs_no_dvt": 0.022038702764273832,
+      "local_path": "results/remote_runs/dsba3/flowtte_dvt_denoising_all8_a075_20260708_v1",
+      "mean_seg_AUROC_0.05": 0.8217925189702312,
+      "mean_seg_F1": 0.4598387250335843,
+      "object_wins_AUROC_vs_no_dvt": 4,
+      "object_wins_F1_vs_no_dvt": 4
+    },
+    {
+      "alpha": "1.00",
+      "delta_AUROC_vs_no_dvt": 0.027463742562467197,
+      "delta_F1_vs_no_dvt": 0.030548251693035322,
+      "local_path": "results/remote_runs/dsba3/flowtte_dvt_denoising_all8_a10_20260707_v1",
+      "mean_seg_AUROC_0.05": 0.8252069493669573,
+      "mean_seg_F1": 0.4683482739623458,
+      "object_wins_AUROC_vs_no_dvt": 4,
+      "object_wins_F1_vs_no_dvt": 3
+    }
+  ],
+  "target_dataset": "MVTec AD2 single-image"
+}

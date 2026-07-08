@@ -1,0 +1,6 @@
+method	group	mean_seg_AUROC_0.05	mean_seg_F1	delta_vs_flow_noctx_AUROC	delta_vs_flow_noctx_F1	note
+SuperAD-16 recorded	baseline	0.765801997020877	0.38553414864022933	-0.031941209783613034	-0.05226587362908114	recorded comparator from component ablation context
+SuperADD reported	reported_table	0.8393	0.6261125	0.04155679319550998	0.1883124777306895	reported Table 1 context comparator, not same-run artifact
+Flow no-context base	base	0.7977432068044901	0.4378000222693105	0.0	0.0	DINOv3 Flow-LatentBank no-TTE, no DVT
+CLS soft w10	previous_best_context	0.805426830671955	0.44711792336023276	0.007683623867464906	0.009317901090922287	best previous component ablation variant
+DVT position denoise alpha 1.0	dvt_probe	0.8252069493669574	0.46834827396234585	0.027463742562467308	0.030548251693035378	support-fitted position artifact field, Flow transform retained

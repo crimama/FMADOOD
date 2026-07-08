@@ -1,0 +1,7 @@
+method	reference_policy	context_source	context_weight	seg_AUROC_0.05	seg_F1	delta_AUROC_vs_method	delta_F1_vs_method
+Flow-LatentBank DINOv3 CLS+register w5 non-fixed coreset	dinov3_cls_greedy_coreset seed0	cls_register	5.0	0.8005463205411929	0.44093942438467076
+DINOv3 no-context non-fixed coreset	baseline/context			0.7977432068044901	0.4378000222693105	0.0028031137367028336	0.0031394021153602902
+DINOv3 CLS+register w5 fixed SuperAD-16 ref	baseline/context			0.8045998349224129	0.44184144783112317	-0.004053514381220036	-0.0009020234464524046
+DINOv3 no-context fixed SuperAD-16 ref	baseline/context			0.8007265868754095	0.4374366061208735	-0.00018026633421663885	0.0035028182637972805
+Recorded SuperAD-16 DINOv2	baseline/context			0.765801997020877	0.38553414864022933	0.03474432352031587	0.05540527574444143
+Reported SuperADD Table1 context	reported only			0.8393	0.6261125	-0.038753679458807144	-0.1851730756153292

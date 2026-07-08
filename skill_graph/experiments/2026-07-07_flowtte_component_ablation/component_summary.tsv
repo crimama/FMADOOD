@@ -1,0 +1,15 @@
+component	group	mean_seg_AUROC_0.05	mean_seg_F1	delta_vs_base_AUROC	delta_vs_base_F1	delta_vs_superad16_AUROC	delta_vs_superad16_F1	delta_vs_superadd_reported_AUROC	delta_vs_superadd_reported_F1	note
+superad16_recorded	baseline	0.765802	0.385534	-0.031941	-0.052266	0.000000	0.000000	-0.073498	-0.240578	recorded SuperAD-16, same evaluator context
+flow_noctx_base	base	0.797743	0.437800	0.000000	0.000000	0.031941	0.052266	-0.041557	-0.188312	Flow latent distance + NF density, no TTE
+identity_no_nf_dist	nf_ablation	0.785304	0.424348	-0.012439	-0.013452	0.019502	0.038814	-0.053996	-0.201764	No NF transform, distance only
+identity_density	nf_ablation	0.795172	0.441508	-0.002571	0.003708	0.029370	0.055974	-0.044128	-0.184604	No NF transform + pseudo density
+flow_dist_only	nf_ablation	0.781339	0.405754	-0.016404	-0.032046	0.015537	0.020220	-0.057961	-0.220359	Learned NF latent, distance only
+nf_nll_only	score_ablation	0.682066	0.225544	-0.115677	-0.212256	-0.083736	-0.159991	-0.157234	-0.400569	NF NLL only
+flow_tte_budget125	tte_ablation	0.769788	0.420321	-0.027955	-0.017479	0.003986	0.034787	-0.069512	-0.205791	Flow + density + TTE expansion budget 1.25
+cls_soft_w5	context_ablation	0.801613	0.442286	0.003870	0.004486	0.035811	0.056752	-0.037687	-0.183827	CLS context soft penalty w=5
+cls_soft_w10	context_ablation	0.805427	0.447118	0.007684	0.009318	0.039625	0.061584	-0.033873	-0.178995	CLS context soft penalty w=10
+register_soft_w5	context_ablation	0.798287	0.438193	0.000544	0.000393	0.032485	0.052659	-0.041013	-0.187919	Register context soft penalty w=5
+clsreg_soft_w5	context_ablation	0.800546	0.440939	0.002803	0.003139	0.034744	0.055405	-0.038754	-0.185173	CLS+register context soft penalty w=5
+cls_topm4	context_ablation	0.797035	0.433893	-0.000708	-0.003907	0.031233	0.048359	-0.042265	-0.192219	CLS top-M memory selection M=4
+register_condnf	structural_register	0.796554	0.436152	-0.001189	-0.001648	0.030752	0.050618	-0.042746	-0.189961	Register-conditioned NF only
+hybrid_regcond_cls_topm4	structural_register	0.793241	0.426666	-0.004502	-0.011134	0.027439	0.041132	-0.046059	-0.199446	Register-conditioned NF + CLS top-M

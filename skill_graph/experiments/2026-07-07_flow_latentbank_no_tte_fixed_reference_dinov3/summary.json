@@ -1,0 +1,86 @@
+{
+  "candidate": {
+    "manifest_path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_fixed_dinov2ref_notte_dw025_20260707_v1/run_manifest.json",
+    "mean_seg_AUROC_0.05": 0.8007265868754095,
+    "mean_seg_F1": 0.4374366061208735,
+    "metrics_path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_fixed_dinov2ref_notte_dw025_20260707_v1/metrics.json",
+    "name": "Flow-LatentBank no-TTE DINOv3 fixed DINOv2 SuperAD-16 references",
+    "reference_budget_matched": true,
+    "reference_image_set_matched_to_dinov2_superad16": true
+  },
+  "comparisons": {
+    "vs_dinov2_same_reference": {
+      "baseline_mean_seg_AUROC_0.05": 0.7617819359887978,
+      "baseline_mean_seg_F1": 0.3503905975628422,
+      "baseline_metrics_path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_vitl14_notte_dw025_20260707_v1/metrics.json",
+      "delta_AUROC_0.05": 0.0389446508866117,
+      "delta_F1": 0.0870460085580313
+    },
+    "vs_dinov3_cls_coreset": {
+      "baseline_mean_seg_AUROC_0.05": 0.7977432068044901,
+      "baseline_mean_seg_F1": 0.4378000222693105,
+      "baseline_metrics_path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_notte_dw025_20260707_v1/metrics.json",
+      "delta_AUROC_0.05": 0.0029833800709194724,
+      "delta_F1": -0.0003634161484369902
+    },
+    "vs_recorded_superad16": {
+      "baseline_mean_seg_AUROC_0.05": 0.765801997020877,
+      "baseline_mean_seg_F1": 0.38553414864022933,
+      "baseline_path": "/home/hun/Volume/RESEARCH/FMAD-OOD/configs/baselines/recorded_superad16_mvtec_ad2_8object_metrics.json",
+      "delta_AUROC_0.05": 0.034924589854532506,
+      "delta_F1": 0.05190245748064415,
+      "same_backbone": false,
+      "same_evaluator": true,
+      "same_reference_set": true,
+      "strict_claim_comparable": false
+    },
+    "vs_reported_superadd": {
+      "baseline_mean_AUROC_0.05": 0.8392999999999999,
+      "baseline_mean_F1": 0.6261125,
+      "baseline_source": "SuperADD arXiv:2605.14808v1 Table 1 TESTpublic via prior comparison rows",
+      "delta_AUROC_0.05": -0.038573413124590394,
+      "delta_F1": -0.18867589387912648,
+      "same_evaluator": false,
+      "strict_claim_comparable": false
+    }
+  },
+  "created_utc": "2026-07-07T03:48:37.853499+00:00",
+  "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+  "objects": [
+    "can",
+    "fabric",
+    "fruit_jelly",
+    "rice",
+    "vial",
+    "wallplugs",
+    "walnuts",
+    "sheet_metal"
+  ],
+  "primary_metrics": [
+    "seg_AUROC_0.05",
+    "seg_F1"
+  ],
+  "remote_execution": {
+    "container": "hun_fsad_tta_012",
+    "host_gpus": [
+      0,
+      1,
+      2
+    ],
+    "local_result_root": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_fixed_dinov2ref_notte_dw025_20260707_v1",
+    "remote_result_root": "/workspace/results_remote/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_fixed_dinov2ref_notte_dw025_20260707_v1",
+    "server": "dsba3"
+  },
+  "split": "test_public/good,bad",
+  "stage": "flow_latentbank_dinov3_fixed_dinov2_superad16_reference_mvtecad2_all8",
+  "target_dataset": "MVTec AD2 single-image",
+  "verdict": "KILL_FOR_CLAIM / CONTINUE_DIAGNOSTIC",
+  "win_counts": {
+    "fixed_vs_dinov3_coreset_AUROC": 4,
+    "fixed_vs_dinov3_coreset_F1": 3,
+    "fixed_vs_superad16_AUROC": 6,
+    "fixed_vs_superad16_F1": 7,
+    "fixed_vs_superadd_reported_AUROC": 2,
+    "fixed_vs_superadd_reported_F1": 1
+  }
+}

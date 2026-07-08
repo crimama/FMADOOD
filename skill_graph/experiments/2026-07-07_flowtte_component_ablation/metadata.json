@@ -1,0 +1,31 @@
+{
+  "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+  "local_roots": [
+    "results/remote_runs/dsba3/flowtte_component_ablation_all8_20260707_v1",
+    "results/remote_runs/dsba3/flowtte_component_ablation_followup_all8_20260707_v1",
+    "results/remote_runs/dsba3/flowtte_morphology_reduced_20260707_v1"
+  ],
+  "objects": [
+    "can",
+    "fabric",
+    "fruit_jelly",
+    "rice",
+    "vial",
+    "wallplugs",
+    "walnuts",
+    "sheet_metal"
+  ],
+  "remote_roots": [
+    "/home/hunim/Volume/FMAD-OOD-remote/results_remote/flowtte_component_ablation_all8_20260707_v1",
+    "/home/hunim/Volume/FMAD-OOD-remote/results_remote/flowtte_component_ablation_followup_all8_20260707_v1",
+    "/home/hunim/Volume/FMAD-OOD-remote/results_remote/flowtte_morphology_reduced_20260707_v1"
+  ],
+  "summary_files": [
+    "component_summary.tsv",
+    "component_summary.json",
+    "object_deltas.tsv",
+    "morphology_reduced_summary.tsv",
+    "cleanup_evidence.txt"
+  ],
+  "target_dataset": "MVTec AD2 single-image"
+}

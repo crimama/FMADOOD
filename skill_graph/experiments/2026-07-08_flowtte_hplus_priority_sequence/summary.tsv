@@ -1,0 +1,7 @@
+method	seg_AUROC_0.05	seg_F1	delta_AUROC_vs_hplus_nf	delta_F1_vs_hplus_nf	delta_AUROC_vs_superadd	delta_F1_vs_superadd	note
+FlowTTE H+ NF latent DVT a1.0	0.836739	0.527427	0.000000	0.000000	-0.002561	-0.098686	priority reference from H+ backbone-only run
+FlowTTE H+ NF latent + close/fill	0.836739	0.541344	0.000000	0.013916	-0.002561	-0.084769	morphology at source metric threshold
+FlowTTE H+ NF latent + close/fill/erode	0.836739	0.542316	0.000000	0.014888	-0.002561	-0.083797	best priority-1 morphology variant
+FlowTTE H+ identity feature NN	0.832461	0.524804	-0.004278	-0.002623	-0.006839	-0.101309	priority-2 no-NF standardized feature-distance control
+SuperAD-16 recorded context	0.765802	0.385534	-0.070937	-0.141893	-0.073498	-0.240579	context baseline, not priority target
+SuperADD reported context	0.839300	0.626113	0.002561	0.098686	0.000000	0.000000	reported context comparator

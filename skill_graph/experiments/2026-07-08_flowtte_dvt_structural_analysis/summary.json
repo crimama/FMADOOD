@@ -1,0 +1,20 @@
+{
+  "means": {
+    "mean_delta_AUROC_alpha1": 0.027463742562467267,
+    "mean_delta_F1_alpha1": 0.030548251693035364,
+    "mean_feature_loo_ratio": 0.88262304,
+    "mean_feature_variance_ratio": 0.45132271125,
+    "mean_final_sep_change": 0.048531146250000004,
+    "mean_latent_loo_ratio": 1.18896338375
+  },
+  "objects": [
+    "can",
+    "fabric",
+    "fruit_jelly",
+    "rice",
+    "sheet_metal",
+    "vial",
+    "wallplugs",
+    "walnuts"
+  ]
+}

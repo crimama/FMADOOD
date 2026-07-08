@@ -1,0 +1,6 @@
+local_anomaly_map_dirs=0
+remote_component_ablation_tiff_count=0
+remote_component_followup_tiff_count=0
+remote_morphology_reduced_tiff_count=0
+remote_morphology_reduced_before_tiff_count=2432
+remote_morphology_reduced_after_tiff_count=0

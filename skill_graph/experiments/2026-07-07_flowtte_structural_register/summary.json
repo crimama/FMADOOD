@@ -1,0 +1,202 @@
+{
+  "baseline_no_context": {
+    "delta_vs_no_context_seg_AUROC_0.05": 0.0,
+    "delta_vs_no_context_seg_F1": 0.0,
+    "n_objects": 8,
+    "objects": {
+      "can": {
+        "best_thre": 3.1640625,
+        "seg_AUROC": 0.6763139609879636,
+        "seg_F1": 0.0029625602096795553
+      },
+      "fabric": {
+        "best_thre": 2.650390625,
+        "seg_AUROC": 0.7551182747288775,
+        "seg_F1": 0.3253468313379404
+      },
+      "fruit_jelly": {
+        "best_thre": 4.2265625,
+        "seg_AUROC": 0.8130731665878492,
+        "seg_F1": 0.5410887180014757
+      },
+      "rice": {
+        "best_thre": 4.8046875,
+        "seg_AUROC": 0.9461060817988146,
+        "seg_F1": 0.6954596556022505
+      },
+      "sheet_metal": {
+        "best_thre": 2.453125,
+        "seg_AUROC": 0.7658777880410315,
+        "seg_F1": 0.4275533707893166
+      },
+      "vial": {
+        "best_thre": 3.46484375,
+        "seg_AUROC": 0.7050363425370006,
+        "seg_F1": 0.39446792848769757
+      },
+      "wallplugs": {
+        "best_thre": 3.91796875,
+        "seg_AUROC": 0.8527291488139059,
+        "seg_F1": 0.4187724215272211
+      },
+      "walnuts": {
+        "best_thre": 6.1171875,
+        "seg_AUROC": 0.8676908909404772,
+        "seg_F1": 0.6967486921989021
+      }
+    },
+    "run_dir": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_notte_dw025_20260707_v1",
+    "seg_AUROC_0.05": 0.7977432068044901,
+    "seg_F1": 0.4378000222693105
+  },
+  "cls_w10_diag": {
+    "delta_vs_no_context_seg_AUROC_0.05": 0.007683623867465017,
+    "delta_vs_no_context_seg_F1": 0.009317901090922287,
+    "n_objects": 8,
+    "objects": {
+      "can": {
+        "best_thre": 3.169921875,
+        "seg_AUROC": 0.6696635185878661,
+        "seg_F1": 0.0023629675722083507
+      },
+      "fabric": {
+        "best_thre": 2.833984375,
+        "seg_AUROC": 0.8175642215718795,
+        "seg_F1": 0.3986865120179237
+      },
+      "fruit_jelly": {
+        "best_thre": 4.421875,
+        "seg_AUROC": 0.8138642627598812,
+        "seg_F1": 0.5419982958694194
+      },
+      "rice": {
+        "best_thre": 4.828125,
+        "seg_AUROC": 0.9460486091553515,
+        "seg_F1": 0.6957105161131559
+      },
+      "sheet_metal": {
+        "best_thre": 2.640625,
+        "seg_AUROC": 0.7682791516289297,
+        "seg_F1": 0.42923131529377645
+      },
+      "vial": {
+        "best_thre": 3.501953125,
+        "seg_AUROC": 0.7095629783649031,
+        "seg_F1": 0.3956015245282718
+      },
+      "wallplugs": {
+        "best_thre": 3.95703125,
+        "seg_AUROC": 0.8498018452535365,
+        "seg_F1": 0.4129897628625059
+      },
+      "walnuts": {
+        "best_thre": 6.21484375,
+        "seg_AUROC": 0.8686300580532929,
+        "seg_F1": 0.7003624926246005
+      }
+    },
+    "run_dir": "results/remote_runs/dsba3/flowtte_nonfixed_context_perf_sweep_20260707_v1/runs/cls_w10_dw025",
+    "seg_AUROC_0.05": 0.8054268306719551,
+    "seg_F1": 0.44711792336023276
+  },
+  "register_condnf": {
+    "delta_vs_no_context_seg_AUROC_0.05": -0.0011892525492880335,
+    "delta_vs_no_context_seg_F1": -0.0016481070810352993,
+    "n_objects": 8,
+    "objects": {
+      "can": {
+        "best_thre": 3.08984375,
+        "seg_AUROC": 0.6901673687526383,
+        "seg_F1": 0.005283195086430697
+      },
+      "fabric": {
+        "best_thre": 2.72265625,
+        "seg_AUROC": 0.731238071223693,
+        "seg_F1": 0.2954841038595438
+      },
+      "fruit_jelly": {
+        "best_thre": 4.26171875,
+        "seg_AUROC": 0.8144685352685952,
+        "seg_F1": 0.55016947196796
+      },
+      "rice": {
+        "best_thre": 4.69921875,
+        "seg_AUROC": 0.9454448076556035,
+        "seg_F1": 0.6959561836834451
+      },
+      "sheet_metal": {
+        "best_thre": 2.40625,
+        "seg_AUROC": 0.7653279093417273,
+        "seg_F1": 0.430519954706851
+      },
+      "vial": {
+        "best_thre": 3.46484375,
+        "seg_AUROC": 0.7012216020405077,
+        "seg_F1": 0.3903667486251619
+      },
+      "wallplugs": {
+        "best_thre": 3.798828125,
+        "seg_AUROC": 0.8588751389101251,
+        "seg_F1": 0.42786011316750405
+      },
+      "walnuts": {
+        "best_thre": 5.2109375,
+        "seg_AUROC": 0.8656882008487264,
+        "seg_F1": 0.6935755504093049
+      }
+    },
+    "run_dir": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_register_condnf_coreset_notte_dw025_20260707_v1",
+    "seg_AUROC_0.05": 0.796553954255202,
+    "seg_F1": 0.4361519151882752
+  },
+  "register_topm4": {
+    "delta_vs_no_context_seg_AUROC_0.05": 0.0011026182196400836,
+    "delta_vs_no_context_seg_F1": -0.0033894832600722125,
+    "n_objects": 8,
+    "objects": {
+      "can": {
+        "best_thre": 3.125,
+        "seg_AUROC": 0.6721298782224588,
+        "seg_F1": 0.002662941523886883
+      },
+      "fabric": {
+        "best_thre": 2.69140625,
+        "seg_AUROC": 0.7859606523702007,
+        "seg_F1": 0.3326073811776632
+      },
+      "fruit_jelly": {
+        "best_thre": 4.28125,
+        "seg_AUROC": 0.8168214320244591,
+        "seg_F1": 0.5395150050762899
+      },
+      "rice": {
+        "best_thre": 4.62109375,
+        "seg_AUROC": 0.9403711213008803,
+        "seg_F1": 0.6970390420302722
+      },
+      "sheet_metal": {
+        "best_thre": 2.619140625,
+        "seg_AUROC": 0.7634106144140027,
+        "seg_F1": 0.4230932707313841
+      },
+      "vial": {
+        "best_thre": 3.4375,
+        "seg_AUROC": 0.6992501296742372,
+        "seg_F1": 0.37549994062962305
+      },
+      "wallplugs": {
+        "best_thre": 3.80859375,
+        "seg_AUROC": 0.8464697485304762,
+        "seg_F1": 0.4087174075652306
+      },
+      "walnuts": {
+        "best_thre": 6.0234375,
+        "seg_AUROC": 0.8663530236563264,
+        "seg_F1": 0.696149323339556
+      }
+    },
+    "run_dir": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_register_topm4_coreset_notte_dw025_20260707_v1",
+    "seg_AUROC_0.05": 0.7988458250241302,
+    "seg_F1": 0.43441053900923826
+  }
+}

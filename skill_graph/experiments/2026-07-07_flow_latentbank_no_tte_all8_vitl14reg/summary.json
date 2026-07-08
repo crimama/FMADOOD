@@ -1,0 +1,53 @@
+{
+  "date": "2026-07-07",
+  "target_dataset": "MVTec AD2 single-image",
+  "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+  "objects": ["can", "fabric", "fruit_jelly", "rice", "vial", "wallplugs", "walnuts", "sheet_metal"],
+  "split": "test_public/good,bad",
+  "shots": 4,
+  "support_policy": "first",
+  "support_transforms": ["identity"],
+  "backbone": "dinov2_vitl14_reg",
+  "feature_fusion": "layer_norm_mean",
+  "score_mode": "latent_distance",
+  "remote_container": "hun_fsad_tta_012",
+  "host_gpus": [0, 1, 2],
+  "container_cuda_slots": [0, 1, 2],
+  "candidate": {
+    "method": "Flow-LatentBank",
+    "expansion_budget": 1.0,
+    "remote_result": "/workspace/results_remote/flow_latentbank_mvtecad2_all8_shot4_vitl14reg_notte_20260707_v1",
+    "local_result": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot4_vitl14reg_notte_20260707_v1",
+    "mean_seg_AUROC_0.05": 0.7337978500780645,
+    "mean_seg_F1": 0.2975274646810141,
+    "memory_static_verified": true
+  },
+  "same_condition_tte_baseline": {
+    "method": "FlowTTE-LatentBank",
+    "expansion_budget": 1.25,
+    "remote_result": "/workspace/results_remote/flowtte_latentbank_mvtecad2_all8_shot4_vitl14reg_tte_20260707_v1",
+    "local_result": "results/remote_runs/dsba3/flowtte_latentbank_mvtecad2_all8_shot4_vitl14reg_tte_20260707_v1",
+    "mean_seg_AUROC_0.05": 0.7124575016356417,
+    "mean_seg_F1": 0.26622707769852094
+  },
+  "delta_no_tte_minus_tte": {
+    "mean_seg_AUROC_0.05": 0.02134034844242283,
+    "mean_seg_F1": 0.031300386982493156,
+    "object_auc_wins": 6,
+    "object_f1_wins": 6,
+    "object_count": 8
+  },
+  "superad_baseline": {
+    "same_condition_status": "BLOCKED_BASELINE",
+    "context_only_source": "/home/hun/Volume/RESEARCH/FMAD-OOD/configs/baselines/recorded_superad16_mvtec_ad2_8object_metrics.json",
+    "context_superad16_mean_seg_AUROC_0.05": 0.765801997020877,
+    "context_superad16_mean_seg_F1": 0.38553414864022933,
+    "reason_not_gate": "recorded SuperAD is 16-shot DINO CLS coreset, while this run is 4-shot first-support"
+  },
+  "cleanup": {
+    "remote_anomaly_maps": "absent",
+    "local_anomaly_maps": "absent",
+    "cleanup_evidence": "cleanup_anomaly_maps=true"
+  },
+  "verdict": "PROMISING_DIAGNOSTIC"
+}

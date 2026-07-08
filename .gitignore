@@ -1,5 +1,6 @@
 __pycache__/
 *.pyc
+*.py[cod]
 *.pth
 results/
 results_remote/
@@ -18,3 +19,19 @@ configs/remote/*.env
 
 # Claude
 .claude/
+
+# Local/runtime artifacts
+.DS_Store
+._*
+.omx/
+.codegraph
+.codegraph/
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# Generated meeting exports kept outside the code snapshot
+*.pdf
+MEETING_*.css
+MEETING_*.html
+MEETING_*.md

@@ -1,0 +1,118 @@
+{
+  "context_min_delta_best_source_by_object": {
+    "can": "register",
+    "fabric": "cls",
+    "fruit_jelly": "cls",
+    "rice": "cls",
+    "sheet_metal": "cls",
+    "vial": "cls",
+    "wallplugs": "register",
+    "walnuts": "cls"
+  },
+  "context_min_delta_mean_by_source": {
+    "cls": 0.008771198625,
+    "cls_register": 0.006654495875000001,
+    "register": 0.00137224225
+  },
+  "context_min_delta_win_counts": {
+    "cls": 6,
+    "cls_register": 0,
+    "register": 2
+  },
+  "nll_delta_bad_good_by_object": {
+    "can": {
+      "register_conditional": 2.1530761720000555,
+      "unconditional": 1.8765869139999722
+    },
+    "fabric": {
+      "register_conditional": -3.0280761720000555,
+      "unconditional": -3.305297851999967
+    },
+    "fruit_jelly": {
+      "register_conditional": 11.309570312999995,
+      "unconditional": 10.717529296999828
+    },
+    "rice": {
+      "register_conditional": 0.7583007810001163,
+      "unconditional": 0.5941162110000278
+    },
+    "sheet_metal": {
+      "register_conditional": -0.20935058600002776,
+      "unconditional": -0.5964355470000555
+    },
+    "vial": {
+      "register_conditional": 2.4327392580000833,
+      "unconditional": 1.821777344000111
+    },
+    "wallplugs": {
+      "register_conditional": 13.775268555000139,
+      "unconditional": 12.344116211000028
+    },
+    "walnuts": {
+      "register_conditional": 60.82067871100003,
+      "unconditional": 89.93603515600012
+    }
+  },
+  "nll_delta_mean_by_model": {
+    "register_conditional": 11.001525879000042,
+    "unconditional": 14.173553466750008
+  },
+  "register_conditional_nll_delta_better_objects": [
+    "can",
+    "fabric",
+    "fruit_jelly",
+    "rice",
+    "vial",
+    "wallplugs",
+    "sheet_metal"
+  ],
+  "retrieval_mean_by_source_split": {
+    "cls:bad": {
+      "inflation_mean": 0.804171076125,
+      "inflation_p95": 3.05750499975,
+      "nearest_changed_rate": 0.508014012125,
+      "nearest_retained_rate": 0.49198598787500003
+    },
+    "cls:good": {
+      "inflation_mean": 0.783517796625,
+      "inflation_p95": 3.044983688,
+      "nearest_changed_rate": 0.506085719875,
+      "nearest_retained_rate": 0.493914280125
+    },
+    "cls_register:bad": {
+      "inflation_mean": 0.785929284875,
+      "inflation_p95": 2.995988843,
+      "nearest_changed_rate": 0.5005921385,
+      "nearest_retained_rate": 0.4994078615
+    },
+    "cls_register:good": {
+      "inflation_mean": 0.762355160125,
+      "inflation_p95": 2.9927339017499994,
+      "nearest_changed_rate": 0.49911502550000003,
+      "nearest_retained_rate": 0.5008849745
+    },
+    "register:bad": {
+      "inflation_mean": 0.71591746425,
+      "inflation_p95": 2.856767267,
+      "nearest_changed_rate": 0.47753518824999996,
+      "nearest_retained_rate": 0.52246481175
+    },
+    "register:good": {
+      "inflation_mean": 0.731858003875,
+      "inflation_p95": 2.962277496,
+      "nearest_changed_rate": 0.482687015125,
+      "nearest_retained_rate": 0.517312984875
+    }
+  },
+  "support_logvar_delta_cond_minus_uncond_by_object": {
+    "can": -0.006215405,
+    "fabric": -0.018350716999999996,
+    "fruit_jelly": -0.011116817000000001,
+    "rice": -0.022843636,
+    "sheet_metal": -0.016766169000000004,
+    "vial": -0.013332746999999992,
+    "wallplugs": -0.019392803000000007,
+    "walnuts": -0.022909584999999996
+  },
+  "support_logvar_delta_cond_minus_uncond_mean": -0.016365984875
+}

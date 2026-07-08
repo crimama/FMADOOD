@@ -1,0 +1,108 @@
+{
+  "created_utc": "2026-07-07T03:26:11.526631+00:00",
+  "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+  "implementation_notes": {
+    "dinov3_model_id": "camenduru/dinov3-vitl16-pretrain-lvd1689m",
+    "local_checks": [
+      "python3 -m pytest tests/test_dinov3_backbone.py tests/test_mvtec_classic_adapter.py -q",
+      "python3 -m py_compile scripts/dinov3_backbone.py scripts/run_flow_tte_mvtec_ad2.py scripts/flow_tte_support.py"
+    ],
+    "official_facebook_dinov3_access": "gated in remote preflight; public mirror used",
+    "remote_numpy_version": "1.26.4",
+    "remote_transformers_version": "4.56.2"
+  },
+  "methods": {
+    "flow_latentbank_no_tte_dinov2_vitl14": {
+      "delta_vs_superad16_AUROC_0.05": -0.004020061032079192,
+      "delta_vs_superad16_F1": -0.03514355107738715,
+      "manifest_path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_vitl14_notte_dw025_20260707_v1/run_manifest.json",
+      "mean_seg_AUROC_0.05": 0.7617819359887978,
+      "mean_seg_F1": 0.3503905975628422,
+      "metrics_path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_vitl14_notte_dw025_20260707_v1/metrics.json",
+      "reference_budget_matched": true,
+      "strict_method_claim_supported": false,
+      "strict_table1_claim_comparable": false
+    },
+    "flow_latentbank_no_tte_dinov3_vitl16": {
+      "delta_vs_flow_latentbank_dinov2_AUROC_0.05": 0.035961270815692226,
+      "delta_vs_flow_latentbank_dinov2_F1": 0.08740942470646829,
+      "delta_vs_superad16_AUROC_0.05": 0.031941209783613034,
+      "delta_vs_superad16_F1": 0.05226587362908114,
+      "delta_vs_superadd_reported_AUROC_0.05": -0.04155679319550987,
+      "delta_vs_superadd_reported_F1": -0.1883124777306895,
+      "manifest_path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_notte_dw025_20260707_v1/run_manifest.json",
+      "mean_seg_AUROC_0.05": 0.7977432068044901,
+      "mean_seg_F1": 0.4378000222693105,
+      "metrics_path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_notte_dw025_20260707_v1/metrics.json",
+      "reference_budget_matched": false,
+      "strict_method_claim_supported": false,
+      "strict_table1_claim_comparable": false
+    },
+    "previous_flowtte_tte_dinov2_vitl14_context": {
+      "delta_no_tte_dinov2_vs_previous_tte_AUROC_0.05": 0.04685264216769136,
+      "delta_no_tte_dinov2_vs_previous_tte_F1": 0.04705433516370072,
+      "mean_seg_AUROC_0.05": 0.7149292938211065,
+      "mean_seg_F1": 0.30333626239914147,
+      "metrics_path": "results/remote_runs/dsba3/flow_tte_nf_mvtecad2_all8_shot16_coreset_dw0_20260707_v1/metrics.json"
+    }
+  },
+  "objects": [
+    "can",
+    "fabric",
+    "fruit_jelly",
+    "rice",
+    "vial",
+    "wallplugs",
+    "walnuts",
+    "sheet_metal"
+  ],
+  "primary_metrics": [
+    "seg_AUROC_0.05",
+    "seg_F1"
+  ],
+  "remote_execution": {
+    "container": "hun_fsad_tta_012",
+    "cuda_slots": [
+      0,
+      1,
+      2
+    ],
+    "dinov2_local_result_root": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_vitl14_notte_dw025_20260707_v1",
+    "dinov2_remote_result_root": "/workspace/results_remote/flow_latentbank_mvtecad2_all8_shot16_vitl14_notte_dw025_20260707_v1",
+    "dinov3_local_result_root": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_notte_dw025_20260707_v1",
+    "dinov3_remote_result_root": "/workspace/results_remote/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_notte_dw025_20260707_v1",
+    "host_gpus": [
+      0,
+      1,
+      2
+    ],
+    "server": "dsba3"
+  },
+  "split": "test_public/good,bad",
+  "stage": "flow_latentbank_no_tte_shot16_dinov2_dinov3_mvtecad2_all8",
+  "superad16_baseline": {
+    "backbone": "dinov2_vitl14",
+    "mean_seg_AUROC_0.05": 0.765801997020877,
+    "mean_seg_F1": 0.38553414864022933,
+    "reference_selection_policy": "dinov2_cls_greedy_coreset",
+    "shots": 16,
+    "source": "/home/hun/Volume/RESEARCH/FMAD-OOD/configs/baselines/recorded_superad16_mvtec_ad2_8object_metrics.json"
+  },
+  "superadd_reported_baseline": {
+    "comparison_rows_source": "results/remote_runs/dsba3/flow_tte_nf_mvtecad2_all8_shot16_coreset_dw0_20260707_v1/comparison_superadd_reported/comparison_rows.tsv",
+    "mean_seg_AUROC_0.05": 0.8392999999999999,
+    "mean_seg_F1": 0.6261125,
+    "same_evaluator": false,
+    "source": "SuperADD arXiv:2605.14808v1 Table 1 TESTpublic, copied from prior comparison artifact"
+  },
+  "target_dataset": "MVTec AD2 single-image",
+  "verdict": "KILL_FOR_CLAIM / CONTINUE_DIAGNOSTIC",
+  "win_counts": {
+    "dinov2_vs_superad16_AUROC": 3,
+    "dinov2_vs_superad16_F1": 3,
+    "dinov3_vs_superad16_AUROC": 6,
+    "dinov3_vs_superad16_F1": 7,
+    "dinov3_vs_superadd_reported_AUROC": 2,
+    "dinov3_vs_superadd_reported_F1": 1
+  }
+}

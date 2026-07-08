@@ -1,0 +1,209 @@
+{
+  "chunk_metrics": [
+    {
+      "mean_segmentation_au_roc": 0.7548985079472322,
+      "mean_segmentation_f1": 0.29792986289460327,
+      "objects": [
+        "can",
+        "fabric",
+        "fruit_jelly"
+      ],
+      "path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_ctx_clsreg_w5_coreset_notte_dw025_20260707_v1/chunks/gpu0_can_fabric_fruit_jelly/metrics.json"
+    },
+    {
+      "mean_segmentation_au_roc": 0.8348342709287372,
+      "mean_segmentation_f1": 0.5022104205632589,
+      "objects": [
+        "rice",
+        "vial",
+        "wallplugs"
+      ],
+      "path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_ctx_clsreg_w5_coreset_notte_dw025_20260707_v1/chunks/gpu1_rice_vial_wallplugs/metrics.json"
+    },
+    {
+      "mean_segmentation_au_roc": 0.8175861138508173,
+      "mean_segmentation_f1": 0.5635472723518898,
+      "objects": [
+        "sheet_metal",
+        "walnuts"
+      ],
+      "path": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_ctx_clsreg_w5_coreset_notte_dw025_20260707_v1/chunks/gpu2_walnuts_sheet_metal/metrics.json"
+    }
+  ],
+  "comparability": {
+    "diagnostic_comparable_to_nonfixed_dinov3_no_context": true,
+    "same_budget_as_superad16": true,
+    "same_reference_images_as_superad16": false,
+    "strict_superad_claim_comparable": false
+  },
+  "comparisons": [
+    {
+      "context_source": "",
+      "context_weight": "",
+      "delta_AUROC_vs_method": 0.0028031137367028336,
+      "delta_F1_vs_method": 0.0031394021153602902,
+      "method": "DINOv3 no-context non-fixed coreset",
+      "reference_policy": "baseline/context",
+      "seg_AUROC_0.05": 0.7977432068044901,
+      "seg_F1": 0.4378000222693105
+    },
+    {
+      "context_source": "",
+      "context_weight": "",
+      "delta_AUROC_vs_method": -0.004053514381220036,
+      "delta_F1_vs_method": -0.0009020234464524046,
+      "method": "DINOv3 CLS+register w5 fixed SuperAD-16 ref",
+      "reference_policy": "baseline/context",
+      "seg_AUROC_0.05": 0.8045998349224129,
+      "seg_F1": 0.44184144783112317
+    },
+    {
+      "context_source": "",
+      "context_weight": "",
+      "delta_AUROC_vs_method": -0.00018026633421663885,
+      "delta_F1_vs_method": 0.0035028182637972805,
+      "method": "DINOv3 no-context fixed SuperAD-16 ref",
+      "reference_policy": "baseline/context",
+      "seg_AUROC_0.05": 0.8007265868754095,
+      "seg_F1": 0.4374366061208735
+    },
+    {
+      "context_source": "",
+      "context_weight": "",
+      "delta_AUROC_vs_method": 0.03474432352031587,
+      "delta_F1_vs_method": 0.05540527574444143,
+      "method": "Recorded SuperAD-16 DINOv2",
+      "reference_policy": "baseline/context",
+      "seg_AUROC_0.05": 0.765801997020877,
+      "seg_F1": 0.38553414864022933
+    },
+    {
+      "context_source": "",
+      "context_weight": "",
+      "delta_AUROC_vs_method": -0.038753679458807144,
+      "delta_F1_vs_method": -0.1851730756153292,
+      "method": "Reported SuperADD Table1 context",
+      "reference_policy": "reported only",
+      "seg_AUROC_0.05": 0.8393,
+      "seg_F1": 0.6261125
+    }
+  ],
+  "local_run_root": "results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_ctx_clsreg_w5_coreset_notte_dw025_20260707_v1",
+  "method": {
+    "context_source": "cls_register",
+    "context_weight": 5.0,
+    "method": "Flow-LatentBank DINOv3 CLS+register w5 non-fixed coreset",
+    "reference_policy": "dinov3_cls_greedy_coreset seed0",
+    "seg_AUROC_0.05": 0.8005463205411929,
+    "seg_F1": 0.44093942438467076
+  },
+  "per_object": [
+    {
+      "d_auc_vs_CLSplusregister_w5_fixed_SuperAD": 0.007906441009340348,
+      "d_auc_vs_Recorded_SuperAD_16_DINOv2": 0.08660522922119629,
+      "d_auc_vs_no_context_fixed_SuperAD_16_ref": 0.006602757974425777,
+      "d_auc_vs_no_context_non_fixed_coreset": -0.002758275896881157,
+      "d_f1_vs_CLSplusregister_w5_fixed_SuperAD": -0.0036399037178314786,
+      "d_f1_vs_Recorded_SuperAD_16_DINOv2": 0.0011009155772608548,
+      "d_f1_vs_no_context_fixed_SuperAD_16_ref": -0.004109443367535099,
+      "d_f1_vs_no_context_non_fixed_coreset": -0.000308697267732807,
+      "method_auc": 0.6735556850910824,
+      "method_f1": 0.0026538629419467484,
+      "object": "can"
+    },
+    {
+      "d_auc_vs_CLSplusregister_w5_fixed_SuperAD": -0.030562491331599162,
+      "d_auc_vs_Recorded_SuperAD_16_DINOv2": 0.08973125082788858,
+      "d_auc_vs_no_context_fixed_SuperAD_16_ref": -0.0019449651585409233,
+      "d_auc_vs_no_context_non_fixed_coreset": 0.022466104878058002,
+      "d_f1_vs_CLSplusregister_w5_fixed_SuperAD": -0.02495193977278526,
+      "d_f1_vs_Recorded_SuperAD_16_DINOv2": 0.07462195030966035,
+      "d_f1_vs_no_context_fixed_SuperAD_16_ref": 0.013166710381653401,
+      "d_f1_vs_no_context_non_fixed_coreset": 0.024513968574539413,
+      "method_auc": 0.7775843796069355,
+      "method_f1": 0.3498607999124798,
+      "object": "fabric"
+    },
+    {
+      "d_auc_vs_CLSplusregister_w5_fixed_SuperAD": 0.0013710731160525569,
+      "d_auc_vs_Recorded_SuperAD_16_DINOv2": 0.01571389033062287,
+      "d_auc_vs_no_context_fixed_SuperAD_16_ref": -0.0001757974837630627,
+      "d_auc_vs_no_context_non_fixed_coreset": 0.0004822925558294333,
+      "d_f1_vs_CLSplusregister_w5_fixed_SuperAD": 0.0095460741126151,
+      "d_f1_vs_Recorded_SuperAD_16_DINOv2": 0.08812013994787926,
+      "d_f1_vs_no_context_fixed_SuperAD_16_ref": 0.004296207606072189,
+      "d_f1_vs_no_context_non_fixed_coreset": 0.0001862078279074586,
+      "method_auc": 0.8135554591436787,
+      "method_f1": 0.5412749258293832,
+      "object": "fruit_jelly"
+    },
+    {
+      "d_auc_vs_CLSplusregister_w5_fixed_SuperAD": 0.001630062671375332,
+      "d_auc_vs_Recorded_SuperAD_16_DINOv2": 0.017693583965738724,
+      "d_auc_vs_no_context_fixed_SuperAD_16_ref": 0.0016148446663409866,
+      "d_auc_vs_no_context_non_fixed_coreset": -1.5573781890321214e-05,
+      "d_f1_vs_CLSplusregister_w5_fixed_SuperAD": 0.0031215214287424464,
+      "d_f1_vs_Recorded_SuperAD_16_DINOv2": 0.029693650765437063,
+      "d_f1_vs_no_context_fixed_SuperAD_16_ref": 0.0030912203209497724,
+      "d_f1_vs_no_context_non_fixed_coreset": 0.00010051867438520823,
+      "method_auc": 0.9460905080169243,
+      "method_f1": 0.6955601742766357,
+      "object": "rice"
+    },
+    {
+      "d_auc_vs_CLSplusregister_w5_fixed_SuperAD": -0.00438592645754432,
+      "d_auc_vs_Recorded_SuperAD_16_DINOv2": 0.01436280670046497,
+      "d_auc_vs_no_context_fixed_SuperAD_16_ref": -0.0017272195556453651,
+      "d_auc_vs_no_context_non_fixed_coreset": 0.0019768069062372495,
+      "d_f1_vs_CLSplusregister_w5_fixed_SuperAD": -0.003500036146462271,
+      "d_f1_vs_Recorded_SuperAD_16_DINOv2": 0.026891402681629928,
+      "d_f1_vs_no_context_fixed_SuperAD_16_ref": -0.0022312831579301973,
+      "d_f1_vs_no_context_non_fixed_coreset": 0.0006715165262325407,
+      "method_auc": 0.7070131494432379,
+      "method_f1": 0.3951394450139301,
+      "object": "vial"
+    },
+    {
+      "d_auc_vs_CLSplusregister_w5_fixed_SuperAD": 0.0030038811654549136,
+      "d_auc_vs_Recorded_SuperAD_16_DINOv2": 0.07549888843159347,
+      "d_auc_vs_no_context_fixed_SuperAD_16_ref": 0.0023981256849863186,
+      "d_auc_vs_no_context_non_fixed_coreset": -0.0013299934878563402,
+      "d_f1_vs_CLSplusregister_w5_fixed_SuperAD": 0.007292387420621993,
+      "d_f1_vs_Recorded_SuperAD_16_DINOv2": 0.21654984578226258,
+      "d_f1_vs_no_context_fixed_SuperAD_16_ref": 0.004267859608082791,
+      "d_f1_vs_no_context_non_fixed_coreset": -0.0028407791280101735,
+      "method_auc": 0.8513991553260496,
+      "method_f1": 0.41593164239921093,
+      "object": "wallplugs"
+    },
+    {
+      "d_auc_vs_CLSplusregister_w5_fixed_SuperAD": -0.012481815253156059,
+      "d_auc_vs_Recorded_SuperAD_16_DINOv2": -0.015577409150575816,
+      "d_auc_vs_no_context_fixed_SuperAD_16_ref": -0.010317253689257289,
+      "d_auc_vs_no_context_non_fixed_coreset": 0.0005653015250184357,
+      "d_f1_vs_CLSplusregister_w5_fixed_SuperAD": 0.004588184764084291,
+      "d_f1_vs_Recorded_SuperAD_16_DINOv2": -0.020459291647887845,
+      "d_f1_vs_no_context_fixed_SuperAD_16_ref": 0.00804710610117787,
+      "d_f1_vs_no_context_non_fixed_coreset": 0.0015789543315608556,
+      "method_auc": 0.8682561924654957,
+      "method_f1": 0.698327646530463,
+      "object": "walnuts"
+    },
+    {
+      "d_auc_vs_CLSplusregister_w5_fixed_SuperAD": 0.001090660030316326,
+      "d_auc_vs_Recorded_SuperAD_16_DINOv2": -0.006073652164402477,
+      "d_auc_vs_no_context_fixed_SuperAD_16_ref": 0.0021073768877200028,
+      "d_auc_vs_no_context_non_fixed_coreset": 0.0010382471951073668,
+      "d_f1_vs_CLSplusregister_w5_fixed_SuperAD": 0.0003275243393963678,
+      "d_f1_vs_Recorded_SuperAD_16_DINOv2": 0.026723592539288965,
+      "d_f1_vs_no_context_fixed_SuperAD_16_ref": 0.001494168617907965,
+      "d_f1_vs_no_context_non_fixed_coreset": 0.0012135273840001015,
+      "method_auc": 0.7669160352361388,
+      "method_f1": 0.4287668981733167,
+      "object": "sheet_metal"
+    }
+  ],
+  "remote_run_root": "/home/hunim/Volume/FMAD-OOD-remote/results_remote/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_ctx_clsreg_w5_coreset_notte_dw025_20260707_v1",
+  "run_name": "flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_ctx_clsreg_w5_coreset_notte_dw025_20260707_v1",
+  "verdict": "CONTINUE_DIAGNOSTIC"
+}

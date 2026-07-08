@@ -1,0 +1,51 @@
+{
+  "date": "2026-07-08",
+  "verdict": "KILL_FOR_CLAIM / CONTINUE_DIAGNOSTIC",
+  "target_dataset": "MVTec AD2 single-image",
+  "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+  "objects": [
+    "can",
+    "fabric",
+    "fruit_jelly",
+    "rice",
+    "vial",
+    "wallplugs",
+    "walnuts",
+    "sheet_metal"
+  ],
+  "priority_results": {
+    "hplus_nf_latent_reference": {
+      "local_result": "results/remote_runs/dsba3/flowtte_dvt_hplus_backbone_only_all8_20260708_v1",
+      "seg_AUROC_0.05": 0.8367389799623206,
+      "seg_F1": 0.5274274782811263
+    },
+    "priority_1_hplus_postprocess": {
+      "local_result": "results/remote_runs/dsba3/flowtte_hplus_postprocess_all8_20260708_v1",
+      "best_variant": "closefill_erode_at_metrics_best",
+      "seg_AUROC_0.05": 0.8367389799623206,
+      "seg_F1": 0.5423157063749469,
+      "delta_F1_vs_hplus_nf": 0.01488822809382051,
+      "gap_F1_vs_superadd_reported": -0.08379729362505317
+    },
+    "priority_2_identity_feature_nn": {
+      "local_result": "results/remote_runs/dsba3/flowtte_hplus_identity_feature_nn_all8_20260708_v1",
+      "flow_transform_mode": "identity",
+      "density_weight": 0.0,
+      "seg_AUROC_0.05": 0.8324612506155358,
+      "seg_F1": 0.5248041748330547,
+      "delta_F1_vs_hplus_nf": -0.002623303448071663,
+      "gap_F1_vs_superadd_reported": -0.10130882516694525
+    }
+  },
+  "context_baselines": {
+    "superad16_recorded": {
+      "seg_AUROC_0.05": 0.765802,
+      "seg_F1": 0.385534
+    },
+    "superadd_reported": {
+      "seg_AUROC_0.05": 0.8393,
+      "seg_F1": 0.626113
+    }
+  },
+  "conclusion": "Morphology explains a measurable but insufficient part of the remaining F1 gap. Removing the learned NF projection with an identity feature-distance control does not improve the all-object mean, so NF projection is not the primary mean-metric bottleneck under the current DVT H+ setup. Remaining weak objects should be used as failure buckets, not targets for class-specific hyperparameter tuning; the next valid diagnostic should apply one class-agnostic rule across all eight objects."
+}

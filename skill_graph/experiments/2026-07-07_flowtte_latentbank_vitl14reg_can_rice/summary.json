@@ -1,0 +1,50 @@
+{
+  "date": "2026-07-07",
+  "target_dataset": "MVTec AD2 single-image",
+  "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+  "objects": ["can", "rice"],
+  "split": "test_public/good,bad",
+  "shots": 4,
+  "support_policy": "first",
+  "support_transforms": ["identity"],
+  "method": "FlowTTE-LatentBank",
+  "score_mode": "latent_distance",
+  "feature_fusion": "layer_norm_mean",
+  "primary_metrics": ["seg_AUROC_0.05", "seg_F1"],
+  "remote_container": "hun_fsad_tta",
+  "host_gpu": 3,
+  "container_cuda_visible_device": 0,
+  "baseline_current_code": {
+    "backbone": "dinov2_vitl14",
+    "remote_result": "/workspace/results_remote/flow_tte_latentbank_mvtecad2_can_rice_shot4_vitl14_current_20260707_v1",
+    "local_result": "results/remote_runs/dsba3/flow_tte_latentbank_mvtecad2_can_rice_shot4_vitl14_current_20260707_v1",
+    "mean_seg_AUROC_0.05": 0.7657577948204034,
+    "mean_seg_F1": 0.3155856352132151
+  },
+  "candidate": {
+    "backbone": "dinov2_vitl14_reg",
+    "remote_result": "/workspace/results_remote/flow_tte_latentbank_mvtecad2_can_rice_shot4_vitl14reg_20260707_v1",
+    "local_result": "results/remote_runs/dsba3/flow_tte_latentbank_mvtecad2_can_rice_shot4_vitl14reg_20260707_v1",
+    "mean_seg_AUROC_0.05": 0.7718402434442779,
+    "mean_seg_F1": 0.33381115328010247
+  },
+  "delta_vs_current_code_dinov2_vitl14": {
+    "mean_seg_AUROC_0.05": 0.006082448623874526,
+    "mean_seg_F1": 0.01822551806688738,
+    "can_seg_AUROC_0.05": -0.011351584424255434,
+    "can_seg_F1": -0.0019060073201092472,
+    "rice_seg_AUROC_0.05": 0.023516481672004597,
+    "rice_seg_F1": 0.03835704345388402
+  },
+  "superad_baseline": {
+    "same_condition_status": "BLOCKED_BASELINE",
+    "context_only_source": "/home/hun/Volume/RESEARCH/FMAD-OOD/configs/baselines/recorded_superad16_mvtec_ad2_8object_metrics.json",
+    "reason_not_gate": "recorded SuperAD is 16-shot DINO CLS coreset over all eight public objects, while this run is reduced can/rice 4-shot first support"
+  },
+  "cleanup": {
+    "remote_anomaly_maps": "absent",
+    "local_anomaly_maps": "absent",
+    "cleanup_evidence": "cleanup_anomaly_maps=true"
+  },
+  "verdict": "KILL_FOR_CLAIM / CONTINUE_DIAGNOSTIC"
+}

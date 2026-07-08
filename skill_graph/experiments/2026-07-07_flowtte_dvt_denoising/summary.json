@@ -1,0 +1,171 @@
+{
+  "all8_mean_seg_AUROC_0.05": 0.8252069493669574,
+  "all8_mean_seg_F1": 0.46834827396234585,
+  "delta_vs_cls_w10_AUROC": 0.019780118695002402,
+  "delta_vs_cls_w10_F1": 0.02123035060211309,
+  "delta_vs_flow_noctx_AUROC": 0.027463742562467308,
+  "delta_vs_flow_noctx_F1": 0.030548251693035378,
+  "delta_vs_superad16_AUROC": 0.05940495234608034,
+  "delta_vs_superad16_F1": 0.08281412532211652,
+  "delta_vs_superadd_reported_AUROC": -0.01409305063304267,
+  "delta_vs_superadd_reported_F1": -0.1577642260376541,
+  "dvt_reproduction_scope": "probe only; no neural field optimization or trained DVT student",
+  "method": "support_fitted_position_mean_artifact_denoising",
+  "per_object_rows": [
+    {
+      "base_AUROC": 0.6763139609879636,
+      "base_F1": 0.0029625602096795553,
+      "delta_AUROC": -0.02636740990984776,
+      "delta_F1": -0.00038305344144151264,
+      "dvt_AUROC": 0.6499465510781158,
+      "dvt_F1": 0.0025795067682380427,
+      "dvt_artifact_l2_mean": 0.4030004143714905,
+      "object": "can"
+    },
+    {
+      "base_AUROC": 0.7551182747288775,
+      "base_F1": 0.3253468313379404,
+      "delta_AUROC": 0.14331160811306531,
+      "delta_F1": 0.19601089419044204,
+      "dvt_AUROC": 0.8984298828419428,
+      "dvt_F1": 0.5213577255283824,
+      "dvt_artifact_l2_mean": 0.3012846112251282,
+      "object": "fabric"
+    },
+    {
+      "base_AUROC": 0.8130731665878492,
+      "base_F1": 0.5410887180014757,
+      "delta_AUROC": -0.014053034977916212,
+      "delta_F1": -0.023381855170172994,
+      "dvt_AUROC": 0.799020131609933,
+      "dvt_F1": 0.5177068628313027,
+      "dvt_artifact_l2_mean": 0.3758107125759125,
+      "object": "fruit_jelly"
+    },
+    {
+      "base_AUROC": 0.9461060817988146,
+      "base_F1": 0.6954596556022505,
+      "delta_AUROC": 0.003645999394686128,
+      "delta_F1": -0.002500884994747099,
+      "dvt_AUROC": 0.9497520811935007,
+      "dvt_F1": 0.6929587706075034,
+      "dvt_artifact_l2_mean": 0.2855367362499237,
+      "object": "rice"
+    },
+    {
+      "base_AUROC": 0.7658777880410315,
+      "base_F1": 0.4275533707893166,
+      "delta_AUROC": 0.12286026163666042,
+      "delta_F1": 0.08993858191689702,
+      "dvt_AUROC": 0.8887380496776919,
+      "dvt_F1": 0.5174919527062136,
+      "dvt_artifact_l2_mean": 0.35499125719070435,
+      "object": "sheet_metal"
+    },
+    {
+      "base_AUROC": 0.7050363425370006,
+      "base_F1": 0.39446792848769757,
+      "delta_AUROC": 0.00899804145653016,
+      "delta_F1": -0.004448595719493131,
+      "dvt_AUROC": 0.7140343839935308,
+      "dvt_F1": 0.39001933276820444,
+      "dvt_artifact_l2_mean": 0.4447312653064728,
+      "object": "vial"
+    },
+    {
+      "base_AUROC": 0.8527291488139059,
+      "base_F1": 0.4187724215272211,
+      "delta_AUROC": -0.0013078679001528037,
+      "delta_F1": 0.013455180792770194,
+      "dvt_AUROC": 0.8514212809137531,
+      "dvt_F1": 0.4322276023199913,
+      "dvt_artifact_l2_mean": 0.29893019795417786,
+      "object": "wallplugs"
+    },
+    {
+      "base_AUROC": 0.8676908909404772,
+      "base_F1": 0.6967486921989021,
+      "delta_AUROC": -0.01737765731328711,
+      "delta_F1": -0.024304254029971606,
+      "dvt_AUROC": 0.8503132336271901,
+      "dvt_F1": 0.6724444381689305,
+      "dvt_artifact_l2_mean": 0.32253581285476685,
+      "object": "walnuts"
+    }
+  ],
+  "reduced_rows": [
+    {
+      "mean_seg_AUROC_0.05": 0.747299431766937,
+      "mean_seg_F1": 0.28538743539063466,
+      "variant": "base_no_dvt"
+    },
+    {
+      "mean_seg_AUROC_0.05": 0.7558557654930926,
+      "mean_seg_F1": 0.30143044058361196,
+      "variant": "dvt_pos_a05"
+    },
+    {
+      "mean_seg_AUROC_0.05": 0.7784580247068356,
+      "mean_seg_F1": 0.33654604184620407,
+      "variant": "dvt_pos_a10"
+    },
+    {
+      "mean_seg_AUROC_0.05": 0.7766348785068607,
+      "mean_seg_F1": 0.34596822954498574,
+      "variant": "identity_dvt_pos_a10"
+    },
+    {
+      "mean_seg_AUROC_0.05": 0.7460219334217412,
+      "mean_seg_F1": 0.29326209624015215,
+      "variant": "identity_no_dvt"
+    }
+  ],
+  "run": "flowtte_dvt_denoising_all8_a10_20260707_v1",
+  "summary_rows": [
+    {
+      "delta_vs_flow_noctx_AUROC": -0.031941209783613034,
+      "delta_vs_flow_noctx_F1": -0.05226587362908114,
+      "group": "baseline",
+      "mean_seg_AUROC_0.05": 0.765801997020877,
+      "mean_seg_F1": 0.38553414864022933,
+      "method": "SuperAD-16 recorded",
+      "note": "recorded comparator from component ablation context"
+    },
+    {
+      "delta_vs_flow_noctx_AUROC": 0.04155679319550998,
+      "delta_vs_flow_noctx_F1": 0.1883124777306895,
+      "group": "reported_table",
+      "mean_seg_AUROC_0.05": 0.8393,
+      "mean_seg_F1": 0.6261125,
+      "method": "SuperADD reported",
+      "note": "reported Table 1 context comparator, not same-run artifact"
+    },
+    {
+      "delta_vs_flow_noctx_AUROC": 0.0,
+      "delta_vs_flow_noctx_F1": 0.0,
+      "group": "base",
+      "mean_seg_AUROC_0.05": 0.7977432068044901,
+      "mean_seg_F1": 0.4378000222693105,
+      "method": "Flow no-context base",
+      "note": "DINOv3 Flow-LatentBank no-TTE, no DVT"
+    },
+    {
+      "delta_vs_flow_noctx_AUROC": 0.007683623867464906,
+      "delta_vs_flow_noctx_F1": 0.009317901090922287,
+      "group": "previous_best_context",
+      "mean_seg_AUROC_0.05": 0.805426830671955,
+      "mean_seg_F1": 0.44711792336023276,
+      "method": "CLS soft w10",
+      "note": "best previous component ablation variant"
+    },
+    {
+      "delta_vs_flow_noctx_AUROC": 0.027463742562467308,
+      "delta_vs_flow_noctx_F1": 0.030548251693035378,
+      "group": "dvt_probe",
+      "mean_seg_AUROC_0.05": 0.8252069493669574,
+      "mean_seg_F1": 0.46834827396234585,
+      "method": "DVT position denoise alpha 1.0",
+      "note": "support-fitted position artifact field, Flow transform retained"
+    }
+  ]
+}

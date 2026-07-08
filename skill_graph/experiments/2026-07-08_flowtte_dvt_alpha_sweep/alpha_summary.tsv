@@ -1,0 +1,6 @@
+alpha	mean_seg_AUROC_0.05	mean_seg_F1	delta_AUROC_vs_no_dvt	delta_F1_vs_no_dvt	object_wins_AUROC_vs_no_dvt	object_wins_F1_vs_no_dvt	local_path
+0.00	0.7977432068044901	0.4378000222693105	0.0	0.0	0	0	results/remote_runs/dsba3/flow_latentbank_mvtecad2_all8_shot16_dinov3vitl16_notte_dw025_20260707_v1/metrics.json
+0.25	0.8004444711509743	0.44208181928156176	0.002701264346484211	0.004281797012251287	5	3	results/remote_runs/dsba3/flowtte_dvt_denoising_all8_a025_20260708_v1
+0.50	0.8058924218019397	0.44674808333477983	0.008149214997449583	0.00894806106546936	5	4	results/remote_runs/dsba3/flowtte_dvt_denoising_all8_a05_20260708_v1
+0.75	0.8217925189702312	0.4598387250335843	0.024049312165741132	0.022038702764273832	4	4	results/remote_runs/dsba3/flowtte_dvt_denoising_all8_a075_20260708_v1
+1.00	0.8252069493669573	0.4683482739623458	0.027463742562467197	0.030548251693035322	4	3	results/remote_runs/dsba3/flowtte_dvt_denoising_all8_a10_20260707_v1
