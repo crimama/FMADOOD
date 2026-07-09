@@ -1,0 +1,5 @@
+variant	object_count	seg_AUROC	seg_F1	delta_AUROC_vs_hplus_dvt_nf	delta_F1_vs_hplus_dvt_nf	verdict
+rgb_feature_product_prior	8	0.767204	0.346625	-0.069535	-0.180803	kill
+rgb_object_prior	8	0.778452	0.374071	-0.058287	-0.153356	kill
+rgb_prior_plus_reliability	8	0.780889	0.376619	-0.055850	-0.150809	kill
+support_score_reliability	8	0.828178	0.505659	-0.008561	-0.021769	diagnostic_only

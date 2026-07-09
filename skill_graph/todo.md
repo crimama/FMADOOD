@@ -1,10 +1,12 @@
 # Skill Graph TODO
 
+- FlowTTE object/foreground prior: hard RGB/support-score suppression is killed
+  for the main branch. Do not continue fixed-parameter foreground-prior sweeps.
+- Next diagnostic should model score-field uncertainty or component
+  fragmentation while preserving continuous anomaly evidence, not pre-threshold
+  suppressing it with a binary objectness mask.
 - FlowTTE H+ DVT branch: keep NF latent reference as the retained main branch;
   do not pivot to raw layer-wise tiled NN or support-norm foreground split.
-- Next structural diagnostic should use a stronger class-agnostic
-  object/foreground prior than support feature norm, and should measure
-  connected-component fragmentation before adding postprocessing.
 - FlowTTE DVT branch: test constrained denoising operators before any alpha-heavy tuning.
   Priority order:
   1. query-side-only DVT diagnostic on full AD2 metrics,

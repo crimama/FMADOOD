@@ -34,6 +34,7 @@ if __package__:
         fit_score_field_stats,
         support_leave_one_out_patch_scores,
     )
+    from .flow_tte_score_priors import rgb_foreground_proxy
     from .flow_tte_superadd_preprocess import (
         BrightnessRange,
         TilingConfig,
@@ -66,6 +67,7 @@ else:
         fit_score_field_stats,
         support_leave_one_out_patch_scores,
     )
+    from flow_tte_score_priors import rgb_foreground_proxy
     from flow_tte_superadd_preprocess import (
         BrightnessRange,
         TilingConfig,
@@ -161,13 +163,20 @@ class RunConfig:
         "none",
         "support_position_center",
         "support_position_zscore",
+        "support_score_reliability",
     ] = "none"
     score_field_calibration_alpha: float = 1.0
     score_field_position_std_floor: float = 0.25
-    score_field_foreground_mode: Literal["none", "support_feature_energy"] = "none"
+    score_field_foreground_mode: Literal[
+        "none",
+        "support_feature_energy",
+        "support_rgb_contrast",
+        "support_rgb_feature_product",
+    ] = "none"
     score_field_foreground_quantile: float = 0.20
     score_field_background_multiplier: float = 0.50
     score_field_foreground_smooth_kernel: int = 5
+    score_field_support_score_quantile: float = 0.90
     backbone_model: str = "dinov2_vitl14"
     backbone_resolution: Optional[int] = None
     preprocess_recipe: str = "fmad_shorter_edge"
@@ -385,6 +394,7 @@ def run_object_fused(
         support_feature_maps,
         feature_denoiser,
         score_field_config,
+        selected_paths,
     )
     test_images = dataset.get_test_images(object_name, split="test_public")
     items = stream_test_images(test_images)
@@ -1160,6 +1170,7 @@ def fit_layer_wise_states(
             support_maps,
             feature_denoiser,
             score_field_config,
+            (),
         )
         states.append(
             LayerWiseState(
@@ -1183,6 +1194,7 @@ def build_score_field_config(config: RunConfig) -> ScoreFieldConfig:
         foreground_quantile=config.score_field_foreground_quantile,
         background_multiplier=config.score_field_background_multiplier,
         foreground_smooth_kernel=config.score_field_foreground_smooth_kernel,
+        support_score_quantile=config.score_field_support_score_quantile,
     )
 
 
@@ -1191,6 +1203,7 @@ def fit_support_score_field_stats(
     support_feature_maps: Sequence[FeatureMap],
     feature_denoiser: Optional[PositionMeanArtifactDenoiser],
     score_field_config: ScoreFieldConfig,
+    support_paths: Sequence[Path],
 ) -> Optional[ScoreFieldStats]:
     if not score_field_config.enabled:
         return None
@@ -1202,10 +1215,27 @@ def fit_support_score_field_stats(
         support_leave_one_out_patch_scores(pipeline, feature_map.values)
         for feature_map in denoised_maps
     ]
+    support_object_fields = support_rgb_prior_fields(support_paths, denoised_maps)
     return fit_score_field_stats(
         support_scores,
         [feature_map.values for feature_map in denoised_maps],
         score_field_config,
+        support_object_fields=support_object_fields,
+    )
+
+
+def support_rgb_prior_fields(
+    support_paths: Sequence[Path],
+    support_feature_maps: Sequence[FeatureMap],
+) -> Tuple[np.ndarray, ...]:
+    if len(support_paths) != len(support_feature_maps):
+        return ()
+    return tuple(
+        rgb_foreground_proxy(
+            read_rgb(path),
+            (int(feature_map.values.shape[0]), int(feature_map.values.shape[1])),
+        )
+        for path, feature_map in zip(support_paths, support_feature_maps)
     )
 
 

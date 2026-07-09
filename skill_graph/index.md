@@ -7,6 +7,13 @@
 
 ## Experiments
 
+- `2026-07-09_flowtte_object_prior_score_calibration`: stronger
+  class-agnostic object/foreground prior and support-score calibration
+  diagnostic on the retained H+ DVT NF branch. RGB object prior
+  `0.778452/0.374071`, RGB-feature product `0.767204/0.346625`,
+  support-score reliability `0.828178/0.505659`, and RGB+reliability
+  `0.780889/0.376619` all stayed below the H+ DVT NF reference
+  `0.836739/0.527427`. Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`.
 - `2026-07-08_flowtte_raw_hardnull`: raw hard-null structural diagnostic
   under the H+ DVT fixed-support setting. SuperADD-like raw layer-wise tiled
   NN underperformed badly (`0.759979/0.395241` no-DVT,

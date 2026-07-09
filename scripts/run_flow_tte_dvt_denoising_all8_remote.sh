@@ -23,6 +23,7 @@ SCORE_FIELD_FOREGROUND_MODE="${SCORE_FIELD_FOREGROUND_MODE:-none}"
 SCORE_FIELD_FOREGROUND_QUANTILE="${SCORE_FIELD_FOREGROUND_QUANTILE:-0.20}"
 SCORE_FIELD_BACKGROUND_MULTIPLIER="${SCORE_FIELD_BACKGROUND_MULTIPLIER:-0.50}"
 SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL="${SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL:-5}"
+SCORE_FIELD_SUPPORT_SCORE_QUANTILE="${SCORE_FIELD_SUPPORT_SCORE_QUANTILE:-0.90}"
 NORMALITY_MODE="${NORMALITY_MODE:-fused}"
 CONTEXT_SOURCE="${CONTEXT_SOURCE:-none}"
 FLOW_CONTEXT_SOURCE="${FLOW_CONTEXT_SOURCE:-auto}"
@@ -94,6 +95,7 @@ common_args=(
   --score-field-foreground-quantile "${SCORE_FIELD_FOREGROUND_QUANTILE}"
   --score-field-background-multiplier "${SCORE_FIELD_BACKGROUND_MULTIPLIER}"
   --score-field-foreground-smooth-kernel "${SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL}"
+  --score-field-support-score-quantile "${SCORE_FIELD_SUPPORT_SCORE_QUANTILE}"
 )
 
 if [[ "${CLEANUP_MAPS}" == "1" ]]; then
@@ -125,7 +127,7 @@ wait "${pid0}"
 wait "${pid1}"
 wait "${pid2}"
 
-printf 'run_name=%s\nbackbone=%s\nbackbone_resolution=%s\nfeature_layers=%s\ntile_patch_size=%s\ntile_overlap=%s\nimage_resize_factor=%s\nsupport_brightness_range=%s\nfeature_fusion=%s\nsupport_selection=%s\ndvt_denoise_mode=%s\ndvt_alpha=%s\nnormality_mode=%s\ncontext_source=%s\nflow_context_source=%s\nmemory_context_source=%s\ncontext_mode=%s\ncontext_weight=%s\ncontext_top_m=%s\nflow_condition_mode=%s\nflow_transform_mode=%s\ndensity_weight=%s\nscore_mode=%s\nresidual_weight=%s\nscore_field_calibration_mode=%s\nscore_field_calibration_alpha=%s\nscore_field_position_std_floor=%s\nscore_field_foreground_mode=%s\nscore_field_foreground_quantile=%s\nscore_field_background_multiplier=%s\nscore_field_foreground_smooth_kernel=%s\n' \
+printf 'run_name=%s\nbackbone=%s\nbackbone_resolution=%s\nfeature_layers=%s\ntile_patch_size=%s\ntile_overlap=%s\nimage_resize_factor=%s\nsupport_brightness_range=%s\nfeature_fusion=%s\nsupport_selection=%s\ndvt_denoise_mode=%s\ndvt_alpha=%s\nnormality_mode=%s\ncontext_source=%s\nflow_context_source=%s\nmemory_context_source=%s\ncontext_mode=%s\ncontext_weight=%s\ncontext_top_m=%s\nflow_condition_mode=%s\nflow_transform_mode=%s\ndensity_weight=%s\nscore_mode=%s\nresidual_weight=%s\nscore_field_calibration_mode=%s\nscore_field_calibration_alpha=%s\nscore_field_position_std_floor=%s\nscore_field_foreground_mode=%s\nscore_field_foreground_quantile=%s\nscore_field_background_multiplier=%s\nscore_field_foreground_smooth_kernel=%s\nscore_field_support_score_quantile=%s\n' \
   "${RUN_NAME}" "${BACKBONE_MODEL}" "${BACKBONE_RESOLUTION}" "${FEATURE_LAYERS}" \
   "${TILE_PATCH_SIZE}" "${TILE_OVERLAP}" "${IMAGE_RESIZE_FACTOR}" "${SUPPORT_BRIGHTNESS_RANGE}" \
   "${FEATURE_FUSION}" "${SUPPORT_SELECTION}" "${DVT_DENOISE_MODE}" "${DVT_ALPHA}" \
@@ -135,5 +137,5 @@ printf 'run_name=%s\nbackbone=%s\nbackbone_resolution=%s\nfeature_layers=%s\ntil
   "${SCORE_FIELD_CALIBRATION_MODE}" "${SCORE_FIELD_CALIBRATION_ALPHA}" \
   "${SCORE_FIELD_POSITION_STD_FLOOR}" "${SCORE_FIELD_FOREGROUND_MODE}" \
   "${SCORE_FIELD_FOREGROUND_QUANTILE}" "${SCORE_FIELD_BACKGROUND_MULTIPLIER}" \
-  "${SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL}" \
+  "${SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL}" "${SCORE_FIELD_SUPPORT_SCORE_QUANTILE}" \
   >"${OUTPUT_ROOT}/remote_run_complete.txt"

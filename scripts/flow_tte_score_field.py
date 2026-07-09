@@ -8,7 +8,7 @@ from __future__ import annotations
 import sys
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Final, Literal, Sequence, Tuple
+from typing import TYPE_CHECKING, Literal, Sequence, Tuple
 
 import numpy as np
 import numpy.typing as npt
@@ -19,25 +19,34 @@ for _path in (_REPO_ROOT, _REPO_ROOT / "src"):
     if _path_text not in sys.path:
         sys.path.insert(0, _path_text)
 
+from flow_tte_score_priors import (  # noqa: E402
+    ScoreFieldConfigError,
+    box_filter,
+    feature_priors,
+    mean_prior,
+    object_priors,
+    support_score_reliability,
+    thresholded_prior,
+)
+
 from flow_tte.tensors import to_numpy  # noqa: E402
 
 if TYPE_CHECKING:
     from flow_tte.pipeline import FlowTTE
 
 FloatArray = npt.NDArray[np.float32]
-CalibrationMode = Literal["none", "support_position_center", "support_position_zscore"]
-ForegroundMode = Literal["none", "support_feature_energy"]
-
-_MIN_STD: Final = 1e-6
-
-
-@dataclass(frozen=True)
-class ScoreFieldConfigError(ValueError):
-    field: str
-    reason: str
-
-    def __str__(self) -> str:
-        return f"Invalid {self.field}: {self.reason}"
+CalibrationMode = Literal[
+    "none",
+    "support_position_center",
+    "support_position_zscore",
+    "support_score_reliability",
+]
+ForegroundMode = Literal[
+    "none",
+    "support_feature_energy",
+    "support_rgb_contrast",
+    "support_rgb_feature_product",
+]
 
 
 @dataclass(frozen=True)
@@ -49,6 +58,7 @@ class ScoreFieldConfig:
     foreground_quantile: float = 0.20
     background_multiplier: float = 0.50
     foreground_smooth_kernel: int = 5
+    support_score_quantile: float = 0.90
 
     def __post_init__(self) -> None:
         if self.calibration_alpha < 0.0:
@@ -61,6 +71,8 @@ class ScoreFieldConfig:
             raise ScoreFieldConfigError("background_multiplier", "must be in [0, 1]")
         if self.foreground_smooth_kernel <= 0:
             raise ScoreFieldConfigError("foreground_smooth_kernel", "must be positive")
+        if not 0.0 <= self.support_score_quantile <= 1.0:
+            raise ScoreFieldConfigError("support_score_quantile", "must be in [0, 1]")
 
     @property
     def enabled(self) -> bool:
@@ -71,6 +83,7 @@ class ScoreFieldConfig:
 class ScoreFieldStats:
     position_mean: FloatArray
     position_std: FloatArray
+    position_high: FloatArray
     foreground_prior: FloatArray
 
 
@@ -78,6 +91,7 @@ def fit_score_field_stats(
     support_score_fields: Sequence[FloatArray],
     support_feature_fields: Sequence[FloatArray],
     config: ScoreFieldConfig,
+    support_object_fields: Sequence[FloatArray] = (),
 ) -> ScoreFieldStats:
     if not support_score_fields:
         raise ScoreFieldConfigError("support_score_fields", "must not be empty")
@@ -92,32 +106,64 @@ def fit_score_field_stats(
             np.std(score_stack, axis=0).astype(np.float32, copy=False),
             np.float32(config.position_std_floor),
         ),
-        foreground_prior=fit_foreground_prior(support_feature_fields, target_shape, config),
+        position_high=np.quantile(
+            score_stack,
+            config.support_score_quantile,
+            axis=0,
+        ).astype(np.float32, copy=False),
+        foreground_prior=fit_foreground_prior(
+            support_feature_fields,
+            support_object_fields,
+            target_shape,
+            config,
+        ),
     )
 
 
 def fit_foreground_prior(
     support_feature_fields: Sequence[FloatArray],
+    support_object_fields: Sequence[FloatArray],
     target_shape: Tuple[int, int],
     config: ScoreFieldConfig,
 ) -> FloatArray:
-    if config.foreground_mode == "none" or not support_feature_fields:
+    if config.foreground_mode == "none":
         return np.ones(target_shape, dtype=np.float32)
-    energy_fields = [
-        _resize_field(feature_energy(_as_float32(field)), target_shape)
-        for field in support_feature_fields
-    ]
-    energy = np.mean(np.stack(energy_fields, axis=0), axis=0)
-    if float(np.max(energy) - np.min(energy)) <= _MIN_STD:
+    priors = foreground_prior_fields(
+        support_feature_fields,
+        support_object_fields,
+        target_shape,
+        config,
+    )
+    if not priors:
         return np.ones(target_shape, dtype=np.float32)
-    threshold = float(np.quantile(energy.reshape(-1), config.foreground_quantile))
-    prior = (energy >= threshold).astype(np.float32, copy=False)
+    prior = np.mean(np.stack(priors, axis=0), axis=0).astype(np.float32, copy=False)
     if config.foreground_smooth_kernel > 1:
         prior = box_filter(prior, config.foreground_smooth_kernel)
         max_value = float(np.max(prior))
         if max_value > 0.0:
             prior = prior / max_value
     return np.clip(prior, 0.0, 1.0).astype(np.float32, copy=False)
+
+
+def foreground_prior_fields(
+    support_feature_fields: Sequence[FloatArray],
+    support_object_fields: Sequence[FloatArray],
+    target_shape: Tuple[int, int],
+    config: ScoreFieldConfig,
+) -> Tuple[FloatArray, ...]:
+    if config.foreground_mode == "none":
+        return ()
+    if config.foreground_mode == "support_feature_energy":
+        priors = feature_priors(support_feature_fields, target_shape, _resize_field)
+        return thresholded_prior(priors, config.foreground_quantile)
+    if config.foreground_mode == "support_rgb_contrast":
+        priors = object_priors(support_object_fields, target_shape, _resize_field)
+        return thresholded_prior(priors, config.foreground_quantile)
+    feature = mean_prior(feature_priors(support_feature_fields, target_shape, _resize_field))
+    rgb = mean_prior(object_priors(support_object_fields, target_shape, _resize_field))
+    if feature is None or rgb is None:
+        return ()
+    return thresholded_prior((feature * rgb,), config.foreground_quantile)
 
 
 def apply_score_field_transform(
@@ -135,8 +181,16 @@ def apply_score_field_transform(
         output = (
             output - np.float32(config.calibration_alpha) * position_mean
         ) / np.maximum(position_std, np.float32(config.position_std_floor))
+    elif config.calibration_mode == "support_score_reliability":
+        reliability = support_score_reliability(
+            stats.position_high,
+            output_shape,
+            config.calibration_alpha,
+            _resize_field,
+        )
+        output = output * reliability
     foreground_prior = _resize_field(stats.foreground_prior, output_shape)
-    if config.foreground_mode == "support_feature_energy":
+    if config.foreground_mode != "none":
         multiplier = np.float32(config.background_multiplier) + (
             np.float32(1.0 - config.background_multiplier) * foreground_prior
         )
@@ -178,23 +232,6 @@ def support_leave_one_out_patch_scores(
         )
     restored = to_numpy(evaluation.batch.restore(patch_scores))[0]
     return np.asarray(restored, dtype=np.float32)
-
-
-def feature_energy(feature_field: FloatArray) -> FloatArray:
-    if feature_field.ndim != 3:
-        raise ScoreFieldConfigError("feature_field", "must be HxWxC")
-    return np.linalg.norm(feature_field, axis=-1).astype(np.float32, copy=False)
-
-
-def box_filter(values: FloatArray, kernel_size: int) -> FloatArray:
-    radius = kernel_size // 2
-    padded = np.pad(values, ((radius, radius), (radius, radius)), mode="edge")
-    output = np.zeros(values.shape, dtype=np.float32)
-    for y in range(values.shape[0]):
-        for x in range(values.shape[1]):
-            window = padded[y : y + kernel_size, x : x + kernel_size]
-            output[y, x] = np.float32(np.mean(window))
-    return output
 
 
 def _as_float32(values: FloatArray) -> FloatArray:

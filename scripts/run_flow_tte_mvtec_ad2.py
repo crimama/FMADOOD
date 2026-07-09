@@ -196,6 +196,7 @@ def parse_args(argv: Sequence[str]) -> RunConfig:
         score_field_foreground_quantile=args.score_field_foreground_quantile,
         score_field_background_multiplier=args.score_field_background_multiplier,
         score_field_foreground_smooth_kernel=args.score_field_foreground_smooth_kernel,
+        score_field_support_score_quantile=args.score_field_support_score_quantile,
     )
 
 
@@ -227,19 +228,30 @@ def validate_args(args: argparse.Namespace, objects: Tuple[str, ...]) -> None:
 def add_score_field_args(parser: argparse.ArgumentParser) -> None:
     parser.add_argument(
         "--score-field-calibration-mode",
-        choices=("none", "support_position_center", "support_position_zscore"),
+        choices=(
+            "none",
+            "support_position_center",
+            "support_position_zscore",
+            "support_score_reliability",
+        ),
         default="none",
     )
     parser.add_argument("--score-field-calibration-alpha", type=float, default=1.0)
     parser.add_argument("--score-field-position-std-floor", type=float, default=0.25)
     parser.add_argument(
         "--score-field-foreground-mode",
-        choices=("none", "support_feature_energy"),
+        choices=(
+            "none",
+            "support_feature_energy",
+            "support_rgb_contrast",
+            "support_rgb_feature_product",
+        ),
         default="none",
     )
     parser.add_argument("--score-field-foreground-quantile", type=float, default=0.20)
     parser.add_argument("--score-field-background-multiplier", type=float, default=0.50)
     parser.add_argument("--score-field-foreground-smooth-kernel", type=int, default=5)
+    parser.add_argument("--score-field-support-score-quantile", type=float, default=0.90)
 
 
 def validate_score_field_args(args: argparse.Namespace) -> None:
@@ -253,6 +265,8 @@ def validate_score_field_args(args: argparse.Namespace) -> None:
         raise SystemExit("--score-field-background-multiplier must be in [0, 1]")
     if args.score_field_foreground_smooth_kernel <= 0:
         raise SystemExit("--score-field-foreground-smooth-kernel must be positive")
+    if not 0.0 <= args.score_field_support_score_quantile <= 1.0:
+        raise SystemExit("--score-field-support-score-quantile must be in [0, 1]")
 
 
 def add_superadd_alignment_args(parser: argparse.ArgumentParser) -> None:
@@ -400,6 +414,7 @@ def write_manifest(
         "score_field_foreground_quantile": config.score_field_foreground_quantile,
         "score_field_background_multiplier": config.score_field_background_multiplier,
         "score_field_foreground_smooth_kernel": config.score_field_foreground_smooth_kernel,
+        "score_field_support_score_quantile": config.score_field_support_score_quantile,
         "primary_metrics": ["seg_AUROC_0.05", "seg_F1"],
         "reference_budget_matched": (
             config.shots == 16

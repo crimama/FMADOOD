@@ -1,5 +1,16 @@
 # Skill Graph Log
 
+- 2026-07-09: Implemented and ran class-agnostic object/foreground prior plus
+  score-field calibration diagnostics on the retained H+ DVT NF FlowTTE branch
+  using dsba3 `hun_fsad_tta_012` GPUs 0,1,2. Tested RGB object prior
+  `0.778452/0.374071`, RGB-feature product prior `0.767204/0.346625`,
+  support-score reliability `0.828178/0.505659`, and RGB prior plus reliability
+  `0.780889/0.376619`, all below the H+ DVT NF reference
+  `0.836739/0.527427`. Conclusion: hard class-agnostic objectness suppression
+  is not the answer; it suppresses anomaly evidence together with nuisance
+  background. Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`.
+  Report:
+  `skill_graph/experiments/2026-07-09_flowtte_object_prior_score_calibration/report.md`.
 - 2026-07-08: Implemented and ran the FlowTTE raw hard-null structural
   diagnostic on all-eight MVTec AD2 using dsba3 `hun_fsad_tta_012` GPUs
   0,1,2. Tested SuperADD-like raw layer-wise tiled NN, raw fused NN, raw fused
