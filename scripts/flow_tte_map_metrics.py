@@ -43,6 +43,11 @@ class MapMetricSet:
 
     def as_dict(self) -> Dict[str, JsonValue]:
         return {
+            "i_AUROC": self.image_auroc,
+            "i_AUPRC": self.image_ap,
+            "p_AUROC": self.pixel_auroc,
+            "p_AUPRC": self.pixel_ap,
+            "p_AUPRO": self.pixel_pro,
             "image_AUROC": self.image_auroc,
             "pixel_AUROC": self.pixel_auroc,
             "image_AP": self.image_ap,
@@ -67,8 +72,6 @@ def compute_map_metric_set(
     image_labels: List[bool] = []
     pro_predictions: List[FloatArray] = []
     pro_masks: List[BoolArray] = []
-    total_counts = np.zeros(_HISTOGRAM_BINS, dtype=np.float64)
-    positive_counts = np.zeros(_HISTOGRAM_BINS, dtype=np.float64)
     for index, prediction_name in enumerate(prediction_filenames):
         prediction = _read_tiff_without_ext(prediction_name)
         gt_filename = gt_filenames[index]
@@ -77,11 +80,8 @@ def compute_map_metric_set(
         image_labels.append(bool(np.any(gt_mask)))
         pro_predictions.append(prediction)
         pro_masks.append(gt_mask)
-        codes = np.asarray(prediction, dtype=np.float16).ravel().view(np.uint16)
-        positives = gt_mask.reshape(-1).astype(np.float64, copy=False)
-        total_counts += np.bincount(codes, minlength=_HISTOGRAM_BINS)
-        positive_counts += np.bincount(codes, weights=positives, minlength=_HISTOGRAM_BINS)
-    histogram = histogram_binary_metrics(total_counts, positive_counts)
+    total_counts, positive_counts = rank_histogram(pro_predictions, pro_masks)
+    histogram = histogram_binary_metrics(total_counts, positive_counts, ordered_codes=True)
     return MapMetricSet(
         image_auroc=binary_auroc(
             np.asarray(image_labels, dtype=np.bool_),
@@ -95,9 +95,33 @@ def compute_map_metric_set(
         pixel_ap=histogram.pixel_ap,
         pixel_pro=pixel_pro_score(pro_predictions, pro_masks, _PIXEL_PRO_MAX_FPR),
         image_score_aggregation=_image_score_aggregation_name(image_top_fraction),
-        pixel_score_quantization="float16_histogram",
+        pixel_score_quantization="signed_log1p_linear_uint16_65536_per_object",
         pixel_pro_max_fpr=_PIXEL_PRO_MAX_FPR,
     )
+
+
+def rank_histogram(
+    predictions: Sequence[FloatArray],
+    masks: Sequence[BoolArray],
+) -> tuple[Float64Array, Float64Array]:
+    """Build a bounded rank histogram without overflowing large Flow scores."""
+    transformed = [
+        np.sign(prediction) * np.log1p(np.abs(prediction).astype(np.float64))
+        for prediction in predictions
+    ]
+    if any(not np.all(np.isfinite(values)) for values in transformed):
+        raise MapMetricInputError("prediction scores must be finite")
+    score_min = min(float(np.min(values)) for values in transformed)
+    score_max = max(float(np.max(values)) for values in transformed)
+    scale = (_HISTOGRAM_BINS - 1) / max(score_max - score_min, np.finfo(np.float64).eps)
+    total_counts = np.zeros(_HISTOGRAM_BINS, dtype=np.float64)
+    positive_counts = np.zeros(_HISTOGRAM_BINS, dtype=np.float64)
+    for values, mask in zip(transformed, masks):
+        codes = np.rint((values - score_min) * scale).astype(np.uint16, copy=False).ravel()
+        positives = mask.reshape(-1).astype(np.float64, copy=False)
+        total_counts += np.bincount(codes, minlength=_HISTOGRAM_BINS)
+        positive_counts += np.bincount(codes, weights=positives, minlength=_HISTOGRAM_BINS)
+    return total_counts, positive_counts
 
 
 def _read_tiff_without_ext(prediction_name: str) -> FloatArray:
@@ -157,6 +181,8 @@ class HistogramBinaryMetrics:
 def histogram_binary_metrics(
     total_counts: Float64Array,
     positive_counts: Float64Array,
+    *,
+    ordered_codes: bool = False,
 ) -> HistogramBinaryMetrics:
     positives = float(np.sum(positive_counts))
     total = float(np.sum(total_counts))
@@ -165,16 +191,18 @@ def histogram_binary_metrics(
         return HistogramBinaryMetrics(pixel_auroc=float("nan"), pixel_ap=float("nan"))
     present = total_counts > 0
     codes = np.flatnonzero(present).astype(np.uint16, copy=False)
-    scores = codes.view(np.float16).astype(np.float32, copy=False)
+    scores = (
+        codes.astype(np.float32, copy=False)
+        if ordered_codes
+        else codes.view(np.float16).astype(np.float32, copy=False)
+    )
     ascending_order = np.argsort(scores, kind="mergesort")
     total_present = total_counts[present][ascending_order]
     positive_present = positive_counts[present][ascending_order]
     cumulative_before = np.r_[0.0, np.cumsum(total_present[:-1])]
     average_ranks = cumulative_before + (total_present + 1.0) / 2.0
     positive_rank_sum = float(np.sum(positive_present * average_ranks))
-    auroc = (positive_rank_sum - positives * (positives + 1.0) / 2.0) / (
-        positives * negatives
-    )
+    auroc = (positive_rank_sum - positives * (positives + 1.0) / 2.0) / (positives * negatives)
     descending_positive = positive_present[::-1]
     descending_total = total_present[::-1]
     cumulative_tp = np.cumsum(descending_positive)

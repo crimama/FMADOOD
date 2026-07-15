@@ -1,5 +1,89 @@
 # Skill Graph Log
 
+- 2026-07-13: Completed the all-eight matched AD2 H+ RGB guided-r8 and default
+  morphology evaluation. The retained fixed-support Flow-LatentBank + LOO +
+  DVT + density control exactly reproduced `0.836739/0.527428` before
+  morphology. Guided-r8 + morphology reaches `0.837528/0.553859`, improving
+  over matched morphology control by `+0.000789/+0.011544`. The mean gate
+  passes, but `can` loses `0.036604` AUROC and fails the class harm gate.
+  Dense maps were cleaned locally/remotely and dsba3 GPUs 0--3 returned to
+  1 MiB/0%. Verdict:
+  `PASS_MEAN_GATE / FAIL_CLASS_HARM_GATE / BLOCKED_BASELINE`. Report:
+  `skill_graph/experiments/2026-07-13_flowtte_ad2_hplus_guided_r8_morph/report.md`.
+- 2026-07-11: Completed the actual MVTec AD2 public `can` DARC raw-ladder
+  pilot on dsba3 `hun_fsad_tta_012` GPUs 0,1,2,3. The valid v2 cell used
+  P16-random seed 0, fold 0, full `72 good + 90 bad`, and produced 162
+  coverage rows plus 648 finite native maps with no missing/duplicate IDs.
+  G0/L0/L1/R1 pAUROC@.05 and oracle F1 were respectively
+  `0.667650/0.017797`, `0.547831/0.000488`, `0.579249/0.000827`, and
+  `0.550352/0.001647`. R1-G0 was `-0.117298` pAUROC, `-0.001312` AP,
+  `-0.016150` F1, and `-0.083333` component recall. All queries accepted
+  5/5 registrations and fallback was only `2.370760%`, so the failure is the
+  noisy hard-local correspondence/reconstruction field rather than coverage,
+  threshold, or morphology. The prior v1 label-path seed defect was
+  invalidated before metrics and the v2 content-SHA identity was exhaustively
+  verified. After evaluation, the valid root's 648 TIFFs and all related
+  raw-ladder TIFFs were removed while canonical compact metrics and shard audit
+  records were retained. The preceding 720-row AD1 synthetic Gate 1 passed
+  (`+0.096791` AP), supporting unrestricted high-resolution G0 but not the
+  hard-local terminal. Because the pilot's L1-L0 continuation and R1-G0 stop
+  clauses both fired without frozen precedence, the verdict is
+  `KILL_FOR_CLAIM / CONTRACT_CONFLICT`; operationally, raw R1 is stopped. Report:
+  `skill_graph/experiments/2026-07-10_flowtte_darc_resolution_correspondence/report.md`.
+- 2026-07-10: Started the staged DARC resolution/correspondence experiment
+  cycle for the FlowTTE `can` structural failure. Frozen protocol separates
+  evaluator parity, paired 16px/8px sampling, `G0/L0/L1/R1`, reduced AD2
+  shadow, and untouched final-claim gates; it also separates P16-random,
+  P16-SuperAD-selected, M16-fullpool, and Pfull normal access. Execution target
+  is dsba3 `hun_fsad_tta_012` on host GPUs 0,1,2. Interim verdict:
+  `KILL_FOR_CLAIM / CONTINUE_DIAGNOSTIC`. Design:
+  `skill_graph/analysis/2026-07-10_flowtte_darc_experiment_design.md`; report:
+  `skill_graph/experiments/2026-07-10_flowtte_darc_resolution_correspondence/report.md`.
+- 2026-07-10: Implemented and completed the exact SuperAD rotation-8 support
+  augmentation diagnostic for the retained H+ DVT MLP FlowTTE path. The
+  paired all-eight candidate used the exact same ordered 16 source images and
+  all the same method/scoring settings as a matched identity control; only the
+  transform orbit and derived effective support views changed (`16 -> 128`).
+  Rotation-8 scored `0.819251/0.506201` versus identity
+  `0.836389/0.527370`, regressing by `-0.017137` AUROC and `-0.021168` F1.
+  `sheet_metal` fell by `-0.111020/-0.119605` and `fabric` F1 fell by
+  `-0.042623`; only `fruit_jelly` improved F1 by at least `0.01`. Added exact
+  OpenCV transform parity tests and full-batch-equivalent support-row
+  microbatching; the worst-case smoke completed without OOM, paired manifests
+  and executed v1 provenance hashes matched, and retained anomaly-map count is
+  `0`. Post-run review expanded the guard to the actual 48-file split-root
+  dependency closure and verified that it rejects stale v1 markers. Verdict:
+  `KILL_FOR_CLAIM / NO_CONTINUE`. Report:
+  `skill_graph/experiments/2026-07-10_flowtte_hplus_dvt_superad_rotation8/report.md`.
+- 2026-07-10: Created a new-session handoff document for the current FlowTTE
+  work, including the retained H+ DVT method structure, register/Transformer
+  negative evidence, DVT-lite explanation, completed structural diagnostics,
+  hparam tuning status, remote/container paths, and next-step checklist.
+  Handoff:
+  `skill_graph/analysis/2026-07-10_flowtte_session_handoff.md`.
+- 2026-07-10: Recorded the completed Transformer/register prefix analysis and
+  launched the FlowTTE H+ extreme class-agnostic hyperparameter sweep on dsba3
+  `hun_fsad_tta_012` GPUs 0,1,2. Stage-1 all-eight sweep completed with
+  best F1 from `lambda_logdet=1e-2` (`0.836202/0.528875`) and best AUROC from
+  support brightness `0.80,1.20` (`0.838230/0.528203`) versus the H+ DVT
+  reference `0.836739/0.527427`; cleanup verified `0` retained
+  `anomaly_maps/` locally and remotely. Phase-2 is running and currently shows
+  `lambda_logdet=2e-2` as best partial F1 (`0.835673/0.529874`), with phase-3
+  queued around `lambda_logdet ~= 2e-2`. Verdict remains
+  `KILL_FOR_CLAIM / CONTINUE_DIAGNOSTIC`. Report:
+  `skill_graph/experiments/2026-07-10_flowtte_transformer_context_and_hparam_sweep/report.md`.
+- 2026-07-09: Implemented and ran the FlowTTE patch-structure diagnostic suite
+  for the hypothesis that patch-independent NF processing is the bottleneck.
+  Shared setting: all-eight MVTec AD2, DINOv3-H+/16, layers `[7,15,23,31]`,
+  fixed 16-shot support, DVT `position_mean alpha=1.0`, dsba3
+  `hun_fsad_tta_012` GPUs 0,1,2. Completed variants: `conditional_cls`
+  `0.832374/0.512126`, `foreground_flow_mixture` `0.834712/0.519250`, and
+  `local_contrast` `0.806200/0.438345`; none beats the H+ reference
+  `0.836739/0.527427`. Coordinate-conditioned `xy` and `cls_xy` were
+  runtime-blocked with no usable metrics. Cleanup verified `0` retained
+  `anomaly_maps/` locally and remotely. Verdict:
+  `KILL_FOR_CLAIM / NO_CONTINUE`. Report:
+  `skill_graph/experiments/2026-07-09_flowtte_patch_structure_flow_diagnostics/report.md`.
 - 2026-07-09: Implemented and ran class-agnostic object/foreground prior plus
   score-field calibration diagnostics on the retained H+ DVT NF FlowTTE branch
   using dsba3 `hun_fsad_tta_012` GPUs 0,1,2. Tested RGB object prior
@@ -267,3 +351,253 @@
   `1.0` run (`0.825207`/`0.468348`) and reported SuperADD context
   (`0.839300`/`0.626113`). Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`.
   Report: `skill_graph/experiments/2026-07-08_flowtte_superadd_aligned_setup/report.md`.
+- 2026-07-09: Ran FlowTTE structured-memory diagnostics on all 8 MVTec AD2
+  public objects using dsba3 `hun_fsad_tta_012` GPUs 0,1,2. Added
+  feature-derived memory context sources, lazy context grouping, and
+  calibration sample cap to make H+ structured retrieval feasible. The
+  executed all-8 method used `image_feature_mean_ch16`, `context_mode=top_m`,
+  `context_top_m=4`, DVT alpha `1.0`, fixed SuperAD-16 support, and
+  `calibration_sample_size=4096`. Mean result: `seg_AUROC_0.05=0.832426`,
+  `seg_F1=0.524593`, below the H+ DVT baseline `0.836739/0.527427`.
+  Verdict: `KILL_FOR_CLAIM / CONTINUE_DIAGNOSTIC`.
+  Report: `skill_graph/experiments/2026-07-09_flowtte_structured_memory_diagnostics/report.md`.
+- 2026-07-09: Implemented and smoke-tested `normality_mode=conv2d_flow`, a
+  register-free 2D convolutional affine-coupling flow that preserves the
+  DINOv3-H+ feature map during flow projection and flattens only the final
+  latent map for existing memory distance scoring. Smoke on `can,vial,fabric`
+  used fixed SuperAD-16 support, layers `[7,15,23,31]`, DVT `alpha=1.0`,
+  no-TTE, and `density_weight=0.0`. Mean result was
+  `seg_AUROC_0.05=0.744949`, `seg_F1=0.354137`, below the same-object H+ DVT
+  baseline `0.758338/0.377474`; all three objects lost F1. Verdict:
+  `KILL_FOR_CLAIM / NO_CONTINUE`.
+  Report: `skill_graph/experiments/2026-07-09_flowtte_conv2d_flow_diagnostics/report.md`.
+- 2026-07-09: Implemented `normality_mode=transformer_flow`, a register-free
+  Transformer affine-coupling flow over DINOv3-H+ patch tokens, and ran
+  smoke plus all-eight diagnostics on dsba3 `hun_fsad_tta_012` GPUs 0,1,2.
+  Smoke on `can,vial,fabric` improved same-object mean from
+  `0.758338/0.377474` to `0.768982/0.395014`, mainly through `vial`.
+  All-eight result fell below the H+ DVT baseline: `0.828600/0.502237`
+  versus `0.836739/0.527427`. Positive signal remained on `vial`,
+  `sheet_metal`, and `fabric`, but `fruit_jelly`, `walnuts`, and
+  `wallplugs` produced broad no-harm failure. Verdict:
+  `KILL_FOR_CLAIM / CONTINUE_DIAGNOSTIC`.
+  Report: `skill_graph/experiments/2026-07-09_flowtte_transformer_flow_diagnostics/report.md`.
+- 2026-07-10: Ran architecture-only image-level failure analysis for
+  `normality_mode=transformer_flow` on all 8 MVTec AD2 public objects. The
+  matched control used `normality_mode=fused`, `density_weight=0.0`; all
+  other core settings were fixed: DINOv3-H+/16, layers `[7,15,23,31]`,
+  DVT `position_mean alpha=1.0`, fixed SuperAD-16 support, no-TTE,
+  context/register disabled, dsba3 `hun_fsad_tta_012` GPUs 0,1,2. Mean
+  architecture-only result was MLP `0.837518/0.523904` versus Transformer
+  `0.828600/0.502237`. Per-image analysis showed negative bad-image
+  GT-vs-background score-gap deltas for every class, including `vial` and
+  `sheet_metal` where global F1 improved. Conclusion: Transformer Flow mainly
+  smooths/regularizes the score field and weakens local anomaly contrast, so
+  it is not a robust method branch. Dense maps were regenerated for analysis
+  and then removed; local pulled run roots contain `0` map TIFFs. Verdict:
+  `KILL_FOR_CLAIM / CONTINUE_DIAGNOSTIC`.
+  Report: `skill_graph/experiments/2026-07-10_flowtte_transformer_failure_image_analysis/report.md`.
+- 2026-07-11: Closed and discarded the image-disjoint support-consensus S0
+  branch. On `can,fabric,fruit_jelly,rice`, Phase-3 base was
+  `0.815615/0.471988` and residual was `0.815634/0.472022`
+  (`+0.000019/+0.000033`). `can` regressed, q25 was worse, and shuffled IDs
+  matched or beat the candidate. Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`.
+  Implementation, tests, launchers, preregistration, and local/remote run
+  artifacts were deleted; only the result report remains:
+  `skill_graph/experiments/2026-07-11_flowtte_support_consensus_s0/report.md`.
+# 2026-07-12 — MVTec AD1 VisionAD-aligned ViT-B/14-register sweep completed
+
+- Ran all 15 classic MVTec AD categories for shots 1/2/4/8/16, seed 1, on
+  dsba5 GPUs 0 and 1 with frozen `dinov2_vitb14_reg`, 448-to-392 input,
+  layers 2/5/8/11, and verified 28x28/768 features.
+- Class-macro results (i-AUROC/i-AUPRC/p-AUROC/p-AUPRC/p-AUPRO):
+  - 1: `0.756873/0.881598/0.874048/0.231153/0.652445`
+  - 2: `0.887245/0.935944/0.942296/0.360746/0.815653`
+  - 4: `0.915777/0.954135/0.950294/0.388857/0.848569`
+  - 8: `0.940539/0.966574/0.956502/0.417193/0.866856`
+  - 16: `0.939385/0.965973/0.959495/0.425467/0.875318`
+- Rejected an incomplete first run after detecting total raw-float16 pixel-score
+  overflow. The clean rerun uses monotonic signed-log1p uint16 histogram ranks;
+  exact float32 AUPRO remains integrated through FPR 0.30.
+- Audit passed: five finite summaries, 15 per-category rows and support
+  diagnostics per shot, exact requested unique support counts, no runtime error,
+  and zero retained anomaly-map directories locally or remotely.
+- Local validation: `407 passed`; Ruff, shell syntax, and Python compilation
+  passed.
+- Compact pullback:
+  `results/remote_runs/dsba5/flowtte_mvtecad1_visionad_vitb14reg_s1_2_4_8_16_20260712_v1`.
+- Report:
+  `skill_graph/experiments/2026-07-12_flowtte_mvtecad1_visionad_vitb14reg/report.md`.
+- Verdict: `BLOCKED_BASELINE`; encoder/input alignment is valid, but Flow-head
+  training and evaluator geometry prevent a strict paired VisionAD comparison.
+
+# 2026-07-12 — Static Flow-LatentBank MVTec AD1 ViT-B/14-register completed
+
+- Re-ran the original all-15 4-shot, first-support, shorter-edge 448
+  Flow-LatentBank recipe with the two requested changes: frozen
+  `dinov2_vitb14_reg` layers 2/5/8/11 and no TTE (`expansion_budget=1.0`).
+- Result (i-AUROC/i-AUPRC/p-AUROC/p-AUPRC/p-AUPRO):
+  `0.972100/0.987432/0.973747/0.581160/0.938160`.
+- Historical ViT-L + TTE row was
+  `0.969631/0.983877/0.964028/0.576137/0.936470`; descriptive deltas are
+  positive on all five means but are not causal because backbone and pixel-rank
+  writer also differ.
+- Audit passed: 15 finite category rows, exact first-four paths, memory
+  `4096 -> 4096` for every category, and zero dense-map directories locally
+  and remotely.
+- Local verification: 412 tests passed; focused Ruff, compilation, and launcher
+  syntax passed.
+- Report:
+  `skill_graph/experiments/2026-07-12_flow_latentbank_mvtecad1_static_vitb14reg_shot4/report.md`.
+- Verdict: `ACCEPT_MEASUREMENT / BLOCKED_BASELINE`.
+
+# 2026-07-13 — FlowTTE q4096/guided stack and grid-shift implementation
+
+- Added fixed-order retained-map stack evaluation and a metrics-only two-view
+  grid-shift smoke with original-bank arm A and phase-matched refit arm C.
+- Local verification passed: 418 tests, Python compilation, and shell syntax.
+- Remote execution remains pending because the managed session rejected both
+  SSH launch attempts with `socket: Operation not permitted`; no remote or
+  anchor artifacts were changed.
+- Report:
+  `skill_graph/experiments/2026-07-13_flowtte_gridshift_2view/report.md`.
+- Verdict: `BLOCKED_DATA` for remote execution evidence.
+
+# 2026-07-13 — Static Flow-LatentBank MVTec AD1 shot sweep completed
+
+- Extended the accepted static ViT-B/14-register 4-shot setting to 1, 2, and
+  8 shots with the same first-support, shorter-edge 448, Flow 3-epoch, latent
+  1-NN, and no-TTE contract.
+- Class-macro 1/2/4/8-shot results rise monotonically on all five requested
+  metrics; the 8-shot row is
+  `0.981751/0.991162/0.975455/0.590661/0.942405`.
+- Audit passed across 45 class-runs: exact first-N supports, static memories,
+  finite metrics, identical metric copies, clean logs, and zero retained maps.
+- Report:
+  `skill_graph/experiments/2026-07-13_flow_latentbank_mvtecad1_static_vitb14reg_shot_sweep/report.md`.
+- Verdict: `ACCEPT_MEASUREMENT / BLOCKED_BASELINE`.
+
+# 2026-07-13 — Static Flow-LatentBank MVTec AD1 DVT-alpha sweep completed
+
+- Swept only support position-mean DVT alpha `{0,0.25,0.5,0.75,1.0}` on the
+  accepted 4-shot, static ViT-B/14-register Flow-LatentBank setting.
+- Alpha 0 exactly reproduced the accepted no-DVT metrics. No nonzero alpha
+  passed the all-five retention gate; image metrics degraded monotonically.
+- Alpha 0.5 gave the best p-AUROC/p-AUPRC/p-AUPRO
+  (`0.975438/0.583405/0.942154`), but the mean gain was dominated by
+  `transistor` and 9--10 of 15 classes degraded on each pixel metric.
+- Audit passed across 75 class-runs: exact supports, fixed `4096 -> 4096`
+  banks, finite and internally identical metrics, clean logs, and no maps.
+- Report:
+  `skill_graph/experiments/2026-07-13_flow_latentbank_mvtecad1_static_vitb14reg_dvt_alpha_sweep/report.md`.
+- Verdict: `KILL_FIXED_DVT_FOR_CLAIM / CONTINUE_DIAGNOSTIC`.
+
+# 2026-07-13 — Static Flow-LatentBank MVTec AD1 component 0/1/2 completed
+
+- Independently evaluated density removal, frozen CLS soft retrieval at the
+  fixed AD2 weight 10, and RGB guided-r8 on the accepted DVT-off 4-shot static
+  ViT-B/14-register contract.
+- Density removal is the only locked-gate passer:
+  `0.973680/0.987876/0.973087/0.584241/0.938218`, including +0.3080-point
+  p-AUPRC with no macro loss beyond 0.10 point.
+- CLS soft retrieval fails image-AUROC and p-AUPRO retention. Guided-r8 raises
+  p-AUROC/p-AUPRC/p-AUPRO by +0.3993/+4.0295/+0.3844 points and improves
+  p-AUPRC in all 15 classes, but i-AUROC loss is -0.1077 point and therefore
+  fails the preregistered all-five gate.
+- Identity regeneration exactly reproduced all five baseline metrics. Audit
+  passed exact supports, static `4096 -> 4096` memories, clean logs, 15-class
+  aggregation, and zero retained arrays. Full regression: 424 passed.
+- Report:
+  `skill_graph/experiments/2026-07-13_flow_latentbank_mvtecad1_static_vitb14reg_component012/report.md`.
+- Verdict:
+  `KEEP_DENSITY0_DIAGNOSTIC / KILL_CLS_SOFT_W10 / KILL_FIXED_GUIDED_R8_FOR_AD1_CLAIM / BLOCKED_BASELINE`.
+
+# 2026-07-13 — AD2 close/fill/erode promoted to runner default
+
+- The AD2 FlowTTE CLI now defaults to fixed class-agnostic binary morphology:
+  17-pixel directional closing across 16 angles, contour fill, and one 3x3
+  erosion at the raw best threshold.
+- Continuous `seg_AUROC`, `best_thre`, and `seg_F1_raw` remain auditable;
+  `seg_F1` records the postprocessed binary result. The manifest records the
+  profile and threshold source, and `--binary-postprocess none` restores raw
+  evaluation.
+- Local verification: 432 tests passed, plus compilation and diff checks.
+
+# 2026-07-13 — AD2 RGB guide and morphology promoted to operational defaults
+
+- The canonical AD2 FlowTTE CLI now applies half-scale RGB guided-r8
+  (`radius=8`, `epsilon=0.01`) to the continuous anomaly maps before the
+  already-default 17px/16-angle close/fill/3x3-erode binary morphology.
+- The run manifest records guide activation, exact variant, ordering, absence
+  of ground-truth use, and refined-map count. `--rgb-guide none` and
+  `--binary-postprocess none` independently restore matched ablation paths.
+- Historical AD2 experiment launchers explicitly pin `--rgb-guide none` so
+  their previously reported configurations do not change on rerun.
+- This is a user-selected operational default, not a revision of the locked
+  experimental verdict: the all-eight mean improved, while the `can` AUROC
+  class-harm gate still failed.
+
+# 2026-07-13 — AD2 proposed full-normal SuperADD-style threshold run completed
+
+- Ran all eight MVTec AD2 public objects with the frozen proposed H+ setting,
+  using the sorted 7/8 normal prototype split and disjoint 1/8 normal
+  threshold split on dsba3 GPUs 0--3 plus dsba5 GPUs 0--1.
+- Applied the user-specified exact global k=100 mean-tau score ranking to Flow
+  latents and retained a static 100,000-entry bank for every class.
+- Macro results: p-AUROC `0.833807`; held-out-normal raw/morph F1
+  `0.227669/0.230264`; TESTpublic oracle raw/morph F1
+  `0.535016/0.548522`.
+- The reported SuperADD context is `0.8393/0.6261`: ranking is close
+  (`-0.005493` AUROC), but fixed morphology F1 is lower by `-0.395836` and
+  oracle morphology F1 remains lower by `-0.077578`.
+- Audit passed exact disjoint/exhaustive splits, eight finite rows, static
+  `100000 -> 100000` banks, clean logs, and dense-map cleanup. Local suite:
+  443 passed.
+- Report:
+  `skill_graph/experiments/2026-07-13_flowtte_ad2_fullnormal_superadd_thresholds/report.md`.
+- Verdict: `ACCEPT_MEASUREMENT / BLOCKED_BASELINE`.
+
+# 2026-07-13 — AD2 random 16-shot DINOv2-L/14 completed
+
+- Ran all eight MVTec AD2 public classes with exact NumPy seed-0 random
+  16-shot support, DINOv2-L/14 layers 5/11/17/23, and the remaining proposed
+  Flow-LatentBank + DVT + density + guided-r8 + morphology stack frozen.
+- Macro results: p-AUROC `0.781110`, guided raw F1 `0.371855`, and guided
+  morphology F1 `0.430721`.
+- This is below the existing DINOv3-H+ fixed-support proposed context by
+  `0.056418` p-AUROC and `0.123138` morphology F1, but the comparison is not
+  a backbone-only ablation because support policy also changes.
+- Audit passed exact recomputed support selection, 16 unique paths per class,
+  static memories, all configuration fields, clean logs, and zero retained
+  dense-map directories. Local regression: `446 passed`.
+- Report:
+  `skill_graph/experiments/2026-07-13_flowtte_ad2_random16_dinov2l/report.md`.
+- Verdict: `ACCEPT_MEASUREMENT / BLOCKED_BASELINE`; single-seed diagnostic.
+
+# 2026-07-13 — Few-shot AD2 model-ladder plan frozen
+
+- Defined Basic (DINOv2-L), Ours+ (DINOv2-R), and Ours++ (DINOv3-H+) while
+  explicitly excluding Ours++ Full and any new full-normal candidate run.
+- Basic owns the exact-reference SuperAD claim; Ours+ and Ours++ are backbone
+  scaling variants, with SuperADD used only as external full-normal context.
+- Prior H+ negatives prevent a broad deep-Flow sweep, but depth and width stay
+  explicit through one complete six-run factorial: layers 2/4/6 x hidden
+  1/2. Eight layers is excluded.
+- Capacity is followed by a four-row log-det/brightness factorial; its anchor
+  overlaps the selected capacity row, requiring only three new runs.
+- Design:
+  `skill_graph/analysis/2026-07-13_fewshot_ad2_model_ladder_experiment_plan.md`.
+- Added `scripts/run_flow_tte_basic_hparam_parallel_remote.sh`: nine unique
+  Basic configurations are assigned once across dsba3 GPUs 0--3 and dsba5
+  GPUs 0--1, with per-GPU queues, offline DINOv2 preflight, exact support
+  rebasing, restart-safe object skipping, aggregation, and dense-map cleanup.
+- Verification: assignment/factorial tests plus focused checks `10 passed`;
+  full regression `448 passed`; launcher syntax and diff checks passed.
+# 2026-07-15 — MVTec AD2 Shift-Factorized Latent Bank launched
+
+- Implemented robust low-rank support-1NN residual projection as an explicit
+  test-environment shift model, verified 25 focused tests, passed remote
+  fruit-jelly projection/scoring smoke, and launched six all-object rank/trim
+  variants across dsba3 GPUs 0--3 and dsba5 GPUs 0--1.
+- Report: `skill_graph/experiments/2026-07-15_sflb_ad2_rank_trim/report.md`.
+- Status: `RUNNING / CONTINUE_DIAGNOSTIC`; official AU-PRO@0.05 pending.

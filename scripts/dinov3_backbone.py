@@ -176,6 +176,20 @@ class DINOv3Backbone:
             for layer in self.feature_layers
         ]
 
+    def extract_features_with_context_tokens(
+        self,
+        image_tensor: torch.Tensor,
+        context_source: str,
+    ) -> Tuple[List[np.ndarray], np.ndarray]:
+        hidden_states = self._hidden_states(image_tensor)
+        start = dinov3_patch_token_start(self._num_register_tokens)
+        layer_features = [
+            hidden_states[dinov3_hidden_state_index(layer)].squeeze(0)[start:].cpu().numpy()
+            for layer in self.feature_layers
+        ]
+        context_tokens = self._context_tokens_from_hidden_states(hidden_states, context_source)
+        return layer_features, context_tokens.numpy().astype(np.float32, copy=False)
+
     def extract_cls_features(self, image_tensor: torch.Tensor) -> torch.Tensor:
         hidden_states = self._hidden_states(image_tensor)
         return hidden_states[-1].squeeze(0)[0].detach().cpu()
@@ -203,6 +217,35 @@ class DINOv3Backbone:
         if source == "register":
             return register_mean
         return torch.cat([cls, register_mean], dim=0)
+
+    def extract_context_token_features(
+        self,
+        image_tensor: torch.Tensor,
+        context_source: str,
+    ) -> torch.Tensor:
+        hidden_states = self._hidden_states(image_tensor)
+        return self._context_tokens_from_hidden_states(hidden_states, context_source)
+
+    def _context_tokens_from_hidden_states(
+        self,
+        hidden_states: Tuple[torch.Tensor, ...],
+        context_source: str,
+    ) -> torch.Tensor:
+        tokens = hidden_states[-1].squeeze(0).detach().cpu()
+        source = context_source.lower()
+        if source == "cls":
+            return tokens[:1]
+        if source not in ("register", "cls_register"):
+            message = f"Unsupported DINOv3 context token source: {context_source}"
+            raise ValueError(message)
+        start = dinov3_patch_token_start(self._num_register_tokens)
+        registers = tokens[1:start]
+        if registers.numel() == 0:
+            message = "DINOv3 register context requested, but model has no register tokens."
+            raise RuntimeError(message)
+        if source == "register":
+            return registers
+        return torch.cat([tokens[:1], registers], dim=0)
 
     def _hidden_states(self, image_tensor: torch.Tensor) -> Tuple[torch.Tensor, ...]:
         self._ensure_loaded()

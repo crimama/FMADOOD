@@ -13,7 +13,7 @@ from scripts.flow_tte_map_metrics import (
     compute_map_metric_set,
     histogram_binary_metrics,
 )
-from scripts.flow_tte_mvtec_classic import ClassicMVTecDataset, build_evaluation_file_lists
+from scripts.flow_tte_mvtec_classic import ClassicMVTecDataset, VisADataset, build_evaluation_file_lists
 from scripts.flow_tte_superadd_preprocess import (
     BrightnessRange,
     apply_brightness,
@@ -26,6 +26,7 @@ from scripts.flow_tte_support import (
     is_fixed_support_policy,
     merge_layer_features,
     select_support_paths,
+    select_superadd_threshold_paths,
     transform_rgb,
 )
 
@@ -55,6 +56,23 @@ def test_classic_mvtec_adapter_maps_defect_gt_and_prediction_paths(tmp_path: Pat
     assert files.prediction_filenames == (
         str(tmp_path / "run" / "anomaly_maps" / "bottle" / "test" / "broken" / "002"),
         str(tmp_path / "run" / "anomaly_maps" / "bottle" / "test" / "good" / "001"),
+    )
+
+
+def test_visa_adapter_accepts_same_stem_ground_truth_masks(tmp_path: Path) -> None:
+    root = tmp_path / "VisA_pytorch" / "1cls"
+    write_placeholder(root / "candle" / "train" / "good" / "000.JPG")
+    write_placeholder(root / "candle" / "test" / "good" / "001.JPG")
+    write_placeholder(root / "candle" / "test" / "bad" / "002.JPG")
+    write_placeholder(root / "candle" / "ground_truth" / "bad" / "002.png")
+    dataset = VisADataset(data_root=str(root), objects=("candle",))
+
+    files = build_evaluation_file_lists(dataset, tmp_path / "run", "candle")
+
+    assert dataset.dataset_name == "VisA 1-class"
+    assert files.gt_filenames == (
+        str(root / "candle" / "ground_truth" / "bad" / "002.png"),
+        None,
     )
 
 
@@ -158,6 +176,23 @@ def test_visionad_support_selection_uses_seeded_without_replacement() -> None:
     assert selected == tuple(paths[int(index)] for index in expected_indices)
 
 
+def test_superadd_full_normal_split_matches_sorted_modulo_eight() -> None:
+    paths = tuple(Path(f"/data/can/train/good/{index:03d}.png") for index in range(18))
+
+    prototypes = select_support_paths(
+        paths,
+        shots=0,
+        policy="superadd_full_7of8",
+        seed=0,
+    )
+    thresholds = select_superadd_threshold_paths(paths)
+
+    assert thresholds == (paths[0], paths[8], paths[16])
+    assert prototypes == tuple(path for index, path in enumerate(paths) if index % 8 != 0)
+    assert set(prototypes).isdisjoint(thresholds)
+    assert len(prototypes) + len(thresholds) == len(paths)
+
+
 def test_greedy_coreset_indices_start_near_mean_then_cover_extremes() -> None:
     features: npt.NDArray[np.float32] = np.array(
         [[0.0, 0.0], [10.0, 0.0], [0.0, 10.0], [5.0, 5.0]],
@@ -232,6 +267,41 @@ def test_visionad_support_transforms_match_rotations_and_flips() -> None:
     assert np.array_equal(transform_rgb(image, "rot270"), np.rot90(image, k=3))
     assert np.array_equal(transform_rgb(image, "flip_vertical"), np.flip(image, axis=0))
     assert np.array_equal(transform_rgb(image, "flip_horizontal"), np.flip(image, axis=1))
+
+
+@pytest.mark.parametrize(
+    ("transform_name", "angle"),
+    [
+        ("superad_rot000", 0),
+        ("superad_rot045", 45),
+        ("superad_rot090", 90),
+        ("superad_rot135", 135),
+        ("superad_rot180", 180),
+        ("superad_rot225", 225),
+        ("superad_rot270", 270),
+        ("superad_rot315", 315),
+    ],
+)
+def test_superad_support_rotations_match_original_warp_affine(
+    transform_name: str,
+    angle: int,
+) -> None:
+    cv2_module = pytest.importorskip("cv2")
+    image = np.arange(5 * 7 * 3, dtype=np.uint8).reshape(5, 7, 3)
+    image_center = tuple(np.array(image.shape[1::-1]) / 2)
+    rotation = cv2_module.getRotationMatrix2D(image_center, angle, 1.0)
+    expected = cv2_module.warpAffine(
+        image,
+        rotation,
+        image.shape[1::-1],
+        flags=cv2_module.INTER_LINEAR,
+        borderMode=cv2_module.BORDER_DEFAULT,
+    )
+
+    actual = transform_rgb(image, transform_name)
+
+    assert actual.shape == image.shape
+    assert np.array_equal(actual, expected)
 
 
 def test_visionad_feature_fusion_means_then_normalizes() -> None:

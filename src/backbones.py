@@ -1,5 +1,23 @@
 import cv2
 import torch
+
+# Newer transformers releases use the public PyTree registration name while
+# the PyTorch version in the benchmark containers still exposes only the
+# equivalent private API.  torchvision imports torch.onnx, which imports
+# transformers when it is installed, so install a narrow forward-compatible
+# alias before importing torchvision.
+if not hasattr(torch.utils._pytree, "register_pytree_node"):
+    def _register_pytree_node_compat(typ, flatten_fn, unflatten_fn, **kwargs):
+        kwargs.pop("serialized_type_name", None)
+        return torch.utils._pytree._register_pytree_node(
+            typ,
+            flatten_fn,
+            unflatten_fn,
+            **kwargs,
+        )
+
+    torch.utils._pytree.register_pytree_node = _register_pytree_node_compat
+
 import torchvision.models as models
 from PIL import Image
 from torchvision import transforms
@@ -90,9 +108,29 @@ class ViTWrapper(VisionTransformerWrapper):
 
 # DINOv2 Wrapper
 class DINOv2Wrapper(VisionTransformerWrapper):
+    def __init__(
+        self,
+        model_name,
+        device,
+        smaller_edge_size=224,
+        half_precision=False,
+        feature_layers=None,
+    ):
+        self.feature_layers = tuple(feature_layers or (5, 11, 17, 23))
+        super().__init__(model_name, device, smaller_edge_size, half_precision)
+        depth = len(getattr(self.model, "blocks", ()))
+        if not self.feature_layers or min(self.feature_layers) < 0:
+            raise ValueError("feature_layers must contain non-negative indices")
+        if depth and max(self.feature_layers) >= depth:
+            raise ValueError(
+                f"feature layer index must be less than model depth {depth}"
+            )
+
     def load_model(self):
         model = torch.hub.load('facebookresearch/dinov2', self.model_name)
         model.eval()
+        for parameter in model.parameters():
+            parameter.requires_grad = False
 
         # print(f"Loaded model: {self.model_name}")
         # print("Resizing images to", self.smaller_edge_size)
@@ -137,8 +175,9 @@ class DINOv2Wrapper(VisionTransformerWrapper):
         
         # return tokens.cpu().numpy()
         
-            layers = [5, 11, 17, 23]
-            tokens_list = self.model.get_intermediate_layers(image_batch, layers)
+            tokens_list = self.model.get_intermediate_layers(
+                image_batch, list(self.feature_layers)
+            )
             features_list = [tokens.squeeze().cpu().numpy() for tokens in tokens_list]
         
         return features_list  # list of 4 arrays

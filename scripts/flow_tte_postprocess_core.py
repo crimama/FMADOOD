@@ -70,6 +70,14 @@ class VariantRow:
     source_seg_f1: float
 
 
+@dataclass(frozen=True)
+class BinaryMaskMetrics:
+    f1: float
+    precision: float
+    recall: float
+    positive_area: float
+
+
 def collect_object_rows(config: EvalConfig, object_name: str) -> Tuple[VariantRow, ...]:
     run_root = find_object_run_root(config.run_roots, object_name)
     object_input = ObjectInput(
@@ -91,6 +99,15 @@ def variant_profiles() -> Tuple[VariantProfile, ...]:
         VariantProfile(name="closefill", erosion_size=0, use_morphology=True),
         VariantProfile(name="closefill_erode", erosion_size=3, use_morphology=True),
     )
+
+
+def variant_profile(name: str) -> VariantProfile:
+    profiles = {profile.name: profile for profile in variant_profiles()}
+    try:
+        return profiles[name]
+    except KeyError as error:
+        choices = ", ".join(sorted(profiles))
+        raise ValueError(f"unknown morphology profile {name!r}; choose from {choices}") from error
 
 
 def find_object_run_root(run_roots: Sequence[Path], object_name: str) -> Path:
@@ -190,34 +207,60 @@ def evaluate_variant(
     threshold: float,
     config: EvalConfig,
 ) -> VariantRow:
+    metrics = binary_mask_metrics(
+        tuple(sample.score for sample in object_input.samples),
+        tuple(sample.gt_mask for sample in object_input.samples),
+        threshold,
+        profile,
+        config.line_length,
+        config.angle_count,
+    )
+    return VariantRow(
+        object_name=object_input.object_name,
+        variant=f"{profile.name}_at_metrics_best",
+        threshold=threshold,
+        f1=metrics.f1,
+        precision=metrics.precision,
+        recall=metrics.recall,
+        positive_area=metrics.positive_area,
+        source_seg_auroc=object_input.metrics.auroc,
+        source_seg_f1=object_input.metrics.f1,
+    )
+
+
+def binary_mask_metrics(
+    scores: Sequence[FloatArray],
+    gt_masks: Sequence[BoolArray],
+    threshold: float,
+    profile: VariantProfile,
+    line_length: int = 17,
+    angle_count: int = 16,
+) -> BinaryMaskMetrics:
+    if len(scores) != len(gt_masks):
+        raise ValueError("scores and gt_masks must have the same length")
     tp = fp = fn = positive = total = 0
-    for sample in object_input.samples:
-        mask = sample.score >= threshold
+    for score, gt_mask in zip(scores, gt_masks):
+        mask = score >= threshold
         if profile.use_morphology:
             mask = postprocess_mask(
                 mask,
-                config.line_length,
-                config.angle_count,
+                line_length,
+                angle_count,
                 profile.erosion_size,
             )
-        tp += int(np.count_nonzero(mask & sample.gt_mask))
-        fp += int(np.count_nonzero(mask & ~sample.gt_mask))
-        fn += int(np.count_nonzero(~mask & sample.gt_mask))
+        tp += int(np.count_nonzero(mask & gt_mask))
+        fp += int(np.count_nonzero(mask & ~gt_mask))
+        fn += int(np.count_nonzero(~mask & gt_mask))
         positive += int(np.count_nonzero(mask))
         total += int(mask.size)
     precision = 0.0 if tp + fp == 0 else float(tp / (tp + fp))
     recall = 0.0 if tp + fn == 0 else float(tp / (tp + fn))
     f1 = 0.0 if 2 * tp + fp + fn == 0 else float((2 * tp) / (2 * tp + fp + fn))
-    return VariantRow(
-        object_name=object_input.object_name,
-        variant=f"{profile.name}_at_metrics_best",
-        threshold=threshold,
+    return BinaryMaskMetrics(
         f1=f1,
         precision=precision,
         recall=recall,
         positive_area=0.0 if total == 0 else float(positive / total),
-        source_seg_auroc=object_input.metrics.auroc,
-        source_seg_f1=object_input.metrics.f1,
     )
 
 

@@ -1,0 +1,6 @@
+variant	structural_question	run_overrides	gate
+conditional_cls	Does image-level global context reduce patch-independent NF instability?	FLOW_CONDITION_MODE=context FLOW_CONTEXT_SOURCE=cls CONTEXT_MODE=none	F1 > 0.527427 with no large AUROC drop
+conditional_xy	Does explicit patch position condition explain score-field/position nuisance inside the flow?	FLOW_CONDITION_MODE=context FLOW_CONTEXT_SOURCE=xy CONTEXT_MODE=none	F1 > 0.527427 with no large AUROC drop
+conditional_cls_xy	Does combined global and spatial context improve conditional patch normality?	FLOW_CONDITION_MODE=context FLOW_CONTEXT_SOURCE=cls_xy CONTEXT_MODE=none	F1 > 0.527427 with no large AUROC drop
+foreground_flow_mixture	Does a two-component foreground/background flow explain patch modes without hard score suppression?	NORMALITY_MODE=foreground_flow_mixture SCORE_FIELD_FOREGROUND_QUANTILE=0.50	F1 > 0.527427 with no large AUROC drop
+local_contrast	Does query score-field local contrast suppress smooth nuisance while preserving local anomaly peaks?	SCORE_FIELD_CALIBRATION_MODE=local_contrast SCORE_FIELD_CALIBRATION_ALPHA=1.0 SCORE_FIELD_FOREGROUND_SMOOTH_KERNEL=7	F1 > 0.527427 with no large AUROC drop

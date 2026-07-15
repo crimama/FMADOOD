@@ -11,6 +11,7 @@ from flow_tte.config import ExpansionConfig, FlowConfig, FlowTTEConfig, ScoreCon
 from flow_tte.flow import PatchNormalizingFlow
 from flow_tte.memory import TorchMemoryBank
 from flow_tte.pipeline import FlowTTE
+from flow_tte.scoring import ScoreCalibration
 
 FloatArray = npt.NDArray[np.float32]
 
@@ -65,6 +66,17 @@ def test_memory_query_context_penalty_changes_nearest_patch() -> None:
 
     assert int(latent_only.indices[0, 0]) == 1
     assert int(context_penalized.indices[0, 0]) == 0
+
+
+def test_score_calibration_can_use_deterministic_sample_cap() -> None:
+    features = torch.arange(40, dtype=torch.float32).reshape(20, 2)
+
+    calibration = ScoreCalibration.fit(
+        features,
+        ScoreConfig(calibration_sample_size=5, query_chunk_size=4),
+    )
+
+    assert calibration.distance_std > 0.0
 
 
 def test_memory_query_top_m_context_routes_to_context_group() -> None:

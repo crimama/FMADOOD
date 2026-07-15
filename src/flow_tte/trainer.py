@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 import torch
 from torch.nn.utils.clip_grad import clip_grad_norm_
@@ -48,6 +48,10 @@ class FlowEvaluation:
     z: torch.Tensor
     nll: torch.Tensor
 
+    @property
+    def spatial_shape(self) -> Tuple[int, ...]:
+        return self.batch.patch_shape
+
 
 def _seed_torch(seed: int, device: torch.device) -> None:
     _ = torch.random.manual_seed(seed)
@@ -74,12 +78,14 @@ class FlowDensityEstimator:
             hidden_multiplier=config.hidden_multiplier,
             clamp=config.clamp,
             condition_dim=self.condition_dim,
+            spatial_context=config.spatial_context,
         ).to(self.device)
         self.standardizer: Optional[FeatureStandardizer] = None
         self.context_standardizer: Optional[FeatureStandardizer] = None
         self.train_nll_mean: float = 0.0
         self.train_nll_std: float = 1.0
         self.density_threshold: float = 0.0
+        self.spatial_shape: Optional[Tuple[int, int]] = None
 
     def fit(
         self,
@@ -88,6 +94,11 @@ class FlowDensityEstimator:
         contexts: Optional[FeatureArray] = None,
     ) -> FlowTrainingStats:
         patch_batch = as_patch_batch(features, self.device)
+        self.spatial_shape = (
+            (patch_batch.patch_shape[0], patch_batch.patch_shape[1])
+            if len(patch_batch.patch_shape) == 2
+            else None
+        )
         x = patch_batch.flat_features
         if self.config.standardize:
             self.standardizer = FeatureStandardizer.fit(x)
@@ -128,6 +139,9 @@ class FlowDensityEstimator:
         losses: List[float] = []
         _ = self.flow.train()
         for _epoch in range(self.config.n_epochs):
+            if patch_batch.flat_input and x.shape[0] > self.config.batch_size:
+                losses.append(self._fit_flat_batch_microbatched(x, condition, optimizer))
+                continue
             epoch_loss = 0.0
             n_batches = 0
             order = torch.randperm(
@@ -145,7 +159,7 @@ class FlowDensityEstimator:
                         -1,
                         image_conditions.shape[-1],
                     )
-                z_flat, logdet_flat = self.flow.forward(flat_batch, condition=flat_condition)
+                z_flat, logdet_flat = self._forward_flow(flat_batch, flat_condition)
                 z = z_flat.reshape(image_batch.shape[0], image_batch.shape[1], z_flat.shape[-1])
                 logdet = logdet_flat.reshape(image_batch.shape[0], image_batch.shape[1])
                 nll = tail_aware_nll(
@@ -164,7 +178,10 @@ class FlowDensityEstimator:
                 n_batches += 1
             losses.append(epoch_loss / max(n_batches, 1))
 
-        train_nll = self.evaluate(features, contexts=contexts).nll
+        # Training statistics only need the scalar NLL per patch.  Re-running
+        # evaluate() here also materializes and concatenates every latent, which
+        # unnecessarily doubles the peak memory for full-normal support sets.
+        train_nll = self._nll_in_chunks(x, condition)
         self.train_nll_mean = float(train_nll.mean().detach().cpu())
         self.train_nll_std = float(train_nll.std(unbiased=False).clamp_min(1e-6).detach().cpu())
         self.density_threshold = float(
@@ -183,6 +200,8 @@ class FlowDensityEstimator:
         contexts: Optional[FeatureArray] = None,
     ) -> FlowEvaluation:
         batch = as_patch_batch(features, self.device)
+        if len(batch.patch_shape) == 2:
+            self.spatial_shape = (batch.patch_shape[0], batch.patch_shape[1])
         x = batch.flat_features
         if self.standardizer is not None:
             x = self.standardizer.transform(x)
@@ -195,9 +214,96 @@ class FlowDensityEstimator:
             return FlowEvaluation(batch=batch, z=x, nll=self._identity_nll(x))
         _ = self.flow.eval()
         with torch.no_grad():
-            z, logdet = self.flow.forward(x, condition=condition)
+            z, logdet = self._forward_in_chunks(x, condition)
             nll = patch_nll(z, logdet)
         return FlowEvaluation(batch=batch, z=z, nll=nll)
+
+    def evaluate_many(self, features: FeatureArray) -> FlowEvaluation:
+        return self.evaluate(features)
+
+    def _fit_flat_batch_microbatched(
+        self,
+        features: torch.Tensor,
+        condition: Optional[torch.Tensor],
+        optimizer: torch.optim.Optimizer,
+    ) -> float:
+        n_rows = int(features.shape[0])
+        nll_parts: List[torch.Tensor] = []
+        with torch.no_grad():
+            for start in range(0, n_rows, self.config.batch_size):
+                end = start + self.config.batch_size
+                chunk_condition = None if condition is None else condition[start:end]
+                z, logdet = self._forward_flow(features[start:end], chunk_condition)
+                nll_parts.append(patch_nll(z, logdet))
+        nll = torch.cat(nll_parts, dim=0)
+        tail_count = max(1, int(n_rows * self.config.tail_top_k_ratio))
+        tail_indices = torch.topk(nll, tail_count).indices
+        nll_weights = torch.full_like(nll, (1.0 - self.config.tail_weight) / n_rows)
+        nll_weights[tail_indices] += self.config.tail_weight / tail_count
+
+        optimizer.zero_grad()
+        for start in range(0, n_rows, self.config.batch_size):
+            end = start + self.config.batch_size
+            chunk_condition = None if condition is None else condition[start:end]
+            z, logdet = self._forward_flow(features[start:end], chunk_condition)
+            chunk_nll = patch_nll(z, logdet)
+            loss = (chunk_nll * nll_weights[start:end]).sum()
+            loss = loss + self.config.lambda_logdet * logdet.square().sum() / n_rows
+            loss.backward()
+        _ = clip_grad_norm_(self.flow.parameters(), max_norm=0.5)
+        optimizer.step()
+        return float((nll * nll_weights).sum().detach().cpu())
+
+    def _forward_in_chunks(
+        self,
+        features: torch.Tensor,
+        condition: Optional[torch.Tensor],
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        if self.config.spatial_context:
+            return self._forward_flow(features, condition)
+        if features.shape[0] <= self.config.batch_size:
+            return self._forward_flow(features, condition)
+        z_parts: List[torch.Tensor] = []
+        logdet_parts: List[torch.Tensor] = []
+        for start in range(0, features.shape[0], self.config.batch_size):
+            end = start + self.config.batch_size
+            chunk_condition = None if condition is None else condition[start:end]
+            z, logdet = self._forward_flow(features[start:end], chunk_condition)
+            z_parts.append(z)
+            logdet_parts.append(logdet)
+        return torch.cat(z_parts, dim=0), torch.cat(logdet_parts, dim=0)
+
+    def _nll_in_chunks(
+        self,
+        features: torch.Tensor,
+        condition: Optional[torch.Tensor],
+    ) -> torch.Tensor:
+        """Compute exact patch NLLs without retaining the full latent matrix."""
+        nll_parts: List[torch.Tensor] = []
+        _ = self.flow.eval()
+        with torch.no_grad():
+            if self.config.spatial_context:
+                z, logdet = self._forward_flow(features, condition)
+                return patch_nll(z, logdet)
+            for start in range(0, features.shape[0], self.config.batch_size):
+                end = start + self.config.batch_size
+                chunk_condition = None if condition is None else condition[start:end]
+                z, logdet = self._forward_flow(features[start:end], chunk_condition)
+                nll_parts.append(patch_nll(z, logdet))
+        return torch.cat(nll_parts, dim=0)
+
+    def _forward_flow(
+        self,
+        features: torch.Tensor,
+        condition: Optional[torch.Tensor],
+    ) -> Tuple[torch.Tensor, torch.Tensor]:
+        if self.config.spatial_context:
+            return self.flow.forward(
+                features,
+                condition=condition,
+                spatial_shape=self.spatial_shape,
+            )
+        return self.flow.forward(features, condition=condition)
 
     def transform(
         self,

@@ -38,8 +38,6 @@ class TorchMemoryBank:
         self.contexts = None if contexts is None else contexts.detach().clone()
         self.context_group_contexts = None
         self.context_group_ids = None
-        if self.contexts is not None:
-            self.context_group_contexts, self.context_group_ids = group_contexts(self.contexts)
 
     def query(  # noqa: PLR0913
         self,
@@ -112,6 +110,8 @@ class TorchMemoryBank:
             raise RuntimeError("TorchMemoryBank query context dimensions must match")
         group_contexts = self.context_group_contexts
         group_ids = self.context_group_ids
+        if context_top_m is not None and self.contexts is not None and group_contexts is None:
+            group_contexts, group_ids = self._ensure_context_groups()
         if context_top_m is not None and (group_contexts is None or group_ids is None):
             raise RuntimeError("TorchMemoryBank context groups are not fitted")
         norm_group_contexts = None
@@ -122,6 +122,13 @@ class TorchMemoryBank:
             norm_group_contexts=norm_group_contexts,
             group_ids=group_ids,
         )
+
+    def _ensure_context_groups(self) -> tuple[torch.Tensor, torch.Tensor]:
+        if self.contexts is None:
+            raise RuntimeError("TorchMemoryBank contexts are not fitted")
+        if self.context_group_contexts is None or self.context_group_ids is None:
+            self.context_group_contexts, self.context_group_ids = group_contexts(self.contexts)
+        return self.context_group_contexts, self.context_group_ids
 
 
 @final

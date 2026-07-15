@@ -23,18 +23,32 @@ class ScoreCalibration:
         config: ScoreConfig,
         m0_contexts: Optional[torch.Tensor] = None,
     ) -> "ScoreCalibration":
+        if not config.loo_standardize:
+            return cls(distance_mean=0.0, distance_std=1.0)
         if m0_features.shape[0] <= 1:
             return cls(distance_mean=0.0, distance_std=1.0)
+        calibration_features = m0_features
+        calibration_contexts = m0_contexts
+        if 1 < config.calibration_sample_size < m0_features.shape[0]:
+            sample_indices = torch.linspace(
+                0,
+                m0_features.shape[0] - 1,
+                steps=config.calibration_sample_size,
+                device=m0_features.device,
+            ).round().to(torch.long)
+            calibration_features = m0_features[sample_indices]
+            if m0_contexts is not None:
+                calibration_contexts = m0_contexts[sample_indices]
         bank = TorchMemoryBank()
-        bank.fit(m0_features, contexts=m0_contexts)
+        bank.fit(calibration_features, contexts=calibration_contexts)
         context_weight = config.context_weight if config.context_mode == "soft_penalty" else 0.0
         context_top_m = config.context_top_m if config.context_mode == "top_m" else None
         query = bank.query(
-            m0_features,
+            calibration_features,
             k=2,
             chunk_size=config.query_chunk_size,
             squared=config.use_squared_distance,
-            query_contexts=m0_contexts,
+            query_contexts=calibration_contexts,
             context_weight=context_weight,
             context_top_m=context_top_m,
         )

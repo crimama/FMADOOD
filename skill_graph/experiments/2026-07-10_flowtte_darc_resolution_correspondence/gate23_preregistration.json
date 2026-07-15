@@ -1,0 +1,66 @@
+{
+  "schema_version": "darc-gate23-preregistration-v1",
+  "sealed_at_utc": "2026-07-10T09:30:34Z",
+  "sealed_before_gate1_aggregate": true,
+  "gate1_completed_object_seed_count_at_seal": 6,
+  "gate1_expected_object_seed_count": 45,
+  "gate2": {
+    "expected_source_rows": 720,
+    "objects": 15,
+    "seeds": [0, 1, 2],
+    "sources_per_object_seed": 16,
+    "profiles": ["thin-w1-l32", "thin-w2-l48"],
+    "normal_residual": {
+      "score": "raw-layer7-cosine-residual",
+      "quantile": 0.999,
+      "quantile_method": "higher",
+      "grouping": "concatenate fixed 16 held-out-clean token populations within object-seed, then equal macro over 45 groups",
+      "pass": "Q_L0 > 0 and Q_L1 <= 0.80 * Q_L0"
+    },
+    "signal": {
+      "pass": "bootstrap_lb_dAP > 0 and bootstrap_lb_dComponentRecall > 0",
+      "bootstrap_unit": "source-image-within-object-seed",
+      "bootstrap_replicates": 10000,
+      "bootstrap_seed": 20260710,
+      "bootstrap_quantile": 0.025,
+      "bootstrap_quantile_method": "linear"
+    },
+    "retention": {
+      "response": "exact-mask mean of cue-minus-clean calibrated micro evidence before confidence/coarse fusion",
+      "aggregation": "profile mean -> source mean -> object-seed mean -> equal 45-group macro",
+      "pass": "S_L1 > 0 and S_R1 >= 0.90 * S_L1"
+    },
+    "fallback": "rung-independent layer7 G0 residual/evidence; never drop invalid tokens or source rows",
+    "final_pass": "normal_residual and signal_ap and signal_component_recall and r1_retention"
+  },
+  "gate3": {
+    "classes": ["can", "fabric", "vial", "wallplugs", "rice"],
+    "gap_classes": ["fabric", "vial", "wallplugs"],
+    "strong_no_harm_classes": ["rice"],
+    "seeds": [0, 1, 2],
+    "resource": "P16-random",
+    "folds": 4,
+    "memory_per_fold": 12,
+    "calibration_per_fold": 4,
+    "candidate": "terminal-R1-plus-unchanged-coarse",
+    "comparator": "same-run-unchanged-672-Hplus-DVT-MLP-coarse-anchor",
+    "fold_map_aggregation": "float64 arithmetic mean of exactly four raw maps, cast once to float32",
+    "primary_population": "test_public/good+bad",
+    "primary_metrics": ["raw_no_morphology_oracle_f1", "raw_no_morphology_pauroc_005"],
+    "diagnostic_only": ["bad_only", "ap", "fixed_threshold_f1", "shared_morphology"],
+    "decision_order": "paired cell delta -> mean over three seeds per class -> equal macro over five classes",
+    "pass": {
+      "macro_f1_delta_min": 0.03,
+      "macro_pauroc_delta_min": -0.002,
+      "per_class_f1_delta_min": -0.02,
+      "can_f1_delta_strictly_positive": true,
+      "minimum_positive_gap_classes": 2
+    },
+    "complete_cell_count": 30
+  },
+  "claim_boundary": {
+    "mvtec_ad2_public": "shadow-development-only",
+    "gate4_private": "BLOCKED_DATA",
+    "final_superad_superadd_superiority_allowed": false
+  }
+}

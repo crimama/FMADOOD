@@ -1,0 +1,6 @@
+variant	status	objects	seg_AUROC_0.05	seg_F1	delta_AUROC_vs_hplus	delta_F1_vs_hplus	local_root
+conditional_cls	ok	8	0.832374	0.512126	-0.004365	-0.015301	results/remote_runs/dsba3/flowtte_patch_structure_all8_conditional_cls_20260709_v1
+conditional_xy	runtime_blocked_status_143	0	NA	NA	NA	NA	results/remote_runs/dsba3/flowtte_patch_structure_all8_conditional_xy_20260709_v1
+conditional_cls_xy	runtime_blocked_status_143	0	NA	NA	NA	NA	results/remote_runs/dsba3/flowtte_patch_structure_all8_conditional_cls_xy_20260709_v1
+foreground_flow_mixture	ok	8	0.834712	0.519250	-0.002027	-0.008177	results/remote_runs/dsba3/flowtte_patch_structure_all8_foreground_flow_mixture_20260709_v1
+local_contrast	ok	8	0.806200	0.438345	-0.030539	-0.089082	results/remote_runs/dsba3/flowtte_patch_structure_all8_local_contrast_20260709_v1

@@ -41,6 +41,7 @@ class ClassicEvaluationConfig:
     pro_integration_limit: float
     seed: int
     image_top_fraction: float = 0.01
+    include_legacy_segmentation_metrics: bool = True
 
 
 @dataclass(frozen=True)
@@ -48,6 +49,10 @@ class ClassicMVTecDataset:
     data_root: str
     objects: Tuple[str, ...]
     resolution: int = 448
+
+    @property
+    def dataset_name(self) -> str:
+        return "MVTec AD1 classic"
 
     def get_objects(self) -> List[ClassicObjectInfo]:
         return [self.get_object_info(object_name) for object_name in self.objects]
@@ -105,6 +110,28 @@ class ClassicMVTecDataset:
         return object_dir
 
 
+@dataclass(frozen=True)
+class VisADataset(ClassicMVTecDataset):
+    @property
+    def dataset_name(self) -> str:
+        return "VisA 1-class"
+
+    def ground_truth_path(self, object_name: str, anomaly_type: str, stem: str) -> Optional[Path]:
+        if anomaly_type == "good":
+            return None
+        ground_truth_dir = self._object_dir(object_name) / "ground_truth" / anomaly_type
+        candidates = (
+            ground_truth_dir / f"{stem}.png",
+            ground_truth_dir / f"{stem}_mask.png",
+        )
+        for candidate in candidates:
+            if candidate.is_file():
+                return candidate
+        raise FileNotFoundError(
+            f"Ground-truth mask not found for {object_name}/{anomaly_type}/{stem}",
+        )
+
+
 def _image_files(directory: Path) -> Tuple[Path, ...]:
     if not directory.is_dir():
         message = f"Image directory not found: {directory}"
@@ -141,8 +168,6 @@ def build_evaluation_file_lists(
 
 
 def evaluate_classic_mvtec(config: ClassicEvaluationConfig) -> Dict[str, JsonValue]:
-    from src.post_eval import eval_segmentation  # noqa: PLC0415
-
     per_object: Dict[str, JsonValue] = {}
     aurocs: List[float] = []
     f1s: List[float] = []
@@ -154,51 +179,68 @@ def evaluate_classic_mvtec(config: ClassicEvaluationConfig) -> Dict[str, JsonVal
     image_score_aggregation: Optional[str] = None
     for object_name in config.objects:
         files = build_evaluation_file_lists(config.dataset, config.output_root, object_name)
-        auroc, f1, threshold = eval_segmentation(
-            files.gt_filenames,
-            files.prediction_filenames,
-            pro_integration_limit=config.pro_integration_limit,
-            delete_tiff_files=False,
-        )
+        legacy_metrics: Dict[str, JsonValue] = {}
+        if config.include_legacy_segmentation_metrics:
+            from src.post_eval import eval_segmentation  # noqa: PLC0415
+
+            auroc, f1, threshold = eval_segmentation(
+                files.gt_filenames,
+                files.prediction_filenames,
+                pro_integration_limit=config.pro_integration_limit,
+                delete_tiff_files=False,
+            )
+            aurocs.append(float(auroc))
+            f1s.append(float(f1))
+            legacy_metrics = {
+                "seg_AUROC_0.05": float(auroc),
+                "seg_F1": float(f1),
+                "best_threshold": float(threshold),
+            }
         map_metrics = compute_map_metric_set(
             files.gt_filenames,
             files.prediction_filenames,
             image_top_fraction=config.image_top_fraction,
         )
         image_score_aggregation = map_metrics.image_score_aggregation
-        aurocs.append(float(auroc))
-        f1s.append(float(f1))
         image_aurocs.append(map_metrics.image_auroc)
         pixel_aurocs.append(map_metrics.pixel_auroc)
         image_aps.append(map_metrics.image_ap)
         pixel_aps.append(map_metrics.pixel_ap)
         pixel_pros.append(map_metrics.pixel_pro)
         per_object[object_name] = {
-            "seg_AUROC_0.05": float(auroc),
-            "seg_F1": float(f1),
-            "best_threshold": float(threshold),
+            **legacy_metrics,
             "sample_count": files.sample_count,
             **map_metrics.as_dict(),
         }
     if image_score_aggregation is None:
         raise ValueError("At least one object is required for classic MVTec evaluation")
     metrics: Dict[str, JsonValue] = {
-        "dataset": "MVTec AD1 classic",
+        "dataset": config.dataset.dataset_name,
         "objects": list(config.objects),
         "seed": config.seed,
         "pro_integration_limit": config.pro_integration_limit,
-        "seg_AUROC_0.05": float(sum(aurocs) / len(aurocs)),
-        "seg_F1": float(sum(f1s) / len(f1s)),
         "image_AUROC": float(sum(image_aurocs) / len(image_aurocs)),
         "pixel_AUROC": float(sum(pixel_aurocs) / len(pixel_aurocs)),
         "image_AP": float(sum(image_aps) / len(image_aps)),
         "pixel_AP": float(sum(pixel_aps) / len(pixel_aps)),
         "pixel_PRO": float(sum(pixel_pros) / len(pixel_pros)),
+        "i_AUROC": float(sum(image_aurocs) / len(image_aurocs)),
+        "i_AUPRC": float(sum(image_aps) / len(image_aps)),
+        "p_AUROC": float(sum(pixel_aurocs) / len(pixel_aurocs)),
+        "p_AUPRC": float(sum(pixel_aps) / len(pixel_aps)),
+        "p_AUPRO": float(sum(pixel_pros) / len(pixel_pros)),
         "image_score_aggregation": image_score_aggregation,
-        "pixel_score_quantization": "float16_histogram",
+        "pixel_score_quantization": "signed_log1p_linear_uint16_65536_per_object",
         "pixel_PRO_max_fpr": 0.30,
         "per_object": per_object,
     }
+    if config.include_legacy_segmentation_metrics:
+        metrics.update(
+            {
+                "seg_AUROC_0.05": float(sum(aurocs) / len(aurocs)),
+                "seg_F1": float(sum(f1s) / len(f1s)),
+            },
+        )
     write_metrics(config.output_root, config.seed, metrics)
     return metrics
 

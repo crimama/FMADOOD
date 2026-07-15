@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import Tuple
+from typing import List, Optional, Tuple
 
 import numpy as np
 import numpy.typing as npt
+import pytest
 import torch
 
 from flow_tte.config import ExpansionConfig, FlowConfig, FlowTTEConfig, ScoreConfig
@@ -11,9 +12,21 @@ from flow_tte.flow import PatchNormalizingFlow
 from flow_tte.losses import mean_nll, tail_aware_nll
 from flow_tte.memory import TorchMemoryBank
 from flow_tte.pipeline import FlowTTE
+from flow_tte.scoring import ScoreCalibration
 from flow_tte.tensors import as_patch_batch
+from flow_tte.trainer import FlowDensityEstimator
 
 FloatArray = npt.NDArray[np.float32]
+
+
+def test_loo_standardization_can_be_disabled_for_ablation() -> None:
+    support = torch.tensor([[0.0], [2.0], [5.0]], dtype=torch.float32)
+
+    enabled = ScoreCalibration.fit(support, ScoreConfig(loo_standardize=True))
+    disabled = ScoreCalibration.fit(support, ScoreConfig(loo_standardize=False))
+
+    assert enabled != ScoreCalibration(distance_mean=0.0, distance_std=1.0)
+    assert disabled == ScoreCalibration(distance_mean=0.0, distance_std=1.0)
 
 
 def normal_array(
@@ -90,6 +103,24 @@ def test_score_then_expand_preserves_image_spatial_shape() -> None:
     assert result.image_scores.shape == (3,)
 
 
+def test_fit_applies_memory_selector_after_flow_training() -> None:
+    rng = np.random.default_rng(18)
+    support = normal_array(rng, loc=0.0, scale=0.3, size=(24, 4))
+    pipeline = FlowTTE(
+        FlowTTEConfig(
+            flow=FlowConfig(n_coupling_layers=2, n_epochs=1, batch_size=8),
+            expansion=ExpansionConfig(budget=1.0, density_quantile=0.95),
+            score=ScoreConfig(calibration_sample_size=0, query_chunk_size=4),
+            device="cpu",
+        ),
+    )
+
+    _ = pipeline.fit(support, memory_selector=lambda latents: latents[:7])
+
+    assert pipeline.memory is not None
+    assert pipeline.memory.bank.size() == 7
+
+
 def test_patch_batch_keeps_image_membership_for_spatial_inputs() -> None:
     features = np.zeros((2, 3, 5), dtype=np.float32)
 
@@ -115,6 +146,90 @@ def test_training_is_reproducible_for_fixed_seed() -> None:
 
     assert first.density_threshold == second.density_threshold
     assert first.losses == second.losses
+
+
+def test_flat_support_microbatches_preserve_full_batch_update(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    rng = np.random.default_rng(71)
+    support = normal_array(rng, loc=0.0, scale=0.25, size=(37, 6))
+
+    def flow_config(batch_size: int) -> FlowConfig:
+        return FlowConfig(
+            n_coupling_layers=2,
+            hidden_multiplier=1,
+            n_epochs=1,
+            batch_size=batch_size,
+            seed=71,
+            tail_weight=0.3,
+            tail_top_k_ratio=0.25,
+            lambda_logdet=1e-3,
+        )
+
+    full = FlowDensityEstimator(
+        dim=6,
+        config=flow_config(batch_size=128),
+        device="cpu",
+    )
+    full_stats = full.fit(support, density_quantile=0.9)
+
+    chunked = FlowDensityEstimator(
+        dim=6,
+        config=flow_config(batch_size=8),
+        device="cpu",
+    )
+    observed_rows: List[int] = []
+    original_forward = chunked.flow.forward
+
+    def recording_forward(
+        features: torch.Tensor,
+        reverse: bool = False,
+        condition: Optional[torch.Tensor] = None,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        observed_rows.append(int(features.shape[0]))
+        return original_forward(features, reverse=reverse, condition=condition)
+
+    monkeypatch.setattr(chunked.flow, "forward", recording_forward)
+    chunked_stats = chunked.fit(support, density_quantile=0.9)
+
+    assert max(observed_rows) <= 8
+    assert np.allclose(chunked_stats.losses, full_stats.losses, atol=1e-5)
+    full_parameters = list(full.flow.parameters())
+    chunked_parameters = list(chunked.flow.parameters())
+    assert len(chunked_parameters) == len(full_parameters)
+    for chunked_value, full_value in zip(chunked_parameters, full_parameters):
+        assert torch.allclose(chunked_value, full_value, atol=1e-6)
+
+
+def test_fit_statistics_do_not_materialize_all_training_latents(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    rng = np.random.default_rng(73)
+    support = normal_array(rng, loc=0.0, scale=0.25, size=(3, 7, 6))
+    estimator = FlowDensityEstimator(
+        dim=6,
+        config=FlowConfig(
+            n_coupling_layers=2,
+            n_epochs=1,
+            batch_size=5,
+            seed=73,
+        ),
+        device="cpu",
+    )
+
+    def reject_latent_concatenation(
+        features: torch.Tensor,
+        condition: Optional[torch.Tensor],
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        raise AssertionError("fit statistics must not concatenate all training latents")
+
+    monkeypatch.setattr(estimator, "_forward_in_chunks", reject_latent_concatenation)
+
+    stats = estimator.fit(support, density_quantile=0.9)
+
+    assert np.isfinite(stats.train_nll_mean)
+    assert np.isfinite(stats.train_nll_std)
+    assert np.isfinite(stats.density_threshold)
 
 
 def test_chunked_memory_query_matches_full_query() -> None:

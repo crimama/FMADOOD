@@ -1,0 +1,113 @@
+\begin{thebibliography}{14}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Damm et~al.(2025)Damm, Laszkiewicz, Lederer, and
+  Fischer]{damm2025anomalydino}
+Simon Damm, Mike Laszkiewicz, Johannes Lederer, and Asja Fischer.
+\newblock {AnomalyDINO}: Boosting patch-based few-shot anomaly detection with
+  {DINOv2}.
+\newblock In \emph{Winter Conference on Applications of Computer Vision}, pages
+  1319--1329, 2025.
+
+\bibitem[Darcet et~al.(2024)Darcet, Oquab, Mairal, and
+  Bojanowski]{darcet2024registers}
+Timoth{\'e}e Darcet, Maxime Oquab, Julien Mairal, and Piotr Bojanowski.
+\newblock Vision transformers need registers.
+\newblock In \emph{ICLR}, 2024.
+
+\bibitem[Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn,
+  Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and
+  Houlsby]{dosovitskiy2021vit}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn,
+  Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg
+  Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby.
+\newblock An image is worth 16x16 words: Transformers for image recognition at
+  scale.
+\newblock In \emph{ICLR}, 2021.
+
+\bibitem[Fang et~al.(2023)Fang, Wang, Li, Liu, Hu, and Xiao]{fang2023fastrecon}
+Zheng Fang, Xiaoyang Wang, Haocheng Li, Jiejie Liu, Qiugui Hu, and Jimin Xiao.
+\newblock {FastRecon}: Few-shot industrial anomaly detection via fast feature
+  reconstruction.
+\newblock In \emph{ICCV}, pages 17481--17490, 2023.
+
+\bibitem[Gudovskiy et~al.(2022)Gudovskiy, Ishizaka, and
+  Kozuka]{gudovskiy2022cflow}
+Igor Gudovskiy, Shun Ishizaka, and Kazuki Kozuka.
+\newblock {CFLOW-AD}: Real-time unsupervised anomaly detection with
+  localization via conditional normalizing flows.
+\newblock pages 98--107, 2022.
+
+\bibitem[Heckler-Kram et~al.(2026)Heckler-Kram, Neudeck, Scheler, K{\"o}nig,
+  and Steger]{hecklerkram2026mvtecad2}
+Lars Heckler-Kram, Jan-Hendrik Neudeck, Ulla Scheler, Rebecca K{\"o}nig, and
+  Carsten Steger.
+\newblock The {MVTec AD 2} dataset: Advanced scenarios for unsupervised anomaly
+  detection.
+\newblock \emph{IJCV}, 134:\penalty0 175, 2026.
+
+\bibitem[Jeong et~al.(2023)Jeong, Zou, Kim, Zhang, Ravichandran, and
+  Dabeer]{jeong2023winclip}
+Jongheon Jeong, Yang Zou, Taewan Kim, Dongqing Zhang, Avinash Ravichandran, and
+  Onkar Dabeer.
+\newblock {WinCLIP}: Zero-/few-shot anomaly classification and segmentation.
+\newblock In \emph{CVPR}, pages 19606--19616, 2023.
+
+\bibitem[Li et~al.(2024)Li, Zhang, Tan, Chen, Qu, Xie, and Ma]{li2024promptad}
+Xiaofan Li, Zhizhong Zhang, Xin Tan, Chengwei Chen, Yanyun Qu, Yuan Xie, and
+  Lizhuang Ma.
+\newblock {PromptAD}: Learning prompts with only normal samples for few-shot
+  anomaly detection.
+\newblock In \emph{CVPR}, pages 16838--16848, 2024.
+
+\bibitem[Li et~al.(2025)Li, Jiang, Ai, and Zhou]{li2025robis}
+Xurui Li, Zhonesheng Jiang, Tingxuan Ai, and Yu Zhou.
+\newblock {RoBiS}: Robust binary segmentation for high-resolution industrial
+  images.
+\newblock \emph{arXiv preprint arXiv:2505.21152}, 2025.
+
+\bibitem[Li et~al.(2026)Li, Tian, Dai, Chen, Bao, and Liu]{li2026fastref}
+Yufei Li, Long Tian, Yuyang Dai, Wenchao Chen, Liang Bao, and Xiyang Liu.
+\newblock {FastRef}: Fast prototype refinement for few-shot industrial anomaly
+  detection.
+\newblock In \emph{CVPR}, pages 43040--43049, 2026.
+
+\bibitem[Oquab et~al.(2024)Oquab, Darcet, Moutakanni, Vo, Szafraniec, Khalidov,
+  Fernandez, Haziza, Massa, El-Nouby, Assran, Ballas, Galuba, Howes, Huang, Li,
+  Misra, Rabbat, Sharma, Synnaeve, Xu, J{\'e}gou, Mairal, Labatut, Joulin, and
+  Bojanowski]{oquab2024dinov2}
+Maxime Oquab, Timoth{\'e}e Darcet, Th{\'e}o Moutakanni, Huy Vo, Marc
+  Szafraniec, Vasil Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa,
+  Alaaeldin El-Nouby, Mahmoud Assran, Nicolas Ballas, Wojciech Galuba, Russell
+  Howes, Po-Yao Huang, Shang-Wen Li, Ishan Misra, Michael Rabbat, Vasu Sharma,
+  Gabriel Synnaeve, Hu Xu, Herv{\'e} J{\'e}gou, Julien Mairal, Patrick Labatut,
+  Armand Joulin, and Piotr Bojanowski.
+\newblock {DINOv2}: Learning robust visual features without supervision.
+\newblock \emph{Transactions on Machine Learning Research}, 2024.
+
+\bibitem[Roth et~al.(2022)Roth, Pemula, Zepeda, Sch{\"o}lkopf, Brox, and
+  Gehler]{roth2022patchcore}
+Karsten Roth, Latha Pemula, Joaquin Zepeda, Bernhard Sch{\"o}lkopf, Thomas
+  Brox, and Peter Gehler.
+\newblock Towards total recall in industrial anomaly detection.
+\newblock In \emph{CVPR}, pages 14318--14328, 2022.
+
+\bibitem[Wang et~al.(2025)Wang, Guo, Gao, Wang, Xiong, Hu, Guo, and
+  Zhang]{wang2025visionad}
+Qishan Wang, Jia Guo, Shuyong Gao, Haofen Wang, Li Xiong, Junjie Hu, Hanqi Guo,
+  and Wenqiang Zhang.
+\newblock Search is all you need for few-shot anomaly detection.
+\newblock \emph{arXiv preprint arXiv:2504.11895}, 2025.
+
+\bibitem[Yang et~al.(2024)Yang, Luo, Li, Deng, Guibas, Krishnan, Weinberger,
+  Tian, and Wang]{yang2024dvt}
+Jiawei Yang, Katie~Z. Luo, Jiefeng Li, Congyue Deng, Leonidas~J. Guibas, Dilip
+  Krishnan, Kilian~Q. Weinberger, Yonglong Tian, and Yue Wang.
+\newblock Denoising vision transformers.
+\newblock In \emph{ECCV}, pages 453--469, 2024.
+
+\end{thebibliography}

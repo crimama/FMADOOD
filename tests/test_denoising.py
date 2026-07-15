@@ -48,3 +48,16 @@ def test_position_mean_artifact_denoiser_rejects_shape_mismatch() -> None:
 
     with pytest.raises(FeatureDenoisingError, match="expected"):
         denoiser.transform(np.ones((2, 3, 3), dtype=np.float32))
+
+
+def test_position_mean_artifact_denoiser_alpha_zero_is_exact_identity() -> None:
+    feature_maps = [
+        np.arange(24, dtype=np.float32).reshape(2, 3, 4),
+        np.arange(24, 48, dtype=np.float32).reshape(2, 3, 4),
+    ]
+    denoiser = PositionMeanArtifactDenoiser.fit(feature_maps, alpha=0.0)
+
+    for feature_map in feature_maps:
+        transformed = denoiser.transform(feature_map)
+        assert transformed.dtype == np.float32
+        assert np.array_equal(transformed, feature_map)

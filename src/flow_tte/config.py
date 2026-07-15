@@ -30,6 +30,7 @@ class FlowConfig:
     tail_top_k_ratio: float = 0.05
     lambda_logdet: float = 1e-3
     standardize: bool = True
+    spatial_context: bool = False
 
     def __post_init__(self) -> None:
         if self.transform_mode not in ("flow", "identity"):
@@ -73,6 +74,8 @@ class ScoreConfig:
     context_top_m: int = 1
     top_percent: float = 0.01
     query_chunk_size: int = 8192
+    calibration_sample_size: int = 0
+    loo_standardize: bool = True
     use_squared_distance: bool = False
 
     def __post_init__(self) -> None:
@@ -94,6 +97,8 @@ class ScoreConfig:
             raise ConfigError("top_percent", "must be in (0, 1]")
         if self.query_chunk_size <= 0:
             raise ConfigError("query_chunk_size", "must be positive")
+        if self.calibration_sample_size < 0:
+            raise ConfigError("calibration_sample_size", "must be non-negative")
 
 
 @dataclass(frozen=True)

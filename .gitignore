@@ -35,3 +35,12 @@ configs/remote/*.env
 MEETING_*.css
 MEETING_*.html
 MEETING_*.md
+# LaTeX build products (sources, figures, and bibliographies remain tracked).
+*.aux
+*.blg
+*.brf
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz

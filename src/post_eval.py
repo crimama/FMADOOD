@@ -333,7 +333,14 @@ def eval_segmentation(gt_filenames, prediction_filenames, pro_integration_limit=
     # print(f"AU-PRO (FPR limit: {pro_integration_limit}): {au_pro}", end=" -- ")
 
     ground_truth = np.array(ground_truth).ravel()
-    predictions = np.array(predictions).astype(np.float16).ravel()
+    # Flow distances can legitimately exceed float16's finite range (65504).
+    # Casting them to float16 turns valid scores into +inf, destroys their rank,
+    # and can produce an infinite oracle threshold.  Keep the saved float32
+    # scores: sklearn's rank metrics are scale invariant and float32 preserves
+    # the threshold in the same units consumed by binary post-processing.
+    predictions = np.asarray(predictions, dtype=np.float32).ravel()
+    if not np.all(np.isfinite(predictions)):
+        raise ValueError("Prediction maps contain non-finite anomaly scores")
     ground_truth = (ground_truth > 0).astype(np.uint8)
 
     # Compute pixel-level AUROC
@@ -342,9 +349,17 @@ def eval_segmentation(gt_filenames, prediction_filenames, pro_integration_limit=
 
     # # Compute pixel-level F1 Score
     precisions, recalls, thresholds = precision_recall_curve(ground_truth, predictions)
-    f1_scores = (2 * precisions * recalls) / (precisions + recalls)
-    f1_px = np.max(f1_scores[np.isfinite(f1_scores)])
-    best_thre = float(thresholds[np.argmax(f1_scores[np.isfinite(f1_scores)])])
+    # The last precision/recall point has no corresponding threshold.
+    denominators = precisions[:-1] + recalls[:-1]
+    f1_scores = np.divide(
+        2 * precisions[:-1] * recalls[:-1],
+        denominators,
+        out=np.zeros_like(denominators),
+        where=denominators > 0,
+    )
+    best_index = int(np.argmax(f1_scores))
+    f1_px = float(f1_scores[best_index])
+    best_thre = float(thresholds[best_index])
 
     print(f"F1 (pixel-level): {f1_px}, Best threshold: {best_thre}")
 

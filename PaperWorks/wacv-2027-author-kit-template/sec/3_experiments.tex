@@ -1,0 +1,245 @@
+\section{실험 및 결과}
+\label{sec:experiments}
+
+% 한국어 구조 초안. 현재 표는 SuperAD main comparison과 통제된 component
+% ablation만 포함하며, 나머지 결과 표는 default-matched 재실행 후 추가한다.
+
+\subsection{프로토콜과 근거 범위}
+
+주 벤치마크는 공개된 8개 객체 전체와 ground truth가 제공되는
+MVTec AD~2 \texttt{TESTpub}만 사용하는 퓨샷 설정이다. 본 절의 모든 AD~2
+수치와 reported 비교 수치도 별도 표기가 없는 한 \texttt{TESTpub} 결과이며,
+\texttt{TESTpriv} 및 \texttt{TESTpriv,mix} 결과는 포함하지 않는다.
+Ours Basic의 기본 프로토콜은 SuperAD가 전체 정상 풀에서 선택한 동일한 16장과
+시드~0을 사용하는 P16-superad이다. 따라서 이 support가 full-pool-selected라는
+출처를 모든 표에 명시하며, 무작위 16장에 대한 P16-random은 support-selection
+강건성 진단으로 분리한다. P16-random은 현재 시드~0만 완료되었다. 전체 정상
+접근 결과는 별도의 진단 근거로 구분한다. 순위 및
+위치화 지표는 pAUROC@0.05, AP, oracle max-F1 및 component recall이다. 최종
+프로토콜에는 held-out normal p99/p99.9, 고정 임계값 F1, 시드별 임계값 분산,
+최악 클래스 변화량, 이상 반응 보존율 및 객체--시드 paired confidence
+interval도 포함한다. 연속 맵을 주 결과로 사용하며 morphology는 별도로
+보고한다. Basic은 DINOv2 ViT-L/14의 $[5,11,17,23]$ 계층과 짧은 변 $672$를
+사용하되 sheet metal은 $448$을 사용한다. 배포 가능한 고정 임계값 F1이 아닌
+oracle max-F1을 보고한다. 고정 이진 진단은 각 연속 맵의 oracle 임계값을 사용한
+뒤 17-pixel directional close 16방향, hole filling 및 $3\!\times\!3$ erosion을
+적용한다.
+
+\subsection{주 비교}
+
+SuperAD 수치는 제공된 full \texttt{test\_public} 결과를 사용한다. Ours는
+동일한 DINOv2-L/14와 SuperAD-selected 16-shot 자원을 사용한다. Ours의 F1은
+연속 RGB-guided map의 oracle 임계값을 적용한 뒤 고정 close--fill--erode
+후처리를 거친 F1이다. 따라서 주 표의 F1 차이는 탐지 점수뿐 아니라
+고정 morphology의 영향도 포함한다. Ours H+는 DINOv3-H+ 기반 16-shot
+결과이며, SuperADD는 전체 normal support를 사용하는 reported full-shot 결과이므로
+두 행은 backbone 및 support regime이 Ours와 다른 contextual comparison이다.
+SuperADD는 DINOv3-H+/16을, RoBiS는 DINOv2-R ViT-B/14를 사용한다.
+RoBiS~\cite{li2025robis} 역시 full-normal 학습, $1024\!\times\!1024$ sliding
+crop, adaptive binarization 및 SAM refinement를 사용하는 reported 결과로서,
+퓨샷 방법과의 직접 비교가 아니라 MVTec AD~2 binary segmentation의 문맥적
+상한으로만 제시한다.
+
+\begin{table*}[t]
+  \centering
+  \caption{MVTec AD~2 full \texttt{test\_public}의 방법별 macro 결과. 모든
+  metric은 백분율이다. Ours 계열의 F1은 고정 close--fill--erode 후의 값을
+  보고한다. 값이 없는 항목은 동일한 전체 8객체 결과가 아직 없음을 의미한다.}
+  \label{tab:main_superad_comparison}
+  \small
+  \begin{tabular}{@{}llcrr@{}}
+    \toprule
+    방법 & Backbone & Normal data & pAUROC@.05 & F1 \\
+    \midrule
+    SuperAD  & DINOv2 ViT-L/14   & 16        & 76.71 & 39.42 \\
+    Ours     & DINOv2 ViT-L/14   & 16        & 78.19 & 44.11 \\
+    \midrule
+    RoBiS~\cite{li2025robis} & DINOv2-R ViT-B/14 & full-shot & -- & 46.90$^{\dagger}$ \\
+    \midrule
+    SuperADD & DINOv3-H+/16      & full-shot & 83.93 & 62.61 \\
+    Ours H+  & DINOv3-H+/16      & 16        & 83.75 & 55.39 \\
+    \bottomrule
+  \end{tabular}
+  \\[2pt]\footnotesize $^{\dagger}$RoBiS reported binary SegF1. RoBiS는
+  full-normal 200-epoch 학습과 adaptive binarization/SAM을 사용하므로 Ours의
+  16-shot oracle-threshold morphology F1과 직접 동등하지 않다.
+\end{table*}
+
+동일한 16-shot DINOv2-L 비교에서 Ours는 SuperAD보다 높은 macro
+pAUROC@.05와 F1을 보인다. Ours H+는 backbone scaling의 효과를 포함하며,
+full-shot SuperADD와의 수치 차이는 support 자원과 평가 조건이 통제되지 않았으므로
+직접적인 method superiority로 해석하지 않는다.
+
+\subsection{Density Correction}
+
+Density correction은 Eq.~\eqref{eq:coarse_score}의 계수 $\lambda_{\mathrm{den}}$
+만 변경하고 나머지 Basic default를 고정하여 평가한다. 즉, exact
+SuperAD-selected P16, DINOv2-L/14, $[5,11,17,23]$, $672$ 해상도
+(sheet metal은 $448$), PPD, static latent bank, RGB Guide와 morphology를
+공유한다. 현재 동일 조건으로 완료된 값은 default $\lambda_{\mathrm{den}}=0.25$
+뿐이며, 과거 DINOv3-H+ density sweep은 backbone이 달라 이 표에 섞지 않는다.
+
+\begin{table}[t]
+  \centering
+  \caption{MVTec AD~2 Basic default의 density correction ablation. 대시는
+  동일 조건 실험이 아직 완료되지 않았음을 뜻한다.}
+  \label{tab:density_correction}
+  \small
+  \begin{tabular}{@{}lrr@{}}
+    \toprule
+    $\lambda_{\mathrm{den}}$ & pAUROC@.05 & F1 \\
+    \midrule
+    0 (distance only) & -- & -- \\
+    0.10              & -- & -- \\
+    \textbf{0.25 (default)} & \textbf{78.19} & \textbf{44.11} \\
+    0.50              & -- & -- \\
+    1.00              & -- & -- \\
+    NLL only          & -- & -- \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Few-shot Scaling on MVTec AD~2}
+
+샷 수 이외의 모든 요소를 Basic default에 고정한다. 작은 support가 큰 support의
+부분집합이 되도록 SuperAD-selected P16 순서의 앞 $K$장을 사용하는 nested
+support protocol을 적용하며, 각 샷에서 동일한 full \texttt{test\_public} 8객체를
+평가한다. Pixel-level 결과에는 RGB guided-r8과 binary
+close/fill/erode morphology를 적용한다. 1-shot은 수치 안정성 문제를 확인 중이므로
+보류하며, 별도의 random-support multi-seed 결과는 support-selection robustness로
+분리하여 보고한다.
+
+\begin{table}[t]
+  \centering
+  \caption{MVTec AD~2 Basic default의 few-shot scaling. 모든 값은 8객체
+  macro 백분율이다.}
+  \label{tab:ad2_shot_scaling}
+  \small
+  \begin{tabular}{@{}crr@{}}
+    \toprule
+    Shot & pAUROC@.05 & F1 \\
+    \midrule
+    1  & -- & -- \\
+    2  & 75.65 & 36.55 \\
+    4  & 77.27 & 39.08 \\
+    8  & 78.88 & 39.18 \\
+    16 & 78.19 & 44.11 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{MVTec AD Comparison with VisionAD}
+
+Classic MVTec AD의 15개 범주에서는 AD~1에 적합한 DVT-free 구성을
+VisionAD~\cite{wang2025visionad}와 비교한다. Ours는 frozen DINOv2-R
+ViT-B/14와 layers $[2,5,8,11]$, shorter-edge $448$ 전처리, 3-epoch Flow,
+static latent 1-NN bank를 사용한다. AD~2를 위한 PPD/DVT와 density correction,
+TTE, context/register 및 morphology는 제거한다. 이미지 점수는 원본 density-free
+map에서 산출하고, pixel 지표에만 guided-r8 map을 사용한다. 각 shot은 정렬된
+\texttt{train/good}의 앞 $K$장을 사용하는 단일 deterministic support 결과다.
+
+VisionAD는 동일한 DINOv2-R ViT-B/14를 사용하지만 $448$ resize 후 $392$
+center crop한 $28\!\times\!28$ feature grid, training-free search 및 다섯
+random seed 평균을 보고한다. 반면 Ours는 patch-aligned $448$ 입력의
+$32\!\times\!32$ grid와 학습된 normal-only Flow head를 사용한다. 따라서 아래
+비교는 backbone과 nominal input resolution을 맞춘 reported comparison이며,
+동일 전처리ㆍsupport drawㆍevaluator의 paired comparison은 아니다.
+
+\begin{table*}[t]
+  \centering
+  \caption{MVTec AD 15-class few-shot comparison with
+  VisionAD~\cite{wang2025visionad}. Ours는 single deterministic support
+  결과이고 VisionAD는 reported five-seed mean이다. p-AUPRO는 FPR 0.30까지
+  적분하며, 모든 값은 백분율이다. 대시는 VisionAD에서 미보고된 값이다.}
+  \label{tab:mvtecad1_visionad_aligned}
+  \small
+  \begin{tabular}{@{}clrrrr@{}}
+    \toprule
+    Shot & Method & i-AUROC & i-AUPRC & p-AUROC & p-AUPRO \\
+    \midrule
+    1 & VisionAD & \textbf{97.40} & \textbf{99.00} & 96.20 & 92.50 \\
+      & Ours     & 95.88 & 98.01 & \textbf{97.23} & \textbf{93.12} \\
+    \midrule
+    2 & VisionAD & \textbf{98.10} & \textbf{99.30} & 96.60 & 93.20 \\
+      & Ours     & 97.16 & 98.57 & \textbf{97.60} & \textbf{93.99} \\
+    \midrule
+    4 & VisionAD & \textbf{98.60} & \textbf{99.50} & 96.90 & 93.70 \\
+      & Ours     & 97.37 & 98.79 & \textbf{97.74} & \textbf{94.24} \\
+    \midrule
+    8 & VisionAD & -- & -- & -- & -- \\
+      & Ours     & 98.23 & 99.09 & 97.89 & 94.65 \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+공통 reported metric에서 Ours는 1/2/4-shot 모두 p-AUROC와 p-AUPRO가
+VisionAD보다 높다. 반면 i-AUROC와 i-AUPRC는 VisionAD가 높다. 이 결과는
+AD~1에서는 AD~2의 position correction보다 단순한 static Flow-LatentBank와
+query-native RGB refinement가 더 적합하다는 관찰을 지지하지만, single support
+ordering과 five-seed 평균의 차이 때문에 통계적 우월성으로 해석하지 않는다.
+
+\subsection{Image-level Robustness on MVTec-OOD}
+
+동일한 AD~1 4-shot 모델을 MVTec-OOD 프로토콜에서 추가로 평가한다. 정상
+support와 모델 파라미터는 ID MVTec AD에서 고정하고, test image에만
+\texttt{imagecorruptions}의 severity~3 brightness, contrast, defocus blur 및
+Gaussian noise를 적용한다. 각 조건에서 범주별 image AUROC와 oracle max-F1을
+계산한 뒤 15개 범주의 비가중 macro를 보고한다. OOD Avg.는 네 corruption의
+평균이고 Total Avg.는 ID와 네 OOD 조건의 평균이다. 이미지 점수는 guided
+refinement 이전 density-free map의 상위 1\% 평균이므로, 이 표에서 RGB Guide는
+순위에 영향을 주지 않는다.
+
+\begin{table*}[t]
+  \centering
+  \caption{MVTec AD와 MVTec-OOD의 image-level AUROC/Img-F1 (\%). 기존 방법
+  수치는 DIRNet의 reported comparison에서 가져왔다. Ours는 frozen DINOv2-R
+  ViT-B/14를 사용하는 4-shot 결과인 반면, 기존 행은 full-normal 설정이므로
+  동일한 normal-data budget의 직접 비교가 아니다.}
+  \label{tab:mvtecad_ood_image_robustness}
+  \small
+  \resizebox{\textwidth}{!}{%
+  \begin{tabular}{@{}lccccccc@{}}
+    \toprule
+    Method & ID MVTec & Brightness & Contrast & Blur & Noise & OOD Avg. & Total Avg. \\
+    \midrule
+    PatchCore & 99.1/98.1 & 96.0/96.8 & 92.1/93.7 & 97.2/96.4 & 93.9/94.5 & 94.8/95.4 & 95.7/95.9 \\
+    RD4AD     & 98.6/98.0 & 96.5/97.1 & 94.1/94.6 & \textbf{98.9}/97.7 & 90.1/93.6 & 94.9/95.8 & 95.6/96.2 \\
+    GNL       & 98.0/97.4 & 97.4/96.9 & 97.5/96.9 & 97.8/97.1 & 94.1/94.3 & 96.7/96.3 & 97.0/96.5 \\
+    RD++      & 99.4/\textbf{98.6} & 92.7/96.4 & 96.9/96.2 & 98.8/\textbf{98.1} & 86.2/91.5 & 93.7/95.6 & 94.8/96.2 \\
+    ReContrast & \textbf{99.8}/98.1 & 80.4/91.4 & 71.4/87.8 & 92.0/95.8 & 85.0/92.0 & 82.2/91.8 & 85.7/93.0 \\
+    FiCo      & 98.8/97.7 & 97.9/97.2 & \textbf{97.9}/96.9 & 98.5/97.3 & 95.0/95.0 & 97.3/96.6 & 97.6/96.8 \\
+    DIRNet    & 99.2/98.5 & \textbf{98.6}/\textbf{98.4} & 97.7/\textbf{97.0} & 98.3/97.7 & \textbf{96.9}/\textbf{96.7} & \textbf{97.9}/\textbf{97.5} & \textbf{98.1}/\textbf{97.7} \\
+    \midrule
+    Ours (4-shot) & 97.37/97.26 & 97.75/97.39 & 96.10/96.17 & 96.88/96.89 & 93.65/94.90 & 96.09/96.34 & 96.35/96.52 \\
+    \bottomrule
+  \end{tabular}}
+\end{table*}
+
+Ours는 4장의 정상 영상만 사용하면서 ID에서 97.37/97.26, OOD 평균에서
+96.09/96.34를 유지한다. 특히 brightness에서는 ID 대비 i-AUROC가
+$+0.38$,pp 증가하고, 가장 큰 저하는 Gaussian noise의 $-3.72$,pp이다.
+Full-normal DIRNet과의 OOD 평균 차이는 i-AUROC $1.81$,pp, Img-F1
+$1.16$,pp이다. 이는 full-normal 방법보다 높다는 주장이 아니라, 제한된 정상
+support에서도 corruption shift에 대한 image-level 성능 저하가 작다는 근거로
+해석한다.
+
+\subsection{구성요소 Ablation}
+
+\begin{table*}[t]
+  \centering
+  \caption{DINOv2-L Basic component ablation. Backbone, 해상도, exact
+  SuperAD-selected 16-shot, density weight 0.25 및 morphology contract를
+  고정한다.}
+  \label{tab:basic_component_ablation}
+  \small
+  \begin{tabular}{@{}lcccrr@{}}
+    \toprule
+    구성 & Flow & PPD & RGB Guide & pAUROC@.05 & F1 \\
+    \midrule
+    \textbf{Basic default} & O & O & O & \textbf{78.194} & \textbf{44.107} \\
+    $-$Flow & X & O & O & 77.949 & 42.380 \\
+    $-$PPD & O & X & O & 76.965 & 43.053 \\
+    $-$RGB Guide & O & O & X & 77.335 & 41.654 \\
+    \bottomrule
+  \end{tabular}
+\end{table*}

@@ -146,10 +146,14 @@ def average_precision(labels: BoolArray, scores: FloatArray) -> float:
         return float("nan")
     order: npt.NDArray[np.intp] = np.argsort(-scores, kind="mergesort")
     sorted_labels: BoolArray = labels[order]
+    sorted_scores: FloatArray = scores[order]
     true_positives: Float64Array = np.cumsum(sorted_labels.astype(np.float64))
-    positions: Float64Array = np.arange(1, len(sorted_labels) + 1, dtype=np.float64)
-    precision: Float64Array = true_positives / positions
-    return _float64_sum(precision[sorted_labels]) / positives
+    # Evaluate only after each equal-score group, matching sklearn/VisionAD AP.
+    group_ends = np.r_[np.flatnonzero(np.diff(sorted_scores) != 0), len(scores) - 1]
+    group_tp = true_positives[group_ends]
+    group_precision = group_tp / (group_ends.astype(np.float64) + 1.0)
+    group_positive = np.diff(np.r_[0.0, group_tp])
+    return _float64_sum(group_positive * group_precision) / positives
 
 
 def f1_score_max(labels: BoolArray, scores: FloatArray) -> float:

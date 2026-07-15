@@ -37,6 +37,7 @@ if TYPE_CHECKING:
 FloatArray = npt.NDArray[np.float32]
 CalibrationMode = Literal[
     "none",
+    "local_contrast",
     "support_position_center",
     "support_position_zscore",
     "support_score_reliability",
@@ -189,6 +190,9 @@ def apply_score_field_transform(
             _resize_field,
         )
         output = output * reliability
+    elif config.calibration_mode == "local_contrast":
+        local_mean = box_filter(output, config.foreground_smooth_kernel)
+        output = output + np.float32(config.calibration_alpha) * (output - local_mean)
     foreground_prior = _resize_field(stats.foreground_prior, output_shape)
     if config.foreground_mode != "none":
         multiplier = np.float32(config.background_multiplier) + (

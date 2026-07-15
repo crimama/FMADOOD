@@ -123,6 +123,24 @@ def test_support_score_reliability_downweights_normal_high_positions() -> None:
     assert np.allclose(transformed[:, 1], 1.0)
 
 
+def test_local_contrast_preserves_local_peak_over_smooth_field() -> None:
+    support_scores = (np.zeros((3, 3), dtype=np.float32),)
+    support_features = (np.ones((3, 3, 1), dtype=np.float32),)
+    config = ScoreFieldConfig(
+        calibration_mode="local_contrast",
+        calibration_alpha=1.0,
+        foreground_smooth_kernel=3,
+    )
+
+    stats = fit_score_field_stats(support_scores, support_features, config)
+    score = np.ones((3, 3), dtype=np.float32)
+    score[1, 1] = 5.0
+    transformed = apply_score_field_transform(score, stats, config)
+
+    assert transformed[1, 1] > score[1, 1]
+    assert transformed[1, 1] > transformed[0, 0]
+
+
 def test_rgb_foreground_proxy_uses_border_background_contrast() -> None:
     image = np.zeros((5, 5, 3), dtype=np.uint8)
     image[2, 2] = np.asarray([255, 255, 255], dtype=np.uint8)

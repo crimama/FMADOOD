@@ -1,0 +1,3 @@
+[submodule "third_party/VisionAD"]
+	path = third_party/VisionAD
+	url = https://github.com/Qiqigeww/VisionAD.git

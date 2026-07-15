@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Callable, Optional
 
 import numpy as np
 import numpy.typing as npt
@@ -47,6 +47,7 @@ class FlowTTE:
         support_features: FeatureArray,
         support_contexts: Optional[FeatureArray] = None,
         memory_contexts: Optional[FeatureArray] = None,
+        memory_selector: Optional[Callable[[torch.Tensor], torch.Tensor]] = None,
     ) -> FlowTrainingStats:
         device = resolve_device(self.config.device)
         support = as_patch_batch(support_features, device)
@@ -82,6 +83,10 @@ class FlowTTE:
             contexts=condition_contexts,
         )
         m0_z = estimator.transform(support_features, contexts=condition_contexts)
+        if memory_selector is not None:
+            if m0_contexts is not None:
+                raise RuntimeError("FlowTTE memory selection does not support memory contexts")
+            m0_z = memory_selector(m0_z)
         self.memory = ReservoirMemory(
             m0_features=m0_z,
             budget=self.config.expansion.budget,
@@ -101,6 +106,93 @@ class FlowTTE:
         estimator = self._require_estimator()
         evaluation = estimator.evaluate(features, contexts=contexts)
         return to_numpy(evaluation.batch.restore_features(evaluation.z))
+
+    def latent_residuals(
+        self,
+        features: FeatureArray,
+        contexts: Optional[FeatureArray] = None,
+    ) -> np.ndarray:
+        estimator = self._require_estimator()
+        memory = self._require_memory()
+        device = resolve_device(self.config.device)
+        batch = as_patch_batch(features, device)
+        condition_contexts = _optional_contexts(
+            contexts,
+            device,
+            n_rows=int(batch.flat_features.shape[0]),
+            name="contexts",
+        )
+        evaluation = estimator.evaluate(features, contexts=condition_contexts)
+        nearest = memory.bank.query(
+            evaluation.z,
+            k=1,
+            chunk_size=self.config.score.query_chunk_size,
+        ).indices[:, 0]
+        residuals = evaluation.z - memory.bank.features[nearest]
+        return to_numpy(residuals)
+
+    def score_static_shift_projected(
+        self,
+        batch_features: FeatureArray,
+        shift_basis: np.ndarray,
+        strength: float,
+        batch_contexts: Optional[FeatureArray] = None,
+        memory_contexts: Optional[FeatureArray] = None,
+    ) -> BatchResult:
+        estimator = self._require_estimator()
+        memory = self._require_memory()
+        calibration = self._require_score_calibration()
+        device = resolve_device(self.config.device)
+        batch = as_patch_batch(batch_features, device)
+        shared_contexts = _optional_contexts(
+            batch_contexts,
+            device,
+            n_rows=int(batch.flat_features.shape[0]),
+            name="batch_contexts",
+        )
+        if self.config.flow.condition_mode == "context" and shared_contexts is None:
+            raise RuntimeError("FlowTTE score requires batch condition contexts")
+        evaluation = estimator.evaluate(batch_features, contexts=shared_contexts)
+        nearest = memory.bank.query(
+            evaluation.z,
+            k=1,
+            chunk_size=self.config.score.query_chunk_size,
+        ).indices[:, 0]
+        residuals = evaluation.z - memory.bank.features[nearest]
+        basis = torch.as_tensor(shift_basis, device=device, dtype=evaluation.z.dtype)
+        aligned_z = evaluation.z - strength * (residuals @ basis) @ basis.T
+        density_penalty = estimator.density_penalty(evaluation.nll)
+        query_contexts = shared_contexts if memory_contexts is None else _optional_contexts(
+            memory_contexts,
+            device,
+            n_rows=int(batch.flat_features.shape[0]),
+            name="memory_contexts",
+        )
+        score = score_flow_memory(
+            inputs=ScoreInputs(
+                query_z=aligned_z,
+                nll=evaluation.nll,
+                nll_penalty=density_penalty,
+                image_indices=evaluation.batch.image_indices,
+                n_images=evaluation.batch.n_images,
+                query_contexts=query_contexts,
+            ),
+            bank=memory.bank,
+            config=self.config.score,
+            calibration=calibration,
+        )
+        selected = evaluation.nll <= estimator.density_threshold
+        memory_size = memory.bank.size()
+        return BatchResult(
+            patch_scores=to_numpy(evaluation.batch.restore(score.patch_scores)),
+            nll=to_numpy(evaluation.batch.restore(evaluation.nll)),
+            selected_mask=to_numpy(evaluation.batch.restore(selected)).astype(bool),
+            image_scores=to_numpy(score.image_scores),
+            image_score=score.image_score,
+            selected_count=int(selected.sum().detach().cpu()),
+            memory_size_before=memory_size,
+            memory_size_after=memory_size,
+        )
 
     def score_then_expand(
         self,

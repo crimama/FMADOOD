@@ -39,6 +39,7 @@ common_args=(
   --top-percent 0.01
   --query-chunk-size 512
   --pro-integration-limit 0.05
+  --rgb-guide none
   --cleanup-maps
   --backbone-model "${BACKBONE_MODEL}"
   --support-selection "fixed_json=${SUPPORT_JSON}"

@@ -20,6 +20,18 @@ if TYPE_CHECKING:
 
 _EPS = 1e-12
 _FIXED_JSON_PREFIX = "fixed_json="
+SUPERADD_FULL_SUPPORT_POLICY = "superadd_full_7of8"
+_SUPERAD_ROTATION_ANGLES = {
+    "superad_rot000": 0,
+    "superad_rot045": 45,
+    "superad_rot090": 90,
+    "superad_rot135": 135,
+    "superad_rot180": 180,
+    "superad_rot225": 225,
+    "superad_rot270": 270,
+    "superad_rot315": 315,
+}
+_RIGHT_ANGLE_ROTATIONS = {"rot90": 1, "rot180": 2, "rot270": 3}
 
 
 class ClsBackboneLike(Protocol):
@@ -34,6 +46,8 @@ def select_support_paths(
     policy: str,
     seed: int,
 ) -> Tuple[Path, ...]:
+    if policy == SUPERADD_FULL_SUPPORT_POLICY:
+        return tuple(path for index, path in enumerate(paths) if index % 8 != 0)
     if is_fixed_support_policy(policy):
         return select_support_paths_from_json(paths, shots, policy)
     if policy == "first":
@@ -46,6 +60,11 @@ def select_support_paths(
         return tuple(paths[int(index)] for index in indices)
     message = f"Unknown support selection policy: {policy}"
     raise RuntimeError(message)
+
+
+def select_superadd_threshold_paths(paths: Sequence[Path]) -> Tuple[Path, ...]:
+    """Return the official sorted-index 1/8 normal threshold split."""
+    return tuple(path for index, path in enumerate(paths) if index % 8 == 0)
 
 
 def greedy_coreset_indices(
@@ -160,15 +179,31 @@ def read_rgb(path: Path) -> np.ndarray:
     return cv2_module.cvtColor(bgr, cv2_module.COLOR_BGR2RGB)
 
 
+def rotate_rgb_like_superad(image: np.ndarray, angle: int) -> np.ndarray:
+    cv2_module = cv2
+    if cv2_module is None:
+        message = "OpenCV is required for SuperAD support rotations"
+        raise RuntimeError(message)
+    image_center = tuple(np.array(image.shape[1::-1]) / 2)
+    rotation = cv2_module.getRotationMatrix2D(image_center, angle, 1.0)
+    return cv2_module.warpAffine(
+        image,
+        rotation,
+        image.shape[1::-1],
+        flags=cv2_module.INTER_LINEAR,
+        borderMode=cv2_module.BORDER_DEFAULT,
+    )
+
+
 def transform_rgb(image: np.ndarray, transform_name: str) -> np.ndarray:
+    superad_angle = _SUPERAD_ROTATION_ANGLES.get(transform_name)
+    if superad_angle is not None:
+        return rotate_rgb_like_superad(image, superad_angle)
     if transform_name == "identity":
         return image
-    if transform_name == "rot90":
-        return np.ascontiguousarray(np.rot90(image, k=1))
-    if transform_name == "rot180":
-        return np.ascontiguousarray(np.rot90(image, k=2))
-    if transform_name == "rot270":
-        return np.ascontiguousarray(np.rot90(image, k=3))
+    right_angle_turns = _RIGHT_ANGLE_ROTATIONS.get(transform_name)
+    if right_angle_turns is not None:
+        return np.ascontiguousarray(np.rot90(image, k=right_angle_turns))
     if transform_name == "flip_vertical":
         return np.ascontiguousarray(np.flip(image, axis=0))
     if transform_name == "flip_horizontal":

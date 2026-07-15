@@ -1,0 +1,35 @@
+%
+% --- inline annotations
+%
+% Temporary Korean drafting support. The final English manuscript can still
+% be compiled with pdfLaTeX after removing the Korean text and this block.
+\usepackage{iftex}
+\ifLuaTeX
+  \usepackage{fontspec}
+  \setmainfont[
+    ItalicFont={Noto Serif CJK KR},
+    BoldItalicFont={Noto Serif CJK KR}
+  ]{Noto Serif CJK KR}
+  \setsansfont{Noto Sans CJK KR}
+\else\ifXeTeX
+  \usepackage{fontspec}
+  \setmainfont[
+    ItalicFont={Noto Serif CJK KR},
+    BoldItalicFont={Noto Serif CJK KR}
+  ]{Noto Serif CJK KR}
+  \setsansfont{Noto Sans CJK KR}
+\fi
+\fi
+\ifPDFTeX\else
+  % wacv.sty defines subsection fonts as raw Times font primitives. Replace
+  % only those switches so temporary Korean headings retain their glyphs.
+  \def\elvbf{\fontsize{11}{12}\selectfont\bfseries}
+  \def\tenbf{\fontsize{10}{11}\selectfont\bfseries}
+\fi
+
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\todo}[1]{{\color{red}#1}}
+\newcommand{\TODO}[1]{\textbf{\color{red}[TODO: #1]}}
+% --- disable by uncommenting  
+% \renewcommand{\TODO}[1]{}
+% \renewcommand{\todo}[1]{#1}

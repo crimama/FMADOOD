@@ -1,0 +1,142 @@
+\section{서론}
+\label{sec:introduction}
+
+% 한국어 구조 초안. 논지와 주장 범위만 고정하고, 인용과 문장 수준의
+% 다듬기는 영문 본문 작성 단계에서 수행한다.
+
+파운데이션 모델은 전이 가능한 patch feature를 제공하므로, 소수의 normal
+support 영상만으로도 few-shot 이상 탐지를 수행할 수 있게 한다
+~\cite{oquab2024dinov2,damm2025anomalydino}. 대표적인 구성은 normal support
+feature를 static memory에 저장하고, query patch와 가장 가까운 support 사이의
+거리를 이상 증거로 해석하는 방식이다~\cite{roth2022patchcore,damm2025anomalydino}.
+그러나 이 방식이 강한 표현력을
+활용한다는 사실만으로 점수의 신뢰성이 보장되지는 않는다. Normal support와
+normal query의 feature가 충분히 비교 가능한 상태로 유지되어야 하기 때문이다.
+
+MVTec AD~2와 같이 학습에 포함되지 않을 수 있는 조명 조건이 test image에
+나타나는 환경에서는 이 가정이 쉽게 무너질 수 있다~\cite{hecklerkram2026mvtecad2}.
+이를 feature space에서 표현하면
+\begin{equation}
+  \begin{aligned}
+    \widehat P_S^N(\phi) \neq P_Q^N(\phi)
+    \quad&\Longrightarrow\quad
+    \text{높은 점수}\Leftarrow \\
+    &\{\text{분포가 변한 정상},\text{실제 이상}\}.
+  \end{aligned}
+  \label{eq:score_ambiguity}
+\end{equation}
+즉, 큰 특징 편차가 반드시 결함에서 비롯되었다고 볼 수 없다. 본 연구의 핵심
+전제는 다음과 같다. \emph{강한 표현이 분포 변화 아래에서 신뢰할 수 있는 이상
+증거를 자동으로 보장하지는 않는다.}
+
+우리는 이를 \emph{분포 변화 유발 이상 증거 저하(shift-induced anomaly
+evidence degradation)}로 정의한다. Few-shot 설정에서는 정상성의 근거가
+소수의 support 영상과 그로부터 얻은 patch feature에 제한된다. 이 자체로도
+정상 분포의 불완전한 근사를 만들지만, support에 충분히 관측되지 않은 조명,
+배치, 재질 외관 및 촬영 조건이 query에 나타나는 support--query distribution
+shift 상황에서는 그 불완전성이 더 크게 드러난다. 즉, shift는 새로운 normal
+query를 support coverage 밖으로 이동시켜 정상 변화와 실제 결함의 점수 분리를
+어렵게 하며, 다음 세 가지 증거 문제를 심화한다.
+\begin{equation}
+  \begin{aligned}
+    \mathcal E_{\mathrm{FS}}
+      &:= \text{제한된 few-shot 정상 증거},\\
+    \mathcal E_{\mathrm{FS}}
+      \xrightarrow{\text{support--query shift}}
+      &\{b_{\mathrm{rep}},\ b_{\mathrm{ref}},\ d_{\mathrm{sp}}\},
+  \end{aligned}
+  \label{eq:evidence_degradation}
+\end{equation}
+여기서 $b_{\mathrm{rep}}$, $b_{\mathrm{ref}}$, $d_{\mathrm{sp}}$는 각각 표현
+편향, 참조 편향 및 공간 증거 저하를 나타낸다.
+첫째, \emph{표현 편향}은 동일한 정상 부위의 descriptor가 support와 query에서
+일관되지 않게 형성되는 문제이다. ViT feature map에는 positional embedding과
+관련된 grid-like artifact 및 high-norm token artifact가 보고되어 왔다
+~\cite{yang2024dvt,darcet2024registers}. 따라서 파운데이션 모델의 patch feature는 grid 위치와
+주변 문맥의 영향을 받으므로, 배치나 촬영 구도가 달라지면 같은 정상 부위도
+서로 먼 특징으로 표현될 수 있다. Few-shot에서는 이러한 변화 양상을 상쇄할
+support가 충분하지 않을 수 있으므로, shift가 클수록 정상 패치의 거리가
+불필요하게 증가할 수 있다.
+
+둘째, \emph{참조 편향}은 source 정상분포에서 선택된 유한 support가 target
+query의 정상성을 판단하는 기준으로 사용될 때 발생하는 coverage mismatch이다.
+Few-shot 메모리는 $P_S^N$ 전체가 아니라 몇 장에서 관측된 패치의 경험적
+표본이므로, 자주 관측된 정상 영역은 조밀하게 표현하는 반면 드물거나 관측되지
+않은 영역은 성기게 표현한다. 실제 memory-bank 계열은 대표 normal patch를
+선택해 비교 기준을 구성하며~\cite{roth2022patchcore}, 최근 few-shot 연구도
+limited normal prototype의 representativeness를 핵심 문제로 지적한다
+~\cite{li2026fastref}. Support와 query가 같은 분포라면 새로운 정상
+패치도 메모리가 포괄하는 영역에 놓일 가능성이 상대적으로 높다. 그러나
+distribution shift로 $P_Q^N$의 확률 질량이 메모리의 저밀도 또는 미관측 영역으로
+이동하면, 의미적으로 정상인 query patch도 가까운 normal support를 찾기 어려워질 수
+있다. 이때 최근접 참조 거리와 저밀도 점수는 실제 결함뿐 아니라 reference
+coverage의 부족에도 반응하여 정상 패치에 높은 이상 점수를 부여할 수 있다.
+따라서 shift가 클수록 참조 자체가 변하는 것이 아니라, 고정된 few-shot
+reference와 target 정상분포 사이의 불일치가 커지면서 참조 편향이 더 두드러질
+수 있다.
+
+셋째, \emph{공간 증거 저하}는 패치 수준에서 계산된 이상 점수가 현재 query의
+정확한 경계와 국소 구조를 충분히 특정하지 못하는 문제이다. 파운데이션 모델의
+한 토큰은 일정 영역의 여러 픽셀을 집약하므로, 토큰 내부에서 어느 위치가
+이상 반응을 유발했는지에 관한 정보는 제한적이다. 따라서 coarse anomaly
+map의 단순 보간은 이미 집약 과정에서 약화된 경계, 얇은 결함 및 국소 대비를
+복원할 수 없다. 이러한 공간 해상도 한계는 patch 단위 입력을 사용하는 ViT
+구조 자체와 관련되며~\cite{dosovitskiy2021vit}, distribution shift가 없어도
+존재하지만, 정상 객체의 배치, 스케일, 촬영 구도 또는 조명이 달라지면 그
+영향이 더 두드러질 수 있다. MVTec AD~2가 매우 작은 결함과 학습에 포함되지
+않을 수 있는 조명 조건을 함께 평가하도록 설계된 점도 이 문제의 실용적
+중요성을 보여준다~\cite{hecklerkram2026mvtecad2}. Shift된 query에서는 객체 경계와 정상 외관의
+전이 위치가 support와 다르게 나타날 수 있고, 하나의 토큰이 전경과 배경 또는
+서로 다른 국소 외관을 함께 집약할 가능성도 커진다. 이 경우 정상 경계의
+응답이 주변으로 번지거나 실제 결함의 응답이 약화되어, coarse map과 실제
+결함 영역 사이의 localization 불일치가 커질 수 있다. 즉, shift가 공간 정보를
+직접 소실시키는 것이 아니라, 고정된 패치 해상도가 변화된 query 구조를
+표현하지 못하는 경우를 늘려 기존 공간 손실의 영향을 심화한다. 현재 query의
+RGB 정보는 shift 이후의 경계와 국소 대비를 가장 높은 해상도로 보존하는
+관측치이므로, coarse anomaly evidence를 query-native structure에 맞게 정제하는 단서로
+사용할 수 있다.
+
+기존 few-shot 이상 탐지 연구는 pretrained feature를 memory matching에
+활용하거나~\cite{roth2022patchcore,damm2025anomalydino}, multi-scale feature
+aggregation~\cite{jeong2023winclip}, feature reconstruction~\cite{fang2023fastrecon},
+또는 prompt learning~\cite{li2024promptad}을 통해 더 판별적인 representation과
+matching 성능을 얻는 데 집중해 왔다. 이러한 접근은 정상과 이상을 구분하는 강한 representation을
+제공하지만, 정상 support와 query의 표현이 충분히 비교 가능하다는 가정에
+의존하는 경우가 많다. 일부 연구가 정합, 증강, 메모리 선택 및 위치 인식
+모델링을 통해 shift의 개별 현상을 완화하지만, distribution shift가 정상
+표현, few-shot reference coverage 및 공간 localization에 유입시키는 bias를
+명시적인 대상으로 함께 다루는 접근은 상대적으로 제한적이다. 본 연구는 강한
+representation을 새로 학습하기보다, 동결된 representation에서 이러한
+shift-induced bias를 분리해 완화하는 데 초점을 둔다.
+
+이를 위해 동결된 파운데이션 모델 주위에 세 문제와 직접 대응하는 외재적
+강건성 스택을 구성한다. 먼저 Patch Positional Debiasing (PPD)은 normal support에서 위치별로 반복되는
+descriptor bias를 추정하고 support와 query에서 대칭적으로 제거하여, layout
+shift로 인한 representation mismatch를 완화한다. 다음으로 Static
+Flow-LatentBank는 보정된 normal support로 Flow를 적합하여 support 분포가
+표준화된 latent space를 구성하고, 변환된 support instance를 static bank에
+그대로 보존한다. 이를 통해 raw feature space의 불균일한 geometry에 직접
+의존하지 않고 latent 1-NN distance로 query를 비교하며, Flow NLL은 weak
+one-sided correction으로만 사용한다. 마지막으로 RGB Guide는 fixed patch
+resolution에서 손실된 spatial evidence를 보완하기 위해, 현재 query RGB에
+남아 있는 boundary와 local contrast를 이용해 coarse anomaly map을
+query-native structure에 맞게 정제한다.
+모든 support-fitted 구성 요소는 평가 전에 동결되며, 개선 과정은 anomaly label을
+사용하거나 메모리를 갱신하지 않는다.
+
+본 연구가 목표로 하는 기여는 다음과 같다.
+\begin{itemize}
+  \item support--query distribution shift에서 발생하는 높은 점수의 모호성을 분포 변화
+        유발 이상 증거 저하로 정식화한다.
+  \item support-fitted representation debiasing과 static support-conditioned latent space를 결합한
+        외재적 강건성 스택을 제안한다.
+  \item 현재 query RGB 영상으로부터 fine-grained spatial information을 학습 없이 복원한다.
+  \item PPD, Flow 투영, 잠재 거리, weak NLL, RGB Guide, 자원 조건 및
+        주장 범위를 분리하는 대응 실험 프로토콜을 제시한다.
+\end{itemize}
+
+본 연구의 범위는 동일 객체 내 배치, 외관, 촬영 조건 및 희소 참조 변화이다.
+임의의 카테고리 또는 도메인 변화, 모든 누락 정상 모드의 복원, 기하 정합,
+비강체 대응, 완전한 RGB 외관 불변성을 해결한다고 주장하지 않는다. 현재의
+공개 MVTec AD~2 결과는 자원 조건이 명시된 shadow evidence이며, 광범위한
+강건성과 최종 우월성 주장은 대응된 다중 시드 및 비공개 평가 이후로 유보한다.

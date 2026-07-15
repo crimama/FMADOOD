@@ -2,7 +2,7 @@
 
 import sys
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Optional, Sequence, Tuple
 
 import numpy as np
 import torch
@@ -21,15 +21,25 @@ if _SRC_DIR not in sys.path:
 class DINOv2Backbone(BaseBackbone):
     """DINOv2 backbone using src.backbones.DINOv2Wrapper under the hood."""
 
-    def __init__(self, model_name: str, device: str, smaller_edge_size: int = 448):
+    def __init__(
+        self,
+        model_name: str,
+        device: str,
+        smaller_edge_size: int = 448,
+        feature_layers: Optional[Sequence[int]] = None,
+    ) -> None:
         super().__init__(model_name, device, smaller_edge_size)
+        self.feature_layers = tuple(feature_layers or (5, 11, 17, 23))
         self._wrapper = None
 
     def _ensure_loaded(self) -> None:
         if self._wrapper is None:
             from src.backbones import DINOv2Wrapper
             self._wrapper = DINOv2Wrapper(
-                self.model_name, self.device, self.smaller_edge_size
+                self.model_name,
+                self.device,
+                self.smaller_edge_size,
+                feature_layers=self.feature_layers,
             )
 
     def set_resolution(self, smaller_edge_size: int) -> None:
@@ -38,7 +48,10 @@ class DINOv2Backbone(BaseBackbone):
             # Reload with new resolution
             from src.backbones import DINOv2Wrapper
             self._wrapper = DINOv2Wrapper(
-                self.model_name, self.device, self.smaller_edge_size
+                self.model_name,
+                self.device,
+                self.smaller_edge_size,
+                feature_layers=self.feature_layers,
             )
 
     def warmup(self, image_path: str, iters: int = 25) -> None:
@@ -59,6 +72,15 @@ class DINOv2Backbone(BaseBackbone):
     def extract_cls_features(self, image_tensor) -> torch.Tensor:
         self._ensure_loaded()
         return self._wrapper.extract_cls_features(image_tensor)
+
+    def extract_context_features(
+        self,
+        image_tensor: torch.Tensor,
+        context_source: str,
+    ) -> torch.Tensor:
+        if context_source != "cls":
+            raise ValueError(f"Unsupported DINOv2 context source: {context_source}")
+        return self.extract_cls_features(image_tensor)
 
     def compute_background_mask(self, features, grid_size,
                                  threshold: float = 1.0,
