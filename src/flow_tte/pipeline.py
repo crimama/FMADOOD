@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass
 from typing import Callable, Optional
 
@@ -10,7 +11,13 @@ from typing_extensions import final
 
 from flow_tte.config import FlowTTEConfig
 from flow_tte.memory import ReservoirMemory
-from flow_tte.scoring import ScoreCalibration, ScoreInputs, score_flow_memory
+from flow_tte.scoring import (
+    ScoreCalibration,
+    ScoreInputs,
+    ScoreResult,
+    image_top_percent_mean,
+    score_flow_memory,
+)
 from flow_tte.tensors import (
     FeatureArray,
     as_2d_float_tensor,
@@ -19,6 +26,11 @@ from flow_tte.tensors import (
     to_numpy,
 )
 from flow_tte.trainer import FlowDensityEstimator, FlowTrainingStats
+from flow_tte.waff import (
+    WaffScorer,
+    score_waff_components_tensor,
+    source_excluded_nearest_distance,
+)
 
 
 @dataclass(frozen=True)
@@ -41,6 +53,7 @@ class FlowTTE:
         self.memory: Optional[ReservoirMemory] = None
         self.training_stats: Optional[FlowTrainingStats] = None
         self.score_calibration: Optional[ScoreCalibration] = None
+        self.waff_scorer: Optional[WaffScorer] = None
 
     def fit(
         self,
@@ -49,6 +62,7 @@ class FlowTTE:
         memory_contexts: Optional[FeatureArray] = None,
         memory_selector: Optional[Callable[[torch.Tensor], torch.Tensor]] = None,
     ) -> FlowTrainingStats:
+        self.waff_scorer = None
         device = resolve_device(self.config.device)
         support = as_patch_batch(support_features, device)
         shared_contexts = _optional_contexts(
@@ -97,6 +111,108 @@ class FlowTTE:
         self.estimator = estimator
         self.training_stats = stats
         return stats
+
+    def set_waff_scorer(self, scorer: WaffScorer) -> None:
+        """Attach a support-fitted static scorer without changing flow or memory state."""
+        weight = np.asarray(scorer.weight)
+        if weight.shape != (2,) or not bool(np.all(np.isfinite(weight))):
+            raise ValueError("WAFF scorer must contain two finite weights")
+        _ = self._require_estimator()
+        _ = self._require_memory()
+        self.waff_scorer = scorer
+
+    def refresh_static_memory(self, support_features: FeatureArray) -> None:
+        """Rebuild the static bank after an offline flow refinement.
+
+        Distance and NLL calibration intentionally remain frozen at the clean-only
+        fit so an offline representation treatment cannot hide score rescaling by
+        recalibrating itself.
+        """
+        estimator = self._require_estimator()
+        _ = self._require_score_calibration()
+        if self.config.flow.condition_mode != "none":
+            raise RuntimeError("offline static-memory refresh supports unconditioned flow only")
+        latents = estimator.transform(support_features)
+        self.memory = ReservoirMemory(
+            m0_features=latents,
+            budget=self.config.expansion.budget,
+            random_seed=self.config.expansion.random_seed,
+        )
+
+    def clone_offline(self) -> "FlowTTE":
+        """Clone fitted offline state without pickling the memory RNG generator."""
+        estimator = self._require_estimator()
+        memory = self._require_memory()
+        calibration = self._require_score_calibration()
+        if memory.buffer.shape[0] != 0:
+            raise RuntimeError("offline clone requires an unexpanded static memory")
+        candidate = FlowTTE(self.config)
+        candidate.estimator = copy.deepcopy(estimator)
+        candidate.memory = ReservoirMemory(
+            m0_features=memory.m0_features,
+            budget=self.config.expansion.budget,
+            random_seed=self.config.expansion.random_seed,
+            m0_contexts=memory.m0_contexts,
+        )
+        candidate.training_stats = self.training_stats
+        candidate.score_calibration = calibration
+        candidate.waff_scorer = self.waff_scorer
+        return candidate
+
+    def factorial_score_components(
+        self,
+        features: FeatureArray,
+        contexts: Optional[FeatureArray] = None,
+        *,
+        query_source_ids: Optional[npt.ArrayLike] = None,
+        bank_source_ids: Optional[npt.ArrayLike] = None,
+    ) -> np.ndarray:
+        """Compute the exact H+ distance/NLL components without mutating memory."""
+        estimator = self._require_estimator()
+        memory = self._require_memory()
+        calibration = self._require_score_calibration()
+        device = resolve_device(self.config.device)
+        batch = as_patch_batch(features, device)
+        condition_contexts = _optional_contexts(
+            contexts,
+            device,
+            n_rows=int(batch.flat_features.shape[0]),
+            name="contexts",
+        )
+        if self.config.flow.condition_mode == "context" and condition_contexts is None:
+            raise RuntimeError("FlowTTE component scoring requires condition contexts")
+        evaluation = estimator.evaluate(features, contexts=condition_contexts)
+        if (query_source_ids is None) != (bank_source_ids is None):
+            raise ValueError("query_source_ids and bank_source_ids must be provided together")
+        if query_source_ids is None:
+            query = memory.bank.query(
+                evaluation.z,
+                k=1,
+                chunk_size=self.config.score.query_chunk_size,
+                squared=self.config.score.use_squared_distance,
+            )
+            distances = query.distances[:, 0]
+        else:
+            if memory.bank.contexts is not None:
+                raise RuntimeError("source-excluded WAFF scoring does not support memory contexts")
+            query_ids = torch.as_tensor(query_source_ids, device=device).reshape(-1)
+            bank_ids = torch.as_tensor(bank_source_ids, device=device).reshape(-1)
+            distances = source_excluded_nearest_distance(
+                evaluation.z,
+                memory.bank.features,
+                query_ids,
+                bank_ids,
+                chunk_size=self.config.score.query_chunk_size,
+                squared=self.config.score.use_squared_distance,
+            )
+        components = torch.stack(
+            (
+                calibration.normalize_distance(distances),
+                estimator.density_penalty(evaluation.nll),
+            ),
+            dim=1,
+        )
+        return to_numpy(components)
 
     def transform_features(
         self,
@@ -180,6 +296,11 @@ class FlowTTE:
             bank=memory.bank,
             config=self.config.score,
             calibration=calibration,
+        )
+        score = self._rescore_with_waff(
+            score,
+            evaluation.batch.image_indices,
+            evaluation.batch.n_images,
         )
         selected = evaluation.nll <= estimator.density_threshold
         memory_size = memory.bank.size()
@@ -268,6 +389,11 @@ class FlowTTE:
             config=self.config.score,
             calibration=calibration,
         )
+        score = self._rescore_with_waff(
+            score,
+            evaluation.batch.image_indices,
+            evaluation.batch.n_images,
+        )
 
         selected = evaluation.nll <= estimator.density_threshold
         if expand:
@@ -282,6 +408,31 @@ class FlowTTE:
             selected_count=int(selected.sum().detach().cpu()),
             memory_size_before=memory_size_before,
             memory_size_after=memory.bank.size(),
+        )
+
+    def _rescore_with_waff(
+        self,
+        score: ScoreResult,
+        image_indices: torch.Tensor,
+        n_images: int,
+    ) -> ScoreResult:
+        if self.waff_scorer is None:
+            return score
+        components = torch.stack((score.distance_scores, score.density_penalty), dim=1)
+        patch_scores = score_waff_components_tensor(self.waff_scorer, components)
+        image_scores = image_top_percent_mean(
+            patch_scores,
+            image_indices,
+            n_images,
+            self.config.score.top_percent,
+        )
+        return ScoreResult(
+            patch_scores=patch_scores,
+            image_scores=image_scores,
+            image_score=float(image_scores.max().detach().cpu()),
+            distances=score.distances,
+            distance_scores=score.distance_scores,
+            density_penalty=score.density_penalty,
         )
 
     def _require_estimator(self) -> FlowDensityEstimator:

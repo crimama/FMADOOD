@@ -1,0 +1,63 @@
+{
+  "schema": "dscr-density-compact-summary-v1",
+  "scope": "compact-public-shadow-mechanism-diagnostic",
+  "comparable": false,
+  "objects": ["can", "fabric", "rice", "vial", "wallplugs"],
+  "query_count_per_object": 8,
+  "arms": ["G0", "D0", "D0c"],
+  "macro": {
+    "G0": {
+      "pooled_pauroc_0.05_float16": 0.565901532323801,
+      "pooled_oracle_f1_float16": 0.08016801350468569,
+      "pooled_pixel_ap_float16": 0.05011690178401026,
+      "fixed_raw_f1": 0.009807783405262465,
+      "fixed_normal_fpr": 0.0002124588295709749
+    },
+    "D0": {
+      "pooled_pauroc_0.05_float16": 0.5398506907505304,
+      "pooled_oracle_f1_float16": 0.06832516119279723,
+      "pooled_pixel_ap_float16": 0.036072985050473946,
+      "fixed_raw_f1": 0.008520172276949182,
+      "fixed_normal_fpr": 0.00015373172758443538
+    },
+    "D0c": {
+      "pooled_pauroc_0.05_float16": 0.5398584626682894,
+      "pooled_oracle_f1_float16": 0.06690552099086841,
+      "pooled_pixel_ap_float16": 0.03556083993554035,
+      "fixed_raw_f1": 0.008450018459352154,
+      "fixed_normal_fpr": 0.00016938419344054737
+    }
+  },
+  "delta_vs_g0": {
+    "D0": {
+      "pooled_pauroc_0.05_float16": -0.026050841573270604,
+      "pooled_oracle_f1_float16": -0.011842852311888456,
+      "pooled_pixel_ap_float16": -0.014043916733536314,
+      "fixed_raw_f1": -0.001287611128313283,
+      "fixed_normal_fpr": -0.00005872710198653951
+    },
+    "D0c": {
+      "pooled_pauroc_0.05_float16": -0.026043069655511613,
+      "pooled_oracle_f1_float16": -0.013262492513817278,
+      "pooled_pixel_ap_float16": -0.014556061848469909,
+      "fixed_raw_f1": -0.001357764945910311,
+      "fixed_normal_fpr": -0.00004307463613042753
+    }
+  },
+  "wins_vs_g0": {
+    "D0": {"pooled_pauroc_0.05_float16": 1, "pooled_oracle_f1_float16": 2},
+    "D0c": {"pooled_pauroc_0.05_float16": 1, "pooled_oracle_f1_float16": 2}
+  },
+  "gate": {
+    "promising_diagnostic": false,
+    "continue_diagnostic": false,
+    "failed_conditions": [
+      "macro_pauroc_and_oracle_f1_do_not_beat_g0",
+      "object_win_counts_below_3_of_5",
+      "can_pauroc_loss_exceeds_0.03",
+      "vial_pauroc_loss_exceeds_0.03",
+      "vial_oracle_f1_loss_exceeds_0.05"
+    ],
+    "verdict": "KILL_FOR_CLAIM / NO_CONTINUE"
+  }
+}

@@ -1,7 +1,13 @@
 # AD2 Basic Nested Few-Shot Scaling Preregistration
 
 Date: 2026-07-14  
-Status: frozen before remote execution
+Status: `SUPERSEDED_UNRUN` on 2026-07-23
+
+This contract was not executed. The later DINOv2-L mechanism audit found the
+frozen DVT/density configuration mixed or immaterial, so it must not be used
+as the current shot-scaling protocol. Its historical design is retained
+below; the replacement is gated by the detector-selection sequence in
+`skill_graph/analysis/2026-07-23_remaining_experiment_sequence.md`.
 
 ## Contract
 
@@ -20,4 +26,3 @@ Status: frozen before remote execution
 
 The queue starts only after the active Ours+R run terminates and executes
 1,2,4,8 shots sequentially, with four object shards in parallel per shot.
-

@@ -58,8 +58,18 @@ def select(stage: int) -> tuple[str, dict]:
 
 def main() -> int:
     STATE.mkdir(parents=True, exist_ok=True)
-    selected: dict[str, str] = {}
-    for stage in range(1, 5):
+    # Allow a detached controller to resume after a session/process restart.
+    # Earlier completed-stage selections are authoritative inputs to the next
+    # stage; never restart a completed remote run just because the local
+    # orchestrator was interrupted.
+    selected_path = STATE / "selected_env.json"
+    selected: dict[str, str] = (
+        json.loads(selected_path.read_text()) if selected_path.exists() else {}
+    )
+    start_stage = int(os.environ.get("START_STAGE", "1"))
+    if not 1 <= start_stage <= 4:
+        raise ValueError(f"START_STAGE must be in [1,4], got {start_stage}")
+    for stage in range(start_stage, 5):
         if stage > 1:
             call("start", stage, selected)
         wait_complete(stage, selected)

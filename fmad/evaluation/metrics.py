@@ -16,7 +16,12 @@ if _ROOT not in sys.path:
     sys.path.insert(0, _ROOT)
 
 from scripts.flow_tte_postprocess_core import binary_mask_metrics, variant_profile
-from src.post_eval import eval_segmentation, parse_dataset_files, read_tiff
+from src.post_eval import (
+    SegmentationMetrics,
+    eval_segmentation_metrics,
+    parse_dataset_files,
+    read_tiff,
+)
 
 
 class Evaluator:
@@ -54,7 +59,7 @@ class Evaluator:
             )
 
         evaluation_dict = {}
-        auroc_ls, f1_ls = [], []
+        auroc_ls, f1_ls, aupro_ls = [], [], []
 
         for obj in objects:
             obj_test_dir = os.path.join(anomaly_maps_dir, obj, "test")
@@ -71,16 +76,41 @@ class Evaluator:
             )
 
             if self.eval_segm and gt_filenames:
-                auroc_px, f1_px, best_thre = eval_segmentation(
+                raw_metrics: SegmentationMetrics = eval_segmentation_metrics(
                     gt_filenames,
                     prediction_filenames,
                     pro_integration_limit=self.pro_integration_limit,
                     delete_tiff_files=False,
                 )
+                auroc_px = raw_metrics.seg_auroc_0_05
+                f1_px = raw_metrics.seg_f1_raw
+                best_thre = raw_metrics.best_threshold
                 evaluation_dict[obj] = {
                     "seg_AUROC": auroc_px,
+                    "seg_AUROC_0.05": auroc_px,
+                    "seg_AUROC_definition": (
+                        "standardized partial pixel AUROC via "
+                        "roc_auc_score(max_fpr=0.05)"
+                    ),
+                    "seg_AUPRO_0.05": raw_metrics.seg_aupro_0_05,
+                    "seg_AUPRO_definition": (
+                        "connected-component PRO normalized over FPR [0, 0.05]"
+                    ),
+                    "seg_F1_raw": f1_px,
                     "seg_F1": f1_px,
                     "best_thre": best_thre,
+                    "coverage": {
+                        "prediction_map_count": raw_metrics.prediction_map_count,
+                        "ground_truth_map_count": raw_metrics.ground_truth_map_count,
+                        "shape_match_count": raw_metrics.shape_match_count,
+                        "nonconstant_prediction_map_count": (
+                            raw_metrics.nonconstant_prediction_map_count
+                        ),
+                        "anomalous_region_count": raw_metrics.anomalous_region_count,
+                        "non_finite_prediction_count": (
+                            raw_metrics.non_finite_prediction_count
+                        ),
+                    },
                 }
                 if self.binary_postprocess != "none":
                     scores = [np.asarray(read_tiff(path), dtype=np.float32) for path in prediction_filenames]
@@ -110,10 +140,14 @@ class Evaluator:
                     f1_px = processed.f1
                 auroc_ls.append(auroc_px)
                 f1_ls.append(f1_px)
+                if np.isfinite(raw_metrics.seg_aupro_0_05):
+                    aupro_ls.append(raw_metrics.seg_aupro_0_05)
 
         if auroc_ls:
             evaluation_dict["mean_segmentation_au_roc"] = float(np.mean(auroc_ls))
             evaluation_dict["mean_segmentation_f1"] = float(np.mean(f1_ls))
+        if aupro_ls:
+            evaluation_dict["mean_segmentation_aupro_0.05"] = float(np.mean(aupro_ls))
 
         # Save metrics
         metrics_path = os.path.join(output_dir, f"metrics_seed={seed}.json")

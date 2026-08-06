@@ -92,7 +92,7 @@ def test_producer_digest_has_an_explicit_runtime_dependency_boundary(
 
     assert superadd_runner.implementation_sha256() == "d" * 64
     assert {path.name for path in captured} == {
-        "darc_backbone.py",
+        "dinov3_early_exit.py",
         "run_superadd_parity.py",
         "superadd_bank.py",
         "superadd_inference.py",

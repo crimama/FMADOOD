@@ -24,7 +24,7 @@ _REPO_ROOT = Path(__file__).resolve().parents[1]
 if str(_REPO_ROOT / "src") not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT / "src"))
 
-from flow_tte.darc_backbone import (  # noqa: E402
+from flow_tte.dinov3_early_exit import (  # noqa: E402
     DINOv3EarlyExitAdapter,
     patch_torch_pytree_compat,
 )
@@ -274,7 +274,7 @@ def implementation_sha256() -> str:
         _REPO_ROOT / "src/flow_tte/superadd_outputs.py",
         _REPO_ROOT / "src/flow_tte/superadd_parity.py",
         _REPO_ROOT / "src/flow_tte/superadd_patching.py",
-        _REPO_ROOT / "src/flow_tte/darc_backbone.py",
+        _REPO_ROOT / "src/flow_tte/dinov3_early_exit.py",
         Path(__file__).resolve(),
     )
     return files_sha256(paths)

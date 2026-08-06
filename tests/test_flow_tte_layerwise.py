@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 # pyright: reportMissingImports=false
+import importlib
 import sys
 from pathlib import Path
 from typing import Tuple
 
 import numpy as np
 import numpy.typing as npt
+import pytest
 import torch
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -20,8 +22,17 @@ from flow_tte_mvtec_ad2_core import (  # noqa: E402
     extract_layer_feature_maps_from_rgb,
     feature_energy_split_mask,
     patch_xy_contexts,
+    split_context_source,
+    validate_transformer_context_tokens,
 )
 from flow_tte_support import normalize_layer_features  # noqa: E402
+
+
+def test_core_package_import_reexports_context_helpers() -> None:
+    packaged_core = importlib.import_module("scripts.flow_tte_mvtec_ad2_core")
+
+    assert packaged_core.split_context_source("cls_xy") == ("cls", True)
+    assert packaged_core.patch_xy_contexts(2, 2).shape == (2, 2, 2)
 
 
 def test_layer_wise_extraction_keeps_layers_separate_with_context() -> None:
@@ -91,7 +102,8 @@ def test_feature_avg3_context_uses_local_neighborhood() -> None:
     assert contexts is not None
     assert contexts.shape == (3, 3, 1)
     assert np.isclose(contexts[1, 1, 0], 4.0)
-    assert np.isclose(contexts[0, 0, 0], (0.0 + 0.0 + 1.0 + 0.0 + 0.0 + 1.0 + 3.0 + 3.0 + 4.0) / 9.0)
+    expected_corner = (0.0 + 0.0 + 1.0 + 0.0 + 0.0 + 1.0 + 3.0 + 3.0 + 4.0) / 9.0
+    assert np.isclose(contexts[0, 0, 0], expected_corner)
 
 
 def test_feature_avg3_ch16_context_compresses_channel_groups() -> None:
@@ -101,6 +113,20 @@ def test_feature_avg3_ch16_context_compresses_channel_groups() -> None:
 
     assert contexts is not None
     assert contexts.shape == (2, 2, 16)
+
+
+def test_feature_avg3_residual_xy_context_keeps_component_order() -> None:
+    values = np.arange(4, dtype=np.float32).reshape(2, 2, 1)
+
+    contexts = build_feature_contexts(values, "feature_avg3_residual_xy")
+
+    assert contexts is not None
+    assert contexts.shape == (2, 2, 4)
+    local_average = contexts[..., :1]
+    residual = contexts[..., 1:2]
+    assert np.allclose(local_average + residual, values)
+    assert np.allclose(contexts[0, 0, 2:], np.array([-1.0, -1.0], dtype=np.float32))
+    assert np.allclose(contexts[-1, -1, 2:], np.array([1.0, 1.0], dtype=np.float32))
 
 
 def test_image_feature_mean_context_is_image_level_subbank_key() -> None:
@@ -118,6 +144,24 @@ def test_image_feature_mean_context_is_image_level_subbank_key() -> None:
     assert contexts.shape == (2, 2, 2)
     assert np.allclose(contexts[0, 0], np.array([4.0, 5.0], dtype=np.float32))
     assert np.allclose(contexts[-1, -1], np.array([4.0, 5.0], dtype=np.float32))
+
+
+def test_context_source_validation_is_case_insensitive_and_rejects_unknown_values() -> None:
+    assert split_context_source("CLS_XY") == ("cls", True)
+
+    with pytest.raises(ValueError, match="Unsupported context source"):
+        split_context_source("unsupported")
+    with pytest.raises(ValueError, match="Unsupported context source"):
+        split_context_source("none_xy")
+
+
+def test_transformer_context_tokens_require_token_by_channel_shape() -> None:
+    tokens = validate_transformer_context_tokens(np.ones((2, 3), dtype=np.float64))
+
+    assert tokens.shape == (2, 3)
+    assert tokens.dtype == np.float32
+    with pytest.raises(RuntimeError, match="shaped TxC"):
+        validate_transformer_context_tokens(np.ones((1, 2, 3), dtype=np.float32))
 
 
 def test_feature_energy_split_mask_separates_high_energy_patches() -> None:

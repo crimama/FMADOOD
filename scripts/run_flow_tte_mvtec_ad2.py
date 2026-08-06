@@ -9,6 +9,7 @@ from __future__ import annotations
 # allow: SIZE_OK — explicit remote experiment CLI mirrors the protocol surface;
 # split after the structural-context options stabilize.
 import argparse
+import hashlib
 import importlib
 import json
 import shutil
@@ -42,6 +43,14 @@ from flow_tte_support import is_fixed_support_policy  # noqa: E402
 
 JsonScalar = Union[str, int, float, bool, None]
 JsonValue = Union[JsonScalar, Dict[str, "JsonValue"], List["JsonValue"]]
+
+
+def fixed_support_manifest_sha256(policy: str) -> Union[str, None]:
+    """Hash the exact fixed-reference manifest used by a run."""
+    if not is_fixed_support_policy(policy):
+        return None
+    manifest_path = Path(policy.partition("=")[2])
+    return hashlib.sha256(manifest_path.read_bytes()).hexdigest()
 
 
 def parse_args(argv: Sequence[str]) -> RunConfig:  # noqa: PLR0915
@@ -511,6 +520,17 @@ def build_runtime(config: RunConfig) -> Tuple[DatasetLike, BackboneLike]:
 
 
 def evaluate(config: RunConfig) -> Dict[str, JsonValue]:
+    skip_sentinel = Path(__file__).with_name(".skip_embedded_public_evaluation")
+    if skip_sentinel.is_file():
+        metrics: Dict[str, JsonValue] = {
+            "embedded_evaluation_skipped": True,
+            "reason": "frozen external sequence evaluator owns the final metrics",
+        }
+        (config.output_root / "metrics.json").write_text(
+            json.dumps(metrics, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        return metrics
     metrics_module = importlib.import_module("fmad.evaluation.metrics")
     evaluator_cls = metrics_module.Evaluator
     evaluator = evaluator_cls({
@@ -692,6 +712,9 @@ def write_manifest(
         "shots": config.shots,
         "seed": config.seed,
         "support_policy": config.support_selection,
+        "support_manifest_sha256": fixed_support_manifest_sha256(
+            config.support_selection,
+        ),
         "support_selection_seed": config.support_selection_seed,
         "support_transforms": list(config.support_transforms),
         "effective_support_view_count": sum(

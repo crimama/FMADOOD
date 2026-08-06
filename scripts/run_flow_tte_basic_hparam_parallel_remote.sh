@@ -9,8 +9,8 @@ SELECTED_DEPTH="${SELECTED_DEPTH:-2}"
 SELECTED_WIDTH="${SELECTED_WIDTH:-1}"
 SELECTED_EPOCHS="${SELECTED_EPOCHS:-3}"
 SELECTED_LR="${SELECTED_LR:-2e-4}"
-SELECTED_LOGDET="${SELECTED_LOGDET:-1e-3}"
-SELECTED_BRIGHTNESS="${SELECTED_BRIGHTNESS:-1.0,1.0}"
+SELECTED_LOGDET="${SELECTED_LOGDET:-2e-2}"
+SELECTED_BRIGHTNESS="${SELECTED_BRIGHTNESS:-0.8,1.2}"
 REMOTE_REPO="${REMOTE_REPO:-/workspace/fsad_tta}"
 REMOTE_RESULTS_ROOT="${REMOTE_RESULTS_ROOT:-/workspace/results_remote}"
 SUPPORT_JSON_REL="skill_graph/experiments/2026-07-07_flow_latentbank_no_tte_fixed_reference_dinov3/superad16_dinov2_reference_paths.json"
@@ -19,6 +19,31 @@ GPU_IDLE_MEMORY_MIB="${GPU_IDLE_MEMORY_MIB:-512}"
 GPU_IDLE_POLL_SECONDS="${GPU_IDLE_POLL_SECONDS:-30}"
 
 OBJECTS=(can fabric fruit_jelly rice vial wallplugs walnuts sheet_metal)
+
+print_current() {
+  cat <<EOF
+setting	value
+objects	can,fabric,fruit_jelly,rice,vial,wallplugs,walnuts,sheet_metal
+backbone	dinov2_vitl14
+shots	16
+seed	0
+flow_depth	${SELECTED_DEPTH}
+hidden_width	${SELECTED_WIDTH}
+epochs	${SELECTED_EPOCHS}
+learning_rate	${SELECTED_LR}
+lambda_logdet	${SELECTED_LOGDET}
+brightness	${SELECTED_BRIGHTNESS}
+feature_layers	11,15,19,23
+feature_fusion	layer_norm_mean
+expansion_budget	1.0
+loo_standardization	off
+dvt	position_mean:1.0
+context	none
+raw_rgb_guide	none
+refinement	guided_r8
+binary_postprocess	closefill_erode:17:16
+EOF
+}
 
 print_plan() {
   cat <<'EOF'
@@ -64,7 +89,9 @@ ssh_remote() {
 }
 
 sync_repo() {
-  tar --exclude=.git --exclude=.omx --exclude=PaperWorks --exclude=configs/remote \
+  # The local virtualenv is several GB and is already provisioned in the fixed
+  # remote container; sending it on every stage start only delays experiments.
+  tar --exclude=.git --exclude=.omx --exclude=.venv --exclude=PaperWorks --exclude=configs/remote \
     --exclude=results --exclude='*.tgz' -C "${ROOT_DIR}" -cf - . \
     | ssh_remote "${REMOTE_HOST}" \
       "docker exec -i '${CONTAINER_NAME}' bash -lc '
@@ -346,13 +373,11 @@ internal_controller() {
       elif [[ "${EXPERIMENT_KIND}" == hparam_stage3 ]]; then
         run_worker 0 reg_base >"${root}/logs/dsba3_gpu0.log" 2>&1 & pids+=("$!")
         run_worker 1 reg_ld2 >"${root}/logs/dsba3_gpu1.log" 2>&1 & pids+=("$!")
-        run_worker 2 reg_b08 >"${root}/logs/dsba3_gpu2.log" 2>&1 & pids+=("$!")
-        run_worker 3 reg_ld2_b08 >"${root}/logs/dsba3_gpu3.log" 2>&1 & pids+=("$!")
+        echo "NO_ASSIGNED_CONFIGS host=dsba3 gpu=2,3 stage=${EXPERIMENT_KIND}"
       elif [[ "${EXPERIMENT_KIND}" == hparam_stage4 ]]; then
         run_worker 0 layer_early >"${root}/logs/dsba3_gpu0.log" 2>&1 & pids+=("$!")
         run_worker 1 layer_current >"${root}/logs/dsba3_gpu1.log" 2>&1 & pids+=("$!")
-        run_worker 2 layer_midlate >"${root}/logs/dsba3_gpu2.log" 2>&1 & pids+=("$!")
-        run_worker 3 layer_late >"${root}/logs/dsba3_gpu3.log" 2>&1 & pids+=("$!")
+        echo "NO_ASSIGNED_CONFIGS host=dsba3 gpu=2,3 stage=${EXPERIMENT_KIND}"
       elif [[ "${EXPERIMENT_KIND}" == hparam_stage2_e5 ]]; then
         echo "NO_ASSIGNED_CONFIGS host=dsba3 stage=${EXPERIMENT_KIND}"
       else
@@ -375,8 +400,12 @@ internal_controller() {
       elif [[ "${EXPERIMENT_KIND}" == hparam_stage2_e5 ]]; then
         run_config_shard 0 opt_e5_lr2 can fabric fruit_jelly rice >"${root}/logs/dsba5_gpu0.log" 2>&1 & pids+=("$!")
         run_config_shard 1 opt_e5_lr2 vial wallplugs walnuts sheet_metal >"${root}/logs/dsba5_gpu1.log" 2>&1 & pids+=("$!")
-      elif [[ "${EXPERIMENT_KIND}" == hparam_stage3 || "${EXPERIMENT_KIND}" == hparam_stage4 ]]; then
-        echo "NO_ASSIGNED_CONFIGS host=dsba5 stage=${EXPERIMENT_KIND}"
+      elif [[ "${EXPERIMENT_KIND}" == hparam_stage3 ]]; then
+        run_worker 0 reg_b08 >"${root}/logs/dsba5_gpu0.log" 2>&1 & pids+=("$!")
+        run_worker 1 reg_ld2_b08 >"${root}/logs/dsba5_gpu1.log" 2>&1 & pids+=("$!")
+      elif [[ "${EXPERIMENT_KIND}" == hparam_stage4 ]]; then
+        run_worker 0 layer_midlate >"${root}/logs/dsba5_gpu0.log" 2>&1 & pids+=("$!")
+        run_worker 1 layer_late >"${root}/logs/dsba5_gpu1.log" 2>&1 & pids+=("$!")
       else
         run_worker 0 cap_d4_w1 >"${root}/logs/dsba5_gpu0.log" 2>&1 & pids+=("$!")
         run_worker 1 cap_d4_w2 >"${root}/logs/dsba5_gpu1.log" 2>&1 & pids+=("$!")
@@ -460,6 +489,7 @@ pull_host() {
 }
 
 case "${MODE}" in
+  current) print_current ;;
   plan) print_plan ;;
   start)
     print_plan
@@ -486,5 +516,5 @@ case "${MODE}" in
     [[ "$#" -eq 2 ]] || { echo "internal-controller requires host tag" >&2; exit 2; }
     internal_controller "$2"
     ;;
-  *) echo "usage: $0 {plan|start|status|pause|restart-dsba5|pull}" >&2; exit 2 ;;
+  *) echo "usage: $0 {current|plan|start|status|pause|restart-dsba5|pull}" >&2; exit 2 ;;
 esac

@@ -2,10 +2,194 @@
 
 ## Methods
 
-- `flowtte_vnext_nf_scoring_tta`: FlowTTE method pivot from frozen-NF latent
-  memory expansion to NF-NLL scoring with conservative test-time adaptation.
+- `Baseline1`: canonical name for the previously retained/default
+  DINOv3-H+/16 + DVT patch-local MLP Flow. Full method specification:
+  `skill_graph/methods/baseline1.md`. Completed paired-loss v4 artifacts retain
+  the legacy arm ID `V0_default` for checksum and schema compatibility.
 
 ## Experiments
+
+- `2026-08-05_tte_collapse_decomposition`: attempted to attribute the
+  2026-07-07 `flow_tte_budget125` verdict (`-0.027955` pAUROC) that closed the
+  test-time branch. Pre-run reanalysis of the recorded artifact showed the macro
+  loss is `79.5%` one object (`fabric` `-0.177735`), macro median is
+  `-0.011959 / -0.000030`, and excluding `fabric` the arm reads
+  `-0.006558 / +0.008230`. The preregistered replication gate then failed:
+  under Baseline1-core the same reservoir rule gives `fabric` `+0.0086` pAUROC,
+  opposite in sign to the historical `-0.177735`, so no mechanism decomposition
+  may be read. Contamination proved near-absent (`0.01%`-`0.61%`) and the
+  calibration arms were shown to be structurally inert against oracle metrics.
+  The confound was found to be DVT: the recovered 2026-07-07 manifest carries no
+  `dvt_denoise_mode` key, so that arm ran without DVT, while every Baseline1
+  diagnostic arm had it on. With `--dvt-mode none` the `fabric` sign flips to
+  `-0.0625`, and the production runner at the manifest configuration reproduces
+  the collapse outright (`Δseg_AUROC = -0.182033` versus the recorded
+  `-0.177735`). Mechanism: removing only ground-truth defect patches from
+  absorption candidates swings `fabric` by `+0.0859`, so defect
+  self-confirmation dominates and stream non-stationarity is secondary. Verdict:
+  `HISTORICAL_COLLAPSE_REPRODUCED / MECHANISM_ATTRIBUTED_TO_DEFECT_CONTAMINATION
+  / NO_METHOD_CLAIM`. The recorded number is not evidence against test-time
+  expansion as a class; it is evidence against an unfiltered NLL gate under a
+  representation that admits defect patches. Under Baseline1 (DVT on)
+  contamination is `0.04%` and expansion is mildly positive. The branch is
+  reopened for design work, conditional on any absorption policy carrying an
+  explicit defect-rejection mechanism.
+
+- `2026-08-05_flowtte_semantic_atlas_metric`: completed the four-object,
+  fixed-16 support-only test of a semantic-cluster-local nuisance metric over
+  frozen Baseline1 latents. A1 preserved synthetic defect contrast (`0.9992`)
+  and clean geometry but reduced shifted-normal inflation by only `0.6788%`,
+  regressed on `walnuts`, and had unstable fold-refit charts (`0.5274` ARI).
+  The global rank-4 control captured more shift energy, while
+  orthogonalization added no required safety margin over raw local directions.
+  Verdict: `KILL_FOR_CLAIM / RETAIN_BASELINE1 / NO_CONTINUE / NO_PUBLIC_ACCESS`.
+
+- `2026-08-04_flowtte_paired_loss_diagnostic`: completed the four-object,
+  fixed-16 support-only diagnostic of pair-aligned losses on the strongest
+  retained DINOv3-H+ DVT patch-local MLP Flow. V3 reduced shifted-normal
+  inflation by `9.77%` across `4/4` objects but retained only `0.8707` macro
+  synthetic defect contrast (`.7372` fruit_jelly, `.6683` vial). Normalized
+  pairing was safer but weak; random pairing demonstrated destructive
+  alignment. All-8 and public access were blocked. Verdict:
+  `KILL_FOR_CLAIM / RETAIN_BASELINE1 / NO_PUBLIC_ACCESS`.
+
+
+- `2026-08-04_shift_conditioned_patch_local_flow`: implemented the
+  DINOv3-H+/16 task-register plus bounded residual FiLM conditioning over the
+  frozen patch-local MLP Flow and completed the four-object fixed-16
+  support-only gate on dsba5 GPU 3. The shift predictor beat zero on all four,
+  but correct-register conditioning increased held shifted-normal inflation by
+  `20.41%` macro, beat both zero/shuffled controls on `0/4`, failed identity on
+  `3/4`, and lost defect contrast on `fruit_jelly/walnuts`. Public/private/test
+  access remained zero. Verdict:
+  `EARLY_VALIDITY_KILL / KILL_FOR_CLAIM / NO_PUBLIC_ACCESS`.
+
+- `2026-08-04_wtcf_stage_minus1`: implemented the A6-centered WTCF
+  support-only falsification and completed the preregistered `can/seed0`
+  sentinel on dsba5 GPU 3. Five stable repeated-residual witnesses were found,
+  and WTCF passed access, score, proxy, and function-geometry checks, but its
+  witness JVP ratios remained `.9236--.9493` rather than reaching the frozen
+  `<=.85` target. Only 5 updates were accepted and 59 blocks were rolled back.
+  The controller stopped before the remaining 14 cases and before any
+  test/label access. Verdict:
+  `EARLY_VALIDITY_KILL / NO_FULL_STAGE / NO_PUBLIC_ACCESS`.
+
+- `2026-07-24_same16_dvt_density_factorial`: completed the exact-support
+  all-eight A6/DVT-only/density-only/Basic 2×2 on dsba3. DVT accounts for most
+  of Basic's pAUROC/F1 macro advantage over A6
+  (`+0.012423/+0.005457`) but loses AU-PRO (`-0.008910`), is strongly
+  object-heterogeneous, crosses zero under object bootstrap, and triggers
+  collapse flags. Density is sub-material and interaction is sub-material.
+  Verdict: `MIXED_OR_INCONCLUSIVE_ATTRIBUTION / KILL_FOR_CLAIM`; no shot
+  scaling or further DVT/density sweep.
+
+- `2026-07-23_same16_baseline_metric_contract`: frozen all-eight
+  Basic/SuperAD-16/RN-FMLK rerun with exact shared support identities/hash and
+  original-resolution pAUROC/raw F1/AU-PRO coverage. Final Basic/SuperAD/RN
+  metrics are `0.772635/0.761857/0.745312` pAUROC,
+  `0.355676/0.368423/0.331950` F1, and
+  `0.533408/0.534924/0.425133` AU-PRO. Verdict:
+  `KILL_FOR_CLAIM / NO_SHOT_SCALING`.
+
+- `2026-07-23_a6_dominant_layer_public_shadow`: frozen A0/A6/A7/A6-L17/L17
+  confirmation plus independent post-run adjudication. A6 must beat its A7
+  hard null without any primary-metric collapse, and shot scaling requires
+  dominance over both same-run SuperAD and RN-FMLK. A6 failed promotion and
+  A6-L17 regressed across all metrics. Verdict:
+  `KILL_FOR_CLAIM / RETAIN_BASIC / NO_SHOT_SCALING`.
+
+- `2026-07-19_dinov2l_default_mechanism_stage_m1`: completed the all-eight
+  DINOv2-L/14 Basic `[5,11,17,23]` support-only mechanism audit on dsba3 GPUs
+  0--3. DVT raised SD patch pAUROC `+0.00985` but lost fixed F1 `-0.09908`,
+  inflated shifted-normal tails `+0.22644`, and reduced NN identity. Flow
+  without DVT improved SD pAUROC/F1 `+0.02625/+0.03424` on all objects with no
+  resolved tail increase; density was immaterial and fixed fusion lost to the
+  single-layer envelope. All 130,560 rows, custody hashes, compact checksums,
+  and an independent byte-identical reaggregation passed. TTA/query updates
+  and public/private access were zero. Verdict:
+  `MECHANISM_AUDIT_COMPLETE / KILL_FOR_CLAIM / NO_STAGE_M2`.
+
+- `2026-07-19_gb_cmf_stage_minus1a`: completed the preregistered four-case,
+  five-arm support-only GB-CMF diagnostic on dsba3 GPUs 0--3. GB-CMF failed
+  joint feasibility in three cases, geometry on all 16 held sources, raw
+  noninferiority, hard-null superiority, and seed-direction agreement. Its
+  pAUROC delta versus matched nonfactorial was `-0.023865` with a descriptive
+  95% interval `[-0.033540,-0.014036]`. The main failure is structural:
+  stochastic signed dual terms and a parameter proximal anchor did not bound
+  grouped worst-risk or flow/logdet geometry. Verdict:
+  `KILL_FOR_CLAIM / NO_PUBLIC_ACCESS / NO_STAGE_MINUS1B`.
+
+- `2026-07-19_waff_hplus_stage_minus1`: completed the valid support-only
+  fixed-sum distance/NLL weighting assay. No weight in the frozen 101-point
+  simplex jointly satisfied shifted-normal tail and shifted-defect retention
+  for any can/rice seed case; minimum violations ranged from `.030534` to
+  `.308887`. L2 and public access were stopped. Verdict:
+  `REDESIGN_INFEASIBLE_CONSTRAINT_SURFACE / NO_PUBLIC_ACCESS`.
+
+- `2026-07-18_default_shift_sequence`: completed the preregistered all-eight
+  default FlowTTE distribution-shift sequence on dsba3 GPUs 0--3 without TTA
+  or TESTprivate. Density increased shifted-normal tails; routed support banks
+  failed performance/tail/separation gates; guided fallback retained `can`
+  harm and collapsed score separation; local-soft nuisance shrinkage preserved
+  safety but reduced tail inflation only `5.95%`. All dense maps and isolated
+  snapshots were removed. Verdict:
+  `TESTPUBLIC_SHADOW_ONLY / NEGATIVE_OR_MIXED_CAUSAL_SIGNAL`.
+
+- `2026-07-18_cfntr_stage_minus1`: completed the all-eight, support-only
+  CF-NTR identifiability preflight on dsba3 GPUs 0--3 without reading
+  TESTpublic/private. The physical rank-4 tangent is specific (energy capture
+  `0.711801`, hard-null margin `0.509387`) and preserves synthetic defect
+  evidence (`0.930158`), but stability tails fail (`0.732572 < 0.75`) and
+  held-out p95 drift reduction is only `0.262992` versus the frozen `0.65`
+  gate. The failure intensifies with depth because an image-mean tangent does
+  not model patch-conditioned late-layer drift. Verdict:
+  `KILL_FOR_CLAIM / NO_CONTINUE`.
+
+- `2026-07-17_sdig_nodyr_stage_a`: completed the all-eight MVTec AD2
+  TESTpublic shadow on dsba3 GPUs 0--3 with exact SuperAD-selected reference-16.
+  NODyR scored `0.729019/0.326280` pAUROC/F1, only
+  `+0.000773/+0.000602` over the best single macro null and below the frozen
+  `+0.005/+0.005` threshold. The object-wise intrinsic envelope beat it in
+  all eight objects. Shifted-good score tails inflated strongly and NODyR was
+  nearly identical to `state_angle`, so transition direction did not resolve
+  acquisition/defect identifiability. All 6,504 generated maps were validated
+  and removed. Verdict:
+  `TESTPUBLIC_SHADOW_ONLY / NEGATIVE_OR_MIXED_CAUSAL_SIGNAL`.
+
+- `2026-07-17_sdig_nodyr_method_design`: completed a five-stage solution-design
+  cycle centered on separating acquisition shift from local defect evidence.
+  The selected `SDIG-NODyR` design freezes one cross-layer transition-direction
+  scorer, requires it to beat a per-bootstrap direct-state/RD/shuffle null
+  envelope as a standalone map, and permits image-disjoint support-only fixed
+  calibration only after that raw gate passes. Candidate scores were
+  `0.59/0.32/0.65/0.69/0.79`. Verdict:
+  `CONDITIONAL_KEEP_DESIGN_ONLY`; empirical validation is pending.
+
+- `2026-07-16_dscr_paia_condition_audit`: completed a preregistered three-object
+  paired acquisition audit of frozen G0 versus density D0 on dsba3. Regular
+  macro D0-G0 pAUROC/F1 was `-0.022554/-0.024119`; shifted-mean delta was
+  `-0.029614/-0.022535`, so the interaction was only
+  `-0.007060/+0.001584`. The density loss is already present under regular
+  acquisition, led by `vial`, rather than being principally induced by a
+  shared distribution shift. Prior pooled results reproduced within `1.1e-6`;
+  maps were validated and removed. Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`.
+
+- `2026-07-16_dscr_hres_density_shadow`: completed a five-object, seed-0/fold-0
+  MVTec AD2 compact public mechanism diagnostic on dsba3/dsba5. The
+  unrestricted high-resolution raw-distance G0 arm scored macro
+  `0.565902/0.080168` pAUROC/F1 versus D0 density NLL
+  `0.539851/0.068325` and calibrated D0c `0.539858/0.066906`. Density improved
+  pAUROC on only `rice` and violated no-harm on `can` and `vial`; all maps were
+  validated and removed after compact artifacts were retained. Verdict:
+  `KILL_FOR_CLAIM / NO_CONTINUE`.
+
+- `2026-07-15_flowtte_basic_dinov2l_sequential_hparam`: completed the
+  sequential DINOv2 ViT-L/14 Basic depth/width, epoch/LR, log-det/brightness,
+  and feature-layer ladder on all eight MVTec AD2 public objects. Final
+  selection is depth 2, width 1, 3 epochs, LR `2e-4`, log-det `2e-2`, support
+  brightness `0.8,1.2`, and layers `[11,15,19,23]`, scoring
+  `0.785792/0.440896` guided p-AUROC/F1. Diagnostic only pending matched
+  SuperAD/RN-FMLK/hard-null gates.
 
 - `2026-07-13_flowtte_ad2_hplus_guided_r8_morph`: all-eight matched AD2 H+
   evaluation of fixed RGB guided-r8 and default close/fill/erode morphology.
@@ -303,3 +487,10 @@
 - [MVTec AD2 Shift-Factorized Latent Bank rank/trim diagnostic](experiments/2026-07-15_sflb_ad2_rank_trim/report.md):
   shared low-rank test-shift estimation from trimmed support-1NN latent
   residuals; six all-object variants running across dsba3/dsba5.
+- `2026-08-04_shift_conditioned_patch_local_flow`: preregistered a
+  DINOv3-H+ follow-up to the failed all-token Transformer Flow. A learned
+  support-relative shift register may read but not update patch tokens and can
+  alter the frozen MLP Flow only through a bounded residual branch. The frozen
+  protocol fixes initialization/scorer/shift-target issues and requires a
+  support-only held-shift plus synthetic-defect retention pass before the
+  reduced TESTpublic smoke.

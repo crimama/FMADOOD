@@ -1,5 +1,7 @@
 """SuperAD method — multi-layer kNN with coreset selection."""
 
+import hashlib
+import json
 import os
 import sys
 import time
@@ -29,6 +31,50 @@ def _mean_top1p(arr: np.ndarray) -> float:
     return float(np.sort(arr)[-k:].mean())
 
 
+def load_fixed_reference_paths(
+    manifest_path: Path,
+    object_name: str,
+    train_image_paths: List[str],
+    expected_count: int,
+) -> Tuple[List[str], str]:
+    """Resolve a fixed support manifest against the active train/good pool."""
+    raw_bytes = manifest_path.read_bytes()
+    payload = json.loads(raw_bytes)
+    if not isinstance(payload, dict) or object_name not in payload:
+        raise ValueError(f"{object_name}: missing from fixed reference manifest")
+    requested = payload[object_name]
+    if not isinstance(requested, list) or len(requested) != expected_count:
+        raise ValueError(
+            f"{object_name}: expected {expected_count} fixed references, "
+            f"found {len(requested) if isinstance(requested, list) else 'invalid'}",
+        )
+    def reference_id(value: str) -> Tuple[str, str, str, str]:
+        parts = Path(value).parts
+        expected_suffix = (object_name, "train", "good")
+        if len(parts) < 4 or tuple(parts[-4:-1]) != expected_suffix:
+            raise ValueError(
+                f"{object_name}: fixed reference is outside {object_name}/train/good: "
+                f"{value}",
+            )
+        return (*expected_suffix, parts[-1])
+
+    train_by_id = {reference_id(path): path for path in train_image_paths}
+    if len(train_by_id) != len(train_image_paths):
+        raise ValueError(f"{object_name}: duplicate train/good reference identities")
+    selected = []
+    for requested_path in requested:
+        identity = reference_id(str(requested_path))
+        if identity not in train_by_id:
+            raise ValueError(
+                f"{object_name}: fixed reference {'/'.join(identity)} "
+                "not present in train/good active pool",
+            )
+        selected.append(train_by_id[identity])
+    if len(set(selected)) != len(selected):
+        raise ValueError(f"{object_name}: fixed reference manifest contains duplicates")
+    return selected, hashlib.sha256(raw_bytes).hexdigest()
+
+
 @METHOD_REGISTRY.register("superad")
 class SuperAD(BaseMethod):
     """SuperAD: multi-layer DINOv2 kNN anomaly detection with coreset selection."""
@@ -40,32 +86,55 @@ class SuperAD(BaseMethod):
         self.k_neighbors = config.get("k_neighbors", 1)
         self.faiss_on_cpu = config.get("faiss_on_cpu", False)
         self.warmup_iters = config.get("warmup_iters", 25)
+        manifest = config.get("fixed_reference_manifest")
+        self.fixed_reference_manifest = Path(manifest) if manifest else None
 
         # State built during fit()
         self._knn_indices: Dict[str, faiss.Index] = {}
         self._grid_size = None
         self._masking = False
         self._mask_ref_images = config.get("mask_ref_images", False)
+        self._save_heatmaps = config.get("save_heatmaps", True)
+        self._selected_reference_paths: List[str] = []
+        self._reference_manifest_sha256 = None
 
     def fit(self, train_image_paths: list, object_name: str, seed: int = 0) -> None:
         """Build memory bank: coreset selection + multi-layer FAISS indices."""
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-        # Stage 1: CLS features → coreset selection
-        cls_features = []
-        valid_names = []
-        with torch.inference_mode():
-            for img_path in tqdm(train_image_paths, desc="Extracting CLS features", leave=False):
-                img_rgb = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
-                img_tensor, _ = self.backbone.prepare_image(img_rgb)
-                cls_feat = self.backbone.extract_cls_features(img_tensor)
-                cls_features.append(cls_feat.squeeze().cpu())
-                valid_names.append(img_path)
+        # Stage 1: fixed shared references or CLS-feature coreset selection.
+        if self.fixed_reference_manifest is not None:
+            selected_paths, digest = load_fixed_reference_paths(
+                self.fixed_reference_manifest,
+                object_name,
+                train_image_paths,
+                expected_count=self.shots,
+            )
+            self._reference_manifest_sha256 = digest
+        else:
+            cls_features = []
+            valid_names = []
+            with torch.inference_mode():
+                for img_path in tqdm(
+                    train_image_paths,
+                    desc="Extracting CLS features",
+                    leave=False,
+                ):
+                    img_rgb = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
+                    img_tensor, _ = self.backbone.prepare_image(img_rgb)
+                    cls_feat = self.backbone.extract_cls_features(img_tensor)
+                    cls_features.append(cls_feat.squeeze().cpu())
+                    valid_names.append(img_path)
 
-        cls_features = torch.stack(cls_features).to(device)
-        sampler = GreedyCoresetSampler(percentage=0.1, device=device, dimension_to_project_features_to=1024)
-        selected_indices = sampler.run(cls_features)
-        selected_paths = [valid_names[idx] for idx in selected_indices]
+            cls_features = torch.stack(cls_features).to(device)
+            sampler = GreedyCoresetSampler(
+                percentage=0.1,
+                device=device,
+                dimension_to_project_features_to=1024,
+            )
+            selected_indices = sampler.run(cls_features)
+            selected_paths = [valid_names[idx] for idx in selected_indices]
+        self._selected_reference_paths = list(selected_paths)
 
         # Stage 2: multi-layer features → FAISS index per layer
         feature_refs: Dict[str, List[np.ndarray]] = {}
@@ -161,7 +230,17 @@ class SuperAD(BaseMethod):
         for anomaly_type, img_paths in tqdm(test_images.items(), desc=f"Processing {object_name}"):
             if save_maps:
                 os.makedirs(os.path.join(output_dir, "anomaly_maps", object_name, "test", anomaly_type), exist_ok=True)
-                os.makedirs(os.path.join(output_dir, "anomaly_maps", object_name, "test_hm_on_img", anomaly_type), exist_ok=True)
+                if self._save_heatmaps:
+                    os.makedirs(
+                        os.path.join(
+                            output_dir,
+                            "anomaly_maps",
+                            object_name,
+                            "test_hm_on_img",
+                            anomaly_type,
+                        ),
+                        exist_ok=True,
+                    )
 
             for img_path in img_paths:
                 t0 = time.time()
@@ -179,14 +258,22 @@ class SuperAD(BaseMethod):
                         os.path.join(output_dir, "anomaly_maps", object_name, "test", anomaly_type, f"{fname}.tiff"),
                         amap,
                     )
-                    amap_norm = min_max_norm(amap)
-                    heatmap = cvt2heatmap(amap_norm * 255)
-                    img_rgb = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
-                    hm_on_img = heatmap_on_image(heatmap, img_rgb)
-                    cv2.imwrite(
-                        os.path.join(output_dir, "anomaly_maps", object_name, "test_hm_on_img", anomaly_type, f"{fname}.jpg"),
-                        hm_on_img,
-                    )
+                    if self._save_heatmaps:
+                        amap_norm = min_max_norm(amap)
+                        heatmap = cvt2heatmap(amap_norm * 255)
+                        img_rgb = cv2.cvtColor(cv2.imread(img_path), cv2.COLOR_BGR2RGB)
+                        hm_on_img = heatmap_on_image(heatmap, img_rgb)
+                        cv2.imwrite(
+                            os.path.join(
+                                output_dir,
+                                "anomaly_maps",
+                                object_name,
+                                "test_hm_on_img",
+                                anomaly_type,
+                                f"{fname}.jpg",
+                            ),
+                            hm_on_img,
+                        )
 
         return ObjectResult(
             object_name=object_name,
@@ -194,4 +281,25 @@ class SuperAD(BaseMethod):
             anomaly_scores=anomaly_scores,
             time_memorybank=time_memorybank,
             inference_times=inference_times,
+            metadata={
+                "selected_reference_count": len(self._selected_reference_paths),
+                "selected_reference_paths": self._selected_reference_paths,
+                "fixed_reference_manifest": (
+                    str(self.fixed_reference_manifest)
+                    if self.fixed_reference_manifest is not None
+                    else None
+                ),
+                "reference_manifest_sha256": self._reference_manifest_sha256,
+                "feature_layers": list(self.backbone.feature_layers),
+            },
         )
+
+
+@METHOD_REGISTRY.register("rn_fmlk")
+class RNFMLK(SuperAD):
+    """Final-layer local kNN hard baseline over the same fixed references."""
+
+    def __init__(self, backbone, config: dict):
+        if len(backbone.feature_layers) != 1:
+            raise ValueError("RN-FMLK requires exactly one final backbone feature layer")
+        super().__init__(backbone, config)

@@ -1,0 +1,157 @@
+{
+  "arms": [
+    "G0",
+    "D0",
+    "D0c"
+  ],
+  "code_sha256": {
+    "scripts/run_flow_tte_darc_density_cell.py": "6d650a37d95e43bc152c091f10b48fda1e3f1bbd2a30101e9eacf0f2962df0cc",
+    "src/flow_tte/config.py": "ed570303646acce425f087ae0aa73255323fda20d85cb6b74ad9d2b152d3be88",
+    "src/flow_tte/darc_ad2_density_runtime.py": "9db576210531dda16b6c28a4292e2e396463e91aac0c83c20c06edac2f8aa5ba",
+    "src/flow_tte/darc_ad2_pilot_io.py": "9d709927308024c19da3b3ff016774310e748863d0c7aa6f2456dd7c1499009c",
+    "src/flow_tte/darc_backbone.py": "8e85242dda121b3e58612651f73b5f2bc95993abb2858893ea9289fc0bcdd30e",
+    "src/flow_tte/darc_feature_stream.py": "8918eb5f877092512d160555a98bce3e57feaa149bd79df91051bb3baa4ee660",
+    "src/flow_tte/darc_knn.py": "f9cefec549c3bd27ffcf3609e8c45b918741ec788d87e2a7e9adf3d63f4a1066",
+    "src/flow_tte/darc_resources.py": "e32f0380190a8e211178c59a59911d316f538d32d50dc3278b547def383ea9ea",
+    "src/flow_tte/darc_scoring.py": "a6e3e13600c66d3e497c30ebc0fd9230a430eb99af084a404aa2386dbed6a6f3",
+    "src/flow_tte/darc_tiling.py": "8abe66d8550ec1634b3513ef7cb7ff9f8a49ddce5641dda0365d51b15f324bc6",
+    "src/flow_tte/flow.py": "e3bf476388384d95878af94877147674253aa9517f997ca2e85cf882c87f5a57",
+    "src/flow_tte/hres_density.py": "f141c5de18d254a11585068e11374eb81070d4fb9862a469451e69c39ffa573b",
+    "src/flow_tte/losses.py": "d802d4b8930b4f56fd74f11b756094be371a009eff689c32ea6ad4d9762291b3",
+    "src/flow_tte/tensors.py": "48537362785cfd3b09d195f49b0a8294d03c70b6b334e43f5634190e42de7a18",
+    "src/flow_tte/trainer.py": "be34f358fe5b2cf6af4e0d849d22026079071be932aca949f66b2bad94ca635d"
+  },
+  "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+  "density": {
+    "batch_size": 512,
+    "clamp": 1.9,
+    "density_quantile": 0.9,
+    "hidden_multiplier": 2,
+    "lambda_logdet": 0.001,
+    "lr": 0.0002,
+    "n_coupling_layers": 2,
+    "n_epochs": 3,
+    "train_sample_cap": 32768
+  },
+  "design": {
+    "path": "skill_graph/analysis/2026-07-11_flowtte_hres_density_fusion_preregistration.md",
+    "sha256": "abc8f62aa757bad1540d2f5d619f6ddfc071a2de4790ae21cf2f72000676f01a"
+  },
+  "fold_aggregation": "float64-mean-then-single-float32-cast",
+  "fold_indices": [
+    0
+  ],
+  "folds": [
+    {
+      "fold_index": 0,
+      "heldout_paths": [
+        "fabric/train/good/153_regular.png",
+        "fabric/train/good/093_regular.png",
+        "fabric/train/good/189_regular.png",
+        "fabric/train/good/036_regular.png"
+      ],
+      "memory_paths": [
+        "fabric/train/good/083_regular.png",
+        "fabric/train/good/246_regular.png",
+        "fabric/train/good/374_regular.png",
+        "fabric/train/good/255_regular.png",
+        "fabric/train/good/379_regular.png",
+        "fabric/train/good/123_regular.png",
+        "fabric/train/good/284_regular.png",
+        "fabric/train/good/055_regular.png",
+        "fabric/train/good/311_regular.png",
+        "fabric/train/good/145_regular.png",
+        "fabric/train/good/229_regular.png",
+        "fabric/train/good/249_regular.png"
+      ]
+    }
+  ],
+  "ground_truth_access_before_maps": false,
+  "model": {
+    "config_sha256": "35770e98e425c9383534bcbfa7f3b7a3cb1d943f6d26a37d7d19fea0735eab57",
+    "model_id": "facebook/dinov3-vith16plus-pretrain-lvd1689m",
+    "revision": "c807c9eeea853df70aec4069e6f56b28ddc82acc",
+    "weights_sha256": "3e1d4d18b9bfa9f28fad8e9de6a783f1313532d3460efa4cd0b12521d81d1a4d"
+  },
+  "object": "fabric",
+  "operational_shard": {
+    "assignment": "global-good-then-bad-index-modulo",
+    "count": 1,
+    "index": 0
+  },
+  "queries": [
+    {
+      "path": "fabric/test_public/good/000_overexposed.png",
+      "population": "good"
+    },
+    {
+      "path": "fabric/test_public/good/000_regular.png",
+      "population": "good"
+    },
+    {
+      "path": "fabric/test_public/good/000_shift_1.png",
+      "population": "good"
+    },
+    {
+      "path": "fabric/test_public/good/000_shift_2.png",
+      "population": "good"
+    },
+    {
+      "path": "fabric/test_public/bad/000_overexposed.png",
+      "population": "bad"
+    },
+    {
+      "path": "fabric/test_public/bad/000_regular.png",
+      "population": "bad"
+    },
+    {
+      "path": "fabric/test_public/bad/000_shift_1.png",
+      "population": "bad"
+    },
+    {
+      "path": "fabric/test_public/bad/000_shift_2.png",
+      "population": "bad"
+    }
+  ],
+  "runtime_environment": {
+    "packages": {
+      "Pillow": "9.4.0",
+      "numpy": "1.26.4",
+      "opencv-python": "4.11.0.86",
+      "opencv-python-headless": "4.11.0.86",
+      "scipy": "1.10.1",
+      "tifffile": "2023.7.10",
+      "torch": "2.1.2+cu118",
+      "transformers": "4.56.2",
+      "typing_extensions": "4.15.0"
+    },
+    "python": "3.10.12",
+    "torch_cuda": "11.8",
+    "torch_cudnn": 8700
+  },
+  "schema": "darc-ad2-density-cell-v1",
+  "seed": 0,
+  "status": "fine-branch-shadow-diagnostic-not-frozen-gate3",
+  "support_paths": [
+    "fabric/train/good/153_regular.png",
+    "fabric/train/good/093_regular.png",
+    "fabric/train/good/189_regular.png",
+    "fabric/train/good/036_regular.png",
+    "fabric/train/good/083_regular.png",
+    "fabric/train/good/246_regular.png",
+    "fabric/train/good/374_regular.png",
+    "fabric/train/good/255_regular.png",
+    "fabric/train/good/379_regular.png",
+    "fabric/train/good/123_regular.png",
+    "fabric/train/good/284_regular.png",
+    "fabric/train/good/055_regular.png",
+    "fabric/train/good/311_regular.png",
+    "fabric/train/good/145_regular.png",
+    "fabric/train/good/229_regular.png",
+    "fabric/train/good/249_regular.png"
+  ],
+  "test_limits": {
+    "bad": 4,
+    "good": 4
+  }
+}

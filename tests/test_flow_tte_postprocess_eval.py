@@ -176,8 +176,17 @@ def test_ad2_evaluator_records_raw_and_default_postprocessed_f1(
     )
     monkeypatch.setattr(
         metrics_module,
-        "eval_segmentation",
-        lambda *_args, **_kwargs: (0.9, 0.4, 0.5),
+        "eval_segmentation_metrics",
+        lambda *_args, **_kwargs: metrics_module.SegmentationMetrics(
+            seg_auroc_0_05=0.9,
+            seg_f1_raw=0.4,
+            best_threshold=0.5,
+            seg_aupro_0_05=0.7,
+            prediction_map_count=1,
+            ground_truth_map_count=1,
+            anomalous_region_count=1,
+            non_finite_prediction_count=0,
+        ),
     )
     monkeypatch.setattr(metrics_module, "read_tiff", lambda _path: score)
 
@@ -195,10 +204,14 @@ def test_ad2_evaluator_records_raw_and_default_postprocessed_f1(
     )
 
     assert result["can"]["seg_AUROC"] == 0.9
+    assert result["can"]["seg_AUROC_0.05"] == 0.9
     assert result["can"]["seg_F1_raw"] == 0.4
+    assert result["can"]["seg_AUPRO_0.05"] == 0.7
+    assert result["can"]["coverage"]["prediction_map_count"] == 1
     assert result["can"]["binary_postprocess"] == "closefill_erode"
     assert result["can"]["binary_postprocess_threshold_source"] == "raw_best_thre"
     assert result["mean_segmentation_f1"] == result["can"]["seg_F1"]
+    assert result["mean_segmentation_aupro_0.05"] == 0.7
 
 
 def test_collect_object_result_reports_morphology_f1_gain(tmp_path: Path) -> None:

@@ -1,8 +1,327 @@
 # FSAD-TTA Task Log
 
+## 2026-08-05 FlowTTE SemanticAtlasMetric Stage -1
+
+- Status: `COMPLETE / KILL_FOR_CLAIM / RETAIN_BASELINE1 / NO_CONTINUE / NO_PUBLIC_ACCESS`
+- [x] Freeze the support-only semantic-local metric and causal controls
+- [x] Implement and verify the metric, runner, aggregator, and dsba5 controller
+- [x] Run the four-object source-disjoint mechanism gate on dsba5 GPU 3
+- [x] Verify all compact payload hashes and independently reproduce the verdict
+- [x] Enforce the frozen stop before all-eight support and any public/test access
+- Result: A1 retained `0.9992` synthetic defect contrast but reduced
+  shifted-normal inflation by only `0.6788%`, failed atlas stability at
+  `0.5274` ARI, and regressed on `walnuts`. Retain Baseline1; do not tune K,
+  beta, or loss weights inside this unstable atlas.
+- Preregistration:
+  `skill_graph/experiments/2026-08-05_flowtte_semantic_atlas_metric/preregistration.md`
+- Report:
+  `skill_graph/experiments/2026-08-05_flowtte_semantic_atlas_metric/report.md`
+
+## 2026-08-04 FlowTTE Paired-Loss Diagnostic
+
+- Status: `COMPLETE / KILL_FOR_CLAIM / RETAIN_BASELINE1 / NO_PUBLIC_ACCESS`
+- [x] Freeze the strongest patch-local MLP baseline and loss-only question
+- [x] Preregister V0/V1/V2/V3 plus normalized/random-pair controls
+- [x] Implement and locally verify the isolated loss, runner, aggregator, and
+      dsba5 controller
+- [x] Run the four-object support-only gate with epoch/object progress output
+- [x] Apply the frozen continuation or hard-stop rule before any public access
+- Result: V3 was the strongest new arm, reducing shifted-normal inflation by
+  `9.77%` on average and improving all four objects, but synthetic defect
+  retention fell to `0.8707` macro (`0.7372` fruit_jelly, `0.6683` vial).
+  The preregistered continuation gate failed, so all-8 and public access were
+  blocked. Retain Baseline1 and redesign the loss around a
+  restricted nuisance subspace rather than sweeping the scalar weight.
+- Preregistration:
+  `skill_graph/experiments/2026-08-04_flowtte_paired_loss_diagnostic/preregistration.md`
+- Report:
+  `skill_graph/experiments/2026-08-04_flowtte_paired_loss_diagnostic/report.md`
+
+
+## 2026-08-04 Shift-Conditioned Patch-Local Flow
+
+- Status: `COMPLETE / EARLY_VALIDITY_KILL / KILL_FOR_CLAIM / NO_PUBLIC_ACCESS`
+- [x] Reconcile the proposed design with prior Transformer/register/shift
+      negative evidence
+- [x] Correct the zero-gradient initialization, raw-1NN scorer mismatch,
+      absolute-shift non-identifiability, and missing Stage-B NLL contract
+- [x] Freeze target dataset, fixed support, architecture, losses, support-only
+      validity gate, reduced public gate, and dsba5 custody contract
+- [x] Implement the isolated core, runner, aggregator, and remote controller
+- [x] Pass local and fixed-container preflight/runtime checks
+- [x] Run the support-only held-shift mechanism gate on dsba5 GPU 3
+- [x] Stop before TESTpublic because the mechanism gate did not authorize access
+- [x] Apply the frozen continuation gate, checksum-pull evidence, and remove all
+      isolated source snapshots after the recorded conclusion
+- Result: the shift probe beat its zero predictor on all four objects, but
+  correct-register conditioning worsened held shifted-normal inflation by
+  `20.41%` macro, beat zero+shuffled controls on `0/4`, failed identity on
+  `3/4`, and retained only `0.5396/0.6846` synthetic defect contrast on
+  `fruit_jelly/walnuts`. Post-training logdet cancellation also exceeded the
+  frozen tolerance. No public/private/test/ground-truth path was enumerated or
+  opened.
+- Preregistration:
+  `skill_graph/experiments/2026-08-04_shift_conditioned_patch_local_flow/preregistration.md`
+- Report:
+  `skill_graph/experiments/2026-08-04_shift_conditioned_patch_local_flow/report.md`
+
+## 2026-07-23 A6 and dominant-L17 public-shadow confirmation
+
+- Status: `COMPLETE / KILL_FOR_CLAIM / RETAIN_BASIC / NO_SHOT_SCALING`
+- [x] Freeze A0/A6/A7/A6-L17/L17 arms before execution
+- [x] Reuse the exact fixed-16 support and original-resolution metric contract
+- [x] Add strict arm-manifest, coverage, object-bootstrap, material-effect,
+      directional-consistency, and collapse gates
+- [x] Extend the fixed-container runner so baseline completion precedes these
+      four additional mechanism arms for every object
+- [x] Add focused aggregator regression tests and pass Ruff/static shell checks
+- [x] Add an independent post-run adjudicator that requires A7 hard-null
+      dominance for A6 promotion and both SuperAD/RN-FMLK dominance before
+      authorizing random-16
+- [x] Separate evidence pull from machine-checkable shot authorization so a
+      successful negative-result pull cannot start downstream scaling
+- [x] Fix the independent review findings before remote execution:
+      ignore the AD2 `ground_truth` metadata directory, enforce canonical
+      `<object>/train/good/<file>` support identities plus the exact manifest
+      SHA, and delay dense-map cleanup until both aggregators succeed
+- [x] Pass 27 focused tests in the fixed dsba3 Python environment
+- [x] Run all eight objects, aggregate the frozen contrasts, and remove dense
+      maps after compact-artifact verification
+- Result: A6 scored `0.759284/0.350216/0.538267` versus Basic
+  `0.772635/0.355676/0.533408` on pAUROC/F1/AU-PRO. A6 failed promotion and
+  A6-L17 regressed on all three metrics. The independent adjudicator retained
+  Basic and wrote `shot_scaling_blocked.txt`.
+- Preregistration:
+  `skill_graph/experiments/2026-07-23_a6_dominant_layer_public_shadow/preregistration.md`
+- Blocked report:
+  `skill_graph/experiments/2026-07-23_a6_dominant_layer_public_shadow/report.md`
+
+## 2026-07-23 Basic P0/P1/P2 output-chain custody audit
+
+- Status: `DIAGNOSTIC_COMPLETE / PRIMARY_P2_NOT_AVAILABLE`
+- [x] Reaggregate the frozen all-eight `minus_loo` raw/guided/morph summary
+- [x] Separate continuous-map raw F1 from post-morphology oracle F1
+- [x] Apply the frozen global-safety and object-collapse rules
+- [x] Record source and support-manifest SHA-256 custody
+- [x] Stop a fresh Basic-only support-fit clean-q=0.995 P2 evaluation because
+      the parent P1 ranking gate already has an object collapse; reconsider P2
+      only for a newly frozen detector
+- Result: P1 versus P0 changes macro pAUROC/raw F1 by
+  `+0.00930/+0.02542`, but `can` collapses by `-0.03065` pAUROC. P2-oracle
+  adds `+0.06000` macro F1 but is not a primary or deployable threshold result.
+  Classification: `CONDITIONAL_PRESENTATION_EFFECT`.
+- Report:
+  `skill_graph/experiments/2026-07-23_basic_output_chain_custody_audit/report.md`
+
+## 2026-07-23 Same-16 baseline and metric-contract closure
+
+- Status: `COMPLETE / KILL_FOR_CLAIM / NO_SHOT_SCALING`
+- [x] Audit historical Basic/SuperAD/RN-FMLK assets and reject incompatible
+      DINOv3 SuperADD and different-reference historical rows
+- [x] Freeze raw F1, standardized pixel pAUROC@0.05, original-resolution
+      AU-PRO@0.05, coverage, and public-shadow claim contract
+- [x] Add fixed-reference SuperAD/RN-FMLK configuration and manifest custody
+- [x] Add unified AD2 AU-PRO/coverage evaluator and regression tests
+- [x] Add fixed-container isolated runner, independent aggregator, cleanup,
+      and focused remote verification gate
+- [x] Harden run custody so every arm records and the aggregators verify the
+      exact support-manifest SHA and root-independent train/good identities
+- [x] Pass remote preflight and all 27 focused tests in the fixed container
+- [x] Run all-eight Basic, SuperAD-16, and RN-FMLK on the exact same references
+- [x] Independently aggregate, compare, document, and remove dense maps
+- [x] Repair stale `/workspace` evaluator imports from the preserved maps,
+      validate all 40 affected rows, and retain the legacy metrics
+- Result: Basic/SuperAD/RN-FMLK pAUROC are
+  `0.772635/0.761857/0.745312`, F1 `0.355676/0.368423/0.331950`, and AU-PRO
+  `0.533408/0.534924/0.425133`. Basic does not dominate SuperAD across the
+  three-metric contract. All 7,588 dense maps and the isolated snapshot were
+  removed after compact evidence was pulled.
+- Preregistration:
+  `skill_graph/experiments/2026-07-23_same16_baseline_metric_contract/preregistration.md`
+- Blocked report:
+  `skill_graph/experiments/2026-07-23_same16_baseline_metric_contract/report.md`
+
+## 2026-07-23 Remaining experiment sequencing
+
+- Status: `SEQUENCE_FROZEN / WAITING_FOR_SAME16_A6`
+- [x] Make the comparable baseline plus A6 confirmation the only next GPU job
+- [x] Stop a fresh Basic-only P2 run because its parent P1 ranking gate already
+      has an object collapse
+- [x] Close the broad scorer rerun and DVT/density/PPD retreads
+- [x] Mark the older DVT-on/density-0.25 nested-shot preregistration
+      superseded before execution
+- [ ] Freeze and run a replacement random-16-first shot protocol only after
+      the detector branch is selected
+- [ ] Run Ours+/Ours++ fixed-16 scaling only after the 16-shot gate passes
+- [ ] Build final tables and claim-scoped report
+- Sequence:
+  `skill_graph/analysis/2026-07-23_remaining_experiment_sequence.md`
+
+## 2026-07-19 DINOv2-L/14 Basic Default Mechanism Audit
+
+- Status: `COMPLETE / KILL_FOR_CLAIM / NO_PUBLIC_ACCESS`
+- Reference: operational Basic `minus_loo`, DINOv2-L/14 layers `[5,11,17,23]`
+- Constraint: no TTA, query update/transform, routing, TESTprivate, or tuning
+- [x] Verify the exact fixed-16 manifest, model settings, and operating anchor
+- [x] Freeze support-only C/S/D/SD causal arms for DVT, Flow, density, fusion,
+      and output formation
+- [x] Freeze intermediate mechanism metrics and component-specific verdicts
+- [x] Implement disabled-path parity instrumentation and compact evaluator
+- [x] Run Stage M1 on dsba3 GPUs 0--3 after implementation verification
+- [x] Verify 130,560 rows, 8,192 paired cases, custody, compact checksums, and
+      byte-identical independent local reaggregation
+- [x] Reject Stage M2/public confirmation because same-condition baselines and
+      P1/P2 are absent and core labels are mixed/negative
+- Result: DVT improves SD patch pAUROC `+0.00985` but loses fixed F1
+  `-0.09908`, inflates shifted-normal tails `+0.22644`, and destabilizes NN
+  identity. Flow without DVT improves SD pAUROC/F1 `+0.02625/+0.03424` on all
+  eight objects with no resolved tail increase. Density is immaterial and
+  fixed fusion loses to the layer envelope.
+- Design:
+  `skill_graph/analysis/2026-07-19_dinov2l_default_mechanism_experiment_plan.md`
+- Report:
+  `skill_graph/experiments/2026-07-19_dinov2l_default_mechanism_stage_m1/report.md`
+
+## 2026-07-19 WAFF-H+ and GB-CMF Structural Closure
+
+- Status: three-cycle outer loop and post-cap support-only diagnostic completed;
+  `KILL_FOR_CLAIM / NO_PUBLIC_ACCESS / KEEP_DEFAULT`
+- Constraint: support-only train/good; no TTA, query update/transform, routing,
+  map fusion, public/private/test, or ground-truth access
+- Compute: dsba3 host GPUs `0,1,2,3`
+- [x] Complete WAFF-H+ L0 parity, L1 can/rice smoke, and fixed-sum 101-point
+      feasibility audit
+- [x] Stop L2 because all four WAFF cases have an empty feasible set
+- [x] Complete five-stage GB-CMF redesign and independent adversarial gate
+- [x] Implement five-arm Stage -1A with arm-isolated resume, access ledger,
+      exact hard-score audit, and deterministic CUDA requirements
+- [x] Retain v1/v2 infrastructure-invalid evidence without scientific metrics
+- [x] Complete valid v3: four cases x five arms = 20 fits on GPUs 0--3
+- [x] Reject Stage -1B/public access after joint, geometry, null, raw, and seed
+      gates fail
+- [x] Verify 67 compact checksums, local reaggregation parity, 16/16 support
+      whitelist access per case, zero forbidden access, and remote cleanup
+- Result: GB-CMF versus default descriptive median was
+  `+0.011818/+0.011919` pAUROC/F1 with both intervals crossing zero; versus
+  matched nonfactorial pAUROC it was `-0.023865`
+  (`[-0.033540,-0.014036]`). Every held source failed geometry and only can/0
+  was jointly constraint-feasible.
+- Structural diagnosis: the candidate used a signed augmented term that can
+  reward over-satisfied cells, latest-cell rather than grouped worst-risk
+  duals, and a weak parameter proximal penalty while geometry remained only a
+  post-hoc gate.
+- Reports:
+  `skill_graph/experiments/2026-07-19_waff_hplus_stage_minus1/report.md`,
+  `skill_graph/experiments/2026-07-19_gb_cmf_stage_minus1a/report.md`
+
+## 2026-07-18 Structural Default-Outperformance Cycle 1
+
+- Status: all three cycles completed negative; post-cap GB-CMF diagnostic also
+  negative; keep frozen default
+- Target: MVTec AD2 single-image, exact SuperAD-selected 16 references, all eight objects
+- Constraint: no TTA, query transformation/update, hard routing, map switching, or TESTprivate
+- Candidate: Frozen Local Relation Signature (standalone non-kNN evidence)
+- Compute: dsba3 host GPUs `0,1,2,3`
+- [x] Intake the default-shift, CF-NTR, NODyR, DARC, density, and routing failures
+- [x] Run literature, generation, proximity, reflection, and adversarial-review lanes
+- [x] Promote one bounded relation-evidence assay over projection/routing/fusion retreads
+- [x] Freeze five-stage research artifact and support/reference parity
+- [x] Implement relation signature, hard nulls, and support-only evaluator
+- [x] Run focused local validation and remote dataset/GPU preflight
+- [x] Run all-eight support-only shift/defect assay on dsba3 GPUs 0--3
+- [x] Reject TESTpublic promotion because G1--G4 and the soft gate failed
+- [x] Record FLRS verdict and verify compact pull plus dense-map cleanup
+- [x] Design and preregister Cycle 2 factorial shift-versus-defect discriminator
+- [x] Invalidate v1--v3 before metrics and retain their failure evidence
+- [x] Relabel the non-thin construct as high-frequency ribbon and add a Laplacian texture null
+- [x] Add two-seed ribbon-only and ribbon-excluded directional gates
+- [x] Pass independent adversarial score >=0.80 for amended executable protocol r1 (`0.84`)
+- [x] Run Cycle 2 on new empty root `fsdd_stage_minus1_20260719_c2_v4`
+- [x] Verify 16 summaries, 4,096 records, compact checksums, and remote snapshot cleanup
+- [x] Reject public promotion because ribbon texture null and ribbon-excluded drop gate failed
+- [x] Decline optional exact repeat because both blockers are deterministic across both seeds
+- [x] Design final Cycle 3 from the non-ribbon factorial signal without reopening closed routing/TTA families
+- [x] Freeze WAFF-H+ objective, controls, integration point, and no-public gate
+- [x] Implement WAFF-H+ L0 with disabled byte parity and cross-source LOO tests
+- [x] Run the preregistered `can/rice` L1 feasibility smoke
+- [x] Stop WAFF L2 and public access after the L1 feasible set is empty
+- [x] Run and close the GB-CMF representation-level successor support assay
+- Research artifact:
+  `.omx/specs/deep-research-autoresearch-structural-default-outperformance-c1`
+
+
+## 2026-07-17 SDIG-NODyR Stage A Remote Experiment
+
+- Status: completed on dsba3; `TESTPUBLIC_SHADOW_ONLY / NEGATIVE_OR_MIXED_CAUSAL_SIGNAL`
+- Target: MVTec AD2 single-image, exact SuperAD-selected 16 references, all eight objects
+- Compute: dsba3 host GPUs `0,1,2,3`
+- [x] Freeze candidate, independent null envelope, algebraic-equivalence audit, and gates
+- [x] Implement standalone NODyR/null scorer and focused regression tests
+- [x] Verify local compile/tests and remote dataset/GPU/reference preflight
+- [x] Run four-GPU source-`000` full-condition-orbit smoke
+- [x] Run all-eight full `test_public/good,bad` after the valid smoke
+- [x] Pull compact artifacts, analyze gates, write verdict, and remove dense maps
+- Result: NODyR macro pAUROC/F1 is `0.729019/0.326280` versus the
+  best single macro null (`state_angle`) at `0.728246/0.325678`, only
+  `+0.000773/+0.000602`, below the frozen `+0.005/+0.005` signal threshold.
+  The object-wise independent-null envelope beats NODyR on both metrics for
+  all eight objects.
+- Shift finding: shifted-good p95 rises from regular `0.133087` to
+  `0.162501/0.165181/0.168161` on shift 1/2/3, while NODyR and state-angle
+  image statistics correlate at `0.999887/0.999636` for mean/p95. Direction
+  normalization removed magnitude dependence but not acquisition sensitivity.
+- Audit: 1,084 images, 6,504 finite nonconstant maps, exact 16-reference hash,
+  max algebraic-equivalence error `5.364418e-07`, `20 passed`, clean logs, and
+  zero retained dense-map/cache directories.
+- Preregistration:
+  `skill_graph/experiments/2026-07-17_sdig_nodyr_stage_a/preregistration.md`
+- Report:
+  `skill_graph/experiments/2026-07-17_sdig_nodyr_stage_a/report.md`
+
+## 2026-07-17 Distribution-Shift Identifiability Solution Design
+
+- Status: design cycle completed; `CONDITIONAL_KEEP_DESIGN_ONLY`
+- Selected path: `SDIG-NODyR`, raw relation evidence before fixed calibration
+- [x] Convert prior regressions into closed-branch constraints
+- [x] Compare five distinct solution families with adversarial review
+- [x] Reject query-view persistence and demote synthetic projection to an assay
+- [x] Freeze the raw NODyR mechanism and matched intrinsic-null envelope
+- [x] Separate support-only fixed calibration from raw ranking credit
+- [x] Preregister and run Stage A on the same SuperAD-selected support paths
+- [x] Stop calibration/fusion continuation because raw Stage A did not pass
+- Design report:
+  `skill_graph/experiments/2026-07-17_sdig_nodyr_method_design/report.md`
+
+## 2026-07-16 DSCR High-Resolution Density Shadow Diagnostic
+
+- Status: completed on dsba3/dsba5; `KILL_FOR_CLAIM / NO_CONTINUE`
+- Protocol: `fmad-experiment-protocol`, early-stage continuation lane
+- Target: MVTec AD2 single-image, frozen five-object compact public shadow cell
+- Scope: unrestricted high-resolution global G0 versus metric-aligned D0/D0c
+- Explicit exclusion: killed hard-local correspondence, registration, and
+  reconstruction branches are not reopened
+- [x] Audit negative evidence and freeze the non-retread mechanism question
+- [x] Verify identical remote code hashes, data roots, idle GPUs, and CLI
+- [x] Complete paired two-query smoke on dsba3 `can` and dsba5 `vial`
+- [x] Supersede the pre-metric full-population launch with a preregistered
+  good-4/bad-4 compact mechanism cell
+- [x] Complete compact `can/fabric/rice/vial/wallplugs` seed-0/fold-0 cells
+- [x] Evaluate G0/D0/D0c with the common native-grid evaluator
+- [x] Pull compact artifacts and record the preregistered verdict
+- [x] Remove completed local/remote `anomaly_maps/`
+- Result: G0/D0/D0c macro pAUROC were
+  `0.565902/0.539851/0.539858`; oracle F1 were
+  `0.080168/0.068325/0.066906`. Density pAUROC wins were `1/5`, and
+  no-harm failed on `can` and `vial`.
+- Contract:
+  `skill_graph/experiments/2026-07-16_dscr_hres_density_shadow/preregistration.md`
+- Report:
+  `skill_graph/experiments/2026-07-16_dscr_hres_density_shadow/report.md`
+
 ## 2026-07-13 Few-Shot AD2 Basic/Ours+/Ours++ Model Ladder
 
-- Status: design documented; execution not started
+- Status: `SUPERSEDED_EXECUTION_ORDER / PROMOTION_GATES_PENDING`; follow the
+  2026-07-23 remaining-experiment sequence before any unchecked GPU task
 - Protocol: `fmad-experiment-protocol`
 - Target: MVTec AD2 single-image, all eight objects, full TESTpublic
 - Primary claim: DINOv2-L Basic versus same-run, exact-reference SuperAD-16
@@ -12,8 +331,8 @@
 - [x] Incorporate prior H+ sweep negatives and bounded tuning priorities
 - [ ] Reproduce exact-reference Basic/SuperAD/RN-FMLK anchors
 - [x] Implement dual-server parallel controller with duplicate-safe queues
-- [ ] Run complete Basic depth-width factorial: layers 1/2/4 x hidden 1/2
-- [ ] Run anchor-capacity log-det/brightness 2x2 factorial, excluding the
+- [x] Run complete Basic depth-width factorial: layers 1/2/4 x hidden 1/2
+- [x] Run anchor-capacity log-det/brightness 2x2 factorial, excluding the
   duplicate anchor configuration
 - [ ] If positive, run density/kNN/memory/LOO robustness gates
 - [ ] Freeze Basic and run paper-aligned SuperAD comparison
@@ -1297,3 +1616,203 @@ Report:
 - [ ] Compare against the exact same-support baseline and record keep/kill verdict.
 - Dense maps are temporarily retained only for official AU-PRO@0.05 evaluation.
 - Remote roots: `/workspace/results_remote/sflb_ad2_rank_trim_20260715_v1`.
+
+# 2026-07-16 DSCR Paired Acquisition Interaction Audit
+
+- [x] Freeze a forensic-only G0/D0 acquisition interaction design; no density
+  tuning, calibration, conditional model, fusion, or closed spatial branch.
+- [x] Implement and locally verify the condition-wise float32/float16 evaluator.
+- [x] Verify dsba3 retained snapshot, exact prior support/query paths, data/model
+  availability, and idle GPUs 0--2.
+- [x] Run `fabric`, `rice`, and `vial` with the prior seed-0/fold-0 compact contract.
+- [x] Pull metrics/manifests/logs, compute the pre-registered interaction gate,
+  report the verdict, and remove regenerable dense maps.
+- Result: regular macro D0-G0 pAUROC/F1 is `-0.022554/-0.024119`;
+  shifted mean is `-0.029614/-0.022535`; interaction is
+  `-0.007060/+0.001584`.
+- Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`; the density loss is already present
+  under regular acquisition and is not principally induced by distribution shift.
+- Verification: 18 focused/related tests, exact 24-query coverage, all manifests
+  and logs valid, float32/float16 max metric difference `0.000307`, prior pooled
+  results reproduced within `1.1e-6`, and zero retained PAIA TIFFs after cleanup.
+- Preregistration:
+  `skill_graph/experiments/2026-07-16_dscr_paia_condition_audit/preregistration.md`.
+- Report:
+  `skill_graph/experiments/2026-07-16_dscr_paia_condition_audit/report.md`.
+# 2026-07-18 CF-NTR Stage -1 support-only identifiability preflight
+
+- [x] Reject the object-selected TESTpublic reuse and freeze an all-eight,
+  exact-reference, no-public-access support-only/synthetic-stress design.
+- [x] Implement isolated CF-NTR core, compact runner, aggregation, and tests.
+- [x] Pass local synthetic, CLI, compilation, and regression checks.
+- [x] Verify dsba3 GPUs 0--3 are idle and the fixed container exposes all four.
+- [x] Run all eight objects with two objects per GPU, pull compact artifacts,
+  and apply sealed G1--G5.
+- [x] Record conclusion and verify remote/local dense-map cleanup.
+- Invalid attempt v1: the intended any-overlap rasterizer used uint8
+  `INTER_AREA`, which erased all 128 thin-scratch masks. G5 invalidated the
+  run before aggregation; a float32 occupancy fix preserves both classes in
+  all 512 sealed defect cases and is covered by a regression test.
+- Invalid attempt v2: all eight objects completed, but G5 found 1,520
+  constant maps from 80 raw-zero rows caused by no-op synthetic defects in
+  `fruit_jelly` and `vial`; no formal G1--G4 conclusion was accepted.
+- Valid v3 amendment: all scientific gates stayed frozen; deterministic,
+  raw-only stimulus-validity resampling was applied before scoring.
+- Valid v3 result: G1/G4/G5 pass; G2 fails on the object-level stability tail
+  (`0.732572 < 0.75`), and G3 fails decisively (`0.262992 < 0.65`, LCB
+  `0.256818 < 0.50`, every object `< 0.40`).
+- Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`; do not launch the real TESTpublic
+  shadow for this formulation.
+- Audit: 136,192 finite/nonconstant maps, exact 3,072 shift rows, 4,096 defect
+  rows, 512 masks, checksum-verified pull, byte-identical local reaggregation,
+  clean logs, zero dense artifact directories, and removed remote v3 snapshot.
+- Report:
+  `skill_graph/experiments/2026-07-18_cfntr_stage_minus1/report.md`.
+- Preregistration:
+  `skill_graph/experiments/2026-07-18_cfntr_stage_minus1/preregistration.md`.
+
+# 2026-07-18 Default FlowTTE distribution-shift sequential experiment
+
+- Status: all four stages completed; `NEGATIVE_OR_MIXED_CAUSAL_SIGNAL`.
+- Target: MVTec AD2 single-image, all eight objects, no TTA/query adaptation,
+  no TESTprivate.
+- [x] Freeze the operational H+ default, A0--A3 attribution arms, routing,
+  guided fallback, local-soft correction, controls, and gates before metrics.
+- [x] Verify the fixed container exposes four idle GPUs and audit the complete
+  train/public condition population.
+- [x] Stage 1: run and judge A0 distance, A1 density, A2 guided, A3 morphology.
+- [x] Stage 2: run and judge early-layer acquisition-routed fixed support banks.
+- [x] Stage 3: run and judge the frozen raw/guided agreement fallback.
+- [x] Stage 4: run and judge local layer/quadrant soft nuisance shrinkage.
+- [x] Integrate results, record verdicts, pull compact artifacts, and remove all
+  retained dense maps and isolated source snapshots.
+- Stage 1 result: A0/A1/A2/A3 macro pAUROC were
+  `0.837518/0.836739/0.837528/0.837528`; F1 were
+  `0.523902/0.527428/0.546785/0.553859`. Density increased shifted-good
+  inflation by `+0.003945` despite improving bad-good separation. Guided
+  refinement supplied the main F1 gain but harmed `can` AUROC by `-0.036604`.
+  Morphology's pooled `+0.007075` F1 was concentrated in `fabric` and harmed
+  several `wallplugs` conditions by more than `-0.10` F1.
+- Stage 2 invalid first launch: `fabric` had zero correct leave-one-support-view
+  routes, making the frozen correct-margin p05 undefined. No Stage 2 metric was
+  produced. The partial result and snapshot were deleted; a preregistered-
+  direction, identity fail-closed rule was added and covered by regression
+  tests before restarting Stage 2 from an empty result root.
+- Stage 2 invalid second launch: retaining all four Stage 2 arm maps while the
+  Stage 1 maps remained sealed for Stage 3 exhausted remote storage. No final
+  summary was produced. The partial result and snapshot were deleted; the
+  unchanged evaluator now validates and compacts each object before deleting
+  its Stage 2 maps. A regression test proves compact aggregation equals direct
+  all-object summarization.
+- Stage 2 result: routed versus identity changed pAUROC/F1 by
+  `+0.000602/-0.000291`, reduced shifted-good inflation by only `2.71%`, and
+  reduced bad-good separation, so it failed three continuation gates. Union
+  and patchwise-min were exactly equal and showed only a heterogeneous
+  `+0.001790/-0.000049` pAUROC/F1 change. Support LOO routing accuracy ranged
+  from `0%` on `fabric` to `76.79%` on `rice`; verdict `NO_CONTINUE`.
+- Stage 3 result: fallback versus always-guided changed pAUROC/F1 by
+  `+0.000848/-0.004352`, retained `can` harm at `-0.021810` AUROC versus raw,
+  and reduced bad-good separation by `0.021247`. Spatial agreement reduced
+  normal-tail inflation but did not make mixed raw/guided score scales
+  comparable; verdict `NO_CONTINUE`.
+- Stage 4 result: local-soft changed pAUROC/F1 by
+  `+0.000477/-0.001300`, preserved separation and no-harm, but reduced
+  shifted-good inflation by only `5.95%` versus the 25% gate. Global-hard
+  reduced inflation `18.42%` while losing `0.006280/0.012535` pAUROC/F1 and
+  `0.020283` separation. Verdict `NO_CONTINUE`.
+- Final conclusion: density, hard support routing, per-image guided switching,
+  and nuisance projection all expose the same object/layer/position-dependent
+  overlap between acquisition response and defect evidence. Keep the frozen
+  default control; do not promote or tune these public-shadow candidates.
+- Cleanup: all compact pulls checksum-verified, Stage 1/2/4 dense maps removed,
+  both isolated snapshots removed, dsba3 GPUs 0--3 idle, 57 GiB free.
+- Report:
+  `skill_graph/experiments/2026-07-18_default_shift_sequence/report.md`.
+- Preregistration:
+  `skill_graph/experiments/2026-07-18_default_shift_sequence/preregistration.md`.
+
+# 2026-07-19 FSDD-LODF structural Cycle 2
+
+- [x] Close FLRS after support-only shift amplification and defect loss.
+- [x] Freeze the revised 0.83-rated nested LODF×LOSF factorial discriminator.
+- [x] Implement hidden-free linear treatment, equal-data controls, q=.995
+  thresholds, raw/RGB controls, feature-visible audits, and atomic records.
+- [x] Pass 18 focused runner/core/aggregator tests plus Ruff and compilation.
+- [x] Verify exact support hash and four idle dsba3 GPUs; launch two fixed seeds.
+- [ ] Pull and checksum all 16 object/seed summaries, run hierarchical gates,
+  and record the keep/kill result before any public access.
+- Invalid v1: flat patch-mask shape reached the 2D toroidal null; zero method
+  summaries/metrics were accepted, the failing log was retained, and remote
+  partial roots were removed.
+- Invalid v2: the feature-visible stimulus audit was mistakenly restricted to
+  eroded interiors; thin scratches failed before summaries. Full-overlap
+  visibility and boundary-excluded evaluation are now separated.
+- Active rerun: `fsdd_stage_minus1_20260719_c2_v3`.
+# 2026-07-24 Same16 DVT × density factorial attribution
+
+- [x] Freeze a diagnostic-only 2×2 attribution using the completed v6
+  Basic/A6 cells and exact Same16 public-shadow contract.
+- [x] Limit new GPU work to the two missing cells: DVT-only and density-only.
+- [x] Verify the aggregator, runner, source custody, and fixed-container
+  preflight.
+- [x] Execute all eight objects on dsba3, aggregate conditional/main/interaction
+  effects, and pull compact evidence.
+- [x] Record the attribution verdict and verify remote/local dense-map cleanup.
+- Baseline source:
+  `results/remote_runs/dsba3/same16_baseline_metric_contract_20260723_v6`.
+- Preregistration:
+  `skill_graph/experiments/2026-07-24_same16_dvt_density_factorial/preregistration.md`.
+- Completed run:
+  `results/remote_runs/dsba3/same16_dvt_density_factorial_20260724_v1`.
+- Result: `MIXED_OR_INCONCLUSIVE_ATTRIBUTION / KILL_FOR_CLAIM`. DVT supplies
+  most of the Basic-to-A6 pAUROC/F1 macro difference but is heterogeneous and
+  fails CI/collapse gates; density is sub-material; interaction is
+  sub-material. No shot scaling or further DVT/density sweep.
+- Report:
+  `skill_graph/experiments/2026-07-24_same16_dvt_density_factorial/report.md`.
+# 2026-07-25 Class-balanced Basic generalization design
+
+- [x] Fix the target to single-image MVTec AD2, exact SuperAD-selected
+  reference-16, and the completed v6 unified metric contract.
+- [x] Build the post-50 negative-evidence ledger and primary-source matrix.
+- [x] Run the bounded five-stage Co-Scientist design/evaluator loop.
+- [x] Promote at most one non-retread candidate into an FMAD-ready diagnostic
+  specification with strict and soft-continuation gates.
+- [x] Record the design verdict, score trace, risks, and next experiment.
+- Result: revised RS-DVT Basic reached independent design score `0.77` and is
+  authorized only for Stage -1 support preflight. It has no performance claim
+  and no public-evaluation authorization. The immediate gates are exact
+  `minus_loo` Basic/no-DVT parity, `rho` stability, `U` versus normal-tail
+  identifiability, matched scalar/rank-shuffle separation, and sealed cue
+  retention.
+- Design:
+  `skill_graph/analysis/2026-07-25_rs_dvt_basic_method_design.md`.
+- Research artifact:
+  `.omx/specs/deep-research-autoresearch-class-balanced-basic`.
+- Outer-loop ledger:
+  `.omx/specs/fmad-class-balanced-basic/outer-loop.md`.
+# 2026-08-04 WTCF Stage -1 support-only falsification
+
+- Status: `EARLY_VALIDITY_KILL / NO_FULL_STAGE / NO_PUBLIC_ACCESS`
+- [x] Freeze the A6-centered WTCF contract, five objects, three support seeds,
+      nine arms, directional constants, geometry rollback, and kill/keep gate.
+- [x] Implement WTCF cross-fit, witness discovery, JVP constraints, and
+      function-space rollback with focused tests.
+- [x] Implement the support-only runner, validity-first aggregator, and dsba5
+      GPU-3 remote controller.
+- [x] Run local smoke verification and sync an explicit credential-free
+      snapshot to `hun_fsad_tta_012`.
+- [x] Run the preregistered sentinel, pull compact artifacts, adjudicate the
+      early validity gate,
+      and clean regenerable dense outputs.
+- [x] Block the remaining 14 Stage -1 cases and all full/public evaluation
+      after witness JVP ratios remained `.9236--.9493` above the frozen `.85`
+      target despite passing geometry and access checks.
+- Result: five stable witnesses were recovered, but WTCF accepted only five
+  updates and rolled back the next 59 blocks. It preserved A6 geometry while
+  failing to selectively contract witness directions. The controller stopped
+  with `EARLY_VALIDITY_KILL_NO_FULL_STAGE`; zero test/label access occurred.
+- Preregistration:
+  `skill_graph/experiments/2026-08-04_wtcf_stage_minus1/preregistration.md`.
+- Report:
+  `skill_graph/experiments/2026-08-04_wtcf_stage_minus1/report.md`.

@@ -4,7 +4,7 @@ import csv
 import json
 import os
 from datetime import datetime
-from typing import Dict, List
+from typing import List
 
 from fmad.methods.base import ObjectResult
 
@@ -61,6 +61,17 @@ class ResultsManager:
         """Save per-run metrics JSON."""
         with open(os.path.join(self.run_dir, "metrics.json"), "w") as f:
             json.dump(metrics, f, indent=2)
+
+    def save_run_manifest(self, results: List[ObjectResult]) -> None:
+        """Persist method-owned per-object protocol metadata."""
+        payload = {
+            "objects": {
+                result.object_name: result.metadata
+                for result in results
+            },
+        }
+        with open(os.path.join(self.run_dir, "run_manifest.json"), "w") as f:
+            json.dump(payload, f, indent=2, sort_keys=True)
 
     def append_summary(self, metrics: dict, results: List[ObjectResult]) -> None:
         """Append per-object rows to the accumulated summary TSV."""

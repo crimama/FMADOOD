@@ -79,6 +79,7 @@ def run_pipeline(method, dataset, backbone, config: dict,
 
     # Save timing CSV
     results_mgr.save_object_times(object_results)
+    results_mgr.save_run_manifest(object_results)
 
     # Evaluate
     print(f"\n{'='*60}")

@@ -1,0 +1,36 @@
+method: superad
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:0
+dataset_config:
+  objects:
+    - can
+    - fabric
+    - fruit_jelly
+    - rice
+    - sheet_metal
+    - vial
+    - wallplugs
+    - walnuts
+  preprocess: no_mask_no_rotation
+backbone_config:
+  smaller_edge_size: 672
+  feature_layers:
+    - 5
+    - 11
+    - 17
+    - 23
+method_config:
+  shots: 16
+  fixed_reference_manifest: skill_graph/experiments/2026-07-07_flow_latentbank_no_tte_fixed_reference_dinov3/superad16_dinov2_reference_paths.json
+  knn_metric: L2_normalized
+  k_neighbors: 1
+  faiss_on_cpu: false
+  warmup_iters: 2
+  mask_ref_images: false
+  save_heatmaps: false
+evaluation:
+  eval_segm: true
+  pro_integration_limit: 0.05
+  binary_postprocess: none

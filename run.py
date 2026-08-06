@@ -117,6 +117,7 @@ def load_config(args) -> dict:
     config.setdefault("device", "cuda:0")
     config.setdefault("output_dir", "./results")
     config.setdefault("method_config", {})
+    config.setdefault("backbone_config", {})
     config.setdefault("dataset_config", {})
     config.setdefault("evaluation", {})
 
@@ -145,9 +146,11 @@ def main():
 
     # Instantiate backbone
     backbone_cls = BACKBONE_REGISTRY.get(config["backbone"])
+    backbone_config = dict(config.get("backbone_config", {}))
     backbone = backbone_cls(
         model_name=config["backbone"],
         device="cuda",
+        **backbone_config,
     )
 
     # Instantiate method
@@ -158,7 +161,7 @@ def main():
     )
 
     # Run pipeline
-    metrics = run_pipeline(
+    run_pipeline(
         method=method,
         dataset=dataset,
         backbone=backbone,

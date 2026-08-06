@@ -1,0 +1,90 @@
+{
+  "claim_verdict": "KILL_FOR_CLAIM",
+  "comparable": false,
+  "diagnostic_verdict": "NO_CONTINUE",
+  "gate_checks": {
+    "complete_finite_nonconstant_float32": true,
+    "f1_interaction_negative": false,
+    "macro_regular_primary_nonnegative": false,
+    "no_regular_object_harm_beyond_floor": false,
+    "pauroc_interaction_shift_specific": false
+  },
+  "gate_pass": false,
+  "macro": {
+    "interaction": {
+      "pixel_AP": 0.0023095943667767876,
+      "seg_AUROC_0.05": -0.007060147945055016,
+      "seg_F1": 0.0015840950281870239
+    },
+    "mean_shifted_delta": {
+      "pixel_AP": -0.02509706344812235,
+      "seg_AUROC_0.05": -0.02961438707949467,
+      "seg_F1": -0.022535077822569277
+    },
+    "regular_delta": {
+      "pixel_AP": -0.02740665781489914,
+      "seg_AUROC_0.05": -0.022554239134439658,
+      "seg_F1": -0.024119172850756303
+    }
+  },
+  "negative_pauroc_interaction_object_count": 2,
+  "object_metrics": {
+    "fabric": {
+      "interaction": {
+        "pixel_AP": -0.014895576088649137,
+        "seg_AUROC_0.05": -0.0038363544213459635,
+        "seg_F1": -0.017905315039918723
+      },
+      "mean_shifted_delta": {
+        "pixel_AP": -0.013977934905167938,
+        "seg_AUROC_0.05": -0.012587241652843825,
+        "seg_F1": 0.015986057733278648
+      },
+      "regular_delta": {
+        "pixel_AP": 0.0009176411834811993,
+        "seg_AUROC_0.05": -0.008750887231497861,
+        "seg_F1": 0.03389137277319737
+      }
+    },
+    "rice": {
+      "interaction": {
+        "pixel_AP": -0.001947351919053055,
+        "seg_AUROC_0.05": -0.026257860356157514,
+        "seg_F1": -0.010197975781982276
+      },
+      "mean_shifted_delta": {
+        "pixel_AP": 0.005619299549178642,
+        "seg_AUROC_0.05": 0.043668315216987774,
+        "seg_F1": 0.013066356366286093
+      },
+      "regular_delta": {
+        "pixel_AP": 0.007566651468231697,
+        "seg_AUROC_0.05": 0.06992617557314529,
+        "seg_F1": 0.02326433214826837
+      }
+    },
+    "vial": {
+      "interaction": {
+        "pixel_AP": 0.023771711108032556,
+        "seg_AUROC_0.05": 0.008913770942338431,
+        "seg_F1": 0.03285557590646207
+      },
+      "mean_shifted_delta": {
+        "pixel_AP": -0.06693255498837776,
+        "seg_AUROC_0.05": -0.11992423480262797,
+        "seg_F1": -0.09665764756727258
+      },
+      "regular_delta": {
+        "pixel_AP": -0.09070426609641032,
+        "seg_AUROC_0.05": -0.1288380057449664,
+        "seg_F1": -0.12951322347373465
+      }
+    }
+  },
+  "objects": [
+    "fabric",
+    "rice",
+    "vial"
+  ],
+  "schema": "dscr-density-condition-audit-summary-v1"
+}

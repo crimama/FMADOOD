@@ -1,5 +1,268 @@
 # Skill Graph Log
 
+# 2026-08-06 — Representation space Normal Inflation & 9-arm Stage -1 analysis documented
+
+- Documented the mathematical and empirical analysis of Normal Inflation caused by distance-based anomaly scoring under domain shift in feature/representation space.
+- Analyzed 9 solution paradigms across MVTec AD 2 objects (`can`, `fabric`, `fruit_jelly`):
+  - Linear SubspaceAD (`pca_residual`) suffered severe detector metric drops (AU-PRO -0.11 to -0.32p).
+  - Shrinkage Mahalanobis distance degraded to raw Euclidean metric due to high-dimensional ill-conditioned covariance.
+  - Unconstrained Soft-1NN Risk (`crossfit_only`) caused Anomaly Absorption (Proxy audit FAILED on `can` and `fruit_jelly`).
+  - Witness-Tangent Cross-Fit (`wtcf`) passed Proxy Audit safety, reduced normal tail ($q_{995}$), and preserved anomaly sensitivity.
+- Report written to `skill_graph/analysis/2026-08-06_normal_inflation_representation_space_stage_minus1_analysis.md`.
+
+# 2026-08-05 — SemanticAtlasMetric stopped support-only
+
+- Completed the preregistered fixed-16, four-object SemanticAtlasMetric
+  Stage -1 on dsba5 GPU 3 without test/public/private/GT access.
+- The proposed semantic-local orthogonal metric preserved synthetic defect
+  contrast (`0.9992` macro) and clean neighbor geometry, but reduced
+  shifted-normal inflation by only `0.6788%` against the `10%` gate and
+  regressed on `walnuts`.
+- Fold-refit semantic clustering was unstable (`0.5274` macro ARI); the
+  proposed atlas captured less shift energy than the closed global-rank-4
+  comparator, and orthogonalization did not improve defect retention over the
+  raw local direction.
+- Verdict: `KILL_FOR_CLAIM / RETAIN_BASELINE1 / NO_CONTINUE / NO_PUBLIC_ACCESS`.
+- Exact local reaggregation reproduced the normalized remote verdict SHA-256
+  `081877b6bdb869217f83c13f921e36a59a3f3525700eda80c39a60046a43f044`.
+- Artifacts:
+  `skill_graph/experiments/2026-08-05_flowtte_semantic_atlas_metric/`
+
+# 2026-08-04 — FlowTTE paired-loss diagnostic stopped support-only
+
+- Completed the fixed-16, four-object loss assay on dsba5 GPU 3 using the
+  strongest retained DINOv3-H+ DVT patch-local MLP Flow. Register, FiLM,
+  Transformer, query adaptation, and public/private/test access were excluded.
+- V3 (raw pair + NLL weight 0.1) was strongest: `9.77%` macro shifted-normal
+  reduction and `4/4` positive objects, but only `0.8707` macro synthetic
+  defect retention, including `.7372` on `fruit_jelly` and `.6683` on `vial`.
+  V2 reached `2.84%/.8401`; normalized C1 reached `2.19%/.9654`; random C2
+  exposed destructive alignment with only `.4424` defect retention.
+- A post-run adjudicator correction limited experiment-wide numerical validity
+  to the V0 sentinel instead of deliberately bad controls. It changed the
+  label from `EARLY_VALIDITY_KILL` to `KILL_FOR_CLAIM` without changing any
+  GPU result or candidate gate. All 20 compact hashes passed, the access ledger
+  remained entirely false, the remote snapshot was removed, and GPU 3 returned
+  idle. The retained/default method is now named `Baseline1`; pursue
+  nuisance-subspace-restricted correction from that fixed reference.
+  Report:
+  `skill_graph/experiments/2026-08-04_flowtte_paired_loss_diagnostic/report.md`.
+
+
+# 2026-08-04 — Shift-conditioned patch-local Flow stopped support-only
+
+- Implemented the preregistered DINOv3-H+/16 task-register extractor, bounded
+  residual FiLM conditioner over a frozen patch-local MLP Flow, paired
+  photometric losses, E0/E1/E5 and zero/shuffled controls, fail-closed
+  aggregator, and immutable dsba5 GPU-3 controller.
+- The v5 four-object fixed-16 mechanism run learned the relative shift proxy on
+  every object, but correct-register conditioning worsened shifted-normal raw
+  1-NN inflation by `20.41%` macro and beat both null registers on `0/4`.
+  Identity failed on `3/4`; synthetic defect retention collapsed to `.5396`
+  on `fruit_jelly` and `.6846` on `walnuts` despite a `.9593` macro caused by
+  `vial` amplification.
+- Post-training logdet cancellation also missed the frozen `1e-5` limit, but
+  the independent shift, identity, and retention failures make the negative
+  conclusion robust to that numerical tolerance. Verdict:
+  `EARLY_VALIDITY_KILL / KILL_FOR_CLAIM / NO_PUBLIC_ACCESS`. All compact hashes
+  and four checkpoints passed pullback verification; v1--v5 source snapshots
+  were removed. Report:
+  `skill_graph/experiments/2026-08-04_shift_conditioned_patch_local_flow/report.md`.
+
+# 2026-08-04 — WTCF Stage -1 stopped at directional validity gate
+
+- Implemented WTCF cross-fit soft 1-NN alignment, repeated normal-residual
+  witness discovery, directional JVP controls, function-space rollback, nine
+  matched/null arms, and a validity-first dsba5 GPU-3 controller.
+- The valid v6 `can/seed0` sentinel found five stable witnesses and passed
+  support custody, finite/nonconstant scores, soft-hard proxy, function
+  geometry, and training-finite checks. WTCF preserved pair-distance rank
+  (`.9983`) and neighbor identity (`.9297`) but accepted only 5 updates and
+  rejected 59 blocks. Witness JVP ratios stayed `.9236--.9493`, above the
+  preregistered `.85` contraction ceiling.
+- The controller issued `EARLY_VALIDITY_KILL_NO_FULL_STAGE`; the remaining 14
+  support-only cases and all public/private/test/ground-truth access were
+  blocked. Compact v2--v6 evidence was pulled, all v1--v6 snapshots and
+  invalid v1--v5 remote results were removed, and GPU 3 returned idle. Report:
+  `skill_graph/experiments/2026-08-04_wtcf_stage_minus1/report.md`.
+
+# 2026-07-24 — Same16 and A6 joint v6 completed after evaluator recovery
+
+- Completed all 56 object/arm runs on dsba3. The original controller failed
+  closed because Basic/mechanism imported stale `/workspace` evaluation code.
+  Preserved maps were re-evaluated with verified isolated-snapshot imports;
+  all 40 affected rows passed metric-schema and coverage checks, with 40
+  legacy backups retained.
+- Basic/SuperAD/RN-FMLK scored `0.772635/0.761857/0.745312` pAUROC,
+  `0.355676/0.368423/0.331950` F1, and
+  `0.533408/0.534924/0.425133` AU-PRO. Basic gains pAUROC but loses F1 and
+  AU-PRO to SuperAD.
+- A6 failed promotion; A6-L17 regressed across all metrics. Adjudication:
+  `A6_NOT_PROMOTED_RETAIN_BASIC / KILL_FOR_CLAIM_NO_SHOT_SCALING`.
+  All 7,588 dense maps and the source snapshot were removed after compact
+  pullback and cleanup verification.
+
+# 2026-07-23 — Same16 and A6 joint v6 launched on dsba3
+
+- Implemented the all-eight same-reference Basic/SuperAD/RN-FMLK metric
+  contract plus A0/A6/A7/A6-L17/L17 public-shadow confirmation. The evaluator
+  now ignores the AD2 `ground_truth` metadata directory, reports
+  original-resolution pAUROC/raw F1/AU-PRO with coverage, and validates exact
+  support identities plus SHA-256.
+- Added independent baseline/mechanism aggregation and post-run adjudication.
+  A6 requires both simplification and A7 hard-null gates; L17 repair requires
+  no collapse on any primary metric. Random-16 is authorized only after the
+  selected detector beats both same-run SuperAD and RN-FMLK across all three
+  macro metrics, wins at least 5/8 objects per metric, and has no collapse.
+- OpenSSH was installed rootlessly, the existing fixed container
+  `hun_fsad_tta_012` passed CUDA/data/support/DINOv2 checks and 27 focused
+  tests, and joint run `same16_baseline_metric_contract_20260723_v6` started
+  on GPUs 0--3. Results use `/var/tmp/fsad_tta/results_remote` because the
+  container overlay has 7.8 TB free while `/workspace` has 57 GB. Last
+  observed state was controller PID `283559` alive with 14/56 object/arm
+  metrics complete. Verdict remains `BLOCKED_BASELINE` until aggregation and
+  adjudication complete.
+  Reports:
+  `skill_graph/experiments/2026-07-23_same16_baseline_metric_contract/report.md`,
+  `skill_graph/experiments/2026-07-23_a6_dominant_layer_public_shadow/report.md`.
+
+# 2026-07-19 — DINOv2-L/14 Basic default mechanism audit completed
+
+- Completed the frozen all-eight C/S/D/SD assay on dsba3 GPUs 0--3 with exact
+  support-16, layers `[5,11,17,23]`, static memory, and zero TTA/query/public/
+  private access. The valid v4 contains 130,560 compact rows and 8,192 paired
+  factorial cases; all object parity checks had zero NN-index mismatches.
+- DVT A0-A1 gained `+0.009853` SD patch pAUROC but lost `-0.099084` fixed F1,
+  increased q.995 normal-tail inflation `+0.226439`, and reduced NN identity
+  `-0.048839`. Flow without DVT gained `+0.026251/+0.034241` SD pAUROC/F1 on
+  all eight objects with no resolved tail increase, whereas Flow with DVT
+  retained ranking gain but lost F1 retention and inflated tails. Density had
+  no material contribution; fused identity features lost `-0.017146/-0.034825`
+  SD pAUROC/F1 to the per-object layer envelope.
+- Corrected a post-compute access-ledger assertion from 32 total reads to the
+  audited 160 total (128 allowlisted content hashes plus 32 decoded images),
+  added regression coverage, and reaggregated the unchanged rows. Strict RGB
+  custody, all compact hashes, and independent local byte parity passed. The
+  v1--v4 isolated snapshots were removed while compact/failure evidence was
+  retained. Verdict: `MECHANISM_AUDIT_COMPLETE / KILL_FOR_CLAIM /
+  NO_PUBLIC_ACCESS / NO_STAGE_M2`. Report:
+  `skill_graph/experiments/2026-07-19_dinov2l_default_mechanism_stage_m1/report.md`.
+
+# 2026-07-19 — DINOv2-L/14 Basic default mechanism audit frozen
+
+- Corrected the audit reference from DINOv3-H+ and the tuned DINOv2 layer-late
+  variant to the operational DINOv2-L/14 Basic default: layers
+  `[5,11,17,23]`, exact SuperAD-selected 16 supports, static memory, DVT
+  position mean, two-layer Flow, distance plus density, and LOO off.
+- Froze an all-eight, source-disjoint support-only C/S/D/SD assay with causal
+  DVT-side, Flow, density, fused-feature, single-layer, SuperAD, and RN-FMLK
+  controls. Intermediate credit requires matched changes in normal-tail,
+  neighbor, geometry, and shifted-defect-retention diagnostics.
+- TTA, query update/transformation, routing, TESTprivate, metric-selected retry,
+  and post-result default tuning are forbidden. No experiment was launched.
+- Design:
+  `skill_graph/analysis/2026-07-19_dinov2l_default_mechanism_experiment_plan.md`.
+
+- 2026-07-19: Completed valid GB-CMF Stage -1A on dsba3 GPUs 0--3 with four
+  frozen can/rice cases and five arms per case, exactly 20 fits. GB-CMF minus
+  default had descriptive median `+0.011818/+0.011919` pAUROC/F1 but both 95%
+  intervals crossed zero; versus matched nonfactorial, pAUROC was
+  `-0.023865` with interval `[-0.033540,-0.014036]`. Three cases were not
+  jointly tail/drop feasible, all 16 held sources failed geometry, and both
+  objects disagreed across seeds. Tiny parameter moves (`.0031--.0051`)
+  produced pair-rank, logdet-share, coupling-logdet, and score-scale failures,
+  while the soft/hard proxy passed 15/16 sources. The frozen signed augmented
+  term could reward already-satisfied cells, latest-cell duals did not enforce
+  grouped worst risk, and geometry was post-hoc rather than optimized. All 67
+  compact hashes and local reaggregation passed; each case opened only its 16
+  whitelisted support images with zero forbidden access; the remote snapshot
+  was removed and GPUs returned idle. Verdict:
+  `KILL_FOR_CLAIM / NO_PUBLIC_ACCESS / NO_STAGE_MINUS1B`. Report:
+  `skill_graph/experiments/2026-07-19_gb_cmf_stage_minus1a/report.md`.
+
+- 2026-07-19: Completed WAFF-H+ valid v6 support-only feasibility testing on
+  the default H+ flow. All four can/rice cases passed runtime/parity audits,
+  but no point in the frozen 101-point fixed-sum distance/NLL simplex jointly
+  met shifted-normal tail and shifted-defect retention. Minimum joint
+  violations were `.030534`, `.033264`, `.308887`, and `.063389`. This closes
+  post-flow component reweighting rather than blaming the optimizer. L2 and
+  public access were not launched. Verdict:
+  `REDESIGN_INFEASIBLE_CONSTRAINT_SURFACE / NO_PUBLIC_ACCESS`. Report:
+  `skill_graph/experiments/2026-07-19_waff_hplus_stage_minus1/report.md`.
+
+- 2026-07-18: Completed the four-stage default FlowTTE distribution-shift
+  diagnostic on all eight MVTec AD2 public objects using exact SuperAD-16
+  support and dsba3 GPUs 0--3, with no TTA, query adaptation, or TESTprivate.
+  Stage 1 showed density `-0.000779/+0.003526` pAUROC/F1 versus distance while
+  worsening shifted-good inflation; guided gained F1 but harmed `can` AUROC by
+  `-0.036604`, and morphology gains were object-concentrated. Stage 2 routed
+  support banks changed pAUROC/F1 only `+0.000602/-0.000291`, reduced tail
+  inflation `2.71%`, and reduced separation; support LOO route accuracy ranged
+  from 0% to 76.79%. Stage 3 fallback gained `0.000848` pAUROC over guided but
+  lost `0.004352` F1, retained `can` harm, and reduced separation `0.021247`.
+  Stage 4 local-soft preserved macro/no-harm/separation but reduced tail
+  inflation only `5.95%`; global-hard reduced it `18.42%` while erasing
+  anomaly performance and separation. All compact pulls and checksums passed;
+  dense maps and both isolated snapshots were removed. Verdict:
+  `TESTPUBLIC_SHADOW_ONLY / NEGATIVE_OR_MIXED_CAUSAL_SIGNAL / KEEP_FROZEN_DEFAULT`.
+  Report:
+  `skill_graph/experiments/2026-07-18_default_shift_sequence/report.md`.
+
+- 2026-07-18: Completed CF-NTR Stage -1 on dsba3 GPUs 0--3 using only the
+  exact SuperAD-selected 16 train/good references per object and sealed
+  synthetic shifts/defects. The valid v3 run passed specificity, defect
+  retention, and audit gates but failed stability and drift correction:
+  physical energy capture was `0.711801`, while held-out p95 drift reduction
+  was `0.262992` (95% LCB `0.256818`) and every object stayed below `0.40`.
+  Layerwise reduction collapsed from `0.485229` at layer 5 to `0.098899` at
+  layer 23, showing that the global image-mean rank-4 tangent does not capture
+  spatially conditional late-layer distribution shift. All 136,192 maps were
+  finite/nonconstant; checksums and exact coverage passed; dense artifacts and
+  the isolated remote snapshot were removed while compact evidence was
+  retained. Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`. Report:
+  `skill_graph/experiments/2026-07-18_cfntr_stage_minus1/report.md`.
+
+- 2026-07-18: Completed the preregistered SDIG-NODyR Stage A TESTpublic shadow
+  on dsba3 GPUs 0--3 using the exact SuperAD-selected 16 normal references and
+  full eight-object MVTec AD2 population. NODyR scored macro
+  `0.729019/0.326280` pAUROC/F1 versus the best single macro null,
+  `state_angle`, at `0.728246/0.325678`; the `+0.000773/+0.000602` margin
+  missed the frozen `+0.005/+0.005` signal threshold, and the object-wise null
+  envelope beat NODyR on both metrics in all eight objects. Shifted-good p95
+  inflated from regular `0.133087` to `0.162501/0.165181/0.168161`, while
+  NODyR/state-angle image mean and p95 correlations were
+  `0.999887/0.999636`. This identifies the candidate as an almost exact state
+  prediction reparameterization that still tracks acquisition shift. All
+  1,084 images and 6,504 maps passed coverage/equivalence audits; dense maps
+  and compact caches were removed. Verdict:
+  `TESTPUBLIC_SHADOW_ONLY / NEGATIVE_OR_MIXED_CAUSAL_SIGNAL`. Report:
+  `skill_graph/experiments/2026-07-17_sdig_nodyr_stage_a/report.md`.
+
+- 2026-07-17: Completed a five-stage distribution-shift identifiability design
+  cycle after consolidating the position-correction, hard-local, density,
+  support-consensus, and condition-aware regressions. Candidate design scores
+  were `0.59 -> 0.32 -> 0.65 -> 0.69 -> 0.79`; the selected
+  `SDIG-NODyR` path first tests a standalone frozen-backbone depth-transition
+  direction map against direct-state/RD/shuffle nulls, and only after a raw
+  pass permits image-disjoint support-only fixed calibration. Query-view
+  persistence was rejected and optional fusion cannot rescue failed raw
+  evidence. Verdict: `CONDITIONAL_KEEP_DESIGN_ONLY`; no empirical method
+  improvement is claimed. Report:
+  `skill_graph/experiments/2026-07-17_sdig_nodyr_method_design/report.md`.
+
+- 2026-07-15: Completed the sequential DINOv2 ViT-L/14 Basic tuning ladder
+  on all eight MVTec AD2 public objects with fixed SuperAD-16 support,
+  static latent bank, DVT position-mean alpha 1.0, density 0.25, RGB
+  guided-r8, and close/fill/erode morphology. Capacity selected depth 2 /
+  width 1 (`0.781937/0.441074`); optimization retained 3 epochs and LR
+  `2e-4`; regularization selected `lambda_logdet=2e-2` with support
+  brightness `0.8,1.2` (`0.782534/0.439453`); layer selection selected
+  `[11,15,19,23]` (`0.785792/0.440896`). Relative to the Stage-1 anchor,
+  final p-AUROC improved `+0.003855` while F1 changed `-0.000178`, so the
+  result is diagnostic and not a broad segmentation improvement. All remote
+  configs completed with zero recorded errors and dense maps cleaned.
+  Report: `skill_graph/experiments/2026-07-15_flowtte_basic_dinov2l_sequential_hparam/report.md`.
+
 - 2026-07-13: Completed the all-eight matched AD2 H+ RGB guided-r8 and default
   morphology evaluation. The retained fixed-support Flow-LatentBank + LOO +
   DVT + density control exactly reproduced `0.836739/0.527428` before
@@ -523,6 +786,29 @@
   evaluation.
 - Local verification: 432 tests passed, plus compilation and diff checks.
 
+# 2026-07-24 — Same16 DVT × density factorial attribution completed
+
+- Completed the exact-support, all-eight MVTec AD2 public-shadow 2×2 using
+  reused A6/Basic and new DVT-only/density-only cells in fixed dsba3 container
+  `hun_fsad_tta_012`.
+- A6/DVT-only/density-only/Basic scored
+  `0.759284/0.771822/0.760328/0.772635` pAUROC,
+  `0.350216/0.356363/0.350910/0.355676` raw F1, and
+  `0.538267/0.530338/0.543298/0.533408` AU-PRO.
+- DVT's average main effect was `+0.012423/+0.005457/-0.008910`, while
+  density was `+0.000928/+0.000003/+0.004050`; the interaction was
+  `-0.000232/-0.001381/-0.001961`.
+- DVT pAUROC was driven heavily by `sheet_metal` and its CI crossed zero;
+  DVT also collapsed sheet-metal AU-PRO and walnut F1. Density and interaction
+  stayed below material bounds. No factor received attribution credit.
+- The local/remote summary SHA-256 matched, all 16 new metrics/manifests were
+  present, logs were clean, dense-map directories were zero, and the isolated
+  snapshot was removed.
+- Report:
+  `skill_graph/experiments/2026-07-24_same16_dvt_density_factorial/report.md`.
+- Verdict: `MIXED_OR_INCONCLUSIVE_ATTRIBUTION / KILL_FOR_CLAIM`; retain Basic
+  descriptively, but do not open shot scaling or another DVT/density sweep.
+
 # 2026-07-13 — AD2 RGB guide and morphology promoted to operational defaults
 
 - The canonical AD2 FlowTTE CLI now applies half-scale RGB guided-r8
@@ -601,3 +887,56 @@
   variants across dsba3 GPUs 0--3 and dsba5 GPUs 0--1.
 - Report: `skill_graph/experiments/2026-07-15_sflb_ad2_rank_trim/report.md`.
 - Status: `RUNNING / CONTINUE_DIAGNOSTIC`; official AU-PRO@0.05 pending.
+
+# 2026-07-16 — DSCR high-resolution density shadow diagnostic completed
+
+- Ran the frozen five-object, first-good-4/first-bad-4 public shadow cell on
+  dsba3 GPUs 0--3 and dsba5 GPU 0 with identical G0/D0/D0c support, folds,
+  feature geometry, and runner hash.
+- G0/D0/D0c macro pAUROC were `0.565902/0.539851/0.539858`; macro oracle F1
+  were `0.080168/0.068325/0.066906`; macro fixed F1 were
+  `0.009808/0.008520/0.008450`.
+- Density improved pAUROC on only `rice` and oracle F1 on only `fabric` and
+  `rice`. `can` exceeded the 0.03 pAUROC harm bound, and `vial` exceeded both
+  the 0.03 pAUROC and 0.05 F1 bounds. Normal-tail calibration did not repair
+  the ranking.
+- Audit passed 40 logical queries, 120 finite/nonconstant arm maps, exact arm
+  ID parity, five completion manifests, identical settings, and zero retained
+  `anomaly_maps/` after cleanup. Focused evaluator test: `1 passed`; lint was
+  unavailable because `ruff` was not installed.
+- Report:
+  `skill_graph/experiments/2026-07-16_dscr_hres_density_shadow/report.md`.
+- Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`; do not launch the optional
+  whitening/Mahalanobis follow-up or reopen the killed hard-local branch.
+
+# 2026-07-16 — DSCR paired acquisition interaction audit completed
+
+- Reran frozen G0/D0 on dsba3 for `fabric`, `rice`, and `vial`, with one good
+  and one bad source identity under regular, overexposed, shift-1, and shift-2.
+- Regular macro D0-G0 pAUROC/F1 was `-0.022554/-0.024119`; the shifted mean was
+  `-0.029614/-0.022535`, yielding only `-0.007060/+0.001584` interaction.
+- `vial` already lost `0.128838/0.129513` at regular, while `rice` responded in
+  opposite directions to overexposure (`+0.155902` pAUROC) and shift-1
+  (`-0.030151`). The failure is object/condition heterogeneous, not a shared
+  shift-induced density defect.
+- Pooled `fabric/rice` reproduced the prior dsba3 results essentially exactly;
+  dsba3 `vial` reproduced the prior dsba5 result within `1.1e-6`, closing the
+  host-difference concern.
+- Audit passed exact 24-query coverage, finite/nonconstant float32 maps, arm-ID
+  parity, three completion manifests, 18 local tests, and zero retained PAIA
+  TIFFs after cleanup.
+- Report:
+  `skill_graph/experiments/2026-07-16_dscr_paia_condition_audit/report.md`.
+- Verdict: `KILL_FOR_CLAIM / NO_CONTINUE`; do not condition or retune D0.
+# 2026-08-04 — Shift-Conditioned Patch-Local Flow preregistered
+
+- Froze a DINOv3-H+/16, DVT position-mean, fixed-16 follow-up that keeps the
+  Stage-A MLP Flow and raw latent 1-NN scorer while adding only a bounded
+  augmentation-supervised image-shift residual branch.
+- Corrected four pre-execution defects: simultaneous zero head/gain gradient
+  deadlock, silent normalized-scorer replacement, absolute augmentation
+  prediction, and the missing Stage-B NLL definition.
+- Added a support-only held-shift/defect-retention gate before any AD2 public
+  image access and fixed dsba5 host GPU 3 / container cuda:0 snapshot custody.
+- Preregistration:
+  `skill_graph/experiments/2026-08-04_shift_conditioned_patch_local_flow/preregistration.md`.

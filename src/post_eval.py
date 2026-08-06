@@ -3,9 +3,9 @@ This evaluation scripts partly builds on the official evaluation script for MVTe
 """
 
 import json
-from sklearn.metrics import auc, roc_auc_score, average_precision_score, f1_score, precision_recall_curve, pairwise
-import numpy as np
+from dataclasses import dataclass
 import os
+
 import numpy as np
 import cv2
 from os import makedirs, path, listdir
@@ -14,8 +14,25 @@ from tqdm import tqdm
 import tifffile as tiff
 from scipy.ndimage import label
 from bisect import bisect
+from sklearn.metrics import average_precision_score, precision_recall_curve, roc_auc_score
 
 from src.utils import dists2map
+
+
+@dataclass(frozen=True)
+class SegmentationMetrics:
+    """Raw continuous-map metrics and audit counts for one AD2 object."""
+
+    seg_auroc_0_05: float
+    seg_f1_raw: float
+    best_threshold: float
+    seg_aupro_0_05: float
+    prediction_map_count: int
+    ground_truth_map_count: int
+    anomalous_region_count: int
+    non_finite_prediction_count: int
+    nonconstant_prediction_map_count: int = 0
+    shape_match_count: int = 0
 
 
 
@@ -40,20 +57,26 @@ def parse_dataset_files(object_name, dataset_base_dir, anomaly_maps_dir, dataset
 
     # List all ground truth and corresponding anomaly images.
     for subdir in listdir(str(test_dir)):
-
-        if not subdir.replace('_', '').isalpha():
+        # ``test_public/ground_truth`` is metadata, not an image split.
+        # Only the two protocol-defined query splits may contribute rows.
+        if subdir not in {"good", "bad"}:
             continue
 
         # Get paths to all test images in the dataset for this subdir.
+        image_extension = ".png" if dataset in {"MVTec", "MVTec_AD_2"} else ".JPG"
         test_images = [path.splitext(file)[0]
                        for file
                        in listdir(path.join(test_dir, subdir))
-                       if path.splitext(file)[1] == ('.png' if dataset == "MVTec" or "MVTec_AD_2" else '.JPG')]
+                       if path.splitext(file)[1] == image_extension]
 
         # If subdir is not 'good', derive corresponding GT names.
         if subdir == 'bad':
             gt_filenames.extend(
-                [path.join(gt_base_dir, subdir, file + '_mask.png' if dataset == "MVTec" or "MVTec_AD_2" else file + '.png')
+                [path.join(
+                    gt_base_dir,
+                    subdir,
+                    file + "_mask.png" if dataset in {"MVTec", "MVTec_AD_2"} else file + ".png",
+                )
                  for file in test_images])
         elif subdir == 'good':
             # No ground truth maps exist for anomaly-free images.
@@ -300,55 +323,104 @@ def max_anomaly_map(distances, img_size):
     return np.max(anomaly_map)
 
 
-from sklearn.metrics import roc_auc_score
-import numpy as np
+def eval_segmentation_metrics(
+    gt_filenames,
+    prediction_filenames,
+    pro_integration_limit=0.05,
+    delete_tiff_files=True,
+    compute_aupro=True,
+):
+    """Evaluate one object's original-resolution continuous anomaly maps.
 
-def eval_segmentation(gt_filenames, prediction_filenames, pro_integration_limit=0.3, delete_tiff_files=True):
+    ``seg_AUROC_0.05`` is sklearn's standardized partial pixel AUROC.
+    ``seg_AUPRO_0.05`` is the connected-component PRO curve integrated and
+    normalized over FPR in ``[0, pro_integration_limit]``.
+    """
+    if len(gt_filenames) != len(prediction_filenames):
+        raise ValueError("Ground-truth and prediction file counts must match")
+    if not prediction_filenames:
+        raise ValueError("At least one prediction map is required")
+    if not 0.0 < pro_integration_limit <= 1.0:
+        raise ValueError("pro_integration_limit must be in (0, 1]")
+
     # Read all ground truth and anomaly images.
     ground_truth = []
     predictions = []
+    shape_match_count = 0
 
     print("Read ground truth files and corresponding predictions...")
     for (gt_name, pred_name) in tqdm(zip(gt_filenames, prediction_filenames),
                                      total=len(gt_filenames)):
-        prediction = read_tiff(pred_name)
-        # prediction = np.asarray(Image.open(pred_name + '.png'))
+        prediction = np.asarray(read_tiff(pred_name), dtype=np.float32)
         predictions.append(prediction)
-        
 
         if gt_name is not None:
-            ground_truth.append(np.asarray(Image.open(gt_name)))
+            gt_map = np.asarray(Image.open(gt_name)) > 0
         else:
-            ground_truth.append(np.zeros(prediction.shape))
+            gt_map = np.zeros(prediction.shape, dtype=np.bool_)
+        if gt_map.shape != prediction.shape:
+            raise ValueError(
+                "Ground-truth and prediction map shapes must match: "
+                f"{gt_map.shape} != {prediction.shape}",
+            )
+        shape_match_count += 1
+        ground_truth.append(gt_map)
 
-    # Compute the PRO curve.
-    # pro_curve = compute_pro(
-    #     anomaly_maps=predictions,
-    #     ground_truth_maps=ground_truth)
-
-    # Compute the area under the PRO curve.
-    # au_pro = trapezoid(
-    #     pro_curve[0], pro_curve[1], x_max=pro_integration_limit)
-    # au_pro /= pro_integration_limit
-    # print(f"AU-PRO (FPR limit: {pro_integration_limit}): {au_pro}", end=" -- ")
-
-    ground_truth = np.array(ground_truth).ravel()
     # Flow distances can legitimately exceed float16's finite range (65504).
     # Casting them to float16 turns valid scores into +inf, destroys their rank,
     # and can produce an infinite oracle threshold.  Keep the saved float32
     # scores: sklearn's rank metrics are scale invariant and float32 preserves
     # the threshold in the same units consumed by binary post-processing.
-    predictions = np.asarray(predictions, dtype=np.float32).ravel()
-    if not np.all(np.isfinite(predictions)):
+    non_finite_prediction_count = int(sum(
+        np.count_nonzero(~np.isfinite(prediction))
+        for prediction in predictions
+    ))
+    if non_finite_prediction_count:
         raise ValueError("Prediction maps contain non-finite anomaly scores")
-    ground_truth = (ground_truth > 0).astype(np.uint8)
+
+    structure = np.ones((3, 3), dtype=int)
+    anomalous_region_count = int(sum(
+        label(gt_map, structure=structure)[1]
+        for gt_map in ground_truth
+    ))
+    normal_pixel_count = int(sum(
+        np.count_nonzero(~gt_map)
+        for gt_map in ground_truth
+    ))
+    if compute_aupro and anomalous_region_count and normal_pixel_count:
+        pro_curve = compute_pro(
+            anomaly_maps=predictions,
+            ground_truth_maps=ground_truth,
+        )
+        au_pro = float(
+            trapezoid(
+                pro_curve[0],
+                pro_curve[1],
+                x_max=pro_integration_limit,
+            )
+            / pro_integration_limit,
+        )
+        print(
+            f"AU-PRO (FPR limit: {pro_integration_limit}): {au_pro}",
+            end=" -- ",
+        )
+    else:
+        au_pro = float("nan")
+
+    ground_truth_flat = np.asarray(ground_truth, dtype=np.uint8).ravel()
+    predictions_flat = np.asarray(predictions, dtype=np.float32).ravel()
 
     # Compute pixel-level AUROC
-    auroc_px = roc_auc_score(ground_truth, predictions, max_fpr=0.05)
+    auroc_px = float(
+        roc_auc_score(ground_truth_flat, predictions_flat, max_fpr=0.05),
+    )
     print(f"AUROC_0.05 (pixel-level): {auroc_px}", end=" -- ")
 
-    # # Compute pixel-level F1 Score
-    precisions, recalls, thresholds = precision_recall_curve(ground_truth, predictions)
+    # Compute pixel-level oracle F1 on the raw continuous maps.
+    precisions, recalls, thresholds = precision_recall_curve(
+        ground_truth_flat,
+        predictions_flat,
+    )
     # The last precision/recall point has no corresponding threshold.
     denominators = precisions[:-1] + recalls[:-1]
     f1_scores = np.divide(
@@ -368,7 +440,42 @@ def eval_segmentation(gt_filenames, prediction_filenames, pro_integration_limit=
         for pred_name in prediction_filenames:
             os.remove(pred_name + '.tiff')
 
-    return auroc_px, f1_px, best_thre
+    return SegmentationMetrics(
+        seg_auroc_0_05=auroc_px,
+        seg_f1_raw=f1_px,
+        best_threshold=best_thre,
+        seg_aupro_0_05=au_pro,
+        prediction_map_count=len(predictions),
+        ground_truth_map_count=len(ground_truth),
+        anomalous_region_count=anomalous_region_count,
+        non_finite_prediction_count=non_finite_prediction_count,
+        nonconstant_prediction_map_count=int(sum(
+            np.ptp(prediction) > 0
+            for prediction in predictions
+        )),
+        shape_match_count=shape_match_count,
+    )
+
+
+def eval_segmentation(
+    gt_filenames,
+    prediction_filenames,
+    pro_integration_limit=0.3,
+    delete_tiff_files=True,
+):
+    """Backward-compatible three-value segmentation metric wrapper."""
+    metrics = eval_segmentation_metrics(
+        gt_filenames,
+        prediction_filenames,
+        pro_integration_limit=pro_integration_limit,
+        delete_tiff_files=delete_tiff_files,
+        compute_aupro=False,
+    )
+    return (
+        metrics.seg_auroc_0_05,
+        metrics.seg_f1_raw,
+        metrics.best_threshold,
+    )
 
 
 
@@ -459,7 +566,6 @@ def eval_finished_run(dataset, dataset_base_dir, anomaly_maps_dir, output_dir, s
     evaluation_dict = dict()
 
     # Keep track of the mean performance measures.
-    au_pro_ls = []
     auroc_px_ls = []
     f1_px_ls = []
     best_thre_ls = []
@@ -491,13 +597,11 @@ def eval_finished_run(dataset, dataset_base_dir, anomaly_maps_dir, output_dir, s
                     pro_integration_limit=pro_integration_limit,
                     delete_tiff_files=delete_tiff_files)
 
-            # evaluation_dict[obj]['seg_AUPRO'] = au_pro
             evaluation_dict[obj]['seg_AUROC'] = auroc_px
             evaluation_dict[obj]['seg_F1'] = f1_px
             evaluation_dict[obj]['best_thre'] = best_thre
 
             # Keep track of the mean performance measures.
-            # au_pro_ls.append(au_pro)
             auroc_px_ls.append(auroc_px)
             f1_px_ls.append(f1_px)
             best_thre_ls.append(best_thre)
@@ -521,7 +625,6 @@ def eval_finished_run(dataset, dataset_base_dir, anomaly_maps_dir, output_dir, s
 
     # Compute the mean of the performance measures.
     if eval_segm:
-        # evaluation_dict['mean_au_pro'] = np.mean(au_pro_ls).item()
         evaluation_dict['mean_segmentation_au_roc'] = np.mean(auroc_px_ls).item()
         evaluation_dict['mean_segmentation_f1'] = np.mean(f1_px_ls).item()
     if eval_clf:

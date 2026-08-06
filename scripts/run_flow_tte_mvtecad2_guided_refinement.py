@@ -97,20 +97,27 @@ def main(argv: Sequence[str]) -> int:
         {"objects": list(objects), "preprocess": "no_mask_no_rotation"},
     )
     written = refine_maps(dataset, source_root, output_root)
-    evaluator = Evaluator({
-        "pro_integration_limit": 0.05,
-        "binary_postprocess": args.binary_postprocess,
-        "morphology_line_length": args.morphology_line_length,
-        "morphology_angle_count": args.morphology_angle_count,
-    })
-    metrics = evaluator.evaluate_run(
-        dataset_name="MVTec_AD_2",
-        data_root=args.data_root,
-        anomaly_maps_dir=str(output_root / "anomaly_maps"),
-        output_dir=str(output_root),
-        seed=args.seed,
-        objects=list(objects),
-    )
+    skip_sentinel = Path(__file__).with_name(".skip_embedded_public_evaluation")
+    if skip_sentinel.is_file():
+        metrics = {
+            "embedded_evaluation_skipped": True,
+            "reason": "frozen external sequence evaluator owns the final metrics",
+        }
+    else:
+        evaluator = Evaluator({
+            "pro_integration_limit": 0.05,
+            "binary_postprocess": args.binary_postprocess,
+            "morphology_line_length": args.morphology_line_length,
+            "morphology_angle_count": args.morphology_angle_count,
+        })
+        metrics = evaluator.evaluate_run(
+            dataset_name="MVTec_AD_2",
+            data_root=args.data_root,
+            anomaly_maps_dir=str(output_root / "anomaly_maps"),
+            output_dir=str(output_root),
+            seed=args.seed,
+            objects=list(objects),
+        )
     (output_root / "metrics.json").write_text(
         json.dumps(metrics, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
