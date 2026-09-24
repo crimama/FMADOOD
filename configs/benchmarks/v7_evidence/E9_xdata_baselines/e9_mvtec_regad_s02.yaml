@@ -1,0 +1,24 @@
+method: regad
+dataset: mvtec
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:1
+dataset_config:
+  preprocess: no_mask_no_rotation
+backbone_config:
+  smaller_edge_size: 672
+  feature_layers:
+  - 5
+  - 11
+  - 17
+  - 23
+protocol:
+  shots: 2
+  fixed_reference_manifest: null
+  warmup_iters: 2
+method_config:
+  smooth_sigma: 4.0
+evaluation:
+  eval_segm: true
+  pro_integration_limit: 0.05
+  binary_postprocess: none

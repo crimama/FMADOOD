@@ -1,0 +1,15 @@
+FROM python:3.11-slim-bookworm
+
+ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1 FMAD_DINOV2_OFFLINE=1 \
+    TORCH_HOME=/model-cache OMP_NUM_THREADS=4 MKL_NUM_THREADS=4
+
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
+    && apt-get clean
+RUN pip install torch==2.6.0 torchvision==0.21.0 \
+    --index-url https://download.pytorch.org/whl/cu124
+RUN pip install numpy==2.4.6 scipy==1.17.1 Pillow==12.3.0 PyYAML==6.0.3 \
+    opencv-python-headless==5.0.0.93 scikit-learn==1.9.0 tqdm==4.66.5 pytest==9.1.1
+
+WORKDIR /workspace
+CMD ["sleep", "infinity"]

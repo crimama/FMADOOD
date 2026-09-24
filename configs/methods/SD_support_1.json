@@ -1,0 +1,26 @@
+{
+  "fabric": [
+    "/data/mvtec_ad_2/fabric/train/good/115_regular.png"
+  ],
+  "sheet_metal": [
+    "/data/mvtec_ad_2/sheet_metal/train/good/038_regular.png"
+  ],
+  "walnuts": [
+    "/data/mvtec_ad_2/walnuts/train/good/129_regular.png"
+  ],
+  "can": [
+    "/data/mvtec_ad_2/can/train/good/123_regular.png"
+  ],
+  "vial": [
+    "/data/mvtec_ad_2/vial/train/good/086_regular.png"
+  ],
+  "fruit_jelly": [
+    "/data/mvtec_ad_2/fruit_jelly/train/good/077_regular.png"
+  ],
+  "wallplugs": [
+    "/data/mvtec_ad_2/wallplugs/train/good/086_regular.png"
+  ],
+  "rice": [
+    "/data/mvtec_ad_2/rice/train/good/092_regular.png"
+  ]
+}

@@ -1,0 +1,36 @@
+method: fastrecon
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:0
+dataset_config:
+  objects:
+  - can
+  - fabric
+  - fruit_jelly
+  - rice
+  - sheet_metal
+  - vial
+  - wallplugs
+  - walnuts
+  preprocess: no_mask_no_rotation
+backbone_config:
+  smaller_edge_size: 672
+  feature_layers:
+  - 5
+  - 11
+  - 17
+  - 23
+protocol:
+  shots: 16
+  fixed_reference_manifest: configs/methods/VOID_support_16.json
+  warmup_iters: 2
+method_config:
+  k_neighbors: 10
+  reg_lambda: 0.01
+  knn_metric: L2_normalized
+evaluation:
+  eval_segm: true
+  pro_integration_limit: 0.05
+  binary_postprocess: none
+  condition_strata: true

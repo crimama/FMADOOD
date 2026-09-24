@@ -1,0 +1,50 @@
+{
+  "fabric": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/115_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/237_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/191_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/015_regular.png"
+  ],
+  "sheet_metal": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/sheet_metal/train/good/038_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/sheet_metal/train/good/078_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/sheet_metal/train/good/063_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/sheet_metal/train/good/005_regular.png"
+  ],
+  "walnuts": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/129_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/266_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/214_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/017_regular.png"
+  ],
+  "can": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/can/train/good/123_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/can/train/good/253_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/can/train/good/203_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/can/train/good/016_regular.png"
+  ],
+  "vial": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/vial/train/good/086_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/vial/train/good/176_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/vial/train/good/142_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/vial/train/good/011_regular.png"
+  ],
+  "fruit_jelly": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/fruit_jelly/train/good/077_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fruit_jelly/train/good/158_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fruit_jelly/train/good/127_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fruit_jelly/train/good/010_regular.png"
+  ],
+  "wallplugs": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/wallplugs/train/good/086_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/wallplugs/train/good/177_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/wallplugs/train/good/143_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/wallplugs/train/good/011_regular.png"
+  ],
+  "rice": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/rice/train/good/092_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/rice/train/good/190_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/rice/train/good/153_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/rice/train/good/012_regular.png"
+  ]
+}

@@ -1,0 +1,45 @@
+method: tail_contrast
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:0
+dataset_config:
+  preprocess: no_mask_no_rotation
+backbone_config:
+  smaller_edge_size: 448
+  feature_layers: [23]
+protocol:
+  shots: 16
+  warmup_iters: 1
+method_config:
+  hard_normal_ranking: true
+  paired_contrast: true
+  low_rank_adapter: false
+  normal_tail_fraction: 0.05
+  adapter_rank: 16
+  contrast_weight: 1.0
+  metric_adaptation: true
+  context_conditioning: true
+  correspondence_regularization: false
+  metric_bound: 0.2
+  resolutions: [448, 672]
+  steps: 64
+  bank_tokens_per_source: 256
+  train_tokens: 128
+  query_chunk_size: 128
+  hidden_dim: 32
+  learning_rate: 0.001
+  margin: 0.05
+  keep_weight: 1.0
+  shift_weight: 1.0
+  correspondence_weight: 0.01
+evaluation:
+  streaming: true
+  inference_batch_size: 1
+  metric_contract: mvtec_ad2_float16_streaming_v1
+  eval_segm: true
+  eval_clf: false
+  pro_integration_limit: 0.05
+output:
+  save_anomaly_maps: false
+  save_weights: false

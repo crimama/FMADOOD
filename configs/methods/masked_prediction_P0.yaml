@@ -1,0 +1,30 @@
+method: masked_prediction
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:0
+dataset_config: {preprocess: no_mask_no_rotation}
+backbone_config: {smaller_edge_size: 448, feature_layers: [11, 23]}
+protocol: {shots: 16, warmup_iters: 1}
+method_config:
+  resolutions: [448, 672]
+  target_layer: 11
+  context_layer: 23
+  steps: 128
+  mask_rows: 2
+  mask_columns: 4
+  guard_tokens: 1
+  train_tokens: 128
+  hidden_dim: 128
+  attention_heads: 4
+  predictor_layers: 2
+  context_pool_grid: 8
+  variance_min_factor: 0.1
+  variance_max_factor: 10.0
+  synthetic_margin: 0.2
+  synthetic_weight: 0.1
+  learning_rate: 0.001
+  uncertainty_normalization: false
+  synthetic_supervision: false
+evaluation: {streaming: true, inference_batch_size: 1, metric_contract: mvtec_ad2_float16_streaming_v1, eval_segm: true, eval_clf: false, pro_integration_limit: 0.05}
+output: {save_anomaly_maps: false, save_weights: false}

@@ -1,0 +1,51 @@
+method: fusion_factorial
+dataset_config:
+  preprocess: no_mask_no_rotation
+backbone_config:
+  smaller_edge_size: 448
+  feature_layers:
+  - 5
+  - 11
+  - 23
+method_config:
+  variant: R1
+  feature_layers:
+  - 5
+  - 11
+  - 23
+  resolutions:
+  - 448
+  - 672
+  - 896
+  - 1120
+  bank_tokens_per_source: 256
+  query_chunk_size: 128
+  bank_bags: 4
+  knn_k: 1
+  score_normalization: tailscale
+  layer_fusion: residual_spike
+  layer_fusion_tau_mode: support_quantile
+  layer_fusion_tau_q: 0.99
+  layer_fusion_gamma: 1.0
+  layer_fusion_shallow_idx: 0
+  prediction_postprocess: component_quantile
+  component_percentile: 99.0
+  component_q: 1.0
+  component_dilate_size: 0
+  shallow_mode: all
+evaluation:
+  streaming: true
+  inference_batch_size: 1
+  metric_contract: mvtec_ad2_float16_streaming_v1
+  eval_segm: true
+  eval_clf: false
+  pro_integration_limit: 0.05
+output:
+  save_anomaly_maps: false
+  save_weights: false
+dataset: mvtec
+backbone: dinov2_vitl14
+seed: 0
+protocol:
+  shots: 8
+  warmup_iters: 1

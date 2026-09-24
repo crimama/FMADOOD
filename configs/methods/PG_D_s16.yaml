@@ -1,0 +1,39 @@
+method: protected_geometry
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:0
+dataset_config: {preprocess: no_mask_no_rotation}
+backbone_config: {smaller_edge_size: 448, feature_layers: [11, 23]}
+protocol: {shots: 16, warmup_iters: 1, fixed_reference_manifest: configs/methods/SD_support_16.json}
+method_config:
+  variant: R1
+  feature_layers: [11, 23]
+  resolutions: [448, 672]
+  bank_tokens_per_source: 256
+  query_chunk_size: 128
+  query_adaptation: false
+  robust_trim: false
+  spatial_crossfit: false
+  keep_fraction: 0.75
+  ridge: 1.0
+  max_shift_norm: 0.1
+  crossfit_blocks: 2
+  crossfit_halo: 1
+  min_fit_tokens: 32
+  geometry_enabled: true
+  protect_contrasts: true
+  geometry_strength: 0.5
+  nuisance_rank: 16
+  protected_rank: 32
+  geometry_evidence_tokens: 256
+  stability_cosine: 0.9
+evaluation:
+  shift_diagnostic: real_acquisition
+  streaming: true
+  inference_batch_size: 1
+  metric_contract: mvtec_ad2_float16_streaming_v1
+  eval_segm: true
+  eval_clf: false
+  pro_integration_limit: 0.05
+output: {save_anomaly_maps: false, save_weights: false}

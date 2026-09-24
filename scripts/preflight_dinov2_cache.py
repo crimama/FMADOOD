@@ -4,8 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-import src.backbones  # noqa: F401
-from src.dinov2_loader import load_dinov2_model
+from fmad.backbones.loader import load_dinov2_model
 
 
 def main() -> int:

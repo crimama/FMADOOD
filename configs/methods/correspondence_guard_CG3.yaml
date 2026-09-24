@@ -1,0 +1,43 @@
+method: correspondence_guard
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:0
+dataset_config: {preprocess: no_mask_no_rotation}
+backbone_config: {smaller_edge_size: 448, feature_layers: [11, 23]}
+protocol: {shots: 16, warmup_iters: 1}
+method_config:
+  variant: R1
+  feature_layers: [11, 23]
+  resolutions: [448, 672]
+  bank_tokens_per_source: 256
+  query_chunk_size: 128
+  query_adaptation: true
+  robust_trim: false
+  spatial_crossfit: false
+  keep_fraction: 0.75
+  ridge: 1.0
+  max_shift_norm: 0.1
+  crossfit_blocks: 2
+  crossfit_halo: 1
+  min_fit_tokens: 32
+  mode_conditioning: true
+  normal_subspace: false
+  orthogonal_gate: false
+  mode_count: 8
+  mode_kmeans_iters: 5
+  mode_subspace_rank: 4
+  mode_prior_tokens: 64.0
+  min_mode_tokens: 16
+  normal_gate_quantile: 0.9
+  mode_guard: true
+  identity_guard: true
+  guard_weight: 1.0
+evaluation:
+  streaming: true
+  inference_batch_size: 1
+  metric_contract: mvtec_ad2_float16_streaming_v1
+  eval_segm: true
+  eval_clf: false
+  pro_integration_limit: 0.05
+output: {save_anomaly_maps: false, save_weights: false}

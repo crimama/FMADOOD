@@ -1,0 +1,49 @@
+method: transfer_update
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:0
+dataset_config: {preprocess: no_mask_no_rotation}
+backbone_config: {smaller_edge_size: 448, feature_layers: [23]}
+protocol: {shots: 16, warmup_iters: 1}
+method_config:
+  boundary_synthetic: true
+  hard_normal_ranking: true
+  paired_contrast: true
+  low_rank_adapter: true
+  relational_teacher: true
+  trusted_weak_synthetic: false
+  conflict_safe_gradient: false
+  adaptive_preservation: true
+  immediate_preservation: true
+  budget_aware_synthetic: false
+  relational_beta: 0.25
+  budget_base: 0.0012
+  susceptibility_scale: 1.0
+  lambda_init: 0.1
+  lambda_lr: 0.01
+  lambda_max: 1.0
+  violation_ema_decay: 0.9
+  keep_weight: 1.0
+  shift_weight: 1.0
+  contrast_weight: 1.0
+  normal_tail_fraction: 0.05
+  adapter_rank: 16
+  metric_adaptation: true
+  context_conditioning: true
+  correspondence_regularization: false
+  metric_bound: 0.2
+  resolutions: [448, 672]
+  steps: 64
+  bank_tokens_per_source: 256
+  train_tokens: 128
+  query_chunk_size: 128
+  hidden_dim: 32
+  learning_rate: 0.001
+  margin: 0.05
+  transfer_update: true
+  meta_inner_lr: 0.01
+  meta_outer_weight: 1.0
+  cross_environment_meta: false
+evaluation: {streaming: true, inference_batch_size: 1, metric_contract: mvtec_ad2_float16_streaming_v1, eval_segm: true, eval_clf: false, pro_integration_limit: 0.05}
+output: {save_anomaly_maps: false, save_weights: false}

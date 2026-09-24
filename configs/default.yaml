@@ -14,15 +14,29 @@ dataset_config:
   preprocess: agnostic
   # objects: null  # null = all objects; or ["can", "fabric"]
 
-method_config:
+protocol:
   shots: 16
+  fixed_reference_manifest: null
+  warmup_iters: 25
+
+method_config:
   knn_metric: L2_normalized
   k_neighbors: 1
   faiss_on_cpu: false
-  warmup_iters: 25
   mask_ref_images: false
+  # PSMA_MR uses method_config.resolutions: [448, 672] and adapter_rank: 4;
+  # select it with --method PSMA_MR or configs/methods/PSMA_MR.yaml.
 
 evaluation:
+  streaming: true
+  inference_batch_size: 1
+  metric_contract: mvtec_ad2_float16_streaming_v1
   eval_segm: true
   eval_clf: false
   pro_integration_limit: 0.05
+
+debug_output: false
+
+output:
+  save_anomaly_maps: false
+  save_weights: false

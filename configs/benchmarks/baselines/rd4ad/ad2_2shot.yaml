@@ -1,0 +1,39 @@
+method: reverse_distillation
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:2
+dataset_config:
+  preprocess: no_mask_no_rotation
+backbone_config:
+  smaller_edge_size: 448
+  feature_layers:
+  - 11
+  - 23
+protocol:
+  shots: 2
+  fixed_reference_manifest: null
+  warmup_iters: 1
+method_config:
+  teacher: dinov2
+  resolution: 672
+  feature_layers:
+  - 11
+  - 23
+  crop_size: 448
+  steps: 400
+  batch_size: 2
+  learning_rate: 0.005
+  bottleneck_channels: 512
+  photometric_strength: 1.0
+  flips: true
+evaluation:
+  streaming: true
+  inference_batch_size: 1
+  metric_contract: mvtec_ad2_float16_streaming_v1
+  eval_segm: true
+  eval_clf: false
+  pro_integration_limit: 0.05
+output:
+  save_anomaly_maps: false
+  save_weights: false

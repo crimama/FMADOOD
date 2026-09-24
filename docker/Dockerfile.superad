@@ -23,12 +23,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /workspace
 
-COPY requirements.txt /tmp/requirements.txt
+COPY pyproject.toml /opt/fmad/pyproject.toml
+COPY src/fmad /opt/fmad/src/fmad
 
-RUN grep -Ev '^(torch|torchvision|faiss-gpu|numpy)([[:space:]]|[<>=!~]|$)' /tmp/requirements.txt > /tmp/pip-deps.txt && \
-    python3 -m pip install --upgrade pip setuptools wheel && \
-    python3 -m pip install torch==2.1.2+cu118 torchvision==0.16.2+cu118 --extra-index-url https://download.pytorch.org/whl/cu118 && \
-    python3 -m pip install faiss-gpu-cu11 && \
-    python3 -m pip install -r /tmp/pip-deps.txt
+RUN python3 -m pip install --upgrade pip setuptools wheel && \
+    python3 -m pip install 'numpy<2' torch==2.2.2+cu118 torchvision==0.17.2+cu118 --extra-index-url https://download.pytorch.org/whl/cu118 && \
+    python3 -m pip install 'numpy<2' faiss-gpu-cu11 '/opt/fmad[model]'
 
 CMD ["/bin/bash"]
