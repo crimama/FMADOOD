@@ -449,6 +449,122 @@ def combine_completed_shards(root, output, inputs, *, recover_partial=False):
     atomic_write(output / "status.json", json.dumps(state, indent=2) + "\n")
 
 
+def _declared_subset(declared, saved):
+    """True when every key the declared YAML sets equals the resolved saved value."""
+    if isinstance(declared, dict):
+        return isinstance(saved, dict) and all(
+            key in saved and _declared_subset(value, saved[key]) for key, value in declared.items())
+    return declared == saved
+
+
+def _declared_items(declared, prefix=()):
+    if not isinstance(declared, dict):
+        return {(prefix, json.dumps(declared, sort_keys=True))}
+    return set().union(*(_declared_items(v, (*prefix, k)) for k, v in declared.items())) if declared else set()
+
+
+def _most_specific(matches, declared):
+    """Pick the declared config that refines every other match, e.g. a guard arm over its baseline."""
+    items = {label: _declared_items(declared[label]) for label in matches}
+    best = [label for label in matches if all(items[other] <= items[label] for other in matches)]
+    return best if len(best) == 1 else matches
+
+
+def _condition_root(data_root):
+    """Host-independent dataset identity: path below the DATA directory when present."""
+    parts = Path(str(data_root)).parts
+    return "/".join(parts[len(parts) - parts[::-1].index("DATA"):]) if "DATA" in parts else str(data_root)
+
+
+def import_completed_runs(root, output, import_dirs, config_paths, labels, split):
+    """Register completed runs made outside `run` without rerunning them.
+
+    Each run directory must match exactly one declared config (declared keys
+    equal the saved resolved config); when several match, the one refining all
+    others wins. All runs must share one dataset root below DATA/, so a
+    corruption condition is one import scope. Identical duplicate reruns are
+    dropped and recorded; conflicting duplicates are an error. Only compact
+    evidence is copied, and an existing output must be owned by the same import.
+    """
+    root, output = root.resolve(), output.resolve()
+    import_dirs = [Path(p).resolve() for p in import_dirs]
+    config_paths = [Path(p).resolve() for p in config_paths or []]
+    labels = labels or [p.stem for p in config_paths]
+    if not config_paths or len(labels) != len(config_paths) or len(set(labels)) != len(labels):
+        raise ValueError("--import-runs needs one unique label per --configs entry")
+    if any(not label or Path(label).name != label or label in (".", "..") for label in labels):
+        raise ValueError("labels must be simple directory names")
+    if not split:
+        raise ValueError("--import-runs requires --split to declare the actual split/label use")
+    output.relative_to(root)
+    if any(d == output or d in output.parents or output in d.parents for d in import_dirs):
+        raise ValueError("import output and sources must not overlap")
+    declared = {label: yaml.safe_load(path.read_text()) or {} for label, path in zip(labels, config_paths)}
+    sources = dict(import_dirs=[str(d.relative_to(root)) for d in import_dirs],
+                   configs=[str(p.relative_to(root)) for p in config_paths], labels=labels, split=split)
+    owner = output / "import_sources.json"
+    if output.exists() and (not owner.is_file() or json.loads(owner.read_text()) != sources):
+        raise ValueError("import output is not owned by these sources")
+    kept, dropped, data_roots, payloads = {}, [], set(), {}
+    for source in import_dirs:
+        for path in sorted(source.rglob("run_manifest.json")):
+            run_dir = path.parent
+            if not (run_dir / "metrics.json").is_file() or not (run_dir / "config.yaml").is_file():
+                raise ValueError(f"incomplete run directory: {run_dir}")
+            config = yaml.safe_load((run_dir / "config.yaml").read_text())
+            matches = _most_specific(
+                [label for label in labels if _declared_subset(declared[label], config)], declared)
+            if len(matches) != 1:
+                raise ValueError(f"{run_dir} matches {len(matches)} declared configs: {matches}")
+            label = matches[0]
+            data_roots.add(_condition_root(config.get("data_root")))
+            manifest = json.loads(path.read_text())
+            metrics = json.loads((run_dir / "metrics.json").read_text())
+            new, duplicate = [], []
+            for obj in manifest["objects"]:
+                previous = kept.get((label, obj))
+                if previous is None:
+                    new.append(obj)
+                elif previous[1] == metrics[obj]:
+                    duplicate.append(obj)
+                else:
+                    raise ValueError(f"conflicting duplicate runs for {label}/{obj}: {previous[0]} vs {run_dir}")
+            if new and duplicate:
+                raise ValueError(f"{run_dir} mixes new and duplicate objects")
+            if duplicate:
+                dropped.append(str(run_dir.relative_to(root)))
+                continue
+            target_dir = output / label / f"import_{import_dirs.index(source)}" / run_dir.relative_to(source)
+            for obj in new:
+                kept[(label, obj)] = (run_dir, metrics[obj])
+            for name in ("metrics.json", "config.yaml", "run_manifest.json"):
+                payloads[target_dir / name] = (run_dir / name).read_bytes().decode("utf-8")
+    if not kept:
+        raise ValueError(f"no completed runs found in {import_dirs}")
+    # Failed attempts leave config.yaml without a manifest; count them for the audit.
+    skipped = sum(not path.with_name("run_manifest.json").is_file()
+                  for source in import_dirs for path in source.rglob("config.yaml"))
+    if len(data_roots) != 1:
+        raise ValueError(f"imported runs span several data roots: {sorted(map(str, data_roots))}")
+    objects = sorted({obj for _, obj in kept})
+    completed = [dict(label=label, object=obj, source_run=str(kept[label, obj][0].relative_to(root)),
+                      ended=kept[label, obj][0].joinpath("metrics.json").stat().st_mtime)
+                 for label in labels for obj in objects if (label, obj) in kept]
+    full = len(completed) == len(labels) * len(objects)
+    state = dict(state="complete" if full else "partial", imported=True, active=None, split=split,
+                 started=min(e["ended"] for e in completed), ended=max(e["ended"] for e in completed),
+                 plan=dict(labels=labels, objects=objects, configs=sources["configs"]),
+                 completed=completed, data_root=data_roots.pop(), import_sources=sources,
+                 duplicates_dropped=dropped, incomplete_run_dirs_skipped=skipped)
+    output.mkdir(parents=True, exist_ok=True)
+    atomic_write(owner, json.dumps(sources, indent=2) + "\n")
+    for target, content in payloads.items():
+        target.parent.mkdir(parents=True, exist_ok=True)
+        atomic_write(target, content)
+    atomic_write(output / "status.json", json.dumps(state, indent=2) + "\n")
+    return state
+
+
 def update(root, output, labels=None, objects=None, reference_method=None):
     status = json.loads((output / "status.json").read_text())
     plan = status.get("plan", {})
@@ -614,6 +730,9 @@ def main():
     collector.add_argument("--input-dirs", nargs="+", help="combine completed disjoint object shards before collection")
     collector.add_argument("--recover-partial", action="store_true",
                            help="combine stopped partial shards with complementary recovery runs; require full coverage")
+    collector.add_argument("--import-runs", nargs="+", help="import ad-hoc completed runs from these directories")
+    collector.add_argument("--configs", nargs="+", help="config files for import-runs matching")
+    collector.add_argument("--split", help="declare split for imported runs")
     for command in (runner, collector):
         command.add_argument("--output-dir", required=True)
         command.add_argument("--labels", nargs="+")
@@ -623,7 +742,11 @@ def main():
     if args.action == "run":
         return run(args, root)
     output = Path(args.output_dir).resolve()
-    if args.input_dirs:
+    if args.import_runs:
+        if args.watch:
+            raise ValueError("--import-runs requires completed runs, not --watch")
+        import_completed_runs(root, output, args.import_runs, args.configs, args.labels, args.split)
+    elif args.input_dirs:
         if args.watch:
             raise ValueError("--input-dirs requires completed shards, not --watch")
         combine_completed_shards(root, output, args.input_dirs, recover_partial=args.recover_partial)
