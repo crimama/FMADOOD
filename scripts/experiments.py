@@ -476,15 +476,32 @@ def _condition_root(data_root):
     return "/".join(parts[len(parts) - parts[::-1].index("DATA"):]) if "DATA" in parts else str(data_root)
 
 
-def import_completed_runs(root, output, import_dirs, config_paths, labels, split):
+def _import_provenance(config, manifest, obj):
+    """Compare scientific run identity while ignoring rerun and host output details."""
+    volatile = ("elapsed", "duration", "started", "ended")
+    semantic_config = {key: value for key, value in config.items()
+                       if key not in ("data_root", "device", "output_dir", "debug_output", "output")}
+    return (semantic_config, _condition_root(config.get("data_root")),
+            # ResultsManager hashes the entire resolved config, including the
+            # runtime/output fields removed above. The saved config itself is
+            # the stronger identity here, so its raw hash is redundant.
+            {key: value for key, value in manifest.items()
+             if key not in ("run_id", "config_hash", "objects", *volatile)},
+            {key: value for key, value in manifest["objects"][obj].items()
+             if key not in ("artifacts", *volatile)})
+
+
+def import_completed_runs(root, output, import_dirs, config_paths, labels, split, objects=None):
     """Register completed runs made outside `run` without rerunning them.
 
     Each run directory must match exactly one declared config (declared keys
     equal the saved resolved config); when several match, the one refining all
     others wins. All runs must share one dataset root below DATA/, so a
     corruption condition is one import scope. Identical duplicate reruns are
-    dropped and recorded; conflicting duplicates are an error. Only compact
-    evidence is copied, and an existing output must be owned by the same import.
+    dropped and recorded; conflicting duplicates are an error. The object scope
+    comes from --objects or matching declared config scopes, never observed
+    artifacts. Only compact evidence is copied, and an existing output must be
+    owned by the same import.
     """
     root, output = root.resolve(), output.resolve()
     import_dirs = [Path(p).resolve() for p in import_dirs]
@@ -503,7 +520,34 @@ def import_completed_runs(root, output, import_dirs, config_paths, labels, split
     sources = dict(import_dirs=[str(d.relative_to(root)) for d in import_dirs],
                    configs=[str(p.relative_to(root)) for p in config_paths], labels=labels, split=split)
     owner = output / "import_sources.json"
-    if output.exists() and (not owner.is_file() or json.loads(owner.read_text()) != sources):
+    previous_sources = json.loads(owner.read_text()) if owner.is_file() else None
+    # Older owned imports recorded their scope only in status.json. Honor that
+    # scope on a rerun, but never infer a new import's scope from observed runs.
+    owned_status = (json.loads((output / "status.json").read_text())
+                    if previous_sources is not None and (output / "status.json").is_file() else None)
+    legacy_owned = previous_sources == sources and owned_status is not None
+    if objects is None and legacy_owned:
+        objects = owned_status["plan"]["objects"]
+    if objects is None and previous_sources is not None and owned_status is not None:
+        if {key: value for key, value in previous_sources.items() if key != "objects"} == sources:
+            objects = previous_sources.get("objects")
+    declared_scopes = [config.get("dataset_config", {}).get("objects") for config in declared.values()]
+    if objects is None:
+        if any(scope is None for scope in declared_scopes) or any(scope != declared_scopes[0] for scope in declared_scopes):
+            raise ValueError("import scope is ambiguous: supply --objects or matching dataset_config.objects")
+        objects = declared_scopes[0]
+    objects = list(objects)
+    if (not objects or len(set(objects)) != len(objects)
+            or any(not isinstance(obj, str) or not obj or Path(obj).name != obj or obj in (".", "..")
+                   for obj in objects)):
+        raise ValueError("import objects must be unique simple names")
+    if any(scope is not None and scope != objects for scope in declared_scopes):
+        raise ValueError("--objects disagrees with declared dataset_config.objects")
+    if legacy_owned and objects != owned_status["plan"]["objects"]:
+        raise ValueError("import output is not owned by these objects")
+    if not legacy_owned:
+        sources["objects"] = objects
+    if output.exists() and previous_sources != sources:
         raise ValueError("import output is not owned by these sources")
     kept, dropped, data_roots, payloads = {}, [], set(), {}
     for source in import_dirs:
@@ -522,10 +566,15 @@ def import_completed_runs(root, output, import_dirs, config_paths, labels, split
             metrics = json.loads((run_dir / "metrics.json").read_text())
             new, duplicate = [], []
             for obj in manifest["objects"]:
+                if obj not in objects:
+                    raise ValueError(f"{run_dir} contains undeclared object {obj}")
+                if obj not in metrics:
+                    raise ValueError(f"{run_dir} lacks metrics for {obj}")
                 previous = kept.get((label, obj))
+                identity = (metrics[obj], _import_provenance(config, manifest, obj))
                 if previous is None:
                     new.append(obj)
-                elif previous[1] == metrics[obj]:
+                elif previous[1] == identity:
                     duplicate.append(obj)
                 else:
                     raise ValueError(f"conflicting duplicate runs for {label}/{obj}: {previous[0]} vs {run_dir}")
@@ -536,7 +585,7 @@ def import_completed_runs(root, output, import_dirs, config_paths, labels, split
                 continue
             target_dir = output / label / f"import_{import_dirs.index(source)}" / run_dir.relative_to(source)
             for obj in new:
-                kept[(label, obj)] = (run_dir, metrics[obj])
+                kept[(label, obj)] = (run_dir, (metrics[obj], _import_provenance(config, manifest, obj)))
             for name in ("metrics.json", "config.yaml", "run_manifest.json"):
                 payloads[target_dir / name] = (run_dir / name).read_bytes().decode("utf-8")
     if not kept:
@@ -546,7 +595,6 @@ def import_completed_runs(root, output, import_dirs, config_paths, labels, split
                   for source in import_dirs for path in source.rglob("config.yaml"))
     if len(data_roots) != 1:
         raise ValueError(f"imported runs span several data roots: {sorted(map(str, data_roots))}")
-    objects = sorted({obj for _, obj in kept})
     completed = [dict(label=label, object=obj, source_run=str(kept[label, obj][0].relative_to(root)),
                       ended=kept[label, obj][0].joinpath("metrics.json").stat().st_mtime)
                  for label in labels for obj in objects if (label, obj) in kept]
@@ -745,7 +793,7 @@ def main():
     if args.import_runs:
         if args.watch:
             raise ValueError("--import-runs requires completed runs, not --watch")
-        import_completed_runs(root, output, args.import_runs, args.configs, args.labels, args.split)
+        import_completed_runs(root, output, args.import_runs, args.configs, args.labels, args.split, args.objects)
     elif args.input_dirs:
         if args.watch:
             raise ValueError("--input-dirs requires completed shards, not --watch")

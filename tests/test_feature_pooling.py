@@ -13,6 +13,7 @@ from __future__ import annotations
 import numpy as np
 import pytest
 import torch
+from PIL import Image
 from torch.nn import functional as F
 
 from fmad.methods.reference_matching import ReferenceMatching
@@ -139,26 +140,24 @@ def test_lowres_pool_action_fires_with_noisy_query(tmp_path):
     assert len(method.pooled_banks) > 0, "Pooled banks should be created with lowres_pool action"
     assert 8 in method.pooled_banks, "Resolution 8 should be in pooled_banks"
 
-    # Create a noisy query with very different seed to ensure different noise characteristics
-    # Using a seed that creates high-frequency variations
-    noisy_query = _write_image(tmp_path / "noisy.png", 99)
+    # Add enough high-frequency noise to ensure the threshold is crossed.
+    clean_image = np.asarray(Image.open(paths[0])).astype(np.float32)
+    noise = np.random.default_rng(91).normal(0, 80, clean_image.shape)
+    noisy_query = tmp_path / "noisy.png"
+    Image.fromarray(np.clip(clean_image + noise, 0, 255).astype(np.uint8)).save(noisy_query)
 
     # First predict to establish reference sigma
     clean_result, _ = method.predict(paths[0])
     assert not method.noise_guard_log[-1]["fired"], "Clean image should not fire"
 
     # Now predict with noisy query
-    result, score = method.predict(noisy_query)
+    result, score = method.predict(str(noisy_query))
 
     # Check last noise_guard_log entry to see if it fired
     last_log_entry = method.noise_guard_log[-1]
-    if last_log_entry["fired"]:
-        # Check that last_resolutions only includes the lowres subset when guard fires
-        assert method.last_resolutions == (8,), f"Expected (8,) when fired, got {method.last_resolutions}"
-    else:
-        # If guard didn't fire (which can happen with generated images),
-        # verify that pooled banks exist and can be used
-        assert len(method.pooled_banks) > 0, "Pooled banks should still exist"
+    assert last_log_entry["fired"]
+    assert method.last_resolutions == (8,)
+    assert np.isfinite(result).all() and np.isfinite(score)
 
 
 def test_lowres_pool_vs_direct_pooled_config(tmp_path):
@@ -396,89 +395,38 @@ def test_metadata_includes_feature_pooling(tmp_path):
 
 
 def test_lowres_pool_fired_equals_direct_pooled_config_fail_then_pass(tmp_path):
-    """Fail-then-pass test: lowres_pool when fired equals direct feature_pooling=avg3 on subset.
-
-    This test demonstrates:
-    1. Pooled features differ from unpooled (using crafted distinct values)
-    2. When lowres_pool guard fires, predictions match direct config to tight tolerance
-    3. The test fails without proper pooling semantics (before fix)
-    4. The test passes with correct pooling order and fresh RNGs (after fix)
-    """
-    # Create two sets of images with very different characteristics
-    # This ensures the guard can distinguish them
-    clean_images = [_write_image(tmp_path / f"clean_{i}.png", 42) for i in range(3)]
-
-    # Create a noisy test query with very different seed
-    noisy_query = _write_image(tmp_path / "noisy_query.png", 200)
-
+    """A fired guard uses the same banks and scores as direct pooled fitting."""
+    paths = [_write_image(tmp_path / f"support_{i}.png", i * 17) for i in range(3)]
     context = MethodContext("can", 0, 8, False, False)
+    common = {"variant": "R1", "feature_layers": [11, 23],
+              "bank_tokens_per_source": 4, "query_chunk_size": 4,
+              "bank_bags": 2}
+    guarded = ReferenceMatching(TinyPairBackbone(), {
+        **common, "resolutions": [8, 12, 16],
+        "noise_guard": True, "noise_guard_resolutions": [8, 12],
+        "noise_guard_k": 1.1, "noise_guard_action": "lowres_pool"})
+    direct = ReferenceMatching(TinyPairBackbone(), {
+        **common, "resolutions": [8, 12], "feature_pooling": "avg3"})
+    guarded.fit(paths, context)
+    direct.fit(paths, context)
 
-    # Config 1: lowres_pool action (guard-based conditional pooling)
-    config_lowres_pool = {
-        "variant": "R1", "feature_layers": [11, 23],
-        "resolutions": [8, 12],
-        "noise_guard_resolutions": [8],  # Will pool only on resolution 8 when fired
-        "bank_tokens_per_source": 4, "query_chunk_size": 4,
-        "noise_guard": True,
-        "noise_guard_k": 3.0,  # Moderate threshold to trigger on noisy input
-        "noise_guard_action": "lowres_pool",
-    }
+    assert set(guarded.pooled_banks) == {8, 12}
+    for resolution in (8, 12):
+        for guard_bank, direct_bank in zip(guarded.bag_pooled_banks[resolution],
+                                           direct.bag_banks[resolution], strict=True):
+            assert guard_bank["owners"] == direct_bank["owners"]
+            for guard_layer, direct_layer in zip(guard_bank["layers"],
+                                                 direct_bank["layers"], strict=True):
+                torch.testing.assert_close(guard_layer, direct_layer, rtol=0, atol=0)
 
-    # Config 2: direct pooled subset (no guard, always pool, always use resolution 8)
-    config_direct_pool = {
-        "variant": "R1", "feature_layers": [11, 23],
-        "resolutions": [8],  # Direct subset
-        "bank_tokens_per_source": 4, "query_chunk_size": 4,
-        "feature_pooling": "avg3",  # Direct pooling
-    }
+    clean_image = np.asarray(Image.open(paths[0])).astype(np.float32)
+    noise = np.random.default_rng(91).normal(0, 80, clean_image.shape)
+    query = tmp_path / "noisy_query.png"
+    Image.fromarray(np.clip(clean_image + noise, 0, 255).astype(np.uint8)).save(query)
+    result_guard, score_guard = guarded.predict(str(query))
+    result_direct, score_direct = direct.predict(str(query))
 
-    # Fit both methods on the same clean images
-    method_guard = ReferenceMatching(TinyPairBackbone(), config_lowres_pool)
-    method_direct = ReferenceMatching(TinyPairBackbone(), config_direct_pool)
-
-    method_guard.fit(clean_images, context)
-    method_direct.fit(clean_images, context)
-
-    # Verify pooled banks were created with lowres_pool action
-    assert len(method_guard.pooled_banks) > 0, "Pooled banks should exist with lowres_pool"
-    assert 8 in method_guard.pooled_banks, "Resolution 8 pooled bank should exist"
-
-    # First: Show that pooled and unpooled differ on clean images
-    result_clean_guard, score_clean_guard = method_guard.predict(clean_images[0])
-    result_clean_direct, score_clean_direct = method_direct.predict(clean_images[0])
-    # When guard doesn't fire on clean, guard uses all resolutions while direct uses only 8
-    # So they won't match, but both should be valid
-    assert np.isfinite(result_clean_guard).all()
-    assert np.isfinite(result_clean_direct).all()
-
-    # Now predict with a noisy query
-    # The guard may or may not fire depending on the noise level
-    result_guard, score_guard = method_guard.predict(noisy_query)
-
-    # Check if guard fired
-    guard_fired = method_guard.noise_guard_log[-1]["fired"]
-    if guard_fired:
-        # When guard fires, it uses pooled banks on resolution 8 only
-        # This should closely match the direct config which always uses resolution 8 with pooling
-        # Note: They won't be identical because of seed differences and bank selection,
-        # but they should be numerically close
-        result_direct_noisy, score_direct_noisy = method_direct.predict(noisy_query)
-
-        # Both should be finite
-        assert np.isfinite(result_guard).all(), "Guard result should be finite when fired"
-        assert np.isfinite(result_direct_noisy).all(), "Direct result should be finite"
-
-        # Verify resolution was restricted to subset when fired
-        assert method_guard.last_resolutions == (8,), \
-            f"When lowres_pool fired, should use only [8], got {method_guard.last_resolutions}"
-
-        # The predictions should be similar (allowing for seed/selection differences)
-        # within reasonable tolerance for same feature extraction and pooling semantics
-        correlation = np.corrcoef(result_guard.flatten(), result_direct_noisy.flatten())[0, 1]
-        assert correlation > 0.5, f"Correlation between fired lowres_pool and direct should be high, got {correlation}"
-    else:
-        # Guard didn't fire - that's fine, just verify consistency
-        assert method_guard.last_resolutions == (8, 12), \
-            "When lowres_pool didn't fire, should use all resolutions"
-        # Result should still be valid
-        assert np.isfinite(result_guard).all()
+    assert guarded.noise_guard_log[-1]["fired"]
+    assert guarded.last_resolutions == (8, 12)
+    np.testing.assert_allclose(result_guard, result_direct, rtol=1e-6, atol=1e-7)
+    np.testing.assert_allclose(score_guard, score_direct, rtol=1e-6, atol=1e-7)

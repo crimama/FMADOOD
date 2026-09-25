@@ -933,6 +933,10 @@ class ReferenceMatching(BaseMethod):
             self.bag_pooled_tails = {}
             self.pooled_local = {}
             self.bag_pooled_local = {}
+            # Match a direct feature_pooling="avg3" fit: each bag's random
+            # selection advances across all resolutions in order.
+            pooled_rngs = [np.random.default_rng(base_seed + 1000003 * bag)
+                           for bag in range(self.bank_bags)]
 
             for resolution in self.noise_guard_resolutions:
                 if resolution not in self.resolutions:
@@ -945,15 +949,15 @@ class ReferenceMatching(BaseMethod):
                     layers_pooled, grid = self._extract(image, resolution, pool=True)
                     extracted_pooled.append((layers_pooled, grid))
 
-                # Create pooled banks using FRESH RNGs (same seed rule as normal banks)
+                # Create pooled banks using the same per-bag RNG stream as a
+                # directly configured pooled model.
                 bag_pooled_banks = []
                 bag_pooled_scales = []
                 bag_pooled_tails = []
                 bag_pooled_local = []
 
                 for bag in range(self.bank_bags):
-                    # Use fresh RNG with offset: base_seed + 1000003 * bag
-                    rng_pooled = np.random.default_rng(base_seed + 1000003 * bag)
+                    rng_pooled = pooled_rngs[bag]
                     records_pooled = []
                     for source, (layers_pooled, grid) in enumerate(extracted_pooled):
                         if self.bank_selection == "coreset":
@@ -1004,7 +1008,13 @@ class ReferenceMatching(BaseMethod):
         fired = False
         if self.noise_guard:
             sigma_q = immerkaer_sigma(image)
-            ratio = sigma_q / self.noise_reference_sigma if self.noise_reference_sigma > 0 else 1.0
+            # Use a small positive floor only when the support median is
+            # exactly noiseless, keeping ratios finite for JSON diagnostics.
+            # Two noiseless estimates are equal and leave the guard off.
+            if self.noise_reference_sigma == 0.0:
+                ratio = sigma_q / 1e-12 if sigma_q > 0.0 else 1.0
+            else:
+                ratio = sigma_q / self.noise_reference_sigma
             fired = ratio > self.noise_guard_k
             self.noise_guard_log.append({
                 "image": test_image_path,

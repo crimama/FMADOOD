@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import numpy as np
 import pytest
 import torch
@@ -181,6 +182,44 @@ class TestNoiseGuardBehavior:
 
         np.testing.assert_array_equal(result_guard, result_no_guard)
         assert score_guard == score_no_guard
+
+    def test_zero_reference_noise_handles_clean_and_noisy_queries(self, tmp_path):
+        """Zero over zero stays quiet; positive over zero fires the guard."""
+        support = []
+        for index in range(3):
+            path = tmp_path / f"constant_{index}.png"
+            Image.fromarray(np.full((12, 16, 3), 128, dtype=np.uint8)).save(path)
+            support.append(str(path))
+        model = ReferenceMatching(TinyLateBackbone(), {
+            "variant": "R0", "resolutions": [8, 12],
+            "bank_tokens_per_source": 4, "query_chunk_size": 4,
+            "noise_guard": True, "noise_guard_resolutions": [8],
+            "noise_guard_action": "lowres", "noise_guard_k": 2.0})
+        model.fit(support, MethodContext("can", 0, 8, False, False))
+        assert model.noise_reference_sigma == 0.0
+
+        clean_map, clean_score = model.predict(support[0])
+        assert model.noise_guard_log[-1]["sigma"] == 0.0
+        assert model.noise_guard_log[-1]["ratio"] == 1.0
+        assert model.noise_guard_log[-1]["fired"] is False
+        assert model.last_resolutions == (8, 12)
+        assert np.isfinite(clean_map).all() and np.isfinite(clean_score)
+
+        query = tmp_path / "positive_noise.png"
+        Image.fromarray(np.random.default_rng(42).integers(
+            0, 256, (12, 16, 3), dtype=np.uint8)).save(query)
+        noisy_map, noisy_score = model.predict(str(query))
+        assert model.noise_guard_log[-1]["sigma"] > 0.0
+        assert model.noise_guard_log[-1]["ratio"] == pytest.approx(
+            model.noise_guard_log[-1]["sigma"] / 1e-12)
+        assert np.isfinite(model.noise_guard_log[-1]["ratio"])
+        assert model.noise_guard_log[-1]["fired"] is True
+        assert model.last_resolutions == (8,)
+        assert np.isfinite(noisy_map).all() and np.isfinite(noisy_score)
+        summary = model.object_metadata()["noise_guard_summary"]
+        assert all(np.isfinite(summary[key]) for key in ("ratio_min", "ratio_median", "ratio_max"))
+        json.dumps(model.noise_guard_log, allow_nan=False)
+        json.dumps(model.object_metadata(), allow_nan=False)
 
     def test_noisy_query_fires_noise_guard(self, tmp_path):
         """A sufficiently noisy query should fire the noise guard."""
