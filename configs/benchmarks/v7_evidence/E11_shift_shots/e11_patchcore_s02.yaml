@@ -1,0 +1,37 @@
+method: patchcore
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 0
+device: cuda:1
+dataset_config:
+  objects:
+  - can
+  - fabric
+  - fruit_jelly
+  - rice
+  - sheet_metal
+  - vial
+  - wallplugs
+  - walnuts
+  preprocess: no_mask_no_rotation
+backbone_config:
+  smaller_edge_size: 672
+  feature_layers:
+  - 5
+  - 11
+  - 17
+  - 23
+protocol:
+  shots: 2
+  fixed_reference_manifest: configs/methods/VOID_support_2.json
+  warmup_iters: 2
+method_config:
+  coreset_sampling_ratio: 1.0
+  knn_metric: L2_normalized
+  k_neighbors: 1
+  faiss_on_cpu: false
+evaluation:
+  eval_segm: true
+  pro_integration_limit: 0.05
+  binary_postprocess: none
+  condition_strata: true
