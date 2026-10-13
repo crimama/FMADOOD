@@ -1,0 +1,52 @@
+{
+  "class": "walnuts",
+  "seed": 0,
+  "support": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/129_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/266_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/214_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/017_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/315_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/260_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/346_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/390_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/354_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/031_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/418_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/113_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/216_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/007_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/074_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/train/good/277_regular.png"
+  ],
+  "manifest": "configs/methods/VOID_support_16.json",
+  "noise_reference_sigma": 0.2901879818396974,
+  "lso": {
+    "resolution": 672,
+    "bag": 0
+  },
+  "queries": {
+    "defect": {
+      "path": "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/test_public/bad/006_shift_2.png",
+      "noise_ratio": 0.9057172194108936,
+      "noise_fired": false,
+      "resolutions": [
+        448,
+        672,
+        896,
+        1120
+      ]
+    },
+    "good": {
+      "path": "/home/hun/Volume/DATA/mvtec_ad_2/walnuts/test_public/good/000_shift_2.png",
+      "noise_ratio": 1.1073305685667345,
+      "noise_fired": false,
+      "resolutions": [
+        448,
+        672,
+        896,
+        1120
+      ]
+    }
+  }
+}

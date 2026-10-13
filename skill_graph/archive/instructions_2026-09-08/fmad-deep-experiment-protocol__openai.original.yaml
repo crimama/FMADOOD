@@ -1,0 +1,4 @@
+interface:
+  display_name: "FMAD Deep Experiment Protocol"
+  short_description: "Repeating research plus SuperAD gates"
+  default_prompt: "Use $fmad-deep-experiment-protocol to repeatedly discover novelty methods, gate them through SuperAD-aligned FMAD experiments, and feed each result into the next cycle."

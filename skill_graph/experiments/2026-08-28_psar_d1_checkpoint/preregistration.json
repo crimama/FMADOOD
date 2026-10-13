@@ -1,0 +1,37 @@
+{
+  "all_eight_confirmation_seeds": [
+    20260828,
+    20260829,
+    20260830
+  ],
+  "arms": [
+    "B0_SuperAD16",
+    "B1_RN_FMLK",
+    "I0_ABSOLUTE_HEAD",
+    "N0_PLUS_UNPAIRED_BASE",
+    "N0_MINUS_UNPAIRED_BASE",
+    "M0_PSAR"
+  ],
+  "claim_tier": "three_object_detector_diagnostic",
+  "lora_authorized": false,
+  "object_roles": {
+    "fabric": "strong",
+    "vial": "weak_stress",
+    "walnuts": "control"
+  },
+  "objects": [
+    "fabric",
+    "vial",
+    "walnuts"
+  ],
+  "protocol_id": "psar-d1-checkpoint-20260828-v1",
+  "query_metric": "seg_AUROC_0.05",
+  "query_split": "test_public",
+  "repeat": {
+    "object": "fabric",
+    "run_label": "fabric_repeat"
+  },
+  "revision_budget": 0,
+  "status": "PREREGISTERED_RESULT_FREE_LAUNCH_BLOCKED_UNTIL_SEAL",
+  "support_manifest_sha256": "7e93f15e2efef565354ebe03a9cc5e834464fc4199bd2273067d62eda2ab74b3"
+}

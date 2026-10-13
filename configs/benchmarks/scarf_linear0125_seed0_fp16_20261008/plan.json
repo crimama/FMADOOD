@@ -1,0 +1,438 @@
+{
+  "suite": "scarf_linear0125_seed0_fp16_20261008",
+  "seed": 0,
+  "shots": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "lambda": 0.125,
+  "datasets": {
+    "mvtec": {
+      "data_root": "/home/hunim/Volume/DATA/MVTecAD",
+      "objects": [
+        "bottle",
+        "cable",
+        "capsule",
+        "carpet",
+        "grid",
+        "hazelnut",
+        "leather",
+        "metal_nut",
+        "pill",
+        "screw",
+        "tile",
+        "toothbrush",
+        "transistor",
+        "wood",
+        "zipper"
+      ],
+      "configs": [
+        {
+          "label": "mvtec_gated_s01_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_gated_s01_seed0.yaml",
+          "config_sha256": "8617a34bfe5e5748ea76e0926716ba5128ce4e8631cbd79742b2f55cd36b32b4",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json",
+          "support_manifest_sha256": "71fd05e7e7d7f646d6ba0057540b9893d65c15e50b304e2c515836f6d14bcb88",
+          "shot": 1,
+          "arm": "gated"
+        },
+        {
+          "label": "mvtec_linear0125_s01_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s01_seed0.yaml",
+          "config_sha256": "37a4018ee1cf36baec2e304f6845276aa4d15d2153e589b91b6806c842d6250e",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json",
+          "support_manifest_sha256": "71fd05e7e7d7f646d6ba0057540b9893d65c15e50b304e2c515836f6d14bcb88",
+          "shot": 1,
+          "arm": "linear0125"
+        },
+        {
+          "label": "mvtec_gated_s02_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_gated_s02_seed0.yaml",
+          "config_sha256": "06ecc70ae67bc7dbce12b1a2cf08ecc33e017856670940a6050b5ad9122d303a",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "shot": 2,
+          "arm": "gated"
+        },
+        {
+          "label": "mvtec_linear0125_s02_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s02_seed0.yaml",
+          "config_sha256": "38ae6d9a0534fdf1ccebf915a865dc580c9c19f87780e0d7d1c9916b23c9a052",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "shot": 2,
+          "arm": "linear0125"
+        },
+        {
+          "label": "mvtec_gated_s04_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_gated_s04_seed0.yaml",
+          "config_sha256": "99305177a04e095658af8b3ae8fca0bdbe8c35073cf48c931017aa12105e6513",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json",
+          "support_manifest_sha256": "e5c0f75d3f0d65c3c663db9986b1ccc48369508802c3bda6fad6f76c5fc8ea2c",
+          "shot": 4,
+          "arm": "gated"
+        },
+        {
+          "label": "mvtec_linear0125_s04_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s04_seed0.yaml",
+          "config_sha256": "bfe5553a92f7cde0528c1fab908622784ecb0b7814ebcbf2a87d07ccd6b957a7",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json",
+          "support_manifest_sha256": "e5c0f75d3f0d65c3c663db9986b1ccc48369508802c3bda6fad6f76c5fc8ea2c",
+          "shot": 4,
+          "arm": "linear0125"
+        },
+        {
+          "label": "mvtec_gated_s08_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_gated_s08_seed0.yaml",
+          "config_sha256": "3e3535916a96354effb446c7bbc68d2bf53dd53be7ade985e6ed4a8b9296543d",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json",
+          "support_manifest_sha256": "ef53e5a1ae92446a75eaf480d615fb6cc78a401ab51efbe4414f3f4f055e1d55",
+          "shot": 8,
+          "arm": "gated"
+        },
+        {
+          "label": "mvtec_linear0125_s08_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s08_seed0.yaml",
+          "config_sha256": "11a8d6f6103c49e18244340facc8288a8e9d9d3c88a877e52127e9f226742ecb",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json",
+          "support_manifest_sha256": "ef53e5a1ae92446a75eaf480d615fb6cc78a401ab51efbe4414f3f4f055e1d55",
+          "shot": 8,
+          "arm": "linear0125"
+        },
+        {
+          "label": "mvtec_gated_s16_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_gated_s16_seed0.yaml",
+          "config_sha256": "46ed6fe37b7eb75e2a3748356c872bacc976e1ce5fb35509f93c8aafd4a998ca",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "shot": 16,
+          "arm": "gated"
+        },
+        {
+          "label": "mvtec_linear0125_s16_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s16_seed0.yaml",
+          "config_sha256": "67d3b0f54ac69d0a66320d80e2a75a2ca58d6183d57408e0c1bef4929faa515d",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "shot": 16,
+          "arm": "linear0125"
+        }
+      ]
+    },
+    "visa": {
+      "data_root": "/home/hunim/Volume/DATA/VisA_pytorch/1cls",
+      "objects": [
+        "candle",
+        "capsules",
+        "cashew",
+        "chewinggum",
+        "fryum",
+        "macaroni1",
+        "macaroni2",
+        "pcb1",
+        "pcb2",
+        "pcb3",
+        "pcb4",
+        "pipe_fryum"
+      ],
+      "configs": [
+        {
+          "label": "visa_gated_s01_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_gated_s01_seed0.yaml",
+          "config_sha256": "4e27b1204ff9585f91234711760d3efdc66284dacd72386ae082150ac19a45c0",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json",
+          "support_manifest_sha256": "dfa6caf8f8548d46648e988f8d65950981347f28e15cb67ed4a406cd8d93b37b",
+          "shot": 1,
+          "arm": "gated"
+        },
+        {
+          "label": "visa_linear0125_s01_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s01_seed0.yaml",
+          "config_sha256": "8a1fd91d6a95e70c62dada675e26deeb16a77c9cdd520cc771281cdbb82530ec",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json",
+          "support_manifest_sha256": "dfa6caf8f8548d46648e988f8d65950981347f28e15cb67ed4a406cd8d93b37b",
+          "shot": 1,
+          "arm": "linear0125"
+        },
+        {
+          "label": "visa_gated_s02_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_gated_s02_seed0.yaml",
+          "config_sha256": "00fb97add55a2d1a2a8ccde6bb04faee24816bc90009b85a669756d7a7dc4758",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "shot": 2,
+          "arm": "gated"
+        },
+        {
+          "label": "visa_linear0125_s02_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s02_seed0.yaml",
+          "config_sha256": "ab0edb585b6f5868597c3c67638dfa923d67a6889691a04abc41739688356d48",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "shot": 2,
+          "arm": "linear0125"
+        },
+        {
+          "label": "visa_gated_s04_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_gated_s04_seed0.yaml",
+          "config_sha256": "1b20c4007f0b67602e2f817ee5e4e30472e9ceab46785bbf172f953d740a0ab6",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json",
+          "support_manifest_sha256": "0eafad68f864f1e0432668b2b015e0569bd0d576f284d51e38c8a2003d73d104",
+          "shot": 4,
+          "arm": "gated"
+        },
+        {
+          "label": "visa_linear0125_s04_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s04_seed0.yaml",
+          "config_sha256": "2169f8615dd139362ba2958b1271b011850e0faef228d72965e86398a652fd47",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json",
+          "support_manifest_sha256": "0eafad68f864f1e0432668b2b015e0569bd0d576f284d51e38c8a2003d73d104",
+          "shot": 4,
+          "arm": "linear0125"
+        },
+        {
+          "label": "visa_gated_s08_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_gated_s08_seed0.yaml",
+          "config_sha256": "c663294b2e33db9e13e90bdb286b6bb8b6fb4fbb50fe3294d321ced7bd16b3d1",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json",
+          "support_manifest_sha256": "334f6160ebbe24790462aa87f5e3ceb4c1de70dae6c260251a2a571c47b63fa9",
+          "shot": 8,
+          "arm": "gated"
+        },
+        {
+          "label": "visa_linear0125_s08_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s08_seed0.yaml",
+          "config_sha256": "27462f407adb78e874a15ab80faa302e2ce3211627f75f26679cf88cd54b17f5",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json",
+          "support_manifest_sha256": "334f6160ebbe24790462aa87f5e3ceb4c1de70dae6c260251a2a571c47b63fa9",
+          "shot": 8,
+          "arm": "linear0125"
+        },
+        {
+          "label": "visa_gated_s16_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_gated_s16_seed0.yaml",
+          "config_sha256": "8518ff9266dbcb1cbdb7591bbed62378afc1b884a9e3df0dc659e0dc35bf688a",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "shot": 16,
+          "arm": "gated"
+        },
+        {
+          "label": "visa_linear0125_s16_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s16_seed0.yaml",
+          "config_sha256": "8f4df3d4a8d1bfcff07751dfddc6d3d89cd7d4b10e4cdf895a77121a67f0dfc8",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "shot": 16,
+          "arm": "linear0125"
+        }
+      ]
+    },
+    "ad2": {
+      "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+      "objects": [
+        "can",
+        "fabric",
+        "fruit_jelly",
+        "rice",
+        "sheet_metal",
+        "vial",
+        "wallplugs",
+        "walnuts"
+      ],
+      "configs": [
+        {
+          "label": "ad2_gated_s01_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_gated_s01_seed0.yaml",
+          "config_sha256": "938a0f0450d2ac75ffbc83de60f405a88507a99c9a10d57a4892ede495f580fd",
+          "support_manifest": "configs/methods/VOID_support_1.json",
+          "support_manifest_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+          "shot": 1,
+          "arm": "gated"
+        },
+        {
+          "label": "ad2_linear0125_s01_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s01_seed0.yaml",
+          "config_sha256": "dbd44b260b37d59a190d30adbc5c1efcfe51acb9f0faf54953fc6baa9a900228",
+          "support_manifest": "configs/methods/VOID_support_1.json",
+          "support_manifest_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+          "shot": 1,
+          "arm": "linear0125"
+        },
+        {
+          "label": "ad2_gated_s04_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_gated_s04_seed0.yaml",
+          "config_sha256": "783aac09dbb42b6967ee8b982abedb56ff0ed45247b56c77e55cdb1fbd15042d",
+          "support_manifest": "configs/methods/VOID_support_4.json",
+          "support_manifest_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+          "shot": 4,
+          "arm": "gated"
+        },
+        {
+          "label": "ad2_linear0125_s04_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s04_seed0.yaml",
+          "config_sha256": "6883653758e6e96ad2ed838cd8ec6b7cac57a9cfdc5cece9ef81bcb1211a2bd3",
+          "support_manifest": "configs/methods/VOID_support_4.json",
+          "support_manifest_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+          "shot": 4,
+          "arm": "linear0125"
+        },
+        {
+          "label": "ad2_gated_s08_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_gated_s08_seed0.yaml",
+          "config_sha256": "566b751fbb9069ec7753db18e57147b81cbe92a1f7a9d8366faacccbe97850ee",
+          "support_manifest": "configs/methods/VOID_support_8.json",
+          "support_manifest_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+          "shot": 8,
+          "arm": "gated"
+        },
+        {
+          "label": "ad2_linear0125_s08_seed0",
+          "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s08_seed0.yaml",
+          "config_sha256": "eb6b81be7946a0a0b61b4a1322a9a7c3bbae0d58f70cce0a1e0cfa94c59cd1de",
+          "support_manifest": "configs/methods/VOID_support_8.json",
+          "support_manifest_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+          "shot": 8,
+          "arm": "linear0125"
+        }
+      ]
+    }
+  },
+  "reused": [
+    {
+      "label": "ad2_gated_s02_seed0",
+      "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_gated_s02_seed0.yaml",
+      "config_sha256": "beb0e55bf21c115ef6ed7b967fc4f78fcda6061f36f73d7713e1e8b00d29ce94",
+      "support_manifest": "configs/methods/VOID_support_2.json",
+      "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+      "shot": 2,
+      "arm": "gated",
+      "original_artifact_dir": "results/remote_runs/dsba3/scarf_fusion_sensitivity_fp16_20261008/collected/gated_s02"
+    },
+    {
+      "label": "ad2_linear0125_s02_seed0",
+      "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s02_seed0.yaml",
+      "config_sha256": "95308ae7d27edff984237f918ed5a456d6f2d556d5b8ed763d2b7d8c465edda0",
+      "support_manifest": "configs/methods/VOID_support_2.json",
+      "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+      "shot": 2,
+      "arm": "linear0125",
+      "original_artifact_dir": "results/remote_runs/dsba3/scarf_fusion_sensitivity_fp16_20261008/collected/linear0125_s02"
+    },
+    {
+      "label": "ad2_gated_s16_seed0",
+      "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_gated_s16_seed0.yaml",
+      "config_sha256": "2dd6f21f1a286ac25e751a7d7916aa651be381561082976248cee44070e5c4cc",
+      "support_manifest": "configs/methods/VOID_support_16.json",
+      "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+      "shot": 16,
+      "arm": "gated",
+      "original_artifact_dir": "results/remote_runs/dsba3/scarf_fusion_sensitivity_fp16_20261008/collected/gated_s16"
+    },
+    {
+      "label": "ad2_linear0125_s16_seed0",
+      "config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s16_seed0.yaml",
+      "config_sha256": "517da1414e07f29906217d5c108db18e1e526a8dec16d93f5d8f7f7644d09795",
+      "support_manifest": "configs/methods/VOID_support_16.json",
+      "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+      "shot": 16,
+      "arm": "linear0125",
+      "original_artifact_dir": "results/remote_runs/dsba3/scarf_fusion_sensitivity_fp16_20261008/collected/linear0125_s16"
+    }
+  ],
+  "shards": [
+    {
+      "gpu_index": 0,
+      "gpu_uuid": "GPU-a164a77e-c3b3-5c6d-d70c-63ee65b2601f",
+      "objects": {
+        "mvtec": [
+          "capsule",
+          "carpet",
+          "transistor",
+          "bottle",
+          "toothbrush"
+        ],
+        "visa": [
+          "pcb3",
+          "candle",
+          "pcb4"
+        ],
+        "ad2": [
+          "wallplugs"
+        ]
+      },
+      "estimated_seconds": 33935.083695019996
+    },
+    {
+      "gpu_index": 1,
+      "gpu_uuid": "GPU-bbb3a0e2-cc7d-ba3c-f956-89214c06a1ae",
+      "objects": {
+        "mvtec": [
+          "pill",
+          "leather",
+          "hazelnut",
+          "wood"
+        ],
+        "visa": [
+          "macaroni1",
+          "pcb2",
+          "pipe_fryum"
+        ],
+        "ad2": [
+          "walnuts",
+          "vial"
+        ]
+      },
+      "estimated_seconds": 33846.1595890522
+    },
+    {
+      "gpu_index": 2,
+      "gpu_uuid": "GPU-eb6182a8-eb72-e8b2-f279-c587d6fa9639",
+      "objects": {
+        "mvtec": [
+          "screw",
+          "tile",
+          "grid"
+        ],
+        "visa": [
+          "macaroni2",
+          "pcb1",
+          "cashew"
+        ],
+        "ad2": [
+          "sheet_metal",
+          "rice",
+          "fruit_jelly"
+        ]
+      },
+      "estimated_seconds": 33553.140105894636
+    },
+    {
+      "gpu_index": 3,
+      "gpu_uuid": "GPU-7534790f-7c8c-3f2b-5c33-c1b15998ef62",
+      "objects": {
+        "mvtec": [
+          "cable",
+          "zipper",
+          "metal_nut"
+        ],
+        "visa": [
+          "capsules",
+          "fryum",
+          "chewinggum"
+        ],
+        "ad2": [
+          "can",
+          "fabric"
+        ]
+      },
+      "estimated_seconds": 32845.45106586388
+    }
+  ],
+  "new_class_runs": 318,
+  "reused_class_runs": 32,
+  "code_sha256": "d368c8f065da81a436d76adf3c00c3535d13ea677af19a7c2c18ff7273eadcf4"
+}

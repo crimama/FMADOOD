@@ -1,0 +1,8 @@
+{"event": "object_start", "object": "can", "time": 1786383113.6287267}
+{"event": "query_maps_staged", "object": "can", "relative_path": "can/test_public/good/009_shift_1.png", "time": 1786383158.0767171}
+{"event": "query_maps_staged", "object": "can", "relative_path": "can/test_public/good/003_shift_2.png", "time": 1786383166.9454966}
+{"event": "query_maps_staged", "object": "can", "relative_path": "can/test_public/bad/000_underexposed.png", "time": 1786383172.3532345}
+{"event": "query_maps_staged", "object": "can", "relative_path": "can/test_public/bad/001_underexposed.png", "time": 1786383179.8553884}
+{"event": "query_maps_staged", "object": "can", "relative_path": "can/test_public/bad/007_regular.png", "time": 1786383187.267388}
+{"event": "query_maps_staged", "object": "can", "relative_path": "can/test_public/bad/006_shift_1.png", "time": 1786383193.6759865}
+{"elapsed_sec": 80.29641771316528, "event": "object_done", "object": "can", "time": 1786383193.9251435}

@@ -1,0 +1,45 @@
+\section{서론}
+\label{sec:intro}
+
+\subsection{소수 정상 참조와 High-Score Ambiguity}
+\label{sec:intro:ambiguity}
+
+다품종 소량 생산 및 빈번한 라인 전환이 일어나는 제조 환경에서는 제품마다 충분한 결함 데이터를 수집하거나 모델을 재학습하기 어렵다.
+이 때문에 별도 학습 없이 다양한 시각 과제로 전이되는 동결(frozen) 사전학습 백본~\cite{dinov2}의 패치 특징을 소수 정상 이미지로 구성한 참조 뱅크(reference bank)와 매칭하고, 쿼리 패치와 최근접 정상 패치 사이의 거리로 결함을 국소화하는 방식이 널리 쓰인다~\cite{patchcore,anomalydino}.
+
+이 방식은 정상 쿼리 패치라면 참조 뱅크 안에 가까운 이웃이 있다고 가정한다.
+그러나 몇 장의 서포트로는 실제 공정의 조명 드리프트, 부품 자세 변동, 표면 난반사, 센서 노이즈를 모두 담을 수 없으며, 분포 변화 아래에서 성능과 점수 신뢰도가 유지되지 않는다는 점은 일반 시각 인식에서도 보고되어 왔다~\cite{hendrycks2019benchmarking,ovadia2019can}.
+서포트에 없는 정상 변동이 나타나면 결함이 없는 패치도 최근접 거리가 커지고, 이 값은 실제 결함이 만든 큰 거리와 구별되지 않는다.
+즉, \textbf{큰 거리값만으로는 그 원인이 실제 결함인지 서포트에 없는 정상 외관 변화인지 확정할 수 없다(High-Score Ambiguity)}(\cref{fig:intro-ambiguity}).
+
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_intro_ambiguity.png}
+\caption{\textbf{Conceptual illustration of High-Score Ambiguity in few-shot inspection.} Due to sparse normal support, unobserved normal variations and true defects overlap in the large nearest-neighbor distance regime, making raw distance scores inherently ambiguous for defect identification.}
+\label{fig:intro-ambiguity}
+\end{figure}
+
+
+\subsection{다층·다해상도 관측 확장과 결합의 과제}
+\label{sec:intro:expansion}
+
+추가 정상 이미지를 확보하기 어려운 few-shot 환경에서는 주어진 이미지로부터 추출할 수 있는 시각 단서를 최대한 다각화하는 \textbf{관측 확장(Observation Expansion)}이 효과적이다.
+이에 본 논문은 동결 백본의 표현 계층과 입력 해상도라는 두 축을 따라 관측을 확장한다.
+계층 축에서는 심층(Layer 11/23)의 의미 기준선과 얕은 층(Layer 5)의 국소 결함 민감도를 상호 보완하며~\cite{raghu2021vision,ranftl2021vision}, 해상도 축에서는 패치 크기($14 \times 14$)의 표본 밀도 특성을 활용해~\cite{fu2024featup} 저해상도의 형태 안정성과 고해상도의 미세 결함 해상력을 동시에 확보한다~\cite{lin2017fpn,shi2024scaling}.
+
+그러나 이렇게 확장된 다차원 관측 점수들을 단순 가산하는 것은 심각한 성능 왜곡을 유발한다.
+계층 특징을 단일 뱅크로 병합하면~\cite{patchcore} 계층 간 정상 변동이 뒤섞여 성능이 저하되는 반면(MVTec AD 2 16-shot에서 관측별 뱅크 대비 \AUPRO 2.09\,pp 하락), 관측별 뱅크를 분리하면 서로 다른 정상 거리 척도를 공통 단위로 정렬해야 하는 과제가 생긴다.
+또한 단위를 정렬하더라도 얕은 층의 정상 질감 반응이 누적되어 단순 가산 시($\lambda=1$) \AUPRO가 5.55\,pp 급락한다.
+이에 본 논문은 서포트 상위 분위수로 관측 간 거리 척도를 정규화하는 \textbf{Scale Calibration}~\cite{kim2021normalization,wang2022vim}과, 심층 기준선에 얕은 층을 작은 고정 가중치로 가산해 질감 노이즈를 억제하는 \textbf{Contribution Control}로 결합 문제를 분리하여 정식화한다.
+
+
+\subsection{ScopeAD 프레임워크와 주요 기여}
+\label{sec:intro:contrib}
+
+본 논문은 관측 확장과 서포트 기반 보정 결합을 통합한 \textbf{\method}\ (ScopeAD)를 제안한다. ScopeAD는 추가 학습이나 쿼리 적응 없이 동작하며, 핵심 기여는 다음과 같다:
+\begin{itemize}
+  \item \textbf{관측 확장}: 백본 재학습 없이 표현 계층(Layer 5/11/23)과 입력 해상도(448--1120px)의 두 축으로 동일 이미지의 관측을 확장하여, 한정된 서포트로부터 추출하는 시각 단서를 극대화한다.
+  \item \textbf{척도 보정과 기여 제어의 분리}: 관측 조건마다 독립 뱅크를 구축하고, 서포트 분위수($q=0.95$) 기반 척도 보정과 고정 가중($\lambda=0.125$) 얕은 층 가산을 별개의 단계로 설계한다.
+  \item \textbf{구성 이득과 결합 이득의 분리 검증}: 4개 해상도 결합이 최선의 단일 해상도 대비 \AUPRO를 2-shot에서 4.95\,pp, 16-shot에서 2.10\,pp 개선함을 입증하고, 관측별 뱅크와 기여 제어의 이득을 통제 실험으로 분리 검증한다. MVTec AD 2 16-shot에서 동일 백본·서포트의 SuperAD보다 3-seed \AUPRO가 4.17\,pp 높다.
+\end{itemize}

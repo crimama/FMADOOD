@@ -30,6 +30,7 @@ configs/remote/*.env
 .pytest_cache/
 .ruff_cache/
 .venv/
+.cache/
 
 # Generated meeting exports kept outside the code snapshot
 *.pdf

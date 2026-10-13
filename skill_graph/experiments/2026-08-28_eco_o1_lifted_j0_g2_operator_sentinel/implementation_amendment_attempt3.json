@@ -1,0 +1,58 @@
+{
+  "aggregator_sha256": "df8962c923749fd1a345b98e9a116f953038302ffa6cfbea6b7eddb514a61954",
+  "core_sha256": "883fb39227cf364cc8527c163fd91129f6e740a102716d2a4172d8b672e292b5",
+  "environment": {
+    "local_policy": "STATIC_SYNTHETIC_ONLY_NO_MODEL_DATA_GPU",
+    "p0_pytest_site": "/var/tmp/fsad_tta/test_tools",
+    "p0_pytest_version": "8.3.5",
+    "remote_container_id": "16c4c25074fff40040aed82b552a8cd77fbdfcf52bb553b0a318f7faeef5def6",
+    "remote_container_name": "hun_fsad_tta_012",
+    "remote_data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+    "remote_gpu_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "remote_host": "hunim@147.47.39.144:2222",
+    "remote_image_id": "sha256:8dbd129dc64fbe1bbce27212902b27e2ecd3fea01794565c80f5ef415369b2f1"
+  },
+  "immutable_snapshot_rule": {
+    "cleanup_requires_verified_pull_receipt": true,
+    "fresh_run_name_required": true,
+    "snapshot_archive_sha256_required": true,
+    "source_change_requires_new_run_and_amendment": true
+  },
+  "lineage_commitment_sha256": "903b26bc16cee7aab5d59c4bad034de90afc2d616ee73fe278163b0c19205b28",
+  "no_frozen_contract_change": true,
+  "preregistration_sha256": "303137f0ea381bc0673f8e481d758c20f8fbb849e63fb45c29acb106e63cfd0c",
+  "production_schema_ids": [
+    "eco-o1-lifted-j0-g2-implementation-amendment-v1",
+    "eco-o1-lifted-j0-g2-p0-evidence-v1",
+    "eco-o1-lifted-j0-g2-p1-evidence-v1",
+    "eco-o1-lifted-j0-g2-p1-synthetic-v1",
+    "eco-o1-lifted-j0-g2-support-replay-v1",
+    "eco-o1-lifted-j0-g2-held-shard-v1",
+    "eco-o1-lifted-j0-g2-operator-sentinel-aggregate-v1",
+    "eco-o1-lifted-j0-g2-operator-sentinel-verdict-v1",
+    "eco-o1-lifted-j0-g2-operator-sentinel-verification-v1",
+    "eco-o1-lifted-j0-g2-remote-pull-receipt-v1"
+  ],
+  "prospective_policy_path": "skill_graph/analysis/2026-08-28_eco_post_g2_detector_metric_bridge_policy.md",
+  "prospective_policy_sha256": "95c0a83b4aeee1a7701661ab9c78c52f91ae4fd85ddf4e20ef9aaad6f6a32239",
+  "protocol_id": "eco-o1-lifted-j0-g2-operator-sentinel-20260828-v1",
+  "remote_controller_sha256": "90e07a9cb1a3efbee592e9ca54b6a6dccdaac5bee4e16a92f6bffacc332a04a3",
+  "result_free": true,
+  "runner_sha256": "f1b0e400b668bb44dd82f725f39b9478532ca64a16e3609e38e6e91c49241087",
+  "schema": "eco-o1-lifted-j0-g2-implementation-amendment-v1",
+  "source_manifest_sha256": "258322d1c42afbf4c7bbebf7c41e6e10025d0c02a8774297a65879e20a950f09",
+  "static_contract_sha256": "e587ee880deb930a7eaf6962b5a78b5d41a33bd21cee2de78b637863c8612474",
+  "test_targets": [
+    "tests/test_eco_o1_lifted.py",
+    "tests/test_run_eco_o1_lifted_j0_g2_operator_sentinel.py",
+    "tests/test_aggregate_eco_o1_lifted_j0_g2_operator_sentinel.py",
+    "tests/test_verify_eco_o1_lifted_j0_g2_operator_sentinel.py",
+    "tests/test_run_eco_o1_lifted_j0_g2_operator_sentinel_remote.py"
+  ],
+  "verifier_sha256": "29a99818bd664222b31762d2c2477af5f7d0af642b0a6df2862ef94c5f32f183"
+}

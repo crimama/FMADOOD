@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "psar-d1-checkpoint-output-v1",
+  "additionalProperties": true,
+  "properties": {
+    "AU-PRO@0.05": {"maximum": 1, "minimum": 0, "type": "number"},
+    "delta_vs_hard_null": {"$ref": "#/$defs/metric_triplet"},
+    "delta_vs_rn_fmlk": {"$ref": "#/$defs/metric_triplet"},
+    "delta_vs_superad": {"$ref": "#/$defs/metric_triplet"},
+    "map_coverage": {"type": "object"},
+    "memory": {"type": "object"},
+    "normal_FPR": {"type": "object"},
+    "object_results": {"type": "object"},
+    "revision_budget": {"const": 0},
+    "runtime": {"type": "object"},
+    "seg_AUROC_0.05": {"maximum": 1, "minimum": 0, "type": "number"},
+    "seg_F1": {"maximum": 1, "minimum": 0, "type": "number"},
+    "verdict": {
+      "enum": [
+        "INVALID_FAIL_CLOSED",
+        "VALID_SHORTCUT_FAILURE / CLOSE_PSAR_D1",
+        "VALID_HARM_OR_RESOURCE_FAILURE / CLOSE_PSAR_D1",
+        "VALID_BUT_NO_GAIN / CLOSE_PSAR_D1",
+        "PROMISING_DIAGNOSTIC"
+      ]
+    }
+  },
+  "required": [
+    "verdict",
+    "revision_budget",
+    "seg_AUROC_0.05",
+    "seg_F1",
+    "AU-PRO@0.05",
+    "map_coverage",
+    "normal_FPR",
+    "runtime",
+    "memory",
+    "object_results",
+    "delta_vs_superad",
+    "delta_vs_rn_fmlk",
+    "delta_vs_hard_null"
+  ],
+  "type": "object",
+  "$defs": {
+    "metric_triplet": {
+      "additionalProperties": false,
+      "properties": {
+        "AU-PRO@0.05": {"type": "number"},
+        "seg_AUROC_0.05": {"type": "number"},
+        "seg_F1": {"type": "number"}
+      },
+      "required": ["seg_AUROC_0.05", "seg_F1", "AU-PRO@0.05"],
+      "type": "object"
+    }
+  }
+}

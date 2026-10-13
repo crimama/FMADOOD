@@ -1,0 +1,64 @@
+method: rad
+dataset: mvtec_ad2
+backbone: dinov3_vitb16
+seed: 2
+device: cuda:0
+dataset_config:
+  objects:
+  - can
+  - fabric
+  - fruit_jelly
+  - rice
+  - sheet_metal
+  - vial
+  - wallplugs
+  - walnuts
+  preprocess: no_mask_no_rotation
+  resolution: 1120
+backbone_config:
+  smaller_edge_size: 1120
+  feature_layers:
+  - 3
+  - 6
+  - 9
+  - 11
+  normalize_intermediate_features: true
+protocol:
+  shots: 4
+  fixed_reference_manifest: configs/benchmarks/public_v13_20260929/seed2_support_4.json
+  warmup_iters: 0
+method_config:
+  support_manifest: configs/benchmarks/public_v13_20260929/seed2_support_4.json
+  support_objects:
+  - can
+  - fabric
+  - fruit_jelly
+  - rice
+  - sheet_metal
+  - vial
+  - wallplugs
+  - walnuts
+  input_size: 1280
+  crop_size: 1120
+  map_size: 256
+  image_neighbors: 150
+  position_radius: 1
+  patch_chunk_size: 64
+  layer_weights:
+  - 0.25
+  - 0.25
+  - 0.25
+  - 0.25
+evaluation:
+  streaming: true
+  inference_batch_size: 1
+  metric_contract: mvtec_ad2_float16_streaming_v1
+  eval_segm: true
+  eval_clf: false
+  pro_integration_limit: 0.05
+  binary_postprocess: none
+  condition_strata: true
+  cost_profile: true
+output:
+  save_anomaly_maps: false
+  save_weights: false

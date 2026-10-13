@@ -1,0 +1,6 @@
+method: subspacead
+dataset: mvtec_ad2
+backbone: dinov2_vitg14_hf
+seed: 1
+protocol:
+  shots: 16

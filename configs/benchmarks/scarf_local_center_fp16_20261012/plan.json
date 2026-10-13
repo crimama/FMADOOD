@@ -1,0 +1,89 @@
+{
+  "suite": "scarf_local_center_fp16_20261012",
+  "configs": [
+    {
+      "label": "ad2_cal_center025_s02_seed0",
+      "variant": "center025",
+      "shot": 2,
+      "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s02_seed0.yaml",
+      "changes": {
+        "local_reliability": "center",
+        "local_center_alpha": 0.25,
+        "local_reliability_k": 8
+      },
+      "config_sha256": "530b71680c187a8be79fef1c9c939cfd07ad08a73528672b4396039c6b8c52b5"
+    },
+    {
+      "label": "ad2_cal_center025_s16_seed0",
+      "variant": "center025",
+      "shot": 16,
+      "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s16_seed0.yaml",
+      "changes": {
+        "local_reliability": "center",
+        "local_center_alpha": 0.25,
+        "local_reliability_k": 8
+      },
+      "config_sha256": "e7450eae4854fc6f78abfe91a7abace84fce89ef8bb58e9a58bbda1ffc95363e"
+    },
+    {
+      "label": "ad2_cal_center050_s02_seed0",
+      "variant": "center050",
+      "shot": 2,
+      "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s02_seed0.yaml",
+      "changes": {
+        "local_reliability": "center",
+        "local_center_alpha": 0.5,
+        "local_reliability_k": 8
+      },
+      "config_sha256": "1c5dbf2e053731ea8a84b3bfc53f4d78b369fb39ff1ffdb3627a74bd06024602"
+    },
+    {
+      "label": "ad2_cal_center050_s16_seed0",
+      "variant": "center050",
+      "shot": 16,
+      "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s16_seed0.yaml",
+      "changes": {
+        "local_reliability": "center",
+        "local_center_alpha": 0.5,
+        "local_reliability_k": 8
+      },
+      "config_sha256": "244f6212288072ab07de7e31273dec5154405017249c67426359e3b2fae63a0f"
+    },
+    {
+      "label": "ad2_cal_q95_s02_seed0",
+      "variant": "q95",
+      "shot": 2,
+      "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s02_seed0.yaml",
+      "changes": {},
+      "config_sha256": "95308ae7d27edff984237f918ed5a456d6f2d556d5b8ed763d2b7d8c465edda0"
+    },
+    {
+      "label": "ad2_cal_q95_s16_seed0",
+      "variant": "q95",
+      "shot": 16,
+      "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s16_seed0.yaml",
+      "changes": {},
+      "config_sha256": "517da1414e07f29906217d5c108db18e1e526a8dec16d93f5d8f7f7644d09795"
+    },
+    {
+      "label": "ad2_cal_none_s02_seed0",
+      "variant": "none",
+      "shot": 2,
+      "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s02_seed0.yaml",
+      "changes": {
+        "score_normalization": "none"
+      },
+      "config_sha256": "e6e6c5c1bc91b4b496758bcbedfbd45cecd04c7d246f155fcf03e6baff4b18ac"
+    },
+    {
+      "label": "ad2_cal_none_s16_seed0",
+      "variant": "none",
+      "shot": 16,
+      "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s16_seed0.yaml",
+      "changes": {
+        "score_normalization": "none"
+      },
+      "config_sha256": "30484b5eaba158ea6e9e9386b33bbf40a9cc2b0b0c0ae11f48622f665e640f70"
+    }
+  ]
+}

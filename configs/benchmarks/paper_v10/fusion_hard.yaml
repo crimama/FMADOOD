@@ -1,0 +1,56 @@
+# Paper v10 item 3: fixed before evaluation; same 16-shot support and bank settings as void_s16 anchors.
+backbone: dinov2_vitl14
+backbone_config:
+  feature_layers:
+  - 5
+  - 11
+  - 23
+  smaller_edge_size: 672
+dataset: mvtec_ad2
+dataset_config:
+  preprocess: no_mask_no_rotation
+evaluation:
+  eval_clf: false
+  eval_segm: true
+  fusion_diagnostic: true
+  inference_batch_size: 1
+  metric_contract: mvtec_ad2_float16_streaming_v1
+  pro_integration_limit: 0.05
+  streaming: true
+  condition_strata: true
+method: fusion_factorial
+method_config:
+  bank_bags: 4
+  bank_tokens_per_source: 256
+  component_dilate_size: 0
+  component_percentile: 99.0
+  component_q: 1.0
+  feature_layers:
+  - 5
+  - 11
+  - 23
+  knn_k: 1
+  layer_fusion: residual_spike
+  layer_fusion_gamma: 1.0
+  layer_fusion_shallow_idx: 0
+  layer_fusion_tau_mode: support_quantile
+  layer_fusion_tau_q: 0.99
+  mechanism_audit: true
+  prediction_postprocess: component_quantile
+  query_chunk_size: 128
+  resolutions:
+  - 448
+  - 672
+  - 896
+  - 1120
+  score_normalization: tailscale
+  shallow_mode: hard
+  variant: R1
+output:
+  save_anomaly_maps: false
+  save_weights: false
+protocol:
+  fixed_reference_manifest: configs/methods/VOID_support_16.json
+  shots: 16
+  warmup_iters: 1
+seed: 0

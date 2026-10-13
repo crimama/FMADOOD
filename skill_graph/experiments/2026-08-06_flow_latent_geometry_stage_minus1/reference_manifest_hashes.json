@@ -1,0 +1,10 @@
+{
+  "schema": "flow-latent-geometry-reference-hashes-v1",
+  "source_run": "results/remote_runs/dsba5/wtcf_stage_minus1_20260804_v6",
+  "source_protocol_id": "wtcf-stage-minus1-support-only-20260804",
+  "note": "The 2026-08-04 WTCF run early-killed after the single can/seed0 case (sentinel jvp_directional=false), so a recorded support-manifest hash exists for that case only. No fold-assignment hash was ever recorded by that run. Cases absent from this registry have no reference and must be treated as unverified.",
+  "support_manifest_sha256": {
+    "can_seed0": "dd9f44f841259f0d12baf3e60d94633bbabce46ab9507558a22d3cf230cc1dcf"
+  },
+  "fold_assignment_sha256": {}
+}

@@ -1,0 +1,158 @@
+{
+  "elapsed_sec": 80.29677438735962,
+  "implemented_arms": [
+    "raw_g0_layer7",
+    "raw_tiled_fine_knn",
+    "lift_only",
+    "calibrated_coarse_fine_max",
+    "calibrated_coarse_fine_mean",
+    "matched_coarse_to_fine_predictor",
+    "one_phase_excess",
+    "two_phase_tccr",
+    "geometry_shuffle",
+    "phase_shuffle",
+    "rgb_edge",
+    "duplicate_tiles"
+  ],
+  "objects": {
+    "can": {
+      "beta": 1.0610972089314528,
+      "component_seed_top0p5_recall": {
+        "calibrated_coarse_fine_max": 0.0,
+        "calibrated_coarse_fine_mean": 0.0,
+        "duplicate_tiles": 0.0,
+        "geometry_shuffle": 0.0,
+        "lift_only": 0.0,
+        "matched_coarse_to_fine_predictor": 0.0,
+        "one_phase_excess": 0.0,
+        "phase_shuffle": 0.0,
+        "raw_g0_layer7": 0.0,
+        "raw_tiled_fine_knn": 0.0,
+        "rgb_edge": 0.0,
+        "two_phase_tccr": 0.0
+      },
+      "metrics": {
+        "calibrated_coarse_fine_max": {
+          "AUPRO": 0.369052291857473,
+          "I-AP": 0.3666666666666667,
+          "I-AUROC": 0.375,
+          "I-F1_max": 0.5714285714285715,
+          "P-AP": 0.0037474260113018834,
+          "P-AUROC": 0.9441609606466338,
+          "P-F1_max": 0.012121212121212121
+        },
+        "calibrated_coarse_fine_mean": {
+          "AUPRO": 0.3509529416895635,
+          "I-AP": 0.3666666666666667,
+          "I-AUROC": 0.375,
+          "I-F1_max": 0.5714285714285715,
+          "P-AP": 0.003592658366285764,
+          "P-AUROC": 0.9456437989736433,
+          "P-F1_max": 0.011235955056179775
+        },
+        "duplicate_tiles": {
+          "AUPRO": 0.0,
+          "I-AP": 0.4,
+          "I-AUROC": 0.625,
+          "I-F1_max": 0.6666666666666666,
+          "P-AP": 0.00016548382639833335,
+          "P-AUROC": 0.5461715149664907,
+          "P-F1_max": 0.0004536518977771057
+        },
+        "geometry_shuffle": {
+          "AUPRO": 0.0,
+          "I-AP": 0.5833333333333333,
+          "I-AUROC": 0.75,
+          "I-F1_max": 0.8,
+          "P-AP": 0.00015635145605280015,
+          "P-AUROC": 0.46127902074519894,
+          "P-F1_max": 0.00040908161178155044
+        },
+        "lift_only": {
+          "AUPRO": 0.30221553491212005,
+          "I-AP": 0.3666666666666667,
+          "I-AUROC": 0.375,
+          "I-F1_max": 0.5714285714285715,
+          "P-AP": 0.002695260745530567,
+          "P-AUROC": 0.9397996714495471,
+          "P-F1_max": 0.0076335877862595426
+        },
+        "matched_coarse_to_fine_predictor": {
+          "AUPRO": 0.0,
+          "I-AP": 0.3666666666666667,
+          "I-AUROC": 0.375,
+          "I-F1_max": 0.5714285714285715,
+          "P-AP": 0.0001340254133663834,
+          "P-AUROC": 0.3729120327968948,
+          "P-F1_max": 0.0003327787021630615
+        },
+        "one_phase_excess": {
+          "AUPRO": 0.0,
+          "I-AP": 0.3333333333333333,
+          "I-AUROC": 0.25,
+          "I-F1_max": 0.5,
+          "P-AP": 0.00011010645234918877,
+          "P-AUROC": 0.23914402430691845,
+          "P-F1_max": 0.0002887808634547817
+        },
+        "phase_shuffle": {
+          "AUPRO": 0.0,
+          "I-AP": 1.0,
+          "I-AUROC": 1.0,
+          "I-F1_max": 1.0,
+          "P-AP": 0.00010864376739590161,
+          "P-AUROC": 0.23075581141785512,
+          "P-F1_max": 0.0002905709719599012
+        },
+        "raw_g0_layer7": {
+          "AUPRO": 0.30221553491212005,
+          "I-AP": 0.3666666666666667,
+          "I-AUROC": 0.375,
+          "I-F1_max": 0.5714285714285715,
+          "P-AP": 0.002695260745530567,
+          "P-AUROC": 0.9397996714495471,
+          "P-F1_max": 0.0076335877862595426
+        },
+        "raw_tiled_fine_knn": {
+          "AUPRO": 0.39140389899254224,
+          "I-AP": 0.3666666666666667,
+          "I-AUROC": 0.375,
+          "I-F1_max": 0.5714285714285715,
+          "P-AP": 0.004683533536736431,
+          "P-AUROC": 0.9504557547210956,
+          "P-F1_max": 0.015384615384615385
+        },
+        "rgb_edge": {
+          "AUPRO": 0.38475293296698504,
+          "I-AP": 0.26666666666666666,
+          "I-AUROC": 0.0,
+          "I-F1_max": 0.5,
+          "P-AP": 0.004129487799393698,
+          "P-AUROC": 0.9541773881692762,
+          "P-F1_max": 0.013986013986013984
+        },
+        "two_phase_tccr": {
+          "AUPRO": 0.0,
+          "I-AP": 0.325,
+          "I-AUROC": 0.25,
+          "I-F1_max": 0.5714285714285715,
+          "P-AP": 0.00011319819733549367,
+          "P-AUROC": 0.25863898701789584,
+          "P-F1_max": 0.00028496794110662553
+        }
+      },
+      "query_count": 6,
+      "support_count": 16,
+      "support_loo_excess_q999_exceedance": 0.0010138670852956567,
+      "support_loo_raw_fine_q999_exceedance": 0.0010138670852956567,
+      "support_loo_tail_q999": 0.00859044885355986,
+      "support_loo_tail_q99_coverage": 0.9899921507064364
+    }
+  },
+  "omitted_arms": [
+    "P16_H+DVT_anchor"
+  ],
+  "protocol_id": "tccr-v2-stage-minus1-compact-20260811",
+  "scope": "compact_stage_minus1_diagnostic",
+  "verdict_positive_allowed": false
+}

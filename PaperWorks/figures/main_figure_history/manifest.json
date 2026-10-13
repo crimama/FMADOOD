@@ -1,0 +1,990 @@
+{
+  "items": [
+    {
+      "id": "01_early_overview",
+      "title": "초기 Method Overview",
+      "status": "Git a73c289 원본",
+      "preview": "method_overview.svg",
+      "files": [
+        {
+          "file": "method_overview.svg",
+          "source": "a73c289:PaperWorks/method_overview.svg",
+          "sha256": "87f1b43706adbbcb08099a5329d9bc76a54dab6d1644f2bdf7a814d7fd8927d7",
+          "bytes": 8599
+        }
+      ]
+    },
+    {
+      "id": "02_early_pipeline",
+      "title": "초기 Method Pipeline",
+      "status": "Git a73c289 원본",
+      "preview": "method_pipeline_overview.png",
+      "files": [
+        {
+          "file": "method_pipeline_overview.png",
+          "source": "a73c289:PaperWorks/method_pipeline_overview.png",
+          "sha256": "61a5c3eaa23a2e61f220989086b9f6817198e9959f6693440646d84a908c69bc",
+          "bytes": 455865
+        },
+        {
+          "file": "method_pipeline_overview.svg",
+          "source": "a73c289:PaperWorks/method_pipeline_overview.svg",
+          "sha256": "28bda1ad743790a93ec1318b0e9c751e571eb8340b5558ce77b87bdb39c12658",
+          "bytes": 10202
+        }
+      ]
+    },
+    {
+      "id": "03_rsg4_v10",
+      "title": "RSG4 · Outline v10",
+      "status": "현재 보존 원본",
+      "preview": "fig_rsg4_method_main.png",
+      "files": [
+        {
+          "file": "fig_rsg4_method_main.png",
+          "source": "PaperWorks/figures/fig_rsg4_method_main.png",
+          "sha256": "e708e9231a0767c35f33654611c7987e0e3ef02b925ef05ea5372e69b4b4301a",
+          "bytes": 340562
+        },
+        {
+          "file": "fig_rsg4_method_main.svg",
+          "source": "PaperWorks/figures/fig_rsg4_method_main.svg",
+          "sha256": "586df98187c8c8e4658239b4afe909a8bb73cdee4c096c1e309c6cc2c9448e4e",
+          "bytes": 25242
+        },
+        {
+          "file": "fig_rsg4_method_main.pdf",
+          "source": "PaperWorks/figures/fig_rsg4_method_main.pdf",
+          "sha256": "30bf140aa51e3483eee71cf7e001e3ea5d94b4c3afce62b65ae0f209fe755265",
+          "bytes": 51434
+        },
+        {
+          "file": "draw_rsg4_method_main.py",
+          "source": "PaperWorks/figures/draw_rsg4_method_main.py",
+          "sha256": "021cca1d1133071df3554b8abee0829de631d81e05ece4a3948bbbb672dc3802",
+          "bytes": 5183
+        }
+      ]
+    },
+    {
+      "id": "04_scarf_v17",
+      "title": "SCARF v17 · Architecture",
+      "status": "v18 변경 전 보관 원본",
+      "preview": "fig_scarf_overview.png",
+      "files": [
+        {
+          "file": "fig_scarf_overview.png",
+          "source": "PaperWorks/figures/legacy/scarf_v17/fig_scarf_overview.png",
+          "sha256": "9a36684a28b9aa47b2167b791bd285cafd16eb90b5df1becdc63e84a608263f1",
+          "bytes": 831519
+        },
+        {
+          "file": "fig_scarf_overview.svg",
+          "source": "PaperWorks/figures/legacy/scarf_v17/fig_scarf_overview.svg",
+          "sha256": "1d22ae6ee514e2ce064f8582a67c9fec53f022d1e9790802206816b4bd0f285e",
+          "bytes": 177725
+        },
+        {
+          "file": "fig_scarf_overview.pdf",
+          "source": "PaperWorks/figures/legacy/scarf_v17/fig_scarf_overview.pdf",
+          "sha256": "20134eb00d02a1f6e092ecc8b8fecbf8557959a8012159e29d5ddaae1432905c",
+          "bytes": 113293
+        },
+        {
+          "file": "draw_scarf_overview.py",
+          "source": "PaperWorks/figures/legacy/scarf_v17/draw_scarf_overview.py",
+          "sha256": "fece35d4a367a3bad514b9b1f7d42352f547479b04f2f16b29c17be7e8f030b8",
+          "bytes": 10013
+        }
+      ]
+    },
+    {
+      "id": "05_scopead_v18",
+      "title": "ScopeAD v18 · Main",
+      "status": "현재 main figure 보존 사본",
+      "preview": "fig_scopead_overview.png",
+      "files": [
+        {
+          "file": "fig_scopead_overview.png",
+          "source": "PaperWorks/figures/fig_scopead_overview.png",
+          "sha256": "42f875ec946b22c83e90bd88c662146b5b141e4d27248b605138c9f7ec54a0a9",
+          "bytes": 839550
+        },
+        {
+          "file": "fig_scopead_overview.svg",
+          "source": "PaperWorks/figures/fig_scopead_overview.svg",
+          "sha256": "03d4b58d1ce650d9c945eb9319978234bb103110eb37cd6db5da361b82f9ea35",
+          "bytes": 174504
+        },
+        {
+          "file": "fig_scopead_overview.pdf",
+          "source": "PaperWorks/figures/fig_scopead_overview.pdf",
+          "sha256": "804ebda3a8ae643a2adfb2ed555a17f46ace77c7b8ba22e673d274abda36c1ff",
+          "bytes": 113513
+        },
+        {
+          "file": "fig_scopead_overview.meta.json",
+          "source": "PaperWorks/figures/fig_scopead_overview.meta.json",
+          "sha256": "f1fae15c79fb584d784c75eac7ad0b4b389358551bd16c582b0ac4a3e0d663ca",
+          "bytes": 848
+        },
+        {
+          "file": "draw_scarf_overview.py",
+          "source": "PaperWorks/figures/draw_scarf_overview.py",
+          "sha256": "53f4af8e03c5e8bc7769d8d428b56aac6327f7fb4d18537e6f1e664175014107",
+          "bytes": 11172
+        }
+      ]
+    },
+    {
+      "id": "06_scopead_v18_slides",
+      "title": "ScopeAD v18 · Slide Variant",
+      "status": "발표자료 폴더 보존 원본",
+      "preview": "overview_scopead.png",
+      "files": [
+        {
+          "file": "overview_scopead.png",
+          "source": "PaperWorks/slides/build_v18/charts/overview_scopead.png",
+          "sha256": "65695dd91c3726175b1c12f2680d7705677508dd780b1d837750f356542de817",
+          "bytes": 820627
+        },
+        {
+          "file": "draw_overview_scopead.py",
+          "source": "PaperWorks/slides/build_v18/draw_overview_scopead.py",
+          "sha256": "51e6b04d0250b474f435b393b5c38bc4c241b3919b6cf980b9fa2df099d253a2",
+          "bytes": 10049
+        }
+      ]
+    },
+    {
+      "id": "07_scarf_initial_20261001",
+      "title": "초기 SCARF · 코드 수정 이력 6개",
+      "status": "대화 기록에서 소스 복원 후 캐시로 재출력",
+      "preview": "draft_06/fig_scarf_overview_reconstructed.png",
+      "files": [
+        {
+          "file": "draft_01/draw_scarf_overview.original.py",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "8bb05813b2b72e98f54b6396a81560dfd6bceca1b523743f006203c820bd4126",
+          "bytes": 15417
+        },
+        {
+          "file": "draft_01/fig_scarf_overview_reconstructed.pdf",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "8a123b623b789a059aee42a7a00aaf72a0404ccba4966e37f74135a57725d95a",
+          "bytes": 130827
+        },
+        {
+          "file": "draft_01/fig_scarf_overview_reconstructed.png",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "fcfea248287908c64625fa15adc4cfdbf3ebb2080a23b6c2cbf01b5d3096bfe5",
+          "bytes": 1128161
+        },
+        {
+          "file": "draft_01/fig_scarf_overview_reconstructed.svg",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "f956b07cea5a2ec681112dda7089c4eabba5cdfe4a85216027905d506f8d6afb",
+          "bytes": 234012
+        },
+        {
+          "file": "draft_02/draw_scarf_overview.original.py",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "703de4e5201a7d6c7b70ec468c162b927c43a2fc39ae4c7f257a45bdd987a82e",
+          "bytes": 16182
+        },
+        {
+          "file": "draft_02/fig_scarf_overview_reconstructed.pdf",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "a409f3d6f3a9cafaba4a421d4493b3bef769235a6aea6a952d0cf7a58366a4c0",
+          "bytes": 132500
+        },
+        {
+          "file": "draft_02/fig_scarf_overview_reconstructed.png",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "f127cc9ba9cb97809af65c45f9fec2d8ea7ad5dd0add84068eb448f1a45ef0a4",
+          "bytes": 1083755
+        },
+        {
+          "file": "draft_02/fig_scarf_overview_reconstructed.svg",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "6f75e05ba08afb4e253d4d3c49220349d19ec3380c4a48b90f4d6cdc1441888a",
+          "bytes": 240559
+        },
+        {
+          "file": "draft_03/draw_scarf_overview.original.py",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "aed60b3f22f1a3a898764c1ed5e3b00c5e79d79d6853381b2726d4fae840e231",
+          "bytes": 16180
+        },
+        {
+          "file": "draft_03/fig_scarf_overview_reconstructed.pdf",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "01640af66acee1a689ae8bdb14f340137cf012159926e2c8357f91b76a0b3026",
+          "bytes": 132584
+        },
+        {
+          "file": "draft_03/fig_scarf_overview_reconstructed.png",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "65f6d192e5fbf2d7e34083cd20d9c1664e2fcf720c9687009baeb49b813d96b5",
+          "bytes": 1089201
+        },
+        {
+          "file": "draft_03/fig_scarf_overview_reconstructed.svg",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "1c3e26beb3bbeb22a2f0aed35b9975c3d222ad1f0f811f0480fbd4507698b0ce",
+          "bytes": 244504
+        },
+        {
+          "file": "draft_04/draw_scarf_overview.original.py",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "9ae02f292cb8b642d8565455f49b2ea4726da3e40d418155c44de6198f70d98c",
+          "bytes": 16228
+        },
+        {
+          "file": "draft_04/fig_scarf_overview_reconstructed.pdf",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "1277691cacbc8d0c7f96f0583075110af13257897913bd29954336115e447326",
+          "bytes": 132593
+        },
+        {
+          "file": "draft_04/fig_scarf_overview_reconstructed.png",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "1692e19325c83b4a7179e5fa84404b20af3c5595282d55c23ca796d71c778e8a",
+          "bytes": 1089286
+        },
+        {
+          "file": "draft_04/fig_scarf_overview_reconstructed.svg",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "a457004d90061175421d49bdaed1744b164da1859fe9ee6c5367f17a8b704c0e",
+          "bytes": 244512
+        },
+        {
+          "file": "draft_05/draw_scarf_overview.original.py",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "f9872692238c48d6f409089cd8ac727a9be97c31ff768f5c553d82e9a9241a43",
+          "bytes": 16355
+        },
+        {
+          "file": "draft_05/fig_scarf_overview_reconstructed.pdf",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "deb0cb448a5fa4e8734600ced4d9b0b469ddfa466969527ea3a64e4553e5769e",
+          "bytes": 132539
+        },
+        {
+          "file": "draft_05/fig_scarf_overview_reconstructed.png",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "47852cc1d43d29dd002866be63efd0bd85bd329484ffaff93dd9880558faaf52",
+          "bytes": 1078009
+        },
+        {
+          "file": "draft_05/fig_scarf_overview_reconstructed.svg",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "32ae791af18e07aa7cbd6bfbfd37b8a04e6c9ef4bc6791b092134c01896dd3d3",
+          "bytes": 240275
+        },
+        {
+          "file": "draft_06/draw_scarf_overview.original.py",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "ca03e145b24f425ac6bbf22123ba5d49db072731a794113d0ea8f64df2164d75",
+          "bytes": 16390
+        },
+        {
+          "file": "draft_06/fig_scarf_overview_reconstructed.pdf",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "a7e3e4fe51264679db7018708bf5022a134581d9ffdea020521f2ecc8587b9ec",
+          "bytes": 132558
+        },
+        {
+          "file": "draft_06/fig_scarf_overview_reconstructed.png",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "c07e41d72787ad31b7ce49156f5c664ab560f0a4070fb11eb598b5799a2f4c16",
+          "bytes": 1083239
+        },
+        {
+          "file": "draft_06/fig_scarf_overview_reconstructed.svg",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "d7bd01e81f1b81ce27161b9beb0e691c6cc3435e9a5abf5af5ab5afc6b1132ce",
+          "bytes": 240282
+        },
+        {
+          "file": "draw_scarf_overview.original.py",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "8bb05813b2b72e98f54b6396a81560dfd6bceca1b523743f006203c820bd4126",
+          "bytes": 15417
+        },
+        {
+          "file": "render_recovered.py",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "f5fa7e30058f88d719fdc30d9e6aacbfe4d2497f96df9ae830c697d210eb0ac4",
+          "bytes": 842
+        },
+        {
+          "file": "source_index.json",
+          "source": "Claude b84a2ba6 source_index.json 참조; 출력은 재구성",
+          "sha256": "6c205b07fdd7a31bf6e1dfb3e319054e704114c2b50dd35af199efd7cdcd61b1",
+          "bytes": 1070
+        }
+      ]
+    },
+    {
+      "id": "08_scarf_v16_3_slide_crop",
+      "title": "SCARF v16.3 · 발표용 crop",
+      "status": "PPTX 내 원본 이미지 바이트 복원",
+      "preview": "overview_crop.png",
+      "files": [
+        {
+          "file": "overview_crop.png",
+          "source": "PaperWorks/slides/SCARF_Outline_v16.3_발표.pptx:ppt/media/image6.png; slide 8",
+          "sha256": "33d84fdd766a96ca9fdf9bb59ade5a5f7b8b300c8f21c27562f43a715dde4c3e",
+          "bytes": 732630
+        },
+        {
+          "file": "provenance.json",
+          "source": "PaperWorks/slides/SCARF_Outline_v16.3_발표.pptx:ppt/media/image6.png; slide 8",
+          "sha256": "cf01c6f8a53861e13cc26e87a0564bb530d33596ceff92b867d8caae178e5e78",
+          "bytes": 178
+        }
+      ]
+    },
+    {
+      "id": "09_scarf_tikz",
+      "title": "SCARF · 원고 TikZ 수평 파이프라인",
+      "status": "TeX 원본 보존; 미렌더링",
+      "preview": null,
+      "files": [
+        {
+          "file": "scarf_core.tex",
+          "source": "PaperWorks/cvpr-2026-author-kit-template/figures/scarf_core.tex",
+          "sha256": "ffb2cd252793f33556274d1b96ab8d3bcbcccb6a3cadc78bde1e7cae4cd02dad",
+          "bytes": 1653
+        }
+      ]
+    },
+    {
+      "id": "10_scarf_v17_1_slides",
+      "title": "SCARF v17.1 · 슬라이드 전체 흐름",
+      "status": "기존 slide render 2종과 편집 가능한 PPTX 보존",
+      "preview": "overview_slide_02.png",
+      "files": [
+        {
+          "file": "SCARF_v17.1_structure_restored.pptx",
+          "source": "provenance.json 참조; 원본 deck slide 8",
+          "sha256": "00c63b88bbdf103b3832baf132ef1a26e6ba61bc09609ff5fdd7fccdbaa15e19",
+          "bytes": 7380833
+        },
+        {
+          "file": "overview_slide_01.png",
+          "source": "provenance.json 참조; 원본 deck slide 8",
+          "sha256": "7f0d52d799c1b85c77cd8d932a6f85cf03fa917f87087b49c34809001d4b39b6",
+          "bytes": 69276
+        },
+        {
+          "file": "overview_slide_02.png",
+          "source": "provenance.json 참조; 원본 deck slide 8",
+          "sha256": "9e33c65424ffb4867c95eb6185954866a82beedcf31f5dea8d1a7aef4063571d",
+          "bytes": 105068
+        },
+        {
+          "file": "provenance.json",
+          "source": "provenance.json 참조; 원본 deck slide 8",
+          "sha256": "947b8e2192e0e7ea0e3d6e2ca6136d6f449310e40d10a6cbb47d968401f42aa7",
+          "bytes": 555
+        }
+      ]
+    },
+    {
+      "id": "11_scopead_two_stage",
+      "title": "ScopeAD v18 · 피팅/추론 2행",
+      "status": "기존 발표용 PNG와 생성 코드 원본 보존",
+      "preview": "two_stage.png",
+      "files": [
+        {
+          "file": "figs_v3.py",
+          "source": "PaperWorks/slides/build_v18/charts/two_stage.png; figs_v3.py",
+          "sha256": "e0c70ceeda8dd2c14171614956291575f2004712b3e941c5268756d2e371b536",
+          "bytes": 7506
+        },
+        {
+          "file": "two_stage.png",
+          "source": "PaperWorks/slides/build_v18/charts/two_stage.png; figs_v3.py",
+          "sha256": "96762830675dc668ddc2eeb881d922ab3e9bf521c7fa604fb454b83a6d9355ab",
+          "bytes": 155338
+        }
+      ]
+    }
+  ],
+  "missing": [
+    "일부 과거 버전은 대화 기록 미리보기만 남아 원래 해상도의 PNG 및 SVG/PDF를 복구할 수 없음.",
+    "저장·출력·대화 기록 모두에 남지 않은 중간안은 복구 불가.",
+    "TikZ 원본은 보존했으나 이 환경에 TeX 컴파일러가 없어 이미지로 렌더링하지 않음."
+  ],
+  "verification": "기존 Git/workspace 복원에 더해 프로젝트 Claude·Codex 세션의 실제 이미지 출력, 성공한 초기 Write/replace 이력, PPTX 이미지 관계와 기존 slide render를 확인. 원본·미리보기·재출력을 구분. 잘못된 JSON 기록 20행은 건너뛰었으며 모든 미리보기의 바이트 및 픽셀 SHA256 기록.",
+  "session_previews": [
+    {
+      "size": [
+        1800,
+        1000
+      ],
+      "pixel_sha256": "fd1a49decb1a94db64f06264f58f9b02d2f9f63bf737a0b7a683b87674798345",
+      "file": "01_method_pipeline_overview.png",
+      "sha256": "61a5c3eaa23a2e61f220989086b9f6817198e9959f6693440646d84a908c69bc",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-07-14T10-23-02-019f5e38-686e-7810-9002-85300761dded.jsonl",
+          "call_line": 3500,
+          "output_line": 3501,
+          "timestamp": "2026-07-15T00:44:24.447Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/method_pipeline_overview.png"
+        },
+        {
+          "provider": "codex",
+          "session": "rollout-2026-07-14T10-23-02-019f5e38-686e-7810-9002-85300761dded.jsonl",
+          "call_line": 3523,
+          "output_line": 3524,
+          "timestamp": "2026-07-15T00:46:05.522Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/method_pipeline_overview.png"
+        },
+        {
+          "provider": "codex",
+          "session": "rollout-2026-07-14T10-23-02-019f5e38-686e-7810-9002-85300761dded.jsonl",
+          "call_line": 3578,
+          "output_line": 3579,
+          "timestamp": "2026-07-15T01:04:36.659Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/method_pipeline_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        3696,
+        1419
+      ],
+      "pixel_sha256": "71058d09c7211e1c059d5b00bd7ab2725af2d01846db8f622a6c61ffe3844576",
+      "file": "02_fig_rsg4_method_main.png",
+      "sha256": "f18bd10bab00316e97dd81b12d89ff5d1da5c5603ca63848ee995d8c1765de1e",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-09-27T13-44-27-01a0e12d-c2e3-7010-9311-4ea22bd2751d.jsonl",
+          "call_line": 3095,
+          "output_line": 3098,
+          "timestamp": "2026-09-28T03:47:18.855Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_rsg4_method_main.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        786
+      ],
+      "pixel_sha256": "62c4fd621500d2b02ae5fba6797286d0aebc0d233d1290b6ed48cf20cb19d2d1",
+      "file": "03_fig_rsg4_method_main.png",
+      "sha256": "9eef7a32e72b208be7b3d10e7dea3cafde2070ccaba938fec5b313a39f95c9a2",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-09-27T13-44-27-01a0e12d-c2e3-7010-9311-4ea22bd2751d.jsonl",
+          "call_line": 3158,
+          "output_line": 3161,
+          "timestamp": "2026-09-28T03:48:58.558Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_rsg4_method_main.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2000,
+        768
+      ],
+      "pixel_sha256": "8f6732937afd520509518cf06d840798d7216ac7d3b9aaee40071e684bb1d625",
+      "file": "04_fig_rsg4_method_main.png",
+      "sha256": "d4fc214e049881639982cca0d800fdc9e004e5b7d1d77dbf8541f56358a964fe",
+      "occurrences": [
+        {
+          "provider": "claude",
+          "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+          "call_line": 194,
+          "output_line": 197,
+          "timestamp": "2026-10-01T07:53:55.181Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_rsg4_method_main.png"
+        },
+        {
+          "provider": "claude",
+          "session": "7612847f-3fec-4e13-9145-e080d52ee2c8.jsonl",
+          "call_line": 542,
+          "output_line": 545,
+          "timestamp": "2026-10-03T07:04:15.626Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_rsg4_method_main.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2000,
+        900
+      ],
+      "pixel_sha256": "833e105d9180b8206a43a441720676fcb49fd4c3a521fbded70b9bf829262ddb",
+      "file": "05_fig_scarf_overview.jpg",
+      "sha256": "e8cecb413a1687f9d630fe288acc9a8290dcebe59e528d233f191ca4269d5413",
+      "occurrences": [
+        {
+          "provider": "claude",
+          "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+          "call_line": 528,
+          "output_line": 531,
+          "timestamp": "2026-10-01T07:59:22.474Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2000,
+        900
+      ],
+      "pixel_sha256": "60ee3e777baa9fbd850daf700dff6d17c1c66d327c8e4188c3cbca1abbb719a2",
+      "file": "06_fig_scarf_overview.jpg",
+      "sha256": "3860df543fef72889797b3755a4c10cd8651e553e899ce6339a1404338d433b4",
+      "occurrences": [
+        {
+          "provider": "claude",
+          "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+          "call_line": 611,
+          "output_line": 614,
+          "timestamp": "2026-10-01T08:01:05.087Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2000,
+        900
+      ],
+      "pixel_sha256": "0f93652218f0d019f2e7aa1d56f064f70aa5aaceb29bd22b699075383234a884",
+      "file": "07_fig_scarf_overview.jpg",
+      "sha256": "51ec052cc3d21bb93b53bddc8653e5303fd55c42ab07347ac5581f9e668bd8f3",
+      "occurrences": [
+        {
+          "provider": "claude",
+          "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+          "call_line": 645,
+          "output_line": 648,
+          "timestamp": "2026-10-01T08:01:35.843Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2000,
+        900
+      ],
+      "pixel_sha256": "6dfbb397838f86cc129f4aabdc66edc2b1bf072b5531c7bbd9fe86a3d8ae0d58",
+      "file": "08_fig_scarf_overview.jpg",
+      "sha256": "89f909059158ff815897c6efb73feef49f014680ea8c4358c3b8e8d5011f1b6d",
+      "occurrences": [
+        {
+          "provider": "claude",
+          "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+          "call_line": 679,
+          "output_line": 682,
+          "timestamp": "2026-10-01T08:01:53.876Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        },
+        {
+          "provider": "claude",
+          "session": "7612847f-3fec-4e13-9145-e080d52ee2c8.jsonl",
+          "call_line": 181,
+          "output_line": 184,
+          "timestamp": "2026-10-03T06:51:16.135Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        922
+      ],
+      "pixel_sha256": "ae98ebeb60a60c1d8a988cd5022d26eb7aa72a3a858761dbb2ec9004a2c5d93b",
+      "file": "09_fig_scarf_overview.png",
+      "sha256": "e343601f9e59b3b4dde60389e941ba620c1ac031e46cd8995672e5e0594bc566",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-03T01-49-14-01a0fd85-1b99-7501-9730-f5dbe11f8138.jsonl",
+          "call_line": 96,
+          "output_line": 101,
+          "timestamp": "2026-10-02T16:55:21.804Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        },
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-03T23-10-09-01a10219-d3ae-73d2-96f2-43c3307b3945.jsonl",
+          "call_line": 70,
+          "output_line": 74,
+          "timestamp": "2026-10-03T14:15:25.775Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        },
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-03T23-36-19-01a10231-c98b-79d1-9304-4cdc7b53aee1.jsonl",
+          "call_line": 217,
+          "output_line": 220,
+          "timestamp": "2026-10-03T14:44:01.717Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        },
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 46,
+          "output_line": 49,
+          "timestamp": "2026-10-08T01:57:45.559Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        936
+      ],
+      "pixel_sha256": "7c8fa1c0f8f28e1e7ef0073858dc17a7341a1bccb773a4269447aa74e0394fcb",
+      "file": "10_fig_scarf_overview.png",
+      "sha256": "f26cd2c236a3337a7979b8e84404db6075ca45f11fc1d30b0741cc8460334ed1",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 180,
+          "output_line": 183,
+          "timestamp": "2026-10-08T02:07:46.205Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        936
+      ],
+      "pixel_sha256": "8c47eb786a19d920f8e85c0605e7ad522dfd4974962cd81ac603495a7bb70360",
+      "file": "11_fig_scarf_overview.png",
+      "sha256": "c7f2db8cb297d0fc025e8c659cd4ee87b8cd234b037a7f0d95add74f4b7a83a4",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 258,
+          "output_line": 261,
+          "timestamp": "2026-10-08T02:10:54.665Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        936
+      ],
+      "pixel_sha256": "f529989e03275227ce78fb6534f17a1c88b356eb317f48616db0cc6a79a568a5",
+      "file": "12_fig_scarf_overview.png",
+      "sha256": "61f8e2017f3a552ffa6a0a264607d6221f0232626ce9af2a4a096d62917f43ba",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 274,
+          "output_line": 277,
+          "timestamp": "2026-10-08T02:11:45.976Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        936
+      ],
+      "pixel_sha256": "2942b336ab3fd0a95836aafe3750ac984c3d149347120f90b00ec2aefce43c5d",
+      "file": "13_fig_scarf_overview.png",
+      "sha256": "0e95c7a9fbd95611cb12e5f7442ca3e1f3813e55c071f2d2e091f3900df8afe4",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 303,
+          "output_line": 306,
+          "timestamp": "2026-10-08T02:12:57.800Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        936
+      ],
+      "pixel_sha256": "74a02ca4c5160c06c13126ae476cb9b7a4061fb8b6c6f00171a108a74fefdd05",
+      "file": "14_fig_scarf_overview.png",
+      "sha256": "ba6532259bb22ee05404fc8203c2ac66dbb51f626c0cc407191b5b9f10c6961b",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 315,
+          "output_line": 318,
+          "timestamp": "2026-10-08T02:13:42.378Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        936
+      ],
+      "pixel_sha256": "a79864b76249e6b7e0c4c8c804a901c398137aad71c5a6f881b453fb583fd71d",
+      "file": "15_fig_scarf_overview.png",
+      "sha256": "9938839676b3b6d4bbcf94f6a10db6ae2a82b9b8b9f702dd8f64cb614e77d94e",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 327,
+          "output_line": 330,
+          "timestamp": "2026-10-08T02:14:18.115Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        936
+      ],
+      "pixel_sha256": "60c5c4ecc2c05879618088421f03c69de85e0ca1d7629175dbfce76d984b5b54",
+      "file": "16_fig_scarf_overview.png",
+      "sha256": "04edf3c05dcb6b1626049d6ef6ea3e1bd8cc4f4d359377a209393952a9de5ecc",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 402,
+          "output_line": 405,
+          "timestamp": "2026-10-08T02:58:44.369Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        1009
+      ],
+      "pixel_sha256": "990ae9f6eb1fb830587f189a049ca68c79d8246c1f1e8ddbd1b610d632a2bf67",
+      "file": "17_fig_scarf_overview_detailed.png",
+      "sha256": "e10ecbdc8b783c85910b8776f43124785b1a1508e5dd96db310f6a0a2c3c6a92",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 442,
+          "output_line": 445,
+          "timestamp": "2026-10-08T03:21:37.599Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview_detailed.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        1009
+      ],
+      "pixel_sha256": "63ebc60cb8c54c500cd56100935fadb4db76805fee0b0484836eabcd126be911",
+      "file": "18_fig_scarf_overview_detailed.png",
+      "sha256": "62a4c7cb6fe0b7d1fd887d3930b2f16c54cb9c5eb3207257176d817617146b66",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 476,
+          "output_line": 479,
+          "timestamp": "2026-10-08T03:25:00.925Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview_detailed.png"
+        },
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 500,
+          "output_line": 503,
+          "timestamp": "2026-10-08T03:26:41.936Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview_detailed.png"
+        },
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 512,
+          "output_line": 515,
+          "timestamp": "2026-10-08T03:27:43.800Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview_detailed.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        1009
+      ],
+      "pixel_sha256": "b28bc11863d136e4848a34ca8b0f43cb9579e62807353efda12c3778afd0e2ec",
+      "file": "19_fig_scarf_overview_detailed.png",
+      "sha256": "11d82b8c788e703267dbcc329a7f42d6a41f234e02ca14c6843ee9fe7b1bd37b",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 488,
+          "output_line": 491,
+          "timestamp": "2026-10-08T03:25:51.138Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview_detailed.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        1009
+      ],
+      "pixel_sha256": "5ade8fda42c5966451899d8dacc2204f42a94c690df876f6c5020542e18fe7c2",
+      "file": "20_fig_scarf_overview_detailed.png",
+      "sha256": "41e44f98e7a10caecd11d64aa4842975c8e8e7aeaba3004a5ab0e744e3a95c47",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 543,
+          "output_line": 546,
+          "timestamp": "2026-10-08T03:30:21.175Z",
+          "source_path": "PaperWorks/figures/fig_scarf_overview_detailed.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        1170
+      ],
+      "pixel_sha256": "99426f4d061aa3967f9f531a6d1e0d24a66bbebd0b4f3637e9736596cfa36378",
+      "file": "21_fig_scarf_overview.png",
+      "sha256": "7405e1e34b8e94716fe46821784281bd797005c9ab1f7673f8863dd586b22b7e",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 642,
+          "output_line": 645,
+          "timestamp": "2026-10-08T04:41:49.993Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        1170
+      ],
+      "pixel_sha256": "0cf7d2194130483b43bb6ce6d50a1330a4e7930eeb1203e4042b7498da024501",
+      "file": "22_fig_scarf_overview.png",
+      "sha256": "a45919dfd01ed1ec24b7eecec909cfe18418e53ed019101efba50517def1520a",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 658,
+          "output_line": 662,
+          "timestamp": "2026-10-08T04:42:26.445Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2000,
+        1143
+      ],
+      "pixel_sha256": "c5008bd2b4f6449ca2c14e8204acb12756bc964de56213af4c8cf86918b8407d",
+      "file": "23_fig_scarf_overview.jpg",
+      "sha256": "c2c9b759af1e29198a22f7c87d4e59a9aef6b2ac3e89567d50d841d1e6b78504",
+      "occurrences": [
+        {
+          "provider": "claude",
+          "session": "7612847f-3fec-4e13-9145-e080d52ee2c8.jsonl",
+          "call_line": 1456,
+          "output_line": 1459,
+          "timestamp": "2026-10-12T04:26:29.356Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scarf_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2000,
+        1143
+      ],
+      "pixel_sha256": "326fe5d8eff2754dcc2d73d2e3da5e870e261786919f88b82251a5c700e0e185",
+      "file": "24_overview_scopead.jpg",
+      "sha256": "9b429bb42b418cd8d949e45334328aaf6e66349f3eb9a4555c827ffe14deec73",
+      "occurrences": [
+        {
+          "provider": "claude",
+          "session": "7612847f-3fec-4e13-9145-e080d52ee2c8.jsonl",
+          "call_line": 1750,
+          "output_line": 1753,
+          "timestamp": "2026-10-12T04:32:01.798Z",
+          "source_path": "/tmp/claude-1000/-home-hun-Volume-RESEARCH-FSAD-TTA/7612847f-3fec-4e13-9145-e080d52ee2c8/scratchpad/v18/charts/overview_scopead.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2048,
+        1170
+      ],
+      "pixel_sha256": "bf351a42c22c9d171fb10d54a8819cd7c8290349b2a74fdfe545276acfe46a45",
+      "file": "25_fig_scopead_overview.png",
+      "sha256": "686db79475ce0a7df013756a60baaa9ea156b5a23d0ef6c038324bde74537b26",
+      "occurrences": [
+        {
+          "provider": "codex",
+          "session": "rollout-2026-10-08T10-55-25-01a11938-f3fe-7b22-afad-1395863b7640.jsonl",
+          "call_line": 735,
+          "output_line": 739,
+          "timestamp": "2026-10-12T04:40:04.018Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scopead_overview.png"
+        }
+      ]
+    },
+    {
+      "size": [
+        2000,
+        1143
+      ],
+      "pixel_sha256": "07c628ca71e2e6d5c2715f88cd095a766c77ade35a97dc8f85ed2b6827ca1b62",
+      "file": "26_fig_scopead_overview.jpg",
+      "sha256": "572db52178ccfc431eeb298fec5e2c2b887d47249d4945c5f7f85078e8b2b97d",
+      "occurrences": [
+        {
+          "provider": "claude",
+          "session": "7612847f-3fec-4e13-9145-e080d52ee2c8.jsonl",
+          "call_line": 2022,
+          "output_line": 2025,
+          "timestamp": "2026-10-12T04:44:18.966Z",
+          "source_path": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/figures/fig_scopead_overview.png"
+        }
+      ]
+    }
+  ]
+}

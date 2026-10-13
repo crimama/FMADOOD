@@ -1,0 +1,50 @@
+{
+  "chewinggum": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/425.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/314.JPG"
+  ],
+  "macaroni1": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0849.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0628.JPG"
+  ],
+  "pcb2": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0849.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0628.JPG"
+  ],
+  "pcb1": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0852.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0632.JPG"
+  ],
+  "candle": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0849.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0628.JPG"
+  ],
+  "cashew": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/423.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/313.JPG"
+  ],
+  "capsules": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/510.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/382.JPG"
+  ],
+  "pipe_fryum": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/423.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/313.JPG"
+  ],
+  "pcb4": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0852.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0632.JPG"
+  ],
+  "macaroni2": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0849.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0628.JPG"
+  ],
+  "fryum": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/423.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/313.JPG"
+  ],
+  "pcb3": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0852.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0633.JPG"
+  ]
+}

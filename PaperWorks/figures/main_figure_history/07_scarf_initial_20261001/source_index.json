@@ -1,0 +1,44 @@
+[
+  {
+    "id": "draft_01",
+    "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+    "line": 495,
+    "timestamp": "2026-10-01T07:59:14.578Z",
+    "label": "initial"
+  },
+  {
+    "id": "draft_02",
+    "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+    "line": 542,
+    "timestamp": "2026-10-01T08:00:38.228Z",
+    "label": "edit_542"
+  },
+  {
+    "id": "draft_03",
+    "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+    "line": 564,
+    "timestamp": "2026-10-01T08:00:48.710Z",
+    "label": "edit_564"
+  },
+  {
+    "id": "draft_04",
+    "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+    "line": 591,
+    "timestamp": "2026-10-01T08:00:59.827Z",
+    "label": "edit_591"
+  },
+  {
+    "id": "draft_05",
+    "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+    "line": 625,
+    "timestamp": "2026-10-01T08:01:29.487Z",
+    "label": "edit_625"
+  },
+  {
+    "id": "draft_06",
+    "session": "b84a2ba6-60e5-48de-8f52-3cc275af815e.jsonl",
+    "line": 659,
+    "timestamp": "2026-10-01T08:01:47.841Z",
+    "label": "edit_659"
+  }
+]

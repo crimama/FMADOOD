@@ -1,0 +1,3934 @@
+{
+  "suite": "scarf_calibration_factorial_seed0_fp16_20261009",
+  "seed": 0,
+  "status": "planned_fresh_snapshot_execution",
+  "execution_scope": "AD2 full8 public test_public development; MVTec AD full15; VisA full12; all populations previously seen for development.",
+  "config_count_total": 150,
+  "config_count_by_dataset": {
+    "ad2": 50,
+    "mvtec": 50,
+    "visa": 50
+  },
+  "logical_run_count": 1750,
+  "phase_logical_runs": {
+    "A": 1050,
+    "B": 560,
+    "C": 140
+  },
+  "reuse": {
+    "historical_candidates_not_used": {
+      "ad2": [
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_deeponly_s01_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s01_seed0.yaml",
+          "source_config_sha256": "6abc1417863e7e9e1a764c819b24dac09133e4910e2775a924b2de86f7034c88",
+          "shot": 1,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_nonorm_s01_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s01_seed0.yaml",
+          "source_config_sha256": "c1ccc4b5a2a78c54003efb568650388e558e73b89abbde5491483239ee597ae6",
+          "shot": 1,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "ad2_linear0125_s01_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s01_seed0.yaml",
+          "source_config_sha256": "dbd44b260b37d59a190d30adbc5c1efcfe51acb9f0faf54953fc6baa9a900228",
+          "shot": 1,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_deeponly_s02_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s02_seed0.yaml",
+          "source_config_sha256": "fae3d097870f7ad4aa6a040bc635508edc32e54b904c25a8d31f1639c6255311",
+          "shot": 2,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_nonorm_s02_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s02_seed0.yaml",
+          "source_config_sha256": "e6e6c5c1bc91b4b496758bcbedfbd45cecd04c7d246f155fcf03e6baff4b18ac",
+          "shot": 2,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_fusion_sensitivity_fp16_20261008",
+          "source_label": "linear0125_s02",
+          "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/linear0125_s02.yaml",
+          "source_config_sha256": "95308ae7d27edff984237f918ed5a456d6f2d556d5b8ed763d2b7d8c465edda0",
+          "shot": 2,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_deeponly_s04_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s04_seed0.yaml",
+          "source_config_sha256": "75e59b615fa083b601f17184bdd5a826abb6d4f3c74a113efdec24bacec3a5a7",
+          "shot": 4,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_nonorm_s04_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s04_seed0.yaml",
+          "source_config_sha256": "985aeb4ed252430a1e1edb270c517ab56a943a0c84d13cebf8fa91c85df02bac",
+          "shot": 4,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "ad2_linear0125_s04_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s04_seed0.yaml",
+          "source_config_sha256": "6883653758e6e96ad2ed838cd8ec6b7cac57a9cfdc5cece9ef81bcb1211a2bd3",
+          "shot": 4,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_deeponly_s08_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s08_seed0.yaml",
+          "source_config_sha256": "2a2869f84cb8dc301916451e8bd8b7f1c565b85a4c7ac034de712cd622423e16",
+          "shot": 8,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_nonorm_s08_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s08_seed0.yaml",
+          "source_config_sha256": "dd4a4256ad34da6cee9ce966112637c922efa807e700ec165ce81e5edc54209f",
+          "shot": 8,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "ad2_linear0125_s08_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s08_seed0.yaml",
+          "source_config_sha256": "eb6b81be7946a0a0b61b4a1322a9a7c3bbae0d58f70cce0a1e0cfa94c59cd1de",
+          "shot": 8,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_deeponly_s16_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s16_seed0.yaml",
+          "source_config_sha256": "79538549cafa6a779c4f18731843c755f4182808cec3695164505c5414441eec",
+          "shot": 16,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "ad2_nonorm_s16_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s16_seed0.yaml",
+          "source_config_sha256": "30484b5eaba158ea6e9e9386b33bbf40a9cc2b0b0c0ae11f48622f665e640f70",
+          "shot": 16,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "ad2",
+          "source_suite": "scarf_fusion_sensitivity_fp16_20261008",
+          "source_label": "linear0125_s16",
+          "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/linear0125_s16.yaml",
+          "source_config_sha256": "517da1414e07f29906217d5c108db18e1e526a8dec16d93f5d8f7f7644d09795",
+          "shot": 16,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        }
+      ],
+      "mvtec": [
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_deeponly_s01_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s01_seed0.yaml",
+          "source_config_sha256": "83b607968d9ac5866e7da13a91b4f86060abc37c1808d3199a5daa7ce9d0f2b1",
+          "shot": 1,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_nonorm_s01_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s01_seed0.yaml",
+          "source_config_sha256": "0be9e72b634c79f2359cebd4c0e651aa04b90704987892eeaee7377ebf51b653",
+          "shot": 1,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "mvtec_linear0125_s01_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s01_seed0.yaml",
+          "source_config_sha256": "37a4018ee1cf36baec2e304f6845276aa4d15d2153e589b91b6806c842d6250e",
+          "shot": 1,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_deeponly_s02_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s02_seed0.yaml",
+          "source_config_sha256": "9fcd245b872809f563c579be29a2d7e7271b43fc08c58f552ac3ae474f16203d",
+          "shot": 2,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_nonorm_s02_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s02_seed0.yaml",
+          "source_config_sha256": "b4886921f27ca70c43c1fe1b65c4a318e7428ca9b7f55db21c83e786554bede6",
+          "shot": 2,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "mvtec_linear0125_s02_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s02_seed0.yaml",
+          "source_config_sha256": "38ae6d9a0534fdf1ccebf915a865dc580c9c19f87780e0d7d1c9916b23c9a052",
+          "shot": 2,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_deeponly_s04_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s04_seed0.yaml",
+          "source_config_sha256": "5137210a2042fc849a0f50d118c36d25f17e94c7020da9a185bc2f1e84240afd",
+          "shot": 4,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_nonorm_s04_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s04_seed0.yaml",
+          "source_config_sha256": "e7cde4ee13b2871fc59b239edcb9185c147c773cc391601bc898530e19d26334",
+          "shot": 4,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "mvtec_linear0125_s04_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s04_seed0.yaml",
+          "source_config_sha256": "bfe5553a92f7cde0528c1fab908622784ecb0b7814ebcbf2a87d07ccd6b957a7",
+          "shot": 4,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_deeponly_s08_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s08_seed0.yaml",
+          "source_config_sha256": "0a0fc70e47fae4d0ffa37c5f4f2de9c3e76f385d2c1c98460f91ec0e398803ac",
+          "shot": 8,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_nonorm_s08_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s08_seed0.yaml",
+          "source_config_sha256": "7855ec7cba882a69fbb7a5c5d196d50a83e4153147459120db72415ec20f6d02",
+          "shot": 8,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "mvtec_linear0125_s08_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s08_seed0.yaml",
+          "source_config_sha256": "11a8d6f6103c49e18244340facc8288a8e9d9d3c88a877e52127e9f226742ecb",
+          "shot": 8,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_deeponly_s16_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s16_seed0.yaml",
+          "source_config_sha256": "c7f287fc7fce1e75b2c32d2ca9e97d5e04f02d74eadc4953a5fdb0ccf86a4d66",
+          "shot": 16,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "mvtec_nonorm_s16_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s16_seed0.yaml",
+          "source_config_sha256": "d34570c48a0f32759d4640626a5af1b5f99ea5faacdc5a75bec54c162da55b8a",
+          "shot": 16,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "mvtec",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "mvtec_linear0125_s16_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s16_seed0.yaml",
+          "source_config_sha256": "67d3b0f54ac69d0a66320d80e2a75a2ca58d6183d57408e0c1bef4929faa515d",
+          "shot": 16,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        }
+      ],
+      "visa": [
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_deeponly_s01_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s01_seed0.yaml",
+          "source_config_sha256": "701a3950cf4d08fe6d3b179c946882f7d5377b6ab2c62568bfaecb110515a19e",
+          "shot": 1,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_nonorm_s01_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s01_seed0.yaml",
+          "source_config_sha256": "f0c7c32573fa62c2efd2de4705975d77c705edc9389398aec1f01dd5cd6f6809",
+          "shot": 1,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "visa_linear0125_s01_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s01_seed0.yaml",
+          "source_config_sha256": "8a1fd91d6a95e70c62dada675e26deeb16a77c9cdd520cc771281cdbb82530ec",
+          "shot": 1,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_deeponly_s02_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s02_seed0.yaml",
+          "source_config_sha256": "2c02542ba340e3b8e6165f01c3e81859d33b035a3a125af83611e29cd5feabec",
+          "shot": 2,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_nonorm_s02_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s02_seed0.yaml",
+          "source_config_sha256": "21c615b066b399e5c67c6301233dec916570851ce0eeee4dfe34cd12a441be72",
+          "shot": 2,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "visa_linear0125_s02_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s02_seed0.yaml",
+          "source_config_sha256": "ab0edb585b6f5868597c3c67638dfa923d67a6889691a04abc41739688356d48",
+          "shot": 2,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_deeponly_s04_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s04_seed0.yaml",
+          "source_config_sha256": "d7644331495523b6c4a8858f252be37d644e35222894a0c7503982db229a865e",
+          "shot": 4,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_nonorm_s04_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s04_seed0.yaml",
+          "source_config_sha256": "97a72fb82f64518f8bfb58fa4d00cd1d97c06a526a4e9a89b23477f8c878ba66",
+          "shot": 4,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "visa_linear0125_s04_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s04_seed0.yaml",
+          "source_config_sha256": "2169f8615dd139362ba2958b1271b011850e0faef228d72965e86398a652fd47",
+          "shot": 4,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_deeponly_s08_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s08_seed0.yaml",
+          "source_config_sha256": "5f37a616e646e8a5c341fb94e947c76dc61bb6cc696a81ae3402c62330dc440f",
+          "shot": 8,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_nonorm_s08_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s08_seed0.yaml",
+          "source_config_sha256": "3a6665efce74db834ca8cacd13c33da69207c9548f192f6fa87167512d16cbf1",
+          "shot": 8,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "visa_linear0125_s08_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s08_seed0.yaml",
+          "source_config_sha256": "27462f407adb78e874a15ab80faa302e2ce3211627f75f26679cf88cd54b17f5",
+          "shot": 8,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_deeponly_s16_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s16_seed0.yaml",
+          "source_config_sha256": "ac9c2729458cc5d0c9940ba69a6a006cbd4c8e50588298e28c96bed9a3a48757",
+          "shot": 16,
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+          "source_label": "visa_nonorm_s16_seed0",
+          "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s16_seed0.yaml",
+          "source_config_sha256": "4524ed8adf95ad6656c09be241eb6faedb36c09fe663c1b3fd6431aa4553d760",
+          "shot": 16,
+          "fusion": "linear0125",
+          "normalization": "none",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        },
+        {
+          "dataset": "visa",
+          "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+          "source_label": "visa_linear0125_s16_seed0",
+          "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s16_seed0.yaml",
+          "source_config_sha256": "8f4df3d4a8d1bfcff07751dfddc6d3d89cd7d4b10e4cdf895a77121a67f0dfc8",
+          "shot": 16,
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "status": "historical_candidate_not_reused_bank_digest_mismatch"
+        }
+      ]
+    },
+    "confirmed_reuse": [],
+    "execution_reuse": [],
+    "decision": "Run the full suite under one current code/runtime snapshot because prior support-matched artifacts have mismatched feature-bank digests."
+  },
+  "execution": {
+    "phase_order": [
+      "A",
+      "B",
+      "C"
+    ],
+    "stage_a_config_order": "shot ascending, then fusion deep/linear0125, then normalization none/mad/tailscale",
+    "timeout_seconds_per_class": 10800,
+    "performance_based_early_stopping": false,
+    "retry_policy": "Retry only recoverable runtime failures within the same declared budget; preserve failed-attempt provenance.",
+    "fit_inputs": "Normal support images and fixed manifests only; no dataset objects, ground truth, or evaluation labels enter fit/predict.",
+    "backbone_trainable_parameters": 0,
+    "save_anomaly_maps": false,
+    "save_weights": false,
+    "ablation_bank_audit": true,
+    "fusion_diagnostic": false
+  },
+  "datasets": {
+    "ad2": {
+      "data_root": "/home/hun/Volume/DATA/mvtec_ad_2",
+      "objects": [
+        "can",
+        "fabric",
+        "fruit_jelly",
+        "rice",
+        "sheet_metal",
+        "vial",
+        "wallplugs",
+        "walnuts"
+      ],
+      "configs": [
+        {
+          "label": "ad2_A_deep_none_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_none_s01_seed0.yaml",
+          "config_sha256": "345fe8cc3d5d4dbbca2bc9d33ee975bb73ce88f30c9287e8c696b59f5413c17d",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_1.json",
+          "support_manifest_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_mad_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_mad_s01_seed0.yaml",
+          "config_sha256": "0fde457ae6ce38f7d0d61fd652d0ae12bf050b9218c2e51d89bcb42be46e50c7",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_1.json",
+          "support_manifest_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_tailscale_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_tailscale_s01_seed0.yaml",
+          "config_sha256": "6abc1417863e7e9e1a764c819b24dac09133e4910e2775a924b2de86f7034c88",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_1.json",
+          "support_manifest_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_deeponly_s01_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s01_seed0.yaml",
+            "source_config_sha256": "6abc1417863e7e9e1a764c819b24dac09133e4910e2775a924b2de86f7034c88",
+            "shot": 1,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_none_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_none_s01_seed0.yaml",
+          "config_sha256": "c1ccc4b5a2a78c54003efb568650388e558e73b89abbde5491483239ee597ae6",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_1.json",
+          "support_manifest_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_nonorm_s01_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s01_seed0.yaml",
+            "source_config_sha256": "c1ccc4b5a2a78c54003efb568650388e558e73b89abbde5491483239ee597ae6",
+            "shot": 1,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_mad_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_mad_s01_seed0.yaml",
+          "config_sha256": "3254b7dd2a14ccc4de3fa45fd5354417727140fd211978f9cca9085b2f36bb5b",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_1.json",
+          "support_manifest_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_tailscale_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s01_seed0.yaml",
+          "config_sha256": "dbd44b260b37d59a190d30adbc5c1efcfe51acb9f0faf54953fc6baa9a900228",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_1.json",
+          "support_manifest_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "ad2_linear0125_s01_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s01_seed0.yaml",
+            "source_config_sha256": "dbd44b260b37d59a190d30adbc5c1efcfe51acb9f0faf54953fc6baa9a900228",
+            "shot": 1,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_none_s02_seed0.yaml",
+          "config_sha256": "1c288fc6438249cd5c528f0b4c689d3f3eb7fc5adedc431278385f588928e0a0",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_mad_s02_seed0.yaml",
+          "config_sha256": "5bb87b6816b1b22e28e5b33e034aa0c259f56894071feecf717bbb0139b06946",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_tailscale_s02_seed0.yaml",
+          "config_sha256": "fae3d097870f7ad4aa6a040bc635508edc32e54b904c25a8d31f1639c6255311",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_deeponly_s02_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s02_seed0.yaml",
+            "source_config_sha256": "fae3d097870f7ad4aa6a040bc635508edc32e54b904c25a8d31f1639c6255311",
+            "shot": 2,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_none_s02_seed0.yaml",
+          "config_sha256": "e6e6c5c1bc91b4b496758bcbedfbd45cecd04c7d246f155fcf03e6baff4b18ac",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_nonorm_s02_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s02_seed0.yaml",
+            "source_config_sha256": "e6e6c5c1bc91b4b496758bcbedfbd45cecd04c7d246f155fcf03e6baff4b18ac",
+            "shot": 2,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_mad_s02_seed0.yaml",
+          "config_sha256": "dce2adfb1f2bd87e986c859f2dde2beb0b1fa6410f98da736cd0527d703e43e3",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s02_seed0.yaml",
+          "config_sha256": "95308ae7d27edff984237f918ed5a456d6f2d556d5b8ed763d2b7d8c465edda0",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_fusion_sensitivity_fp16_20261008",
+            "source_label": "linear0125_s02",
+            "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/linear0125_s02.yaml",
+            "source_config_sha256": "95308ae7d27edff984237f918ed5a456d6f2d556d5b8ed763d2b7d8c465edda0",
+            "shot": 2,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_none_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_none_s04_seed0.yaml",
+          "config_sha256": "29320f71a369869d0e83d2f54d0666a9bb7a85668245f06f1022ba663288d383",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_4.json",
+          "support_manifest_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_mad_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_mad_s04_seed0.yaml",
+          "config_sha256": "d1e404d20368df4ba99a43a75484180f3b2f3c4d32b2ebbb4ec4190527f6d5ce",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_4.json",
+          "support_manifest_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_tailscale_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_tailscale_s04_seed0.yaml",
+          "config_sha256": "75e59b615fa083b601f17184bdd5a826abb6d4f3c74a113efdec24bacec3a5a7",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_4.json",
+          "support_manifest_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_deeponly_s04_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s04_seed0.yaml",
+            "source_config_sha256": "75e59b615fa083b601f17184bdd5a826abb6d4f3c74a113efdec24bacec3a5a7",
+            "shot": 4,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_none_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_none_s04_seed0.yaml",
+          "config_sha256": "985aeb4ed252430a1e1edb270c517ab56a943a0c84d13cebf8fa91c85df02bac",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_4.json",
+          "support_manifest_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_nonorm_s04_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s04_seed0.yaml",
+            "source_config_sha256": "985aeb4ed252430a1e1edb270c517ab56a943a0c84d13cebf8fa91c85df02bac",
+            "shot": 4,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_mad_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_mad_s04_seed0.yaml",
+          "config_sha256": "ef6c4764ac61a49b331c2142f6ea1a9a27f2da8e9d7fdbea025fc92cb4c2f280",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_4.json",
+          "support_manifest_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_tailscale_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s04_seed0.yaml",
+          "config_sha256": "6883653758e6e96ad2ed838cd8ec6b7cac57a9cfdc5cece9ef81bcb1211a2bd3",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_4.json",
+          "support_manifest_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "ad2_linear0125_s04_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s04_seed0.yaml",
+            "source_config_sha256": "6883653758e6e96ad2ed838cd8ec6b7cac57a9cfdc5cece9ef81bcb1211a2bd3",
+            "shot": 4,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_none_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_none_s08_seed0.yaml",
+          "config_sha256": "ea976d128673cebbd03b3f82fb9854a9d193619fdfb6aa3460b892016ae4b1b1",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_8.json",
+          "support_manifest_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_mad_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_mad_s08_seed0.yaml",
+          "config_sha256": "2955ad3bae2c6d7e7e9420baa420e4e5f80dfdd9e59b0be282ef5b84dc6667bd",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_8.json",
+          "support_manifest_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_tailscale_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_tailscale_s08_seed0.yaml",
+          "config_sha256": "2a2869f84cb8dc301916451e8bd8b7f1c565b85a4c7ac034de712cd622423e16",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_8.json",
+          "support_manifest_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_deeponly_s08_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s08_seed0.yaml",
+            "source_config_sha256": "2a2869f84cb8dc301916451e8bd8b7f1c565b85a4c7ac034de712cd622423e16",
+            "shot": 8,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_none_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_none_s08_seed0.yaml",
+          "config_sha256": "dd4a4256ad34da6cee9ce966112637c922efa807e700ec165ce81e5edc54209f",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_8.json",
+          "support_manifest_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_nonorm_s08_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s08_seed0.yaml",
+            "source_config_sha256": "dd4a4256ad34da6cee9ce966112637c922efa807e700ec165ce81e5edc54209f",
+            "shot": 8,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_mad_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_mad_s08_seed0.yaml",
+          "config_sha256": "fefedca2c1b4e61d964830681f12f94ad584fbc1d38843ff03bd73d0fb0d7cc8",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_8.json",
+          "support_manifest_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_tailscale_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s08_seed0.yaml",
+          "config_sha256": "eb6b81be7946a0a0b61b4a1322a9a7c3bbae0d58f70cce0a1e0cfa94c59cd1de",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_8.json",
+          "support_manifest_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "ad2_linear0125_s08_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/ad2_linear0125_s08_seed0.yaml",
+            "source_config_sha256": "eb6b81be7946a0a0b61b4a1322a9a7c3bbae0d58f70cce0a1e0cfa94c59cd1de",
+            "shot": 8,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_none_s16_seed0.yaml",
+          "config_sha256": "762fdf9d93c4100f8a3b785518cb30464d01b28b39f1010dc9b502df03c6e4a3",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_mad_s16_seed0.yaml",
+          "config_sha256": "5b87425b766e2997c27d887000a74a0efbf39dca25252921def71372c8579bd3",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_deep_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_deep_tailscale_s16_seed0.yaml",
+          "config_sha256": "79538549cafa6a779c4f18731843c755f4182808cec3695164505c5414441eec",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_deeponly_s16_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s16_seed0.yaml",
+            "source_config_sha256": "79538549cafa6a779c4f18731843c755f4182808cec3695164505c5414441eec",
+            "shot": 16,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_none_s16_seed0.yaml",
+          "config_sha256": "30484b5eaba158ea6e9e9386b33bbf40a9cc2b0b0c0ae11f48622f665e640f70",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "ad2_nonorm_s16_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s16_seed0.yaml",
+            "source_config_sha256": "30484b5eaba158ea6e9e9386b33bbf40a9cc2b0b0c0ae11f48622f665e640f70",
+            "shot": 16,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_mad_s16_seed0.yaml",
+          "config_sha256": "6c6c8e80db8238d88705a8f510e9d0616fe5a9c35d3b0bbb6b5d45657ae3a6a5",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_A_linear0125_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s16_seed0.yaml",
+          "config_sha256": "517da1414e07f29906217d5c108db18e1e526a8dec16d93f5d8f7f7644d09795",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_fusion_sensitivity_fp16_20261008",
+            "source_label": "linear0125_s16",
+            "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/linear0125_s16.yaml",
+            "source_config_sha256": "517da1414e07f29906217d5c108db18e1e526a8dec16d93f5d8f7f7644d09795",
+            "shot": 16,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_deep_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_deep_none_s02_seed0.yaml",
+          "config_sha256": "cd26e9b6b2d5639b16617d3ef4b3acc9edbbd299124193dd64f54d8fc8ebf4f8",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_deep_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_deep_mad_s02_seed0.yaml",
+          "config_sha256": "3498d80096c8702711c55c44fd1f853150950082bbbe342e0177bb9b72282416",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_deep_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_deep_tailscale_s02_seed0.yaml",
+          "config_sha256": "de1ba66b23867c2fb212398f32cd96f683264773503cba3065d428ef996ca30b",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_linear0125_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_linear0125_none_s02_seed0.yaml",
+          "config_sha256": "c09768b32aded49af8c03efd3ccbac41ea4da8dba7f5b1479c949bff7c4b66aa",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_linear0125_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_linear0125_mad_s02_seed0.yaml",
+          "config_sha256": "541ad6bfde1bfbe8aa9f298b4c4873788cddc0438c0ff514a01e4a7cae1e3aac",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_linear0125_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_linear0125_tailscale_s02_seed0.yaml",
+          "config_sha256": "8dfdd448b64a71d5b39f8d56d1faabdbe9e2136f4672d60b95935d1a1052e701",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73"
+        },
+        {
+          "label": "ad2_B_r1120_cap1024_deep_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap1024_deep_none_s02_seed0.yaml",
+          "config_sha256": "5cc57d01cb899e8288c80a3f46a3cb3d01a08e110dbf3ab9e612bce763a99ee1",
+          "shot": 2,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "ad2_B_r1120_cap1024_deep_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap1024_deep_tailscale_s02_seed0.yaml",
+          "config_sha256": "bc94dd5bcaed9078a70699f53ba7779bce9e40a9ca64f2ec1bff457e7763ae23",
+          "shot": 2,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_deep_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_deep_none_s16_seed0.yaml",
+          "config_sha256": "95e8a730aa23e45d72e4a54f0c65c51f2ba31e6bb31404996c5a7fdc7d8fb9fe",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_deep_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_deep_mad_s16_seed0.yaml",
+          "config_sha256": "9b0ebd918a4e79b52cdabda45f0b17f23f3b4656fe8ef54e699116ae3a0bb365",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_deep_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_deep_tailscale_s16_seed0.yaml",
+          "config_sha256": "bbeefbf8bc274b03e7c844360031a41a39408ff8922d513d8c37c2a64369d94a",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_linear0125_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_linear0125_none_s16_seed0.yaml",
+          "config_sha256": "e8395632ccd20bc145910c2cc674f5fcd02ce96985a344c2396a3c6d5443e992",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_linear0125_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_linear0125_mad_s16_seed0.yaml",
+          "config_sha256": "139edb26eeaf00ef3ea5ee0e84a62061e5331df8b0a9aca5ad81c1bde24e0fb7",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894"
+        },
+        {
+          "label": "ad2_B_r1120_cap256_linear0125_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap256_linear0125_tailscale_s16_seed0.yaml",
+          "config_sha256": "6bf26dfa6d30066b8a084e6fc716402675b8a0f381be13ba1c683db3af251479",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894"
+        },
+        {
+          "label": "ad2_B_r1120_cap1024_deep_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap1024_deep_none_s16_seed0.yaml",
+          "config_sha256": "05b932983e37da43fbf65479f1592b6f499f9477b3e66eb85aeab32fa293a5b1",
+          "shot": 16,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "ad2_B_r1120_cap1024_deep_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_B_r1120_cap1024_deep_tailscale_s16_seed0.yaml",
+          "config_sha256": "394ddb1ffb2ce77c85bb6136c441485aab27e01d508461b1f31cdf60e558e8f1",
+          "shot": 16,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "ad2_C_loo_token_q95_deep_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_C_loo_token_q95_deep_s02_seed0.yaml",
+          "config_sha256": "ba8b08fbaee8579bad6ef91ccea5218991e03742bc73a5e619c6750127a94477",
+          "shot": 2,
+          "phase": "C",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "source_control_label": "ad2_A_deep_tailscale_s02_seed0"
+        },
+        {
+          "label": "ad2_C_loo_token_q95_linear0125_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_C_loo_token_q95_linear0125_s02_seed0.yaml",
+          "config_sha256": "d562a880c3bc8ae4047f9bfab5b0e54fa5a9132c5b4b117b19d7774a239efebc",
+          "shot": 2,
+          "phase": "C",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_2.json",
+          "support_manifest_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+          "source_control_label": "ad2_A_linear0125_tailscale_s02_seed0"
+        },
+        {
+          "label": "ad2_C_loo_token_q95_deep_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_C_loo_token_q95_deep_s16_seed0.yaml",
+          "config_sha256": "f01f41892b96f9d00dc654aa131cdb20f5897ae24cf0e3b3379ddd245840de38",
+          "shot": 16,
+          "phase": "C",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "source_control_label": "ad2_A_deep_tailscale_s16_seed0"
+        },
+        {
+          "label": "ad2_C_loo_token_q95_linear0125_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_C_loo_token_q95_linear0125_s16_seed0.yaml",
+          "config_sha256": "b396fb5d2848b0014ac1b7096f59cd7edbec0a8ae560bd76f6c6e4bb11b75e14",
+          "shot": 16,
+          "phase": "C",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/methods/VOID_support_16.json",
+          "support_manifest_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+          "source_control_label": "ad2_A_linear0125_tailscale_s16_seed0"
+        }
+      ]
+    },
+    "mvtec": {
+      "data_root": "/home/hun/Volume/DATA/MVTecAD",
+      "objects": [
+        "bottle",
+        "cable",
+        "capsule",
+        "carpet",
+        "grid",
+        "hazelnut",
+        "leather",
+        "metal_nut",
+        "pill",
+        "screw",
+        "tile",
+        "toothbrush",
+        "transistor",
+        "wood",
+        "zipper"
+      ],
+      "configs": [
+        {
+          "label": "mvtec_A_deep_none_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_none_s01_seed0.yaml",
+          "config_sha256": "018a7ac4bc9571c8d25aee5bebebd2fe0daf72de7b43bbeff1147c74de1b60c4",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json",
+          "support_manifest_sha256": "71fd05e7e7d7f646d6ba0057540b9893d65c15e50b304e2c515836f6d14bcb88",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_mad_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_mad_s01_seed0.yaml",
+          "config_sha256": "fb767b99198a5f3af1c89162a992b0549ef4dcd02eeaab6cae70e17082b62dae",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json",
+          "support_manifest_sha256": "71fd05e7e7d7f646d6ba0057540b9893d65c15e50b304e2c515836f6d14bcb88",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_tailscale_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_tailscale_s01_seed0.yaml",
+          "config_sha256": "83b607968d9ac5866e7da13a91b4f86060abc37c1808d3199a5daa7ce9d0f2b1",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json",
+          "support_manifest_sha256": "71fd05e7e7d7f646d6ba0057540b9893d65c15e50b304e2c515836f6d14bcb88",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_deeponly_s01_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s01_seed0.yaml",
+            "source_config_sha256": "83b607968d9ac5866e7da13a91b4f86060abc37c1808d3199a5daa7ce9d0f2b1",
+            "shot": 1,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_none_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_none_s01_seed0.yaml",
+          "config_sha256": "0be9e72b634c79f2359cebd4c0e651aa04b90704987892eeaee7377ebf51b653",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json",
+          "support_manifest_sha256": "71fd05e7e7d7f646d6ba0057540b9893d65c15e50b304e2c515836f6d14bcb88",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_nonorm_s01_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s01_seed0.yaml",
+            "source_config_sha256": "0be9e72b634c79f2359cebd4c0e651aa04b90704987892eeaee7377ebf51b653",
+            "shot": 1,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_mad_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_mad_s01_seed0.yaml",
+          "config_sha256": "23332627692da48c3588cf81dba9bf8b16b8991459f169e473a924dafd732c5a",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json",
+          "support_manifest_sha256": "71fd05e7e7d7f646d6ba0057540b9893d65c15e50b304e2c515836f6d14bcb88",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_tailscale_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_tailscale_s01_seed0.yaml",
+          "config_sha256": "37a4018ee1cf36baec2e304f6845276aa4d15d2153e589b91b6806c842d6250e",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json",
+          "support_manifest_sha256": "71fd05e7e7d7f646d6ba0057540b9893d65c15e50b304e2c515836f6d14bcb88",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "mvtec_linear0125_s01_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s01_seed0.yaml",
+            "source_config_sha256": "37a4018ee1cf36baec2e304f6845276aa4d15d2153e589b91b6806c842d6250e",
+            "shot": 1,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_none_s02_seed0.yaml",
+          "config_sha256": "d952e186d78e31ccd5d203f1a335ce711e8c1704fcf5d708f4841691a632c00d",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_mad_s02_seed0.yaml",
+          "config_sha256": "79c17676b2b0b18ad63f7845c4451708eb7314ec2cfae84174d9718345d9ccb6",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_tailscale_s02_seed0.yaml",
+          "config_sha256": "9fcd245b872809f563c579be29a2d7e7271b43fc08c58f552ac3ae474f16203d",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_deeponly_s02_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s02_seed0.yaml",
+            "source_config_sha256": "9fcd245b872809f563c579be29a2d7e7271b43fc08c58f552ac3ae474f16203d",
+            "shot": 2,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_none_s02_seed0.yaml",
+          "config_sha256": "b4886921f27ca70c43c1fe1b65c4a318e7428ca9b7f55db21c83e786554bede6",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_nonorm_s02_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s02_seed0.yaml",
+            "source_config_sha256": "b4886921f27ca70c43c1fe1b65c4a318e7428ca9b7f55db21c83e786554bede6",
+            "shot": 2,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_mad_s02_seed0.yaml",
+          "config_sha256": "ec7d3dfde5c8f043eaaf4907b4cc04399803f7dd67c8e81b63749bd7108713e7",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_tailscale_s02_seed0.yaml",
+          "config_sha256": "38ae6d9a0534fdf1ccebf915a865dc580c9c19f87780e0d7d1c9916b23c9a052",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "mvtec_linear0125_s02_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s02_seed0.yaml",
+            "source_config_sha256": "38ae6d9a0534fdf1ccebf915a865dc580c9c19f87780e0d7d1c9916b23c9a052",
+            "shot": 2,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_none_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_none_s04_seed0.yaml",
+          "config_sha256": "baf7f4123b4c5231e584c699ea90160c7975e629d92c07ac4451bb99d9121d57",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json",
+          "support_manifest_sha256": "e5c0f75d3f0d65c3c663db9986b1ccc48369508802c3bda6fad6f76c5fc8ea2c",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_mad_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_mad_s04_seed0.yaml",
+          "config_sha256": "c995ad0a3bf27a857030e78308eda3aa3dc03a5b11e13d578dd311d9e253b2db",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json",
+          "support_manifest_sha256": "e5c0f75d3f0d65c3c663db9986b1ccc48369508802c3bda6fad6f76c5fc8ea2c",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_tailscale_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_tailscale_s04_seed0.yaml",
+          "config_sha256": "5137210a2042fc849a0f50d118c36d25f17e94c7020da9a185bc2f1e84240afd",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json",
+          "support_manifest_sha256": "e5c0f75d3f0d65c3c663db9986b1ccc48369508802c3bda6fad6f76c5fc8ea2c",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_deeponly_s04_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s04_seed0.yaml",
+            "source_config_sha256": "5137210a2042fc849a0f50d118c36d25f17e94c7020da9a185bc2f1e84240afd",
+            "shot": 4,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_none_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_none_s04_seed0.yaml",
+          "config_sha256": "e7cde4ee13b2871fc59b239edcb9185c147c773cc391601bc898530e19d26334",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json",
+          "support_manifest_sha256": "e5c0f75d3f0d65c3c663db9986b1ccc48369508802c3bda6fad6f76c5fc8ea2c",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_nonorm_s04_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s04_seed0.yaml",
+            "source_config_sha256": "e7cde4ee13b2871fc59b239edcb9185c147c773cc391601bc898530e19d26334",
+            "shot": 4,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_mad_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_mad_s04_seed0.yaml",
+          "config_sha256": "b9d0d999725ac332c829822dff19853900a4769dbf6d0a8e25e72f4ad2acc4bb",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json",
+          "support_manifest_sha256": "e5c0f75d3f0d65c3c663db9986b1ccc48369508802c3bda6fad6f76c5fc8ea2c",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_tailscale_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_tailscale_s04_seed0.yaml",
+          "config_sha256": "bfe5553a92f7cde0528c1fab908622784ecb0b7814ebcbf2a87d07ccd6b957a7",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json",
+          "support_manifest_sha256": "e5c0f75d3f0d65c3c663db9986b1ccc48369508802c3bda6fad6f76c5fc8ea2c",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "mvtec_linear0125_s04_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s04_seed0.yaml",
+            "source_config_sha256": "bfe5553a92f7cde0528c1fab908622784ecb0b7814ebcbf2a87d07ccd6b957a7",
+            "shot": 4,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_none_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_none_s08_seed0.yaml",
+          "config_sha256": "f896f50d71c01d4cd0783f89a9c60f65e9dfbf6a9992a083d9962abc6e29eb07",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json",
+          "support_manifest_sha256": "ef53e5a1ae92446a75eaf480d615fb6cc78a401ab51efbe4414f3f4f055e1d55",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_mad_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_mad_s08_seed0.yaml",
+          "config_sha256": "b5e64db4a6835e2e414c2f75dfc2fb2bb13c16d02de4b6d62971e1eb6400ae8a",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json",
+          "support_manifest_sha256": "ef53e5a1ae92446a75eaf480d615fb6cc78a401ab51efbe4414f3f4f055e1d55",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_tailscale_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_tailscale_s08_seed0.yaml",
+          "config_sha256": "0a0fc70e47fae4d0ffa37c5f4f2de9c3e76f385d2c1c98460f91ec0e398803ac",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json",
+          "support_manifest_sha256": "ef53e5a1ae92446a75eaf480d615fb6cc78a401ab51efbe4414f3f4f055e1d55",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_deeponly_s08_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s08_seed0.yaml",
+            "source_config_sha256": "0a0fc70e47fae4d0ffa37c5f4f2de9c3e76f385d2c1c98460f91ec0e398803ac",
+            "shot": 8,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_none_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_none_s08_seed0.yaml",
+          "config_sha256": "7855ec7cba882a69fbb7a5c5d196d50a83e4153147459120db72415ec20f6d02",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json",
+          "support_manifest_sha256": "ef53e5a1ae92446a75eaf480d615fb6cc78a401ab51efbe4414f3f4f055e1d55",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_nonorm_s08_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s08_seed0.yaml",
+            "source_config_sha256": "7855ec7cba882a69fbb7a5c5d196d50a83e4153147459120db72415ec20f6d02",
+            "shot": 8,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_mad_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_mad_s08_seed0.yaml",
+          "config_sha256": "a49a3156c0494eb65c9ae2918bcc2defadac098959e3f93f90cf83218264a74b",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json",
+          "support_manifest_sha256": "ef53e5a1ae92446a75eaf480d615fb6cc78a401ab51efbe4414f3f4f055e1d55",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_tailscale_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_tailscale_s08_seed0.yaml",
+          "config_sha256": "11a8d6f6103c49e18244340facc8288a8e9d9d3c88a877e52127e9f226742ecb",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json",
+          "support_manifest_sha256": "ef53e5a1ae92446a75eaf480d615fb6cc78a401ab51efbe4414f3f4f055e1d55",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "mvtec_linear0125_s08_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s08_seed0.yaml",
+            "source_config_sha256": "11a8d6f6103c49e18244340facc8288a8e9d9d3c88a877e52127e9f226742ecb",
+            "shot": 8,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_none_s16_seed0.yaml",
+          "config_sha256": "df7d5b20534cd25a4c3739b50f293711c3c6a8a8fd499aa9087acc917c8dafe4",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_mad_s16_seed0.yaml",
+          "config_sha256": "05753f9ac94bf8417259efd5f536ca6f11e5a444a2938f56b3be74b547864bd9",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_deep_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_deep_tailscale_s16_seed0.yaml",
+          "config_sha256": "c7f287fc7fce1e75b2c32d2ca9e97d5e04f02d74eadc4953a5fdb0ccf86a4d66",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_deeponly_s16_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s16_seed0.yaml",
+            "source_config_sha256": "c7f287fc7fce1e75b2c32d2ca9e97d5e04f02d74eadc4953a5fdb0ccf86a4d66",
+            "shot": 16,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_none_s16_seed0.yaml",
+          "config_sha256": "d34570c48a0f32759d4640626a5af1b5f99ea5faacdc5a75bec54c162da55b8a",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "mvtec_nonorm_s16_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s16_seed0.yaml",
+            "source_config_sha256": "d34570c48a0f32759d4640626a5af1b5f99ea5faacdc5a75bec54c162da55b8a",
+            "shot": 16,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_mad_s16_seed0.yaml",
+          "config_sha256": "563b476d8e3a7a3d616fcdb7e21a687c72b238cfedec45d03c27aec321814024",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_A_linear0125_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_A_linear0125_tailscale_s16_seed0.yaml",
+          "config_sha256": "67d3b0f54ac69d0a66320d80e2a75a2ca58d6183d57408e0c1bef4929faa515d",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "mvtec_linear0125_s16_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s16_seed0.yaml",
+            "source_config_sha256": "67d3b0f54ac69d0a66320d80e2a75a2ca58d6183d57408e0c1bef4929faa515d",
+            "shot": 16,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_deep_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_deep_none_s02_seed0.yaml",
+          "config_sha256": "4d170540d806086376e92ad5ee5c701fce2b52b5db67830de4f9d470ac75a15f",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_deep_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_deep_mad_s02_seed0.yaml",
+          "config_sha256": "91fa12444a97394e8cba9e557e60b6e8045eb583e424de88ffcf78612a9a67aa",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_deep_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_deep_tailscale_s02_seed0.yaml",
+          "config_sha256": "b115912cbd91c9b0aa81eb3a0cf2a63c9b48833e42ac1fd1a9efa14bd2f370ef",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_linear0125_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_linear0125_none_s02_seed0.yaml",
+          "config_sha256": "db8ab66945ae9a3bcc8773a34370357975bf652713c10546a73a68b4db538ae6",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_linear0125_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_linear0125_mad_s02_seed0.yaml",
+          "config_sha256": "0367a6ac75627810d93eb1782b2c10fb25a15d2a471692203be193b5f01436eb",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_linear0125_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_linear0125_tailscale_s02_seed0.yaml",
+          "config_sha256": "09171b4b9fba202ba755dc86a2aff4c16190ca06b5b741285d35aaf3b3bd9061",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949"
+        },
+        {
+          "label": "mvtec_B_r1120_cap1024_deep_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap1024_deep_none_s02_seed0.yaml",
+          "config_sha256": "55d2a490e091b9175c9282f5c080dd2cca5a7e2bcb512c63caf0098edfd80852",
+          "shot": 2,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "mvtec_B_r1120_cap1024_deep_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap1024_deep_tailscale_s02_seed0.yaml",
+          "config_sha256": "8b879addcd2dd3ac130d62b12342e04e1549050b133cdfde577f27fca4149052",
+          "shot": 2,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_deep_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_deep_none_s16_seed0.yaml",
+          "config_sha256": "0383e90b5cee4b228a1a654da17da18abea32aadb2845dce05ab0d096f0aba0d",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_deep_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_deep_mad_s16_seed0.yaml",
+          "config_sha256": "e57984368fe9da4af69a4c15dfe87350beec96f6d9cb736450d466126123ea91",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_deep_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_deep_tailscale_s16_seed0.yaml",
+          "config_sha256": "29c50c5f20f7a38bb6c0a5d2b8d65e24a08116186db329b4b138878e93e1171f",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_linear0125_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_linear0125_none_s16_seed0.yaml",
+          "config_sha256": "c829b0b3b56724be2ef0d7f121cde0dde64d88bd501dd02b4c466bb28444b4d6",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_linear0125_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_linear0125_mad_s16_seed0.yaml",
+          "config_sha256": "d6b5762c9de40f9d3538e84db4b91955b2ca79e63782c87c458d0dae9735cd25",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701"
+        },
+        {
+          "label": "mvtec_B_r1120_cap256_linear0125_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap256_linear0125_tailscale_s16_seed0.yaml",
+          "config_sha256": "6308a9461a5fba0899e24b3d0da4fa298529a1b709b31dfbac5ebdbc93a86398",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701"
+        },
+        {
+          "label": "mvtec_B_r1120_cap1024_deep_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap1024_deep_none_s16_seed0.yaml",
+          "config_sha256": "47bd52ec7cbb077ac8169dea3fa3421f1e6c44bb4f46f501bce43ba9cb55b192",
+          "shot": 16,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "mvtec_B_r1120_cap1024_deep_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_B_r1120_cap1024_deep_tailscale_s16_seed0.yaml",
+          "config_sha256": "cb7fab9c291b1c056115527fc711336bafb13b2728ac2e1a3ae434e9f3f28b80",
+          "shot": 16,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "mvtec_C_loo_token_q95_deep_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_C_loo_token_q95_deep_s02_seed0.yaml",
+          "config_sha256": "ea4178ce3cec1577bc2213cc3e0437d4d12729a7c1b9c7015fb8a3b4f7344055",
+          "shot": 2,
+          "phase": "C",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "source_control_label": "mvtec_A_deep_tailscale_s02_seed0"
+        },
+        {
+          "label": "mvtec_C_loo_token_q95_linear0125_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_C_loo_token_q95_linear0125_s02_seed0.yaml",
+          "config_sha256": "0e09179e095a7957e781a5df18390f5137b41b6a124af87c08349e2fdf9fd630",
+          "shot": 2,
+          "phase": "C",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json",
+          "support_manifest_sha256": "cce0b9265ef55f4f0e0a7e57a2fd52513c0842dd55e231679168960e38aa8949",
+          "source_control_label": "mvtec_A_linear0125_tailscale_s02_seed0"
+        },
+        {
+          "label": "mvtec_C_loo_token_q95_deep_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_C_loo_token_q95_deep_s16_seed0.yaml",
+          "config_sha256": "3d327b377d18360240f3ea1e127d09fc2888d3de3ae7db976b12d6c533666a07",
+          "shot": 16,
+          "phase": "C",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "source_control_label": "mvtec_A_deep_tailscale_s16_seed0"
+        },
+        {
+          "label": "mvtec_C_loo_token_q95_linear0125_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/mvtec_C_loo_token_q95_linear0125_s16_seed0.yaml",
+          "config_sha256": "dc9b131ff72c446003031319e8f0ad343d4ccb680ff5c89a17b13167e30d99dd",
+          "shot": 16,
+          "phase": "C",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json",
+          "support_manifest_sha256": "00d94f6c849030ae9636797e3ffab5f633ef8ffc79df64599327cfb5f9a11701",
+          "source_control_label": "mvtec_A_linear0125_tailscale_s16_seed0"
+        }
+      ]
+    },
+    "visa": {
+      "data_root": "/home/hun/Volume/DATA/VisA_pytorch/1cls",
+      "objects": [
+        "candle",
+        "capsules",
+        "cashew",
+        "chewinggum",
+        "fryum",
+        "macaroni1",
+        "macaroni2",
+        "pcb1",
+        "pcb2",
+        "pcb3",
+        "pcb4",
+        "pipe_fryum"
+      ],
+      "configs": [
+        {
+          "label": "visa_A_deep_none_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_none_s01_seed0.yaml",
+          "config_sha256": "b31049b5e1bcc1fee753eda47f9bc5617e02068ac9fd139ec18cfe54229d228c",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json",
+          "support_manifest_sha256": "dfa6caf8f8548d46648e988f8d65950981347f28e15cb67ed4a406cd8d93b37b",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_mad_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_mad_s01_seed0.yaml",
+          "config_sha256": "65a4f60887625a69ebf94d964559157def0e5dfd752015e1d17ad5228b2b5016",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json",
+          "support_manifest_sha256": "dfa6caf8f8548d46648e988f8d65950981347f28e15cb67ed4a406cd8d93b37b",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_tailscale_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_tailscale_s01_seed0.yaml",
+          "config_sha256": "701a3950cf4d08fe6d3b179c946882f7d5377b6ab2c62568bfaecb110515a19e",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json",
+          "support_manifest_sha256": "dfa6caf8f8548d46648e988f8d65950981347f28e15cb67ed4a406cd8d93b37b",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_deeponly_s01_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s01_seed0.yaml",
+            "source_config_sha256": "701a3950cf4d08fe6d3b179c946882f7d5377b6ab2c62568bfaecb110515a19e",
+            "shot": 1,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_none_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_none_s01_seed0.yaml",
+          "config_sha256": "f0c7c32573fa62c2efd2de4705975d77c705edc9389398aec1f01dd5cd6f6809",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json",
+          "support_manifest_sha256": "dfa6caf8f8548d46648e988f8d65950981347f28e15cb67ed4a406cd8d93b37b",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_nonorm_s01_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s01_seed0.yaml",
+            "source_config_sha256": "f0c7c32573fa62c2efd2de4705975d77c705edc9389398aec1f01dd5cd6f6809",
+            "shot": 1,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_mad_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_mad_s01_seed0.yaml",
+          "config_sha256": "35d94dcbce3d80b909b3e6441318ed6d1160d49a2c66528483dd4cfe2f155401",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json",
+          "support_manifest_sha256": "dfa6caf8f8548d46648e988f8d65950981347f28e15cb67ed4a406cd8d93b37b",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_tailscale_s01_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_tailscale_s01_seed0.yaml",
+          "config_sha256": "8a1fd91d6a95e70c62dada675e26deeb16a77c9cdd520cc771281cdbb82530ec",
+          "shot": 1,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json",
+          "support_manifest_sha256": "dfa6caf8f8548d46648e988f8d65950981347f28e15cb67ed4a406cd8d93b37b",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "visa_linear0125_s01_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s01_seed0.yaml",
+            "source_config_sha256": "8a1fd91d6a95e70c62dada675e26deeb16a77c9cdd520cc771281cdbb82530ec",
+            "shot": 1,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_none_s02_seed0.yaml",
+          "config_sha256": "7d3588e3ec517ae57e2d2c1a3ff05c383ba959eaee5c6df8e721c41e60997e79",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_mad_s02_seed0.yaml",
+          "config_sha256": "d33ade247d929d7321d2650a30ac633e651016324ce3576ab6d083252bcf31b9",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_tailscale_s02_seed0.yaml",
+          "config_sha256": "2c02542ba340e3b8e6165f01c3e81859d33b035a3a125af83611e29cd5feabec",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_deeponly_s02_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s02_seed0.yaml",
+            "source_config_sha256": "2c02542ba340e3b8e6165f01c3e81859d33b035a3a125af83611e29cd5feabec",
+            "shot": 2,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_none_s02_seed0.yaml",
+          "config_sha256": "21c615b066b399e5c67c6301233dec916570851ce0eeee4dfe34cd12a441be72",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_nonorm_s02_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s02_seed0.yaml",
+            "source_config_sha256": "21c615b066b399e5c67c6301233dec916570851ce0eeee4dfe34cd12a441be72",
+            "shot": 2,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_mad_s02_seed0.yaml",
+          "config_sha256": "40f77dcdf87bd21a0f37c145f5fb4fa68b743793230357f16243a9aa7d5c4a24",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_tailscale_s02_seed0.yaml",
+          "config_sha256": "ab0edb585b6f5868597c3c67638dfa923d67a6889691a04abc41739688356d48",
+          "shot": 2,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "visa_linear0125_s02_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s02_seed0.yaml",
+            "source_config_sha256": "ab0edb585b6f5868597c3c67638dfa923d67a6889691a04abc41739688356d48",
+            "shot": 2,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_none_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_none_s04_seed0.yaml",
+          "config_sha256": "fa756590e9aee46f6674b7b033caec0ee4e34058c0cb40d937760421f6f21b22",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json",
+          "support_manifest_sha256": "0eafad68f864f1e0432668b2b015e0569bd0d576f284d51e38c8a2003d73d104",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_mad_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_mad_s04_seed0.yaml",
+          "config_sha256": "87b52cdc33d7b1ec553c949e26bdc084973a71e05cf642b6a07aaa62fa719d65",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json",
+          "support_manifest_sha256": "0eafad68f864f1e0432668b2b015e0569bd0d576f284d51e38c8a2003d73d104",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_tailscale_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_tailscale_s04_seed0.yaml",
+          "config_sha256": "d7644331495523b6c4a8858f252be37d644e35222894a0c7503982db229a865e",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json",
+          "support_manifest_sha256": "0eafad68f864f1e0432668b2b015e0569bd0d576f284d51e38c8a2003d73d104",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_deeponly_s04_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s04_seed0.yaml",
+            "source_config_sha256": "d7644331495523b6c4a8858f252be37d644e35222894a0c7503982db229a865e",
+            "shot": 4,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_none_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_none_s04_seed0.yaml",
+          "config_sha256": "97a72fb82f64518f8bfb58fa4d00cd1d97c06a526a4e9a89b23477f8c878ba66",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json",
+          "support_manifest_sha256": "0eafad68f864f1e0432668b2b015e0569bd0d576f284d51e38c8a2003d73d104",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_nonorm_s04_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s04_seed0.yaml",
+            "source_config_sha256": "97a72fb82f64518f8bfb58fa4d00cd1d97c06a526a4e9a89b23477f8c878ba66",
+            "shot": 4,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_mad_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_mad_s04_seed0.yaml",
+          "config_sha256": "d2de9cdf8b1ae569c73496b93a655f7dbc00c2bf19a4b2066f988dac17f8932e",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json",
+          "support_manifest_sha256": "0eafad68f864f1e0432668b2b015e0569bd0d576f284d51e38c8a2003d73d104",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_tailscale_s04_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_tailscale_s04_seed0.yaml",
+          "config_sha256": "2169f8615dd139362ba2958b1271b011850e0faef228d72965e86398a652fd47",
+          "shot": 4,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json",
+          "support_manifest_sha256": "0eafad68f864f1e0432668b2b015e0569bd0d576f284d51e38c8a2003d73d104",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "visa_linear0125_s04_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s04_seed0.yaml",
+            "source_config_sha256": "2169f8615dd139362ba2958b1271b011850e0faef228d72965e86398a652fd47",
+            "shot": 4,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_none_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_none_s08_seed0.yaml",
+          "config_sha256": "d390bc16b186f52f7581160da4b0ad5062ca4645c23e2329a03237cf8d259452",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json",
+          "support_manifest_sha256": "334f6160ebbe24790462aa87f5e3ceb4c1de70dae6c260251a2a571c47b63fa9",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_mad_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_mad_s08_seed0.yaml",
+          "config_sha256": "f828fc3962e6b11f055241c35f88c6e07031731b5bfc7f490eda0e3e3bbaf818",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json",
+          "support_manifest_sha256": "334f6160ebbe24790462aa87f5e3ceb4c1de70dae6c260251a2a571c47b63fa9",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_tailscale_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_tailscale_s08_seed0.yaml",
+          "config_sha256": "5f37a616e646e8a5c341fb94e947c76dc61bb6cc696a81ae3402c62330dc440f",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json",
+          "support_manifest_sha256": "334f6160ebbe24790462aa87f5e3ceb4c1de70dae6c260251a2a571c47b63fa9",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_deeponly_s08_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s08_seed0.yaml",
+            "source_config_sha256": "5f37a616e646e8a5c341fb94e947c76dc61bb6cc696a81ae3402c62330dc440f",
+            "shot": 8,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_none_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_none_s08_seed0.yaml",
+          "config_sha256": "3a6665efce74db834ca8cacd13c33da69207c9548f192f6fa87167512d16cbf1",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json",
+          "support_manifest_sha256": "334f6160ebbe24790462aa87f5e3ceb4c1de70dae6c260251a2a571c47b63fa9",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_nonorm_s08_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s08_seed0.yaml",
+            "source_config_sha256": "3a6665efce74db834ca8cacd13c33da69207c9548f192f6fa87167512d16cbf1",
+            "shot": 8,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_mad_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_mad_s08_seed0.yaml",
+          "config_sha256": "0cf675370a37b28077a904ee881a1090e10005b4a6b0fba72888df0ff5bc5a5b",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json",
+          "support_manifest_sha256": "334f6160ebbe24790462aa87f5e3ceb4c1de70dae6c260251a2a571c47b63fa9",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_tailscale_s08_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_tailscale_s08_seed0.yaml",
+          "config_sha256": "27462f407adb78e874a15ab80faa302e2ce3211627f75f26679cf88cd54b17f5",
+          "shot": 8,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json",
+          "support_manifest_sha256": "334f6160ebbe24790462aa87f5e3ceb4c1de70dae6c260251a2a571c47b63fa9",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "visa_linear0125_s08_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s08_seed0.yaml",
+            "source_config_sha256": "27462f407adb78e874a15ab80faa302e2ce3211627f75f26679cf88cd54b17f5",
+            "shot": 8,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_none_s16_seed0.yaml",
+          "config_sha256": "e4f5f58c7c4c972642404eec7dbea17bd358a02726cb5a1b33dcf0cf7dd802c2",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_mad_s16_seed0.yaml",
+          "config_sha256": "825210f53e07d7b89862a91d6e1323f475e71c4450234419afdd76974e3168e8",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_deep_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_deep_tailscale_s16_seed0.yaml",
+          "config_sha256": "ac9c2729458cc5d0c9940ba69a6a006cbd4c8e50588298e28c96bed9a3a48757",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_deeponly_s16_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s16_seed0.yaml",
+            "source_config_sha256": "ac9c2729458cc5d0c9940ba69a6a006cbd4c8e50588298e28c96bed9a3a48757",
+            "shot": 16,
+            "fusion": "deep",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_none_s16_seed0.yaml",
+          "config_sha256": "4524ed8adf95ad6656c09be241eb6faedb36c09fe663c1b3fd6431aa4553d760",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+            "source_label": "visa_nonorm_s16_seed0",
+            "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s16_seed0.yaml",
+            "source_config_sha256": "4524ed8adf95ad6656c09be241eb6faedb36c09fe663c1b3fd6431aa4553d760",
+            "shot": 16,
+            "fusion": "linear0125",
+            "normalization": "none",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_mad_s16_seed0.yaml",
+          "config_sha256": "caa8c352e2e0706db62ebba217d06bd98a2fc954b06fbe30d6fd60cc4ffc6756",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "historical_reuse_candidate": null,
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_A_linear0125_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_A_linear0125_tailscale_s16_seed0.yaml",
+          "config_sha256": "8f4df3d4a8d1bfcff07751dfddc6d3d89cd7d4b10e4cdf895a77121a67f0dfc8",
+          "shot": 16,
+          "phase": "A",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "historical_reuse_candidate": {
+            "source_suite": "scarf_linear0125_seed0_fp16_20261008",
+            "source_label": "visa_linear0125_s16_seed0",
+            "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s16_seed0.yaml",
+            "source_config_sha256": "8f4df3d4a8d1bfcff07751dfddc6d3d89cd7d4b10e4cdf895a77121a67f0dfc8",
+            "shot": 16,
+            "fusion": "linear0125",
+            "normalization": "tailscale",
+            "status": "historical_candidate_not_reused_bank_digest_mismatch"
+          },
+          "reuse_decision": "run_fresh_current_snapshot"
+        },
+        {
+          "label": "visa_B_r1120_cap256_deep_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_deep_none_s02_seed0.yaml",
+          "config_sha256": "59dd94840a1ded5b80f475093ba3c0c1f175815247423080340e6f0d0bee2123",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6"
+        },
+        {
+          "label": "visa_B_r1120_cap256_deep_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_deep_mad_s02_seed0.yaml",
+          "config_sha256": "0d70b7107b762bc35fc67bc24b13f1b3d5dec57cb90d4cca3d8e4012cf0dbef9",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6"
+        },
+        {
+          "label": "visa_B_r1120_cap256_deep_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_deep_tailscale_s02_seed0.yaml",
+          "config_sha256": "3b9eb035a1eaab9307354211c8a836b58302a5e4242df69cee59eed580930943",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6"
+        },
+        {
+          "label": "visa_B_r1120_cap256_linear0125_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_linear0125_none_s02_seed0.yaml",
+          "config_sha256": "e2e894ace9ac8a13a555b211f6079db3d393931577c71eea789a582a01ba32fd",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6"
+        },
+        {
+          "label": "visa_B_r1120_cap256_linear0125_mad_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_linear0125_mad_s02_seed0.yaml",
+          "config_sha256": "1dab16ae6bceb8ba7f7352b4bd1e2779eda57ded9d6345ce5b153d58798fdcbc",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6"
+        },
+        {
+          "label": "visa_B_r1120_cap256_linear0125_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_linear0125_tailscale_s02_seed0.yaml",
+          "config_sha256": "3bc8d9a35455ed8e7e3d1edd897afd11ad08e610d4de8380d3ee074e93dd7cf5",
+          "shot": 2,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6"
+        },
+        {
+          "label": "visa_B_r1120_cap1024_deep_none_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap1024_deep_none_s02_seed0.yaml",
+          "config_sha256": "21a54af10f02c02841207fa52e1c36fd2fa7958ab04b91a44849aa6f783858f0",
+          "shot": 2,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "visa_B_r1120_cap1024_deep_tailscale_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap1024_deep_tailscale_s02_seed0.yaml",
+          "config_sha256": "9de2c18fa1652225c7ac4f7f7f57fe14401d8c8658419c5d400ef49ca1e552c7",
+          "shot": 2,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "visa_B_r1120_cap256_deep_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_deep_none_s16_seed0.yaml",
+          "config_sha256": "96352b0aa9c719fa5386e45f0b7d3f38b291a8238bf367d880ed5f6ed2165f3b",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35"
+        },
+        {
+          "label": "visa_B_r1120_cap256_deep_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_deep_mad_s16_seed0.yaml",
+          "config_sha256": "afc487a68c097dbadb7cfafd04e54b4f16c793e1094350f4ceaf70588f950701",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35"
+        },
+        {
+          "label": "visa_B_r1120_cap256_deep_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_deep_tailscale_s16_seed0.yaml",
+          "config_sha256": "45722d0efee54172e8fb3b10741d598b22e2f938b0b6a490e08df3fd9875b404",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35"
+        },
+        {
+          "label": "visa_B_r1120_cap256_linear0125_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_linear0125_none_s16_seed0.yaml",
+          "config_sha256": "9cd34b282c2fb29093b097de3a6e6aed639b4b46b79fb95323befc5eccb376c0",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35"
+        },
+        {
+          "label": "visa_B_r1120_cap256_linear0125_mad_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_linear0125_mad_s16_seed0.yaml",
+          "config_sha256": "e2d622d0ce6593c753688db235f816bd6bae13e59346ef0a3c800937cff6b623",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "mad",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35"
+        },
+        {
+          "label": "visa_B_r1120_cap256_linear0125_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap256_linear0125_tailscale_s16_seed0.yaml",
+          "config_sha256": "c9f387712e17f9167c3d9fb8208ffd31662a51bcfcac46b2483434630957124d",
+          "shot": 16,
+          "phase": "B",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35"
+        },
+        {
+          "label": "visa_B_r1120_cap1024_deep_none_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap1024_deep_none_s16_seed0.yaml",
+          "config_sha256": "df5bae81d740063862c6127a1cf5afe51c994f407c68a67232daa6509081932b",
+          "shot": 16,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "none",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "visa_B_r1120_cap1024_deep_tailscale_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_B_r1120_cap1024_deep_tailscale_s16_seed0.yaml",
+          "config_sha256": "2442c14cc071dd2f20e32f95768479c6feef0ee6a683747646d70a4461f6a7fd",
+          "shot": 16,
+          "phase": "B_capacity_control",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "resolutions": [
+            1120
+          ],
+          "bank_tokens_per_source": 1024,
+          "noise_guard_resolutions": [
+            1120
+          ],
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "capacity_control": "1024 retained support tokens per source at one scale, matching 4x256 token count; query compute is not matched"
+        },
+        {
+          "label": "visa_C_loo_token_q95_deep_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_C_loo_token_q95_deep_s02_seed0.yaml",
+          "config_sha256": "a307c72a68f4ce4c0354d721a7dbcf9384b45f28881fbb00ca687e69ce887ec8",
+          "shot": 2,
+          "phase": "C",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "source_control_label": "visa_A_deep_tailscale_s02_seed0"
+        },
+        {
+          "label": "visa_C_loo_token_q95_linear0125_s02_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_C_loo_token_q95_linear0125_s02_seed0.yaml",
+          "config_sha256": "3e7207eb9b9f67ad815fd238ba5e4398bc40c83dd4351d1ba28465dd2d6d7330",
+          "shot": 2,
+          "phase": "C",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json",
+          "support_manifest_sha256": "e7aec083de5567360a3e1f39d9f7449a1ab49618507b39447b42228e68a4d8c6",
+          "source_control_label": "visa_A_linear0125_tailscale_s02_seed0"
+        },
+        {
+          "label": "visa_C_loo_token_q95_deep_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_C_loo_token_q95_deep_s16_seed0.yaml",
+          "config_sha256": "9b519b0f4a4de8cd1b76b1a59ab1a5e8ba4bef504b6807d938fc937d5736d473",
+          "shot": 16,
+          "phase": "C",
+          "fusion": "deep",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "source_control_label": "visa_A_deep_tailscale_s16_seed0"
+        },
+        {
+          "label": "visa_C_loo_token_q95_linear0125_s16_seed0",
+          "config": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/visa_C_loo_token_q95_linear0125_s16_seed0.yaml",
+          "config_sha256": "dff8d08fc68dcd42748bbe1779b42eedcf65898af41ca4f962e24093b1c2af86",
+          "shot": 16,
+          "phase": "C",
+          "fusion": "linear0125",
+          "normalization": "tailscale",
+          "tail_quantile": 0.95,
+          "loo_estimator": "token",
+          "resolutions": [
+            448,
+            672,
+            896,
+            1120
+          ],
+          "bank_tokens_per_source": 256,
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json",
+          "support_manifest_sha256": "bf929d436a98dc7828da2fa17e852c7c12f0ec62362a4af9f9e4b6008ed26f35",
+          "source_control_label": "visa_A_linear0125_tailscale_s16_seed0"
+        }
+      ]
+    }
+  }
+}

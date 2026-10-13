@@ -1,0 +1,29 @@
+\tikzset{
+  scarfstage/.style={draw=blue!55!black,fill=blue!5,rounded corners=1pt,
+    align=center,font=\scriptsize,inner sep=2pt,minimum height=10mm},
+  scarfsupport/.style={draw=orange!65!black,fill=orange!8,rounded corners=1pt,
+    dashed,align=center,font=\scriptsize,inner sep=2pt},
+  scarfarrow/.style={-{Latex[length=1.2mm]},draw=black!70,line width=.4pt}
+}
+\node[scarfstage,text width=13mm] (query) {쿼리 영상\\$x^q$};
+\node[scarfstage,text width=18mm,right=3mm of query] (resize)
+  {고정 입력 4종\\$r\in\{448,672,$\\$896,1120\}$};
+\node[scarfstage,text width=19mm,right=3mm of resize] (backbone)
+  {동결 ViT-L/14\\블록 $5,11,23$};
+\node[scarfstage,text width=27mm,right=3mm of backbone] (scale)
+  {1-NN 거리와 척도\\$z_m=d_m/c_m$\\$c_m=\max\{Q_{.95}(\mathcal D_m),\epsilon\}$};
+\node[scarfstage,text width=25mm,right=3mm of scale] (fusion)
+  {해상도·배그별 결합\\$z_d=\frac12(z_{11}+z_{23})$\\$S=z_d+[z_5-\tau_5]_+$};
+\node[scarfstage,text width=25mm,right=3mm of fusion] (aggregate)
+  {배그 평균\\원본 크기 보간 후 해상도 평균\\$A_0=\frac14\sum_r\mathcal U(S_r)$};
+\node[scarfstage,text width=14mm,right=3mm of aggregate] (map)
+  {이상 맵\\$A_0$};
+\node[scarfsupport,above=3mm of scale] (support)
+  {정상 서포트 영상\\$N>1$: LSO, $N=1$: LTO 거리\\$\tau_5=Q_{.99}(\mathcal D_5)/c_5$};
+\draw[scarfarrow] (query) -- (resize);
+\draw[scarfarrow] (resize) -- (backbone);
+\draw[scarfarrow] (backbone) -- (scale);
+\draw[scarfarrow] (scale) -- (fusion);
+\draw[scarfarrow] (fusion) -- (aggregate);
+\draw[scarfarrow] (aggregate) -- (map);
+\draw[scarfarrow,dashed] (support.south) -- (scale.north);

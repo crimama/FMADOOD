@@ -1,0 +1,159 @@
+{
+  "schema": "sra-baseline-reuse-v1",
+  "created_utc": "2026-09-08",
+  "candidate_binding": {
+    "name": "SRA-AD2-ALL8-SAME16-S1-v1",
+    "seed": 20260906,
+    "objects": [
+      "can",
+      "fabric",
+      "fruit_jelly",
+      "rice",
+      "sheet_metal",
+      "vial",
+      "wallplugs",
+      "walnuts"
+    ],
+    "baseline_rerun": false
+  },
+  "frozen_same16_manifest": {
+    "path": "skill_graph/experiments/2026-07-07_flow_latentbank_no_tte_fixed_reference_dinov3/superad16_dinov2_reference_paths.json",
+    "sha256": "7e93f15e2efef565354ebe03a9cc5e834464fc4199bd2273067d62eda2ab74b3",
+    "object_count": 8,
+    "references_per_object": 16,
+    "reference_paths_match": true
+  },
+  "query_population": {
+    "split": "test_public",
+    "subsets": ["good", "bad"],
+    "per_object": {
+      "can": 162,
+      "fabric": 156,
+      "fruit_jelly": 80,
+      "rice": 132,
+      "sheet_metal": 114,
+      "vial": 140,
+      "wallplugs": 150,
+      "walnuts": 150
+    },
+    "total_queries": 1084
+  },
+  "shared_protocol": {
+    "dataset": "mvtec_ad2",
+    "backbone": "DINOv2 ViT-L/14",
+    "superad_feature_layers": [5, 11, 17, 23],
+    "rn_fmlk_feature_layers": [23],
+    "preprocess": "no_mask_no_rotation",
+    "masking": false,
+    "rotation": false,
+    "object_resolution": {
+      "default_smaller_edge": 672,
+      "sheet_metal": 448
+    },
+    "support_memory": "same frozen 16-image reference manifest for both methods"
+  },
+  "historical_metric_contract": {
+    "seg_AUROC_0_05": "sklearn roc_auc_score(max_fpr=0.05), standardized partial pixel AUROC; not full AUROC",
+    "seg_F1_raw": "pooled original-resolution float32 oracle best-threshold F1",
+    "seg_AUPRO_0_05": "connected-component PRO normalized over FPR [0, 0.05]",
+    "evidence": [
+      "src/post_eval.py:326-444",
+      "fmad/evaluation/metrics.py:90-100"
+    ]
+  },
+  "precision_compatibility": {
+    "historical_baseline_score_precision": "float32 TIFF arrays",
+    "candidate_streaming_score_precision": "float16 order-code histogram",
+    "candidate_evidence": "src/flow_tte/streaming_segmentation.py:139,155-183",
+    "strict_candidate_comparable": false,
+    "reason": "candidate float16 quantized accumulators are not bit-identical to the historical float32 evaluator; no candidate metrics exist yet"
+  },
+  "baseline_artifacts": {
+    "same16_paired_contract_20260723": {
+      "path": "results/remote_runs/dsba3/same16_baseline_metric_contract_20260723_v6/summary.json",
+      "sha256": "d0be2f5c6f7321276f39d5840bff3c16b4ac06b22158f04fc25d82438c3eef0a",
+      "status": "available_complete_comparable_public_shadow",
+      "coverage": "8/8 objects, 1084 queries",
+      "metric_precision": "float32",
+      "means": {
+        "basic": {
+          "seg_AUROC_0_05": 0.7726350453999251,
+          "seg_F1_raw": 0.35567550008208204,
+          "seg_AUPRO_0_05": 0.5334077689868274
+        },
+        "superad16": {
+          "seg_AUROC_0_05": 0.761857073657443,
+          "seg_F1_raw": 0.36842310999661204,
+          "seg_AUPRO_0_05": 0.534924081456201
+        },
+        "rn_fmlk_rn16": {
+          "seg_AUROC_0_05": 0.7453120856409173,
+          "seg_F1_raw": 0.33195019925840363,
+          "seg_AUPRO_0_05": 0.4251329949302338
+        }
+      },
+      "same_run_comparable": true
+    },
+    "superad16_latest_compact_20260823": {
+      "path": "results/shift_proxy_stage1_20260823_v1/superad16/superad/mvtec_ad2/dinov2_vitl14/seed=0/metrics.json",
+      "sha256": "f0c9df042f56d03773f2f3b2ad202e659a830e7da800d8eb7048de283c5e1070",
+      "run_manifest_sha256": "c4521e3d89ca1059bab2a140921c91c7bafddcddcfa97a2acf42468afb012568",
+      "status": "available_complete_compact",
+      "coverage": "8/8 objects, 1084 queries",
+      "metric_precision": "float32",
+      "means": {
+        "seg_AUROC_0_05": 0.7618570867508014,
+        "seg_F1_raw": 0.36842299246030524,
+        "seg_AUPRO_0_05": 0.5349241051557867
+      },
+      "same_run_rn_pair": false,
+      "note": "SuperAD-only later compact artifact; July paired contract remains the same-run SuperAD/RN16 comparison"
+    },
+    "rn_fmlk_full_memory": {
+      "status": "BASELINE_PENDING",
+      "path": null,
+      "reason": "existing RN-FMLK evidence is shots=16 with the frozen manifest; no all-train/full-memory RN artifact was found"
+    }
+  },
+  "readiness_compact_copy": {
+    "source_remote_path": "/workspace/results_remote/sra_ablation_20260908/remote_readiness.json",
+    "source_sha256": "8bf063b5417cac5283653ee6e3cdb6cd1bbd8cb3a8c2dd478a7d8d47358b70b2",
+    "status": "READY_FOR_SOURCE_SNAPSHOT_ONLY",
+    "container": "hun_fsad_tta_sra_20260908",
+    "container_id": "a04bd43ae66a8f9ebf7f7f8b6656736fcd21ca4d4109f636e5a7ec62d371831b",
+    "image_id": "sha256:8dbd129dc64fbe1bbce27212902b27e2ecd3fea01794565c80f5ef415369b2f1",
+    "host_gpu_to_container_slot": {"0": 0, "2": 1, "4": 2},
+    "host_gpu_uuids": {
+      "0": "GPU-40a9f4d3-f585-9544-8209-359b2ec00252",
+      "2": "GPU-4f7d8b59-a706-85f5-d885-ca13d03af33f",
+      "4": "GPU-d1368520-79b0-850c-6413-8f1fdf956651"
+    },
+    "container_visible_gpu_uuids_in_slot_order": [
+      "GPU-40a9f4d3-f585-9544-8209-359b2ec00252",
+      "GPU-4f7d8b59-a706-85f5-d885-ca13d03af33f",
+      "GPU-d1368520-79b0-850c-6413-8f1fdf956651"
+    ],
+    "all_requested_host_gpus_idle_at_probe": true,
+    "probe_gpu_memory_mib": {"0": 0, "2": 0, "4": 0},
+    "probe_gpu_utilization_percent": {"0": 0, "2": 0, "4": 0},
+    "probe_compute_pids": {"0": [], "2": [], "4": []},
+    "container_process_state": "idle_sleep_only",
+    "old_c1_container_preserved": true,
+    "training_started": false,
+    "evaluation_started": false,
+    "launch_receipt_present": false,
+    "torch_version": "2.1.2+cu118",
+    "cuda_available": true,
+    "container_cuda_device_count": 3,
+    "mounts_read_only": [
+      "/home/hunim/Volume/DATA:/home/hunim/Volume/DATA",
+      "/home/hunim/Volume/FSAD-TTA-c1-dsba1-20260906-v2/cache/torch:/workspace/.cache/torch"
+    ],
+    "mounts_isolated_writable": [
+      "/home/hunim/Volume/FSAD-TTA-sra-ablation-20260908/workspace:/workspace",
+      "/home/hunim/Volume/FSAD-TTA-sra-ablation-20260908/results_remote:/workspace/results_remote"
+    ],
+    "dataset_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+    "source_snapshot_present": false
+  }
+}

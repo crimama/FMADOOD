@@ -21,7 +21,7 @@ _DEFAULT_MODEL_IDS: Dict[str, str] = {
     "dinov3_vitl16": "camenduru/dinov3-vitl16-pretrain-lvd1689m",
     "dinov3_vith16plus": "facebook/dinov3-vith16plus-pretrain-lvd1689m",
     "dinov3_vith16+": "facebook/dinov3-vith16plus-pretrain-lvd1689m",
-    "dinov3_vitb16": "camenduru/dinov3-vitb16-pretrain-lvd1689m",
+    "dinov3_vitb16": "facebook/dinov3-vitb16-pretrain-lvd1689m",
 }
 _TRUE_ENV_VALUES = {"1", "true", "yes", "y", "on"}
 
@@ -65,6 +65,7 @@ def resolve_dinov3_model_id(model_name: str) -> str:
 
 @BACKBONE_REGISTRY.register("dinov3_vitl16")
 @BACKBONE_REGISTRY.register("dinov3_vith16plus")
+@BACKBONE_REGISTRY.register("dinov3_vitb16")
 class DINOv3Backbone(BaseBackbone):
     """Lazy DINOv3 feature extractor for multi-scale reference matching."""
 
@@ -75,11 +76,13 @@ class DINOv3Backbone(BaseBackbone):
         smaller_edge_size: int = 448,
         feature_layers: Optional[Sequence[int]] = None,
         half_precision: bool = False,
+        normalize_intermediate_features: bool = False,
     ) -> None:
         super().__init__(model_name, device, smaller_edge_size)
         defaults = (7, 15, 23, 31) if "vith16plus" in model_name else (5, 11, 17, 23)
         self.feature_layers = tuple(feature_layers or defaults)
         self.half_precision = half_precision
+        self.normalize_intermediate_features = normalize_intermediate_features
         self.model_id = resolve_dinov3_model_id(model_name)
         self._model: Optional[torch.nn.Module] = None
         self._transform_cache: dict[int, transforms.Compose] = {}
@@ -165,8 +168,23 @@ class DINOv3Backbone(BaseBackbone):
             # hidden_states[0] is embedding output, hidden_states[layer+1] is Layer layer output
             start_token = 1 + max(0, self._num_register_tokens)
             features = []
+            norm = None
+            if self.normalize_intermediate_features:
+                norm = getattr(self._model, "norm", None)
+                if not callable(norm):
+                    raise AttributeError(
+                        "Normalized DINOv3 features require the model's final norm module."
+                    )
+
             for layer in self.feature_layers:
-                layer_tokens = hidden_states[layer + 1].squeeze(0)[start_token:]
+                state_index = layer + 1
+                layer_state = hidden_states[state_index]
+                if norm is not None and state_index != len(hidden_states) - 1:
+                    # Transformers exposes the final last_hidden_state in the last
+                    # hidden_states slot, after applying model.norm. Intermediate
+                    # slots are raw block outputs, so apply the same norm once.
+                    layer_state = norm(layer_state)
+                layer_tokens = layer_state.squeeze(0)[start_token:]
                 features.append(layer_tokens.float().cpu().numpy())
             return features
 

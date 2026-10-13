@@ -19,5 +19,8 @@ def backbone_state_sha256(model: Any) -> str:
         digest.update(str(name).encode() + b"\0")
         digest.update(str(value.dtype).encode() + b"\0")
         digest.update(json.dumps(list(value.shape), separators=(",", ":")).encode() + b"\0")
-        digest.update(value.view(torch.uint8).numpy().tobytes())
+        # BatchNorm counters are scalar int64 tensors; view(uint8) needs a
+        # dimension even though the recorded state shape remains scalar.
+        byte_view = value.reshape(1) if value.ndim == 0 else value
+        digest.update(byte_view.view(torch.uint8).numpy().tobytes())
     return digest.hexdigest()

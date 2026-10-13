@@ -1,0 +1,11 @@
+{
+  "fit_samples": 8,
+  "phase": "smoke",
+  "protocol_id": "socfm-synthetic-guard-stage-minus1-20260811",
+  "test_private_accessed": false,
+  "test_public_accessed": false,
+  "transported_shape": [
+    4,
+    2
+  ]
+}

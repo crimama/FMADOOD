@@ -1,0 +1,50 @@
+{
+  "access_ledger": {
+    "forbidden_kinds_opened": []
+  },
+  "activity_tau": 1.75,
+  "conditioning_smoke_pass": true,
+  "correction_loss_contract": "target_norm_normalized_vector_huber_sum_beta1",
+  "finite_nonconstant": true,
+  "frozen_config_sha256": "e08609511005d7a1b1d9d5c1c2994545c80a4385f0f99334c128133e0ab1bbc7",
+  "ground_truth_accessed": false,
+  "method_name": "TARCD-LoRA-S3-VR",
+  "probe_balanced_accuracy": 0.0,
+  "protocol_id": "tarcd-lora-s3-vr-stage-minus1-support-adapted-20260826",
+  "public_authorized": false,
+  "query_images_accessed": false,
+  "query_memory_updated": false,
+  "recomposition_error": 0.32314355131420974,
+  "retention": {
+    "cosine_mean": 0.9999406500099477,
+    "cosine_min": 0.9998489185463559,
+    "norm_ratio_median": 1.0003298972074015,
+    "valid_rows": 64
+  },
+  "schema": "tarcd-lora-s3-vr-stage-minus1-run-v1",
+  "seed": 20260826,
+  "seed_count": 1,
+  "support_only": true,
+  "synthetic_generator_label_used": true,
+  "synthetic_mask_used_for_generation": true,
+  "synthetic_mask_used_in_loss": true,
+  "target_support_used_for_fit": true,
+  "target_synthetic_used_for_fit": true,
+  "test_private_accessed": false,
+  "test_public_accessed": false,
+  "topology": {
+    "neighbor_retention": 1.0,
+    "rank_correlation": 0.9999999999999998,
+    "scale_ratio": 1.0100000128969118
+  },
+  "zero_start_vector_probe": {
+    "activity_tau": 0.25,
+    "analytic_gradient_bound": 4.0,
+    "analytic_gradient_norm": 2.0,
+    "analytic_identity_pass": true,
+    "exact_loss": 0.0,
+    "finite_nonzero_gradient": true,
+    "gradient_norm": 2.0,
+    "loss": 0.5
+  }
+}

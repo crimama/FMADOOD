@@ -1,0 +1,114 @@
+[
+  {
+    "filename": "144_regular.png",
+    "fold": 0,
+    "path_sha256": "2ff45b0ad89de04b38c04c75c55ea23b781f4093249e61fcde3fca82c7ed150f",
+    "relative_path": "fabric/train/good/144_regular.png",
+    "source_id": 0
+  },
+  {
+    "filename": "041_regular.png",
+    "fold": 2,
+    "path_sha256": "d60597ed277f3eb4297751943c41990c6a63fed0fa31b8f819bd68e6baae15a3",
+    "relative_path": "fabric/train/good/041_regular.png",
+    "source_id": 1
+  },
+  {
+    "filename": "108_regular.png",
+    "fold": 1,
+    "path_sha256": "e164b763110d446a0f96b851cf420eeb7277b00e2ca621526434922a7876ee59",
+    "relative_path": "fabric/train/good/108_regular.png",
+    "source_id": 2
+  },
+  {
+    "filename": "282_regular.png",
+    "fold": 1,
+    "path_sha256": "77f19a77fec44fbae1c5ba43640dc7816cb5c40ccf39a15b5b6a842a08107818",
+    "relative_path": "fabric/train/good/282_regular.png",
+    "source_id": 3
+  },
+  {
+    "filename": "046_regular.png",
+    "fold": 3,
+    "path_sha256": "3fa1ccea8504c95a79173832422e488405f946937feabb4857ec637662571a89",
+    "relative_path": "fabric/train/good/046_regular.png",
+    "source_id": 4
+  },
+  {
+    "filename": "145_regular.png",
+    "fold": 1,
+    "path_sha256": "387ce9caaf9fbdff02ee0ef426a4fa8e00353e21b994ab9fd3341ac22dbffa2c",
+    "relative_path": "fabric/train/good/145_regular.png",
+    "source_id": 5
+  },
+  {
+    "filename": "230_regular.png",
+    "fold": 0,
+    "path_sha256": "36bff7b896e9868ac8b86e309c122b1bba892f6149685abcd21de73467b07401",
+    "relative_path": "fabric/train/good/230_regular.png",
+    "source_id": 6
+  },
+  {
+    "filename": "269_regular.png",
+    "fold": 3,
+    "path_sha256": "f72b4fe1c0398c2d690d3985b907fa2c97f85bf1aa0ddba0eb6ad41ebe99ad30",
+    "relative_path": "fabric/train/good/269_regular.png",
+    "source_id": 7
+  },
+  {
+    "filename": "096_regular.png",
+    "fold": 0,
+    "path_sha256": "f88741bc5dcb2288392c5c1e5c92b740f40190832dbf9f2093829235c3b04791",
+    "relative_path": "fabric/train/good/096_regular.png",
+    "source_id": 8
+  },
+  {
+    "filename": "183_regular.png",
+    "fold": 2,
+    "path_sha256": "099048f686a147c0a6b3094d75bb491980aa02075eece8b769919def241ba04d",
+    "relative_path": "fabric/train/good/183_regular.png",
+    "source_id": 9
+  },
+  {
+    "filename": "301_regular.png",
+    "fold": 3,
+    "path_sha256": "e7fcc065a73ba6f83204e0fa44f9b72fc00c0cd5f774f01c7caf4cd0391cf710",
+    "relative_path": "fabric/train/good/301_regular.png",
+    "source_id": 10
+  },
+  {
+    "filename": "384_regular.png",
+    "fold": 0,
+    "path_sha256": "466c2dd34c1c2b827b9cb48ca87763b0923409335d2553342f09135f7c0c09d9",
+    "relative_path": "fabric/train/good/384_regular.png",
+    "source_id": 11
+  },
+  {
+    "filename": "207_regular.png",
+    "fold": 2,
+    "path_sha256": "b43eb6cd50fa6c630612b10b8554836f2102362ef9c138950f4056a2561674e7",
+    "relative_path": "fabric/train/good/207_regular.png",
+    "source_id": 12
+  },
+  {
+    "filename": "378_regular.png",
+    "fold": 2,
+    "path_sha256": "7fd4056c119edde7e5acd7e2e6ecf1f18546ad1528ac19a4812aab7d581819de",
+    "relative_path": "fabric/train/good/378_regular.png",
+    "source_id": 13
+  },
+  {
+    "filename": "256_regular.png",
+    "fold": 3,
+    "path_sha256": "85bd6b0d914fc3d5316fcb683e120de3de6192884b2e3253926ba95737bdf7e9",
+    "relative_path": "fabric/train/good/256_regular.png",
+    "source_id": 14
+  },
+  {
+    "filename": "055_regular.png",
+    "fold": 1,
+    "path_sha256": "e5575a61bdc54e55a41a8ebdf1270a61a044e2a010215285563fb07ca577a064",
+    "relative_path": "fabric/train/good/055_regular.png",
+    "source_id": 15
+  }
+]

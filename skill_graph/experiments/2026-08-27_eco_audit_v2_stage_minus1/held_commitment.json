@@ -1,0 +1,28 @@
+{
+  "held_count": 4,
+  "held_pathset_sha256": "c1d648d70f0c8479731409cb6324f38241368436cf4533550a3f950b91259dfd",
+  "held_rows": [
+    {
+      "donor_relative": "can/train/good/298_regular.png",
+      "held_index": 0,
+      "relative_path": "can/train/good/119_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/066_regular.png",
+      "held_index": 1,
+      "relative_path": "can/train/good/298_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/169_regular.png",
+      "held_index": 2,
+      "relative_path": "can/train/good/066_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/119_regular.png",
+      "held_index": 3,
+      "relative_path": "can/train/good/169_regular.png"
+    }
+  ],
+  "origin": "immutable NCFC-S1 v2 held identities and cyclic donor mapping",
+  "schema": "eco-audit-v2-held-commitment-v1"
+}

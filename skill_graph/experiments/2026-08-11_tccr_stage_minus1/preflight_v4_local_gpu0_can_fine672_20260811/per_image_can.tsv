@@ -1,0 +1,14 @@
+object	relative_path	label	arm	image_score	mean_score
+can	can/test_public/bad/011_shift_1.png	bad	P16_H+DVT_anchor	0.1537933349609375	0.041220325976610184
+can	can/test_public/bad/011_shift_1.png	bad	raw_g0_layer7	0.04152562469244003	0.010570398531854153
+can	can/test_public/bad/011_shift_1.png	bad	raw_tiled_fine_knn	0.03651362657546997	0.00901869311928749
+can	can/test_public/bad/011_shift_1.png	bad	lift_only	4.271965026855469	0.08677927404642105
+can	can/test_public/bad/011_shift_1.png	bad	calibrated_coarse_fine_max	4.278165817260742	0.22373519837856293
+can	can/test_public/bad/011_shift_1.png	bad	calibrated_coarse_fine_mean	3.562906503677368	-0.04407881945371628
+can	can/test_public/bad/011_shift_1.png	bad	matched_coarse_to_fine_predictor	0.17795361578464508	0.053242750465869904
+can	can/test_public/bad/011_shift_1.png	bad	one_phase_excess	5.93750524520874	-0.2026873528957367
+can	can/test_public/bad/011_shift_1.png	bad	two_phase_tccr	5.93750524520874	-0.30189403891563416
+can	can/test_public/bad/011_shift_1.png	bad	geometry_shuffle	6.652871608734131	1.8193873167037964
+can	can/test_public/bad/011_shift_1.png	bad	phase_shuffle	4.735666751861572	-0.6054253578186035
+can	can/test_public/bad/011_shift_1.png	bad	rgb_edge	52.20528793334961	3.2188570499420166
+can	can/test_public/bad/011_shift_1.png	bad	equal_compute_duplicate_tiles	5.93750524520874	-0.2026873528957367

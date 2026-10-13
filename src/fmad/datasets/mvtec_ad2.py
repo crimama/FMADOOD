@@ -58,6 +58,12 @@ class MVTecAD2Dataset(BaseDataset):
         super().__init__(data_root, config)
         preprocess = config.get("preprocess", "agnostic")
         self._masking, self._rotation = _get_preprocess_settings(preprocess)
+        self._resolution_override = config.get("resolution")
+        if self._resolution_override is not None:
+            if (isinstance(self._resolution_override, bool)
+                    or not isinstance(self._resolution_override, int)
+                    or self._resolution_override <= 0):
+                raise ValueError("dataset_config.resolution must be a positive integer")
         self._filter_objects = config.get("objects", None)
         if self._filter_objects is not None:
             if not isinstance(self._filter_objects, list) or not self._filter_objects:
@@ -77,7 +83,9 @@ class MVTecAD2Dataset(BaseDataset):
                 ObjectInfo(
                     name=name,
                     anomaly_types=_ANOMALY_TYPES[name],
-                    resolution=_RESOLUTION[name],
+                    resolution=(self._resolution_override
+                                if self._resolution_override is not None
+                                else _RESOLUTION[name]),
                     masking=self._masking[name],
                     rotation=self._rotation[name],
                 )

@@ -1,0 +1,8 @@
+\begin{abstract}
+소수 정상 이미지만을 사용하는 few-shot 산업 이상 국소화에서는 촬영 조건 변화(조명 드리프트, 자세 변동 등)로 인해 정상 영역에서도 큰 거리가 나타나는 \textbf{High-Score Ambiguity}가 발생한다.
+추가 정상 표본이 없는 제약 아래 미세 결함 단서를 확보하기 위해 다해상도와 다계층으로 \textbf{Observation Expansion}을 수행하면, 관측 조건마다 거리 척도가 달라지고 Shallow 층의 정상 질감 반응이 점수에 섞여 low-FPR 오경보가 급증한다.
+이를 해결하기 위해 본 논문은 \textbf{\method}를 제안한다.
+\method는 관측 조건마다 독립 뱅크를 구축한 뒤, 정상 서포트의 기준 상위 분위수로 각 관측의 거리 단위를 공통 척도로 \textbf{Scale Calibration}한다.
+이어 Deep 의미 기준선 위에 Shallow 층의 정상 질감 과민반응을 억제하도록 작은 고정 가중치로 \textbf{Contribution Control}을 적용하고 다해상도 맵을 평균한다.
+MVTec AD 2 16-shot에서 \method는 3개 시드 평균 \textbf{60.06\,\% \AUPRO}를 기록하여 SuperAD(55.89\,\%) 대비 \textbf{+4.17\,pp}의 성능 도약을 달성했으며, 단일 뱅크 대비 +2.09\,pp, 단일 저해상도 입력 대비 +7.56\,pp의 뚜렷한 구성 및 결합 이득을 실증했다.
+\end{abstract}

@@ -1,0 +1,490 @@
+{
+  "configs": [
+    {
+      "label": "patchcore_s16_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s16_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 16,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_16.json",
+      "support_sha256": "8cf3329c03c140e0aa11f005d3bd4c0a42c56c4fdb56c7ac1eb522eb39bf871f",
+      "config_sha256": "2c31a701a3363a61d583fc81cf0ab2120d9213d267fd1048b881a89ae4561713"
+    },
+    {
+      "label": "superad_s16_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s16_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 16,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_16.json",
+      "support_sha256": "8cf3329c03c140e0aa11f005d3bd4c0a42c56c4fdb56c7ac1eb522eb39bf871f",
+      "config_sha256": "8f07e09f75e4b35e1e986c9f473821d382794d20e2a0579cb7b6fbfe081a6ffe"
+    },
+    {
+      "label": "anomalydino_s16_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s16_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 16,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_16.json",
+      "support_sha256": "8cf3329c03c140e0aa11f005d3bd4c0a42c56c4fdb56c7ac1eb522eb39bf871f",
+      "config_sha256": "e191633d6a0432ac1dd0f4de7b211d4babd9c5ddcc1ebd56637048607fe69f59"
+    },
+    {
+      "label": "patchcore_s16_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s16_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 16,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_16.json",
+      "support_sha256": "051e63478636d9a78fe22994a1a6943ad19f00a1fc8f1e96704c1f270d7d9f80",
+      "config_sha256": "ee5076ac64e4671290db08ec99ccf4a583e2c63988f461cf778bb802169d4ab8"
+    },
+    {
+      "label": "superad_s16_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s16_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 16,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_16.json",
+      "support_sha256": "051e63478636d9a78fe22994a1a6943ad19f00a1fc8f1e96704c1f270d7d9f80",
+      "config_sha256": "8d5f9a358d46ed6a4bed16c12e43da0b653f9876c75f4d45a2deca71643d39e2"
+    },
+    {
+      "label": "anomalydino_s16_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s16_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 16,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_16.json",
+      "support_sha256": "051e63478636d9a78fe22994a1a6943ad19f00a1fc8f1e96704c1f270d7d9f80",
+      "config_sha256": "a24259c23e6e9abbb3dd18664fed589570e080b1591664435a21a3f64d3167bc"
+    },
+    {
+      "label": "patchcore_s01_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s01_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 1,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_1.json",
+      "support_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+      "config_sha256": "69f1cb2f2ba0ebe90756babdc1482dd704e54e7674ec591a54388d8ed85ae6b9"
+    },
+    {
+      "label": "superad_s01_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s01_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 1,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_1.json",
+      "support_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+      "config_sha256": "8d2612cbddd40136bf0e0ad4b4cc83b703d8ef9eb98e0b499f9d7ae88d5299cd"
+    },
+    {
+      "label": "anomalydino_s01_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s01_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 1,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_1.json",
+      "support_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+      "config_sha256": "d9fc7a14f9d46b3f880937173a136a6eb7aada87792c434a5e3f4d5a41b46e24"
+    },
+    {
+      "label": "patchcore_s01_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s01_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 1,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_1.json",
+      "support_sha256": "cf368f0520a44b610db0c2a7f6fb7dc00059b3e32349811d5b5e1fb698d2ad61",
+      "config_sha256": "423dfb6e6331216d6c72aa18c341d8cab8969b54b33e77c1bfe0fed270823dd0"
+    },
+    {
+      "label": "superad_s01_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s01_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 1,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_1.json",
+      "support_sha256": "cf368f0520a44b610db0c2a7f6fb7dc00059b3e32349811d5b5e1fb698d2ad61",
+      "config_sha256": "a82ec6351e3c9da56eb356e82b28f22a80a97a119d3c1f02838d33534329910a"
+    },
+    {
+      "label": "anomalydino_s01_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s01_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 1,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_1.json",
+      "support_sha256": "cf368f0520a44b610db0c2a7f6fb7dc00059b3e32349811d5b5e1fb698d2ad61",
+      "config_sha256": "0275b8d584a4d8ad5725b29af479214a7d92dd469e8283ce84333d42e7b23b10"
+    },
+    {
+      "label": "patchcore_s01_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s01_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 1,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_1.json",
+      "support_sha256": "5e4f30b56355bdeef5d75e4bf53f4836ebd9602bcdc307381a121369ff17c377",
+      "config_sha256": "9870931c193fb246d7e6f0591d363e6e5e329e38aa2df797867b8ee68c6d7626"
+    },
+    {
+      "label": "superad_s01_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s01_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 1,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_1.json",
+      "support_sha256": "5e4f30b56355bdeef5d75e4bf53f4836ebd9602bcdc307381a121369ff17c377",
+      "config_sha256": "1a3caa7a3addeca58e48c02c845ad47207ea4c9322699c4d1de5384d7f58e9f0"
+    },
+    {
+      "label": "anomalydino_s01_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s01_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 1,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_1.json",
+      "support_sha256": "5e4f30b56355bdeef5d75e4bf53f4836ebd9602bcdc307381a121369ff17c377",
+      "config_sha256": "34f135170ba7b0df8165022c9854aed1e17793656c99ac1b217251d13db61e0a"
+    },
+    {
+      "label": "patchcore_s02_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s02_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 2,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_2.json",
+      "support_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+      "config_sha256": "0382c1cbb81b1be8d1fd880b8c8e7940267709c5722a97bc81912a54190938fa"
+    },
+    {
+      "label": "superad_s02_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s02_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 2,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_2.json",
+      "support_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+      "config_sha256": "3fe3b346c40880fc93dcc55c28951158fdfabb7c45e583ca310b049d2f146c36"
+    },
+    {
+      "label": "anomalydino_s02_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s02_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 2,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_2.json",
+      "support_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+      "config_sha256": "662c2024c81269efed929287f57aa466ba6385d498674a179643aeeefed77e19"
+    },
+    {
+      "label": "patchcore_s02_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s02_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 2,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_2.json",
+      "support_sha256": "0a31bd5b6d8a150e91649b3f677ee22a39adb5fc9c052ae9147b4e98c88524c3",
+      "config_sha256": "e83dbcf6c8f6d584624e260f7e4a1bb48a795228e616e9162703e72c6634f31b"
+    },
+    {
+      "label": "superad_s02_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s02_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 2,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_2.json",
+      "support_sha256": "0a31bd5b6d8a150e91649b3f677ee22a39adb5fc9c052ae9147b4e98c88524c3",
+      "config_sha256": "53f54eedd45eb28075d3491d7cf559c8274b69a4343cbc8c022c4b752fcceb24"
+    },
+    {
+      "label": "anomalydino_s02_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s02_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 2,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_2.json",
+      "support_sha256": "0a31bd5b6d8a150e91649b3f677ee22a39adb5fc9c052ae9147b4e98c88524c3",
+      "config_sha256": "db6849fc70a822bbf88854cf4dd5eb70f94017104eec9d18db73c22359a320cf"
+    },
+    {
+      "label": "patchcore_s02_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s02_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 2,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_2.json",
+      "support_sha256": "998930af8fa3b2f0209f3d0776d6886e8459284e0f666c814410e4d2d7c82fb1",
+      "config_sha256": "51f1c5d110958d13177a8fea8df85cb7f9d956a3a4dc2f9b7fe287b593d08cc7"
+    },
+    {
+      "label": "superad_s02_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s02_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 2,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_2.json",
+      "support_sha256": "998930af8fa3b2f0209f3d0776d6886e8459284e0f666c814410e4d2d7c82fb1",
+      "config_sha256": "d97e35d0e172b4cdc3e1315a063cabe74a8feb3f963436163d2ccd36a3ca1ac8"
+    },
+    {
+      "label": "anomalydino_s02_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s02_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 2,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_2.json",
+      "support_sha256": "998930af8fa3b2f0209f3d0776d6886e8459284e0f666c814410e4d2d7c82fb1",
+      "config_sha256": "683d87261caafdf48d1d066c8a44565ae14c98796f4d9b84e1c656bbbfb7b932"
+    },
+    {
+      "label": "patchcore_s04_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s04_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 4,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_4.json",
+      "support_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+      "config_sha256": "79ed82e52603e0c3fac795551b97f29b57b53364fc77fbe82159e953f29e062c"
+    },
+    {
+      "label": "superad_s04_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s04_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 4,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_4.json",
+      "support_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+      "config_sha256": "5ffc98ecaa9a43966dcb6dc92362e4ff262d96d09d66be4e94ee1bd689c9dec5"
+    },
+    {
+      "label": "anomalydino_s04_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s04_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 4,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_4.json",
+      "support_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+      "config_sha256": "d664d346b87ea8aa67d87861f84213758945de3db6a8470e8856f56edcd17f2c"
+    },
+    {
+      "label": "patchcore_s04_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s04_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 4,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_4.json",
+      "support_sha256": "9ee29d933f85e8aad502afcb31ffcb2d395822acc365d794a7444b14119f04a3",
+      "config_sha256": "d747ee940bc7756864e22e14e608eda9e976408f30e8a7d78ab29462beb7b18b"
+    },
+    {
+      "label": "superad_s04_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s04_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 4,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_4.json",
+      "support_sha256": "9ee29d933f85e8aad502afcb31ffcb2d395822acc365d794a7444b14119f04a3",
+      "config_sha256": "3061f59731e6684390643f1253995cb60238a87c9bc24af0235f69ab4f36e591"
+    },
+    {
+      "label": "anomalydino_s04_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s04_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 4,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_4.json",
+      "support_sha256": "9ee29d933f85e8aad502afcb31ffcb2d395822acc365d794a7444b14119f04a3",
+      "config_sha256": "81dc010f354cde8929bd4eab727b36b0e31da7fcdd2fe7e6ad0a7bf6cc235d8f"
+    },
+    {
+      "label": "patchcore_s04_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s04_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 4,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_4.json",
+      "support_sha256": "6b49e39984871a016080d1fe11c82587e4d3bd4de383ea2fd8215d484e0b4fd0",
+      "config_sha256": "4a22c7c4ead0996715ee2cf356a7acceba25a89fc8eba8dfc80314a139a64574"
+    },
+    {
+      "label": "superad_s04_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s04_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 4,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_4.json",
+      "support_sha256": "6b49e39984871a016080d1fe11c82587e4d3bd4de383ea2fd8215d484e0b4fd0",
+      "config_sha256": "82a8b9b2b51cfcb2699b74ddd6a233d6c7a4594945c5dab1e4693172dc45291a"
+    },
+    {
+      "label": "anomalydino_s04_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s04_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 4,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_4.json",
+      "support_sha256": "6b49e39984871a016080d1fe11c82587e4d3bd4de383ea2fd8215d484e0b4fd0",
+      "config_sha256": "3cf8a0ab7d3c52dde6d3df5ab57356ab27097cd7ec075c6e698870a1a4cbd620"
+    },
+    {
+      "label": "patchcore_s08_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s08_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 8,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_8.json",
+      "support_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+      "config_sha256": "fe74127d538628ef61288221b15a5e730a581087151ab4be537e0fae2d4128bd"
+    },
+    {
+      "label": "superad_s08_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s08_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 8,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_8.json",
+      "support_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+      "config_sha256": "6eb069a20c84a336cd555791d6ebbce67269b223a5523daaa2c0c019fa187d58"
+    },
+    {
+      "label": "anomalydino_s08_seed0_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s08_seed0_1120.yaml",
+      "phase": "comparators",
+      "shot": 8,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_8.json",
+      "support_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+      "config_sha256": "5d21fb55301e1ce718e2d8b721341192ef8b038907b849b961c4c5c90cbaf345"
+    },
+    {
+      "label": "patchcore_s08_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s08_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 8,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_8.json",
+      "support_sha256": "4897e1bed1c2f05fdb990af5ed012d90d8559919fe22de231c5f3cd1c520925c",
+      "config_sha256": "cd6109f3460979149021b6e9254190114bc0d95fc9157dbba37654a3e68f898c"
+    },
+    {
+      "label": "superad_s08_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s08_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 8,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_8.json",
+      "support_sha256": "4897e1bed1c2f05fdb990af5ed012d90d8559919fe22de231c5f3cd1c520925c",
+      "config_sha256": "55df182b3916de38e40b4539fc7c09bb5f1b7bce2aff8ccb7fe93ca38b56fc1d"
+    },
+    {
+      "label": "anomalydino_s08_seed1_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s08_seed1_1120.yaml",
+      "phase": "comparators",
+      "shot": 8,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_8.json",
+      "support_sha256": "4897e1bed1c2f05fdb990af5ed012d90d8559919fe22de231c5f3cd1c520925c",
+      "config_sha256": "bbedaf1adb5ea8bc56bd91b888f10a55ec496958270404eba312f7908fb96a21"
+    },
+    {
+      "label": "patchcore_s08_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/patchcore_s08_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 8,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_8.json",
+      "support_sha256": "ccf908b3ae965cebda6b4f5c1184e9eab387d737e0e2b230bb0ede24d78c06b5",
+      "config_sha256": "4e37a9265e7bb4b8cc1a93346660f322a6d6426b73a465f5d5ed37049d511abe"
+    },
+    {
+      "label": "superad_s08_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/superad_s08_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 8,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_8.json",
+      "support_sha256": "ccf908b3ae965cebda6b4f5c1184e9eab387d737e0e2b230bb0ede24d78c06b5",
+      "config_sha256": "9889bf047a8513ad53065cd4732c16e0204fce11d07479aeaada644ec96698a6"
+    },
+    {
+      "label": "anomalydino_s08_seed2_1120",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/anomalydino_s08_seed2_1120.yaml",
+      "phase": "comparators",
+      "shot": 8,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_8.json",
+      "support_sha256": "ccf908b3ae965cebda6b4f5c1184e9eab387d737e0e2b230bb0ede24d78c06b5",
+      "config_sha256": "4311cb905266beac04b5a2c3b1f7a70fe60a09c3b0ca935044f68ef91c567ca3"
+    },
+    {
+      "label": "scarf_cap256_fp16_s01_seed1",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/scarf_cap256_fp16_s01_seed1.yaml",
+      "phase": "scarf_seed_extension",
+      "shot": 1,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_1.json",
+      "support_sha256": "cf368f0520a44b610db0c2a7f6fb7dc00059b3e32349811d5b5e1fb698d2ad61",
+      "config_sha256": "dff1f4328ce811daa4b44d294cd376b3793dc6890738f9c44f80014764e0f330"
+    },
+    {
+      "label": "scarf_cap256_fp16_s01_seed2",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/scarf_cap256_fp16_s01_seed2.yaml",
+      "phase": "scarf_seed_extension",
+      "shot": 1,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_1.json",
+      "support_sha256": "5e4f30b56355bdeef5d75e4bf53f4836ebd9602bcdc307381a121369ff17c377",
+      "config_sha256": "9ebbb7aaf09620faacd5442577edc85bcb1b864f2def8a2cfe2d1131b1a1cbd3"
+    },
+    {
+      "label": "scarf_cap256_fp16_s04_seed1",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/scarf_cap256_fp16_s04_seed1.yaml",
+      "phase": "scarf_seed_extension",
+      "shot": 4,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_4.json",
+      "support_sha256": "9ee29d933f85e8aad502afcb31ffcb2d395822acc365d794a7444b14119f04a3",
+      "config_sha256": "25bfa9dfb7708d9043eb49b26c95bbb681e614470591eec04057e457e9b8fdb7"
+    },
+    {
+      "label": "scarf_cap256_fp16_s04_seed2",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/scarf_cap256_fp16_s04_seed2.yaml",
+      "phase": "scarf_seed_extension",
+      "shot": 4,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_4.json",
+      "support_sha256": "6b49e39984871a016080d1fe11c82587e4d3bd4de383ea2fd8215d484e0b4fd0",
+      "config_sha256": "4e7753187f9c798a6bc8232b22c255b6286b86766a17c800bde795d4a0da9511"
+    },
+    {
+      "label": "scarf_cap256_fp16_s08_seed1",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/scarf_cap256_fp16_s08_seed1.yaml",
+      "phase": "scarf_seed_extension",
+      "shot": 8,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_8.json",
+      "support_sha256": "4897e1bed1c2f05fdb990af5ed012d90d8559919fe22de231c5f3cd1c520925c",
+      "config_sha256": "dd08a21fb058c5a70e0eee42597fb67ac6f391c5624ce1866fca48cf6ae32a72"
+    },
+    {
+      "label": "scarf_cap256_fp16_s08_seed2",
+      "config": "configs/benchmarks/public_1120_multishot_20261003/scarf_cap256_fp16_s08_seed2.yaml",
+      "phase": "scarf_seed_extension",
+      "shot": 8,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_8.json",
+      "support_sha256": "ccf908b3ae965cebda6b4f5c1184e9eab387d737e0e2b230bb0ede24d78c06b5",
+      "config_sha256": "d6f69caa628ca6268ee036ac0cac8a12e35d70415267be421c29271d9db232bf"
+    }
+  ],
+  "class_count": 8,
+  "new_class_runs": 384,
+  "comparator_runs": 336,
+  "scarf_runs": 48,
+  "reuse": "public_1120_20261003:16-shot seed0, 24 classes",
+  "source_execution": "6d01d1873437e5cd2d38ce7b86fb50998b95794fc17904951d1a7aa9b85cfb6d"
+}

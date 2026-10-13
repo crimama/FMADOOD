@@ -1,0 +1,16 @@
+# Archived quantitative results
+
+These files were moved from `scratch/results_wtcf/` during repository cleanup
+on 2026-09-08. They are retained as raw quantitative evidence; no values were
+rewritten.
+
+## SHA-256
+
+```text
+2e466d8a52df19205decab39a15f2db8a6a552fef387e6bb608838fadce9cd26  fabric_seed0/summary.json
+5089daac6eb4ee01e47e2dda93873223ae022dcbcabadec954d2e17f2626d1e0  fabric_seed0/sealed_support_manifest.json
+49033f4b6c0e14ca6f91d1fd9780029a37b6301ae393700855f61d235474c0c5  fabric_seed0/complete.txt
+d89bf8892c2750b115bf3c88f58ae2bd460772cc9de131bac6ea242502eb8816  fruit_jelly_seed0/summary.json
+e77d91be5f66ad5fcd25ff437e37164bcf89dd41f572b0b74451ba05708b23b7  fruit_jelly_seed0/sealed_support_manifest.json
+49033f4b6c0e14ca6f91d1fd9780029a37b6301ae393700855f61d235474c0c5  fruit_jelly_seed0/complete.txt
+```

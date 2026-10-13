@@ -1,0 +1,86 @@
+[
+  {
+    "label": "scarf_neg_a000_s01_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a000_s01_seed0.yaml",
+    "shots": 1,
+    "alpha": 0.0,
+    "sha256": "afd46e7a7d591b90209ba14895ff407591bd8093318711b7db81df659f1caeb3"
+  },
+  {
+    "label": "scarf_neg_a010_s01_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a010_s01_seed0.yaml",
+    "shots": 1,
+    "alpha": 0.1,
+    "sha256": "6089663e8c7713e42f8c59978d56d011c60d3f0b986b3b737829ee77d9243e89"
+  },
+  {
+    "label": "scarf_neg_a025_s01_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a025_s01_seed0.yaml",
+    "shots": 1,
+    "alpha": 0.25,
+    "sha256": "6e26078d61a5945e008d898f8d0dcf451225223ca167a13a7ca12bdb6717233d"
+  },
+  {
+    "label": "scarf_neg_a050_s01_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a050_s01_seed0.yaml",
+    "shots": 1,
+    "alpha": 0.5,
+    "sha256": "a5590ababbe79bfde3c7c1eb20cb95163993820aad283f8cd95c778c4a6f0e2e"
+  },
+  {
+    "label": "scarf_neg_a000_s04_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a000_s04_seed0.yaml",
+    "shots": 4,
+    "alpha": 0.0,
+    "sha256": "b0e31148bec6aece26342eb8870b13dea7cfa08ea4d1a895f1b18e857fc2091d"
+  },
+  {
+    "label": "scarf_neg_a010_s04_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a010_s04_seed0.yaml",
+    "shots": 4,
+    "alpha": 0.1,
+    "sha256": "e6d3086c04ee97898c37757ed679960f51ecba32535c29c432c1a83590460acc"
+  },
+  {
+    "label": "scarf_neg_a025_s04_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a025_s04_seed0.yaml",
+    "shots": 4,
+    "alpha": 0.25,
+    "sha256": "334108ad20e0fd1130d17c109b978d5ea34e0185351851a4b010ac0d7f262318"
+  },
+  {
+    "label": "scarf_neg_a050_s04_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a050_s04_seed0.yaml",
+    "shots": 4,
+    "alpha": 0.5,
+    "sha256": "4a7f92c1353b6113a2622e382a9e93587c7db91f39b9ef7b8a625f794547dcca"
+  },
+  {
+    "label": "scarf_neg_a000_s16_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a000_s16_seed0.yaml",
+    "shots": 16,
+    "alpha": 0.0,
+    "sha256": "ebd6632e4ca6b89f58db757c87470c631657b984059783074ef7cd08d7fe0527"
+  },
+  {
+    "label": "scarf_neg_a010_s16_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a010_s16_seed0.yaml",
+    "shots": 16,
+    "alpha": 0.1,
+    "sha256": "6b86f1792a32dcd1af125634640b9ed6bac286b96c232e36284d2f358885396f"
+  },
+  {
+    "label": "scarf_neg_a025_s16_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a025_s16_seed0.yaml",
+    "shots": 16,
+    "alpha": 0.25,
+    "sha256": "7e65c86c001ca4774fb369d10d53a064eedbd64af6054bb95245a10cfb25819e"
+  },
+  {
+    "label": "scarf_neg_a050_s16_seed0",
+    "config": "configs/benchmarks/scarf_neg_shallow_20261006/scarf_neg_a050_s16_seed0.yaml",
+    "shots": 16,
+    "alpha": 0.5,
+    "sha256": "73ff0c4b63ec68830a698363b5d318025b330309439acff43f9f82dbf8d4a81e"
+  }
+]

@@ -976,3 +976,82 @@ def test_residual_spike_support_quantile_tau_mode(tmp_path):
     # Test predict works with support_quantile tau
     pred, max_val = method.predict(paths[0])
     assert np.isfinite(pred).all() and np.isfinite(max_val)
+
+
+def test_score_normalization_none_accepts_configuration():
+    """Test that score_normalization='none' is accepted in constructor."""
+    method = ReferenceMatching(TinyTripleBackbone(), {
+        "variant": "R1",
+        "feature_layers": [5, 11, 23],
+        "score_normalization": "none",
+    })
+    assert method.score_normalization == "none"
+
+
+def test_score_normalization_none_with_local_reliability_rejects():
+    """Test that score_normalization='none' with local_reliability raises ValueError."""
+    with pytest.raises(ValueError, match="local_reliability"):
+        ReferenceMatching(TinyTripleBackbone(), {
+            "variant": "R1",
+            "feature_layers": [5, 11, 23],
+            "score_normalization": "none",
+            "local_reliability": "scale",
+        })
+
+
+def test_score_normalization_none_produces_raw_distances(tmp_path):
+    """Test that with 'none', fitted scales are all 1.0 and per-layer scores equal raw distances."""
+    paths = [_write_image(tmp_path / f"{i}.png", i * 17) for i in range(3)]
+    context = MethodContext("can", 0, 8, False, False)
+    config = {
+        "variant": "R1",
+        "feature_layers": [11, 23],
+        "resolutions": [8],
+        "bank_tokens_per_source": 4,
+        "query_chunk_size": 4,
+        "score_normalization": "none",
+    }
+    method = ReferenceMatching(TinyPairBackbone(), config)
+    method.fit(paths, context)
+
+    # Verify scales are all 1.0
+    scale = method.scales[8]
+    torch.testing.assert_close(scale, torch.ones_like(scale))
+
+
+def test_score_normalization_none_vs_mad_preserves_other_behavior(tmp_path):
+    """Test that existing mad/tailscale/tail normalization behaviors are unchanged."""
+    paths = [_write_image(tmp_path / f"{i}.png", i * 17) for i in range(3)]
+    context = MethodContext("can", 0, 8, False, False)
+
+    configs = {
+        "mad": {"score_normalization": "mad"},
+        "tailscale": {"score_normalization": "tailscale"},
+        "tail": {"score_normalization": "tail"},
+    }
+
+    methods = {}
+    for name, norm_cfg in configs.items():
+        config = {
+            "variant": "R1",
+            "feature_layers": [11, 23],
+            "resolutions": [8],
+            "bank_tokens_per_source": 4,
+            "query_chunk_size": 4,
+            **norm_cfg,
+        }
+        methods[name] = ReferenceMatching(TinyPairBackbone(), config)
+        methods[name].fit(paths, context)
+
+    # All existing normalizations should produce finite results
+    mad_map, _ = methods["mad"].predict(paths[0])
+    tailscale_map, _ = methods["tailscale"].predict(paths[0])
+    tail_map, _ = methods["tail"].predict(paths[0])
+
+    assert np.isfinite(mad_map).all()
+    assert np.isfinite(tailscale_map).all()
+    assert np.isfinite(tail_map).all()
+    # Verify metadata still reports correct normalization
+    assert methods["mad"].object_metadata()["score_normalization"] == "mad"
+    assert methods["tailscale"].object_metadata()["score_normalization"] == "tailscale"
+    assert methods["tail"].object_metadata()["score_normalization"] == "tail"

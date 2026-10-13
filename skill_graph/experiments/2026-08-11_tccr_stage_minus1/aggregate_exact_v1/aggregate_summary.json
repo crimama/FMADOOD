@@ -1,0 +1,67 @@
+{
+  "canonical_evaluation_objects": [
+    "can",
+    "fabric",
+    "vial",
+    "rice"
+  ],
+  "canonical_object_sources": {
+    "can": "local",
+    "fabric": "local",
+    "remote_can": "parity_only",
+    "rice": "dsba5",
+    "vial": "local"
+  },
+  "continue_candidate_objects": [],
+  "dsba5_run_root": "results/remote_runs/dsba5/tccr_stage_minus1_exact_20260811_v1/mechanism",
+  "gate_values": {},
+  "implemented_arms": [
+    "P16_H+DVT_anchor",
+    "raw_g0_layer7",
+    "raw_tiled_fine_knn",
+    "lift_only",
+    "calibrated_coarse_fine_max",
+    "calibrated_coarse_fine_mean",
+    "matched_coarse_to_fine_predictor",
+    "one_phase_excess",
+    "two_phase_tccr",
+    "geometry_shuffle",
+    "phase_shuffle",
+    "rgb_edge",
+    "equal_compute_duplicate_tiles"
+  ],
+  "local_run_root": "skill_graph/experiments/2026-08-11_tccr_stage_minus1/run_local_gpu0_exact_v1",
+  "macro_metrics": {},
+  "no_harm_failures": [],
+  "null_absorption_failures": [],
+  "object_min_new_component_seeds_vs_hard": {},
+  "omitted_arms": [],
+  "parity": {
+    "checked": true,
+    "failures": [
+      "can parity delta 0.0016572 > 0.001 at metrics.geometry_shuffle.I-AP",
+      "can parity delta 0.00195312 > 0.001 at metrics.geometry_shuffle.I-AUROC",
+      "can parity delta 0.00195711 > 0.001 at phase_agreement.good_tail_fpr_reduction"
+    ],
+    "max_abs_delta": 0.001957106733477265,
+    "threshold": 0.001
+  },
+  "protocol_id": "tccr-v2-stage-minus1-compact-20260811",
+  "recommendation": "invalid aggregate; do not continue this branch",
+  "support_manifest_sha256": "9f223f7cdffd4defe37aced6edab98aad4e6e133af6c13df22f5b21be81d18a5",
+  "validity_failures": [
+    "can: phase shuffle matches TCCR gain",
+    "fabric: phase preservation below 0.90",
+    "fabric: phase shuffle matches TCCR gain",
+    "vial: phase FPR reduction below 0.20",
+    "vial: phase shuffle matches TCCR gain",
+    "rice: phase preservation below 0.90",
+    "rice: phase shuffle matches TCCR gain",
+    "can: phase shuffle matches TCCR gain",
+    "can parity delta 0.0016572 > 0.001 at metrics.geometry_shuffle.I-AP",
+    "can parity delta 0.00195312 > 0.001 at metrics.geometry_shuffle.I-AUROC",
+    "can parity delta 0.00195711 > 0.001 at phase_agreement.good_tail_fpr_reduction"
+  ],
+  "validity_ok": false,
+  "verdict": "KILL_NO_CONTINUE"
+}

@@ -1,0 +1,47 @@
+{
+  "toothbrush": [
+    "/home/hunim/Volume/DATA/MVTecAD/toothbrush/train/good/051.png"
+  ],
+  "screw": [
+    "/home/hunim/Volume/DATA/MVTecAD/screw/train/good/272.png"
+  ],
+  "carpet": [
+    "/home/hunim/Volume/DATA/MVTecAD/carpet/train/good/238.png"
+  ],
+  "hazelnut": [
+    "/home/hunim/Volume/DATA/MVTecAD/hazelnut/train/good/332.png"
+  ],
+  "bottle": [
+    "/home/hunim/Volume/DATA/MVTecAD/bottle/train/good/177.png"
+  ],
+  "tile": [
+    "/home/hunim/Volume/DATA/MVTecAD/tile/train/good/195.png"
+  ],
+  "wood": [
+    "/home/hunim/Volume/DATA/MVTecAD/wood/train/good/210.png"
+  ],
+  "pill": [
+    "/home/hunim/Volume/DATA/MVTecAD/pill/train/good/227.png"
+  ],
+  "transistor": [
+    "/home/hunim/Volume/DATA/MVTecAD/transistor/train/good/181.png"
+  ],
+  "capsule": [
+    "/home/hunim/Volume/DATA/MVTecAD/capsule/train/good/186.png"
+  ],
+  "grid": [
+    "/home/hunim/Volume/DATA/MVTecAD/grid/train/good/224.png"
+  ],
+  "cable": [
+    "/home/hunim/Volume/DATA/MVTecAD/cable/train/good/190.png"
+  ],
+  "metal_nut": [
+    "/home/hunim/Volume/DATA/MVTecAD/metal_nut/train/good/187.png"
+  ],
+  "zipper": [
+    "/home/hunim/Volume/DATA/MVTecAD/zipper/train/good/204.png"
+  ],
+  "leather": [
+    "/home/hunim/Volume/DATA/MVTecAD/leather/train/good/208.png"
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "backbone": {
+    "feature_dim": 1024,
+    "frozen": true,
+    "model": "dinov2_vitl14",
+    "native_canvas_smaller_edge": 672,
+    "patch_size": 14,
+    "readout_block_zero_based": 11,
+    "readouts": [
+      "RAW_NATIVE",
+      "STANDARDIZED_NATIVE_L2"
+    ],
+    "spatial_pooling": false,
+    "trainable_parameter_count": 0
+  },
+  "claim_boundary": {
+    "benchmark_comparable": false,
+    "detector_claim": false,
+    "lora_authorized": false,
+    "operator_only_followup_requires_n1_pass": true,
+    "superad": "N/A"
+  },
+  "commitments": {
+    "held_commitment_relpath": "skill_graph/experiments/2026-08-27_eco_audit_v2_stage_minus1/held_commitment.json",
+    "held_commitment_sha256": "b51b6ca946b616fbc2578eaf1b20e54f2f905a52eb51deb9799abf715e5f7460",
+    "held_pathset_sha256": "c1d648d70f0c8479731409cb6324f38241368436cf4533550a3f950b91259dfd",
+    "support_commitment_relpath": "skill_graph/experiments/2026-08-27_eco_audit_v2_stage_minus1/support_calibration_commitment.json",
+    "support_commitment_sha256": "66708c38671ceeb09837f5471669f490af163b0d978b6013063262f9102a7091",
+    "support_manifest_sha256": "7e93f15e2efef565354ebe03a9cc5e834464fc4199bd2273067d62eda2ab74b3",
+    "support_pathset_sha256": "4727e11fd630c49372835a64cf9efbeea3ca791427da7d0fce92167eef5c20da",
+    "v12_lineage_commitment_relpath": "skill_graph/experiments/2026-08-28_eco_g2_nativecore_stage_minus1/v12_lineage_commitment.json",
+    "v12_lineage_commitment_sha256": "903b26bc16cee7aab5d59c4bad034de90afc2d616ee73fe278163b0c19205b28"
+  },
+  "construction": {
+    "generator": "G2_structural_scratch",
+    "held_seed_namespace": "ncfc-s1-normal-coordinate-frozen-commutation-20260827-v2",
+    "support_seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1"
+  },
+  "forbidden": [
+    "training",
+    "gradient",
+    "optimizer",
+    "adapter",
+    "lora",
+    "j0",
+    "ta_at",
+    "correction_candidate",
+    "test_public",
+    "test_private",
+    "ground_truth",
+    "query_image",
+    "query_adaptation",
+    "query_memory_update",
+    "dense_feature_persistence",
+    "pixel_mask_persistence",
+    "checkpoint_persistence",
+    "anomaly_map_persistence",
+    "favorable_target_selection"
+  ],
+  "geometry": {
+    "denominator": "196*H*W",
+    "erosion": "center_plus_8_neighbor_out_of_grid_false",
+    "minimum_core_rows": 4,
+    "primary": "AREA_NATIVE_STRICT_CORE",
+    "projected_source_rule": "2*N_rc>=196*H*W",
+    "reference_agreement": "bit_exact",
+    "sensitivity": "float32_torchvision_tensor_bicubic_antialias_clamp_nondecision",
+    "signed_integer_dtype": "int64"
+  },
+  "n1": {
+    "active_equality": "target_row_l2_norm>=tau",
+    "active_global_energy_coverage_gate": 0.95,
+    "calibration": "equal_image_left_continuous_empirical_q10",
+    "calibration_images": 16,
+    "calibration_stratum": "AREA_NATIVE_STRICT_CORE",
+    "held_records": 8,
+    "minimum_active_core_rows": 4,
+    "quantile": "1/10",
+    "raw_standardized_pass_agreement": true,
+    "repeat": "canonical_scientific_bytes_identical",
+    "standardized_l2_eps": 1e-08,
+    "standardized_std_floor": 1e-06
+  },
+  "phases": {
+    "N0": {
+      "base_images": 20,
+      "cuda_visible_devices": "",
+      "model_access": false
+    },
+    "N1_HELD": {
+      "cuda_visible_devices": "0,1,2,3",
+      "held_shards": 4,
+      "one_shard_per_gpu": true,
+      "requires": "N0_PASS_AND_N1_SUPPORT_SEAL"
+    },
+    "N1_SUPPORT": {
+      "cuda_visible_devices": "0",
+      "held_access": false,
+      "requires": "N0_PASS",
+      "support_count": 16
+    },
+    "P0": {
+      "cuda_visible_devices": "",
+      "data_access": false,
+      "model_access": false
+    },
+    "P1": {
+      "cuda_visible_devices": "",
+      "data_access": false,
+      "model_access": false
+    }
+  },
+  "protocol_id": "eco-g2-nativecore-20260828-v1",
+  "prior_lineage": {
+    "eco_v12_model_state_sha256": "59a755e385188971c57f52a38773028b508722c804ce6c9279d1dc2ac14ccbe8",
+    "eco_v12_support_seal_sha256": "99d01623dcc2f9c072290ffa95a0098c2cc30fd373f12912e2c2a9ded5e45f61",
+    "pooled_v12_taus_reusable": false
+  },
+  "remote": {
+    "container": "hun_fsad_tta_012",
+    "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+    "host": "hunim@147.47.39.144:2222",
+    "result_root_template": "/workspace/results_remote/{run_name}",
+    "run_name_regex": "^eco_g2_nativecore_dsba3_[A-Za-z0-9._-]+$",
+    "snapshot_root_template": "/workspace/isolated_runs/{run_name}/repo"
+  },
+  "schema": "eco-g2-nativecore-static-contract-v1",
+  "verdicts": {
+    "invalid": "INVALID_FAIL_CLOSED/NO_CONTINUE",
+    "n0_fail": "N0_FAIL_CLOSE_EXISTING_NATIVE_ROUTE/NO_GPU",
+    "n1_fail": "N1_FAIL_CLOSE_NATIVE_OBSERVATION_LINE",
+    "n1_pass": "PROMISING_DIAGNOSTIC/OPERATOR_ONLY_SENTINEL_AUTHORIZED/NO_LORA"
+  }
+}

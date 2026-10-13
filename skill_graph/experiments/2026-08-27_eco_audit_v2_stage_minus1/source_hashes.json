@@ -1,0 +1,15 @@
+{
+  "aggregator": "dc94c14e731b9057b411c58c55416b6bfd762dc27dbe29d2e9be894c30cb05e0",
+  "core": "4d54302ab606decb3754d8082fef5c9dc6337c4e8886bafae8b18668282762ad",
+  "frozen_cider": "3ec73279cfe4b8c0ac16bf6032a51bbfbeb09d9301d5ee4bafd887f5acb5da2a",
+  "frozen_ncfc_runner": "f52fc1582bb98bd7223ec6465b34f0c1bef277c1a957f4fe80e301a58cd3b141",
+  "frozen_rn": "27d6bf919dd8731cf3199de4cab66176c7d7288ad465e296188856ea21855ded",
+  "frozen_s2_runner": "242c51b3953796fd8408bf0fc9af0a9f0d3123a364e9a49b9e8a94d6db156ea5",
+  "frozen_shift": "38a546bd890b2f7fefd1753f872db3e6a46def5186c974895eb3270dbe125ff9",
+  "runner": "3fc26e931dc0a28a4187dc1b5b1f17b7c1aaf0b9362d82f3c6c145214f508634",
+  "test_aggregator": "9e6f4d9f678b231910278f93a4d795d6b416039c9df1b772e6f2efc57d7e016d",
+  "test_core": "ceb09ee5fb794f5bc5819faceefec0a571384e0b1a1511db6c8d736fa87fddae",
+  "test_runner": "a0c064fc6ede914c49b443d727e91fedb2b8e100227a2659e1ab2a8fd5900dca",
+  "test_verifier": "53263e5e604ca0ac9cff36464446107b14d688b0bb94328e79e782190d25646a",
+  "verifier": "c37c382fc957ce7737e11ca791396521fcbca94810d087d397fbecbe6e90fcdb"
+}

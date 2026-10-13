@@ -18,10 +18,13 @@ class FusionFactorial(ReferenceMatching):
     def __init__(self, backbone, config):
         super().__init__(backbone, config)
         self.shallow_mode = config.get('shallow_mode', 'gated')
-        if (self.shallow_mode not in {'all', 'gated', 'off'} or
+        # mean3 is the fixed-rule ablation (equal 1/3 layer mean); it keeps the same
+        # residual_spike config so tau and gate audits stay comparable across arms.
+        allowed_norm = {'mad', 'tailscale', 'none'} if self.shallow_mode == 'mean3' else {'mad', 'tailscale'}
+        if (self.shallow_mode not in {'all', 'hard', 'gated', 'off', 'mean3'} or
                 self.variant != 'R1' or self.layer_fusion != 'residual_spike' or
                 self.layer_fusion_tau_mode != 'support_quantile' or
-                self.score_normalization not in {'mad', 'tailscale'} or
+                self.score_normalization not in allowed_norm or
                 self.local_reliability != 'off' or self.scale_fusion != 'mean' or
                 len(self.layers) != 3 or self.layer_fusion_shallow_idx != 0):
             raise ValueError('fusion_factorial requires matched three-layer R1 residual fusion')
@@ -43,7 +46,10 @@ class FusionFactorial(ReferenceMatching):
         deep = torch.stack(scores[1:]).mean(0)
         residual = self.layer_fusion_gamma * torch.relu(scores[0] - tau)
         full = self.layer_fusion_gamma * scores[0]
-        used = {'all': full, 'gated': residual, 'off': torch.zeros_like(full)}[self.shallow_mode]
+        hard = full * (scores[0] > tau)
+        # mean3 fuses (s0 + s1 + s2) / 3, so the shallow share of the fused score is s0 / 3.
+        used = {'all': full, 'hard': hard, 'gated': residual, 'mean3': scores[0] / 3,
+                'off': torch.zeros_like(full)}[self.shallow_mode]
         components = {f'raw_l{layer}': value for layer, value in zip(self.layers, distances)}
         components.update({f'normalized_l{layer}': value for layer, value in zip(self.layers, scores)})
         components.update(deep=deep, shallow_full=full, shallow_residual=residual, shallow_used=used)
@@ -54,10 +60,16 @@ class FusionFactorial(ReferenceMatching):
             raise ValueError('support-calibrated shallow threshold is required')
         if self._audit_active:
             self._bag_gates.append((scores[0] > tau).float())
+        if self.shallow_mode == 'mean3':
+            return torch.stack(scores).mean(0)
         if self.shallow_mode == 'gated':
             return super()._fuse_layers(scores, tau=tau)
         deep = torch.stack(scores[1:]).mean(0)
-        return deep + self.layer_fusion_gamma * scores[0] if self.shallow_mode == 'all' else deep
+        if self.shallow_mode == 'all':
+            return deep + self.layer_fusion_gamma * scores[0]
+        if self.shallow_mode == 'hard':
+            return deep + self.layer_fusion_gamma * scores[0] * (scores[0] > tau)
+        return deep
 
     def _score_tokens(self, layers, grid, bank, *, normalize=True):
         self._bag_gates = []
@@ -94,8 +106,11 @@ class FusionFactorial(ReferenceMatching):
                 if self.mechanism_audit:
                     auxiliary['component_grids'] = self._component_grids
                     auxiliary['component_device'] = str(self.device)
+                diagnostics = {'fusion_audit': auxiliary}
+                if self.image_score_candidates:
+                    diagnostics['image_score_candidates'] = dict(self._last_image_candidates)
                 predictions.append(Prediction(score, image_score, time.perf_counter() - started,
-                    {'fusion_audit': auxiliary}))
+                    diagnostics))
             finally:
                 self._audit_active = False
                 self._gate_grids = []
@@ -115,8 +130,13 @@ class FusionFactorial(ReferenceMatching):
                     value = layer.detach().cpu().contiguous().numpy()
                     digest.update(str((resolution, value.shape, str(value.dtype))).encode())
                     digest.update(value.tobytes())
+        # For mean3, use a different score definition that reflects equal weighting
+        if self.shallow_mode == 'mean3':
+            score_def = f'bag_mean(equal_mean3)_{self.score_normalization}_CQ'
+        else:
+            score_def = f'bag_mean(deep_mean+{self.shallow_mode}_shallow)_{self.score_normalization}_CQ'
         metadata.update(shallow_mode=self.shallow_mode, bank_feature_sha256=digest.hexdigest(),
-            score_definition=f'bag_mean(deep_mean+{self.shallow_mode}_shallow)_{self.score_normalization}_CQ',
+            score_definition=score_def,
             query_labels_used=False, diagnostic_extra_backbone_calls=0)
         metadata['mechanism_audit'] = self.mechanism_audit
         return metadata

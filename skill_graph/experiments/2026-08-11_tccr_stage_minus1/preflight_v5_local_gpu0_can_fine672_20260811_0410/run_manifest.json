@@ -1,0 +1,102 @@
+{
+  "created_utc": "2026-08-10T18:35:54.822062+00:00",
+  "dense_maps_persisted": false,
+  "device": "cuda:0",
+  "ground_truth_accessed_after_maps_staged": true,
+  "host_gpu_id": "local:0",
+  "objects": [
+    "can"
+  ],
+  "p16_anchor_exact": {
+    "config": {
+      "backbone_model": "dinov3_vith16plus",
+      "backbone_model_id_env": "/home/hun/.cache/huggingface/hub/models--facebook--dinov3-vith16plus-pretrain-lvd1689m/snapshots/c807c9eeea853df70aec4069e6f56b28ddc82acc",
+      "backbone_resolution": 672,
+      "backbone_revision_env": "c807c9eeea853df70aec4069e6f56b28ddc82acc",
+      "binary_postprocess": "none",
+      "calibration_sample_size": 4096,
+      "context_mode": "none",
+      "context_source": "none",
+      "coupling_layers": 2,
+      "density_weight": 0.0,
+      "distance_weight": 1.0,
+      "dvt_denoise_alpha": 1.0,
+      "dvt_denoise_mode": "position_mean",
+      "expansion_budget": 1.0,
+      "feature_fusion": "layer_norm_mean",
+      "feature_layers": [
+        7,
+        15,
+        23,
+        31
+      ],
+      "flow_clamp": 1.9,
+      "flow_condition_mode": "none",
+      "flow_context_source": "none",
+      "flow_epochs": 3,
+      "flow_lr": 0.0002,
+      "hidden_multiplier": 1,
+      "lambda_logdet": 0.02,
+      "loo_standardize": false,
+      "memory_context_source": "none",
+      "rgb_guide": "none",
+      "score_field_calibration_mode": "none",
+      "score_field_foreground_mode": "none",
+      "score_mode": "latent_distance",
+      "support_brightness_range": [
+        0.8,
+        1.2
+      ],
+      "support_transforms": [
+        "identity"
+      ],
+      "tail_top_k_ratio": 0.05,
+      "tail_weight": 0.3,
+      "use_squared_distance": false
+    },
+    "loo": {
+      "fold_count": 16,
+      "image_disjoint": true,
+      "threshold_quantile": 0.999
+    },
+    "method": "Baseline1-core P16_H+DVT_anchor exact raw latent 1-NN",
+    "score_path": "Baseline1 scorer suite raw_1nn native-restore cv2-linear float16",
+    "support_manifest_sha256": "9f223f7cdffd4defe37aced6edab98aad4e6e133af6c13df22f5b21be81d18a5",
+    "support_protocol": "P16"
+  },
+  "phase": "mechanism",
+  "protocol_id": "tccr-v2-stage-minus1-compact-20260811",
+  "stage02_method": {
+    "coarse_current_h_dvt_fusion": {
+      "dvt_denoise_alpha": 1.0,
+      "dvt_denoise_mode": "position_mean",
+      "feature_fusion": "layer_norm_mean",
+      "layers": [
+        7,
+        15,
+        23,
+        31
+      ]
+    },
+    "fine": {
+      "layers": [
+        7
+      ]
+    }
+  },
+  "summary_keys": [
+    "elapsed_sec",
+    "implemented_arms",
+    "objects",
+    "omitted_arms",
+    "peak_gpu_allocated_bytes",
+    "peak_gpu_reserved_bytes",
+    "protocol_id",
+    "scope",
+    "verdict_positive_allowed"
+  ],
+  "support_json": "/home/hun/Volume/RESEARCH/FSAD-TTA/skill_graph/experiments/2026-07-07_flowtte_register_failure_analysis/dinov3_noctx_support_paths.json",
+  "support_manifest_sha256": "9f223f7cdffd4defe37aced6edab98aad4e6e133af6c13df22f5b21be81d18a5",
+  "test_private_accessed": false,
+  "test_public_accessed": true
+}

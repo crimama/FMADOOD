@@ -1,3 +1,5 @@
+# Official method name: RSG4. This file retains the historical NR_lowres
+# experiment identity so recorded runs and provenance remain reproducible.
 method: fusion_factorial
 dataset: mvtec
 backbone: dinov2_vitl14

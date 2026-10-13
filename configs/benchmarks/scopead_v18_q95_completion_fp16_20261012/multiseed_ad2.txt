@@ -1,0 +1,6 @@
+ad2_linear0125_s01_seed1
+ad2_linear0125_s04_seed1
+ad2_linear0125_s08_seed1
+ad2_linear0125_s01_seed2
+ad2_linear0125_s04_seed2
+ad2_linear0125_s08_seed2

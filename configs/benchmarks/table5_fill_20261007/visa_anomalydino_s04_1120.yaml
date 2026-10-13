@@ -1,0 +1,27 @@
+method: anomalydino
+dataset: visa
+backbone: dinov2_vitl14
+seed: 0
+dataset_config:
+  preprocess: no_mask_no_rotation
+  resolution: 1120
+backbone_config:
+  smaller_edge_size: 1120
+  feature_layers:
+  - 23
+protocol:
+  shots: 4
+  fixed_reference_manifest: configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json
+  warmup_iters: 2
+method_config:
+  k_neighbors: 1
+  faiss_on_cpu: false
+evaluation:
+  eval_segm: true
+  pro_integration_limit: 0.05
+  binary_postprocess: none
+  condition_strata: false
+  cost_profile: true
+output:
+  save_anomaly_maps: false
+  save_weights: false

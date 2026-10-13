@@ -1,0 +1,188 @@
+{
+  "support": [
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/116.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/240.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/193.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/015.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/285.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/235.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/313.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/353.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/319.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/028.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/378.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/102.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/195.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/006.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/067.png",
+    "/home/hun/Volume/DATA/MVTecAD/hazelnut/train/good/250.png"
+  ],
+  "noise_reference_sigma": 0.4564976716874821,
+  "taus": {
+    "448": [
+      1.4361990070689274,
+      1.402101619996959,
+      1.3530646439423064,
+      1.3840020379022322
+    ],
+    "672": [
+      1.4506265809131376,
+      1.379310842787313,
+      1.3542426059549952,
+      1.4400275147686314
+    ],
+    "896": [
+      1.4256703089642233,
+      1.4094503222420536,
+      1.3825792037437328,
+      1.3990342797268036
+    ],
+    "1120": [
+      1.432537366111592,
+      1.4225655103068056,
+      1.4557582978257213,
+      1.4519841461847083
+    ]
+  },
+  "scales": {
+    "448": [
+      [
+        0.16712069511413574,
+        0.17704766988754272,
+        0.24596118927001953
+      ],
+      [
+        0.17356114089488983,
+        0.1793982833623886,
+        0.24106356501579285
+      ],
+      [
+        0.17589351534843445,
+        0.1760663390159607,
+        0.23461997509002686
+      ],
+      [
+        0.1734408736228943,
+        0.1767689436674118,
+        0.2417089343070984
+      ]
+    ],
+    "672": [
+      [
+        0.15044543147087097,
+        0.16256767511367798,
+        0.23247918486595154
+      ],
+      [
+        0.15374965965747833,
+        0.15915830433368683,
+        0.22497355937957764
+      ],
+      [
+        0.15066374838352203,
+        0.15781237185001373,
+        0.2387426346540451
+      ],
+      [
+        0.1482384204864502,
+        0.1592385321855545,
+        0.22960630059242249
+      ]
+    ],
+    "896": [
+      [
+        0.138172909617424,
+        0.147304505109787,
+        0.2239995002746582
+      ],
+      [
+        0.13174384832382202,
+        0.14767956733703613,
+        0.22969010472297668
+      ],
+      [
+        0.13541918992996216,
+        0.14426036179065704,
+        0.2285711169242859
+      ],
+      [
+        0.1346183717250824,
+        0.14162400364875793,
+        0.23883509635925293
+      ]
+    ],
+    "1120": [
+      [
+        0.12235118448734283,
+        0.13484537601470947,
+        0.2306499481201172
+      ],
+      [
+        0.12626178562641144,
+        0.13563302159309387,
+        0.2335069626569748
+      ],
+      [
+        0.12186956405639648,
+        0.13309761881828308,
+        0.23186777532100677
+      ],
+      [
+        0.12195521593093872,
+        0.13390693068504333,
+        0.23350122570991516
+      ]
+    ]
+  },
+  "clean": {
+    "path": "/home/hun/Volume/DATA/MVTecAD/hazelnut/test/crack/000.png",
+    "noise_ratio": 1.1433902095087949,
+    "noise_fired": false,
+    "resolutions": [
+      448,
+      672,
+      896,
+      1120
+    ]
+  },
+  "noisy": {
+    "path": "/home/hun/Volume/DATA/MVTecAD_corrupted_heldout/impulse_noise_s3/hazelnut/test/crack/000.png",
+    "noise_ratio": 55.55436948753398,
+    "noise_fired": true,
+    "resolutions": [
+      448,
+      672
+    ]
+  },
+  "noisy_guardoff": {
+    "path": "/home/hun/Volume/DATA/MVTecAD_corrupted_heldout/impulse_noise_s3/hazelnut/test/crack/000.png",
+    "noise_ratio": NaN,
+    "noise_fired": false,
+    "resolutions": [
+      448,
+      672,
+      896,
+      1120
+    ]
+  },
+  "good_noisy": {
+    "path": "/home/hun/Volume/DATA/MVTecAD_corrupted_heldout/impulse_noise_s3/hazelnut/test/good/000.png",
+    "noise_ratio": 55.27840097137025,
+    "noise_fired": true,
+    "resolutions": [
+      448,
+      672
+    ]
+  },
+  "good_noisy_guardoff": {
+    "path": "/home/hun/Volume/DATA/MVTecAD_corrupted_heldout/impulse_noise_s3/hazelnut/test/good/000.png",
+    "noise_ratio": NaN,
+    "noise_fired": false,
+    "resolutions": [
+      448,
+      672,
+      896,
+      1120
+    ]
+  }
+}

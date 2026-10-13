@@ -71,6 +71,7 @@ Modes (infrastructure):
 Modes (persistent container):
   start     - reuse running container or start the SAME stopped container
   update-code - git fast-forward, or local snapshot when REMOTE_CODE_MODE=local
+               add --stage-only to install a local snapshot without activating it
   exec      - run a command inside the running container
   stop      - explicitly stop the container; NEVER remove it
   logs      - show experiment logs retained in the container
@@ -320,6 +321,7 @@ export OMP_NUM_THREADS=4 MKL_NUM_THREADS=4
 }
 
 update_local_code() (
+  local stage_only="${1:-0}"
   # A new local-only release cannot retain files from the legacy checkout.
   # Uploads do not touch active code; activation shares the experiment lock.
   validate_remote_repo_dir "${REMOTE_REPO_DIR}"
@@ -352,6 +354,38 @@ update_local_code() (
   remote_archive="${REMOTE_LOCAL_ROOT}/incoming/${digest}.tar"
   ssh_cmd "${REMOTE_HOST}" "mkdir -p '${REMOTE_REPO_DIR}/.local-sync/incoming'"
   run_rsync -az -e "$(rsync_ssh_cmd)" "${snapshot}" "$(rsync_remote_target "${archive}")"
+  if [[ "${stage_only}" == "1" ]]; then
+    container_bash "set -euo pipefail
+exec 9>/tmp/fmad-remote-execution.lock
+flock -sn 9 || { echo 'Exclusive execution/update in progress; release not staged.' >&2; exit 1; }
+exec 8>/tmp/fmad-remote-release-stage.lock
+flock -n 8 || { echo 'Another release staging operation is in progress.' >&2; exit 1; }
+test \"\$(sha256sum '${remote_archive}' | cut -d ' ' -f 1)\" = '${digest}'
+current_before=\$(readlink '${REMOTE_LOCAL_ROOT}/current' || true)
+mkdir -p '${REMOTE_LOCAL_ROOT}/releases'
+release='${REMOTE_LOCAL_ROOT}/releases/${digest}'
+if [[ -d \"\$release\" ]]; then
+  test \"\$(cat \"\$release/.fmad-source-sha256\")\" = '${digest}'
+  current_after=\$(readlink '${REMOTE_LOCAL_ROOT}/current' || true)
+  test \"\$current_before\" = \"\$current_after\"
+  printf 'Current release before staging: %s\\nCurrent release after staging: %s\\n' \"\$current_before\" \"\$current_after\"
+  echo 'Release already staged: ${digest}'
+  exit 0
+fi
+test ! -e \"\$release\"
+staging=\$(mktemp -d '${REMOTE_LOCAL_ROOT}/releases/.staging.XXXXXXXX')
+trap 'rm -rf -- \"\$staging\"' EXIT
+tar -xf '${remote_archive}' -C \"\$staging\"
+printf '%s\\n' '${digest}' > \"\$staging/.fmad-source-sha256\"
+chmod -R a-w \"\$staging\"
+mv \"\$staging\" \"\$release\"
+trap - EXIT
+current_after=\$(readlink '${REMOTE_LOCAL_ROOT}/current' || true)
+test \"\$current_before\" = \"\$current_after\"
+printf 'Current release before staging: %s\\nCurrent release after staging: %s\\n' \"\$current_before\" \"\$current_after\"
+echo 'Staged local snapshot without activation: ${digest}'" /workspace
+    exit 0
+  fi
   container_bash "set -euo pipefail
 exec 9>/tmp/fmad-remote-execution.lock
 flock -n 9 || { echo 'Experiment/update in progress; code unchanged.' >&2; exit 1; }
@@ -372,8 +406,19 @@ echo 'Activated local snapshot: ${digest}'" /workspace
 
 update_code() {
   if [[ "${REMOTE_CODE_MODE}" == local ]]; then
-    update_local_code
+    if [[ "$#" -eq 1 && "$1" == "--stage-only" ]]; then
+      update_local_code 1
+    elif [[ "$#" -eq 0 ]]; then
+      update_local_code
+    else
+      echo "Usage: scripts/run_remote.sh update-code [--stage-only]" >&2
+      return 1
+    fi
     return
+  fi
+  if [[ "$#" -gt 0 ]]; then
+    echo "--stage-only is available only with REMOTE_CODE_MODE=local." >&2
+    return 1
   fi
   start_container
   container_bash 'set -euo pipefail
@@ -501,7 +546,7 @@ main() {
       exec_in_container "$@"
       ;;
     update-code)
-      update_code
+      update_code "$@"
       ;;
     logs)
       show_logs "${1:-50}"

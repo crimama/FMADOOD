@@ -1,0 +1,24 @@
+# AnomalyDINO WACV 2025 official retrieval/map algorithm, pinned source in protocol.
+method: anomalydino
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 2
+device: cuda:0
+dataset_config:
+  objects: [can, fabric, fruit_jelly, rice, sheet_metal, vial, wallplugs, walnuts]
+  preprocess: no_mask_no_rotation
+backbone_config:
+  smaller_edge_size: 672
+  feature_layers: [23]
+protocol:
+  shots: 4
+  fixed_reference_manifest: configs/benchmarks/public_v13_20260929/seed2_support_4.json
+  warmup_iters: 2
+method_config:
+  k_neighbors: 1
+  faiss_on_cpu: false
+evaluation:
+  eval_segm: true
+  pro_integration_limit: 0.05
+  binary_postprocess: none
+  condition_strata: true

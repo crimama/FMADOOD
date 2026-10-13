@@ -1,0 +1,98 @@
+{
+  "claim_boundary": {
+    "benchmark_comparable": false,
+    "detector": false,
+    "lora": false,
+    "next_on_pass": "DETECTOR_BRIDGE",
+    "next_on_fail": "END_ECO_FAMILY",
+    "second_sentinel_allowed": false,
+    "superad": "N/A"
+  },
+  "decision": {
+    "active_energy_coverage_min": 0.95,
+    "candidate_cosine_min": 0.9,
+    "candidate_norm_ratio_min": 0.9,
+    "candidate_sre_max": 0.4472135954999579,
+    "clean_action_norm_min_exclusive": 7.62939453125e-06,
+    "decision_cell_count": 16,
+    "hard_null_sre_margin_min": 0.01,
+    "image_record_count": 8,
+    "legacy_kappa_margin_min": 0.01,
+    "minimum_active_native_core_rows": 4,
+    "pixel_anchor_max_abs_lsb": 1,
+    "pixel_anomaly_norm_ratio_min": 0.9,
+    "require_all_cells": true,
+    "target_norm_min_exclusive": 7.62939453125e-06
+  },
+  "hard_null": {
+    "anchor": "C0_FROZEN_TA_ANCHOR",
+    "anchor_is_null": false,
+    "identity": "I0_IDENTITY",
+    "mechanism_matched_null": "H0_LEGACY_FIXED_CARRIER_AT=frozen_cider.synthesize(frozen_apply_exposure(x,ev),donor,mask,G2,seed)",
+    "sre_margin": "SRE(target,H0)-SRE(target,candidate)"
+  },
+  "operator": {
+    "candidate": "LIFTED_J0_SHARED_G2_LATENT_SINGLE_FINAL_QUANTIZER",
+    "exposure_ev": [
+      -0.1333,
+      0.1333
+    ],
+    "generator": "G2_structural_scratch",
+    "identity_requires_frozen_anomaly_bytes": true,
+    "canonical_output": "Y_star=Q32(P_star); P_star=float32(s*float32(X*(1-alpha)+C*alpha))",
+    "distributive_audit": "float64(P_star) versus float64((s*X)*(1-alpha)+(s*C)*alpha), max_abs<=8*eps32*max(1,max_abs_left,max_abs_right)",
+    "intermediate_clip_or_quantize": false,
+    "lifted_at": "logical label consuming canonical P_star",
+    "lifted_ta": "logical label consuming canonical P_star",
+    "quantizer": "uint8(rint(clip(asarray(z,float32),0,1)*float32(255)))",
+    "require_lifted_paths_byte_identical": true
+  },
+  "parent": {
+    "eco_g2_aggregate_sha256": "cfe02673d4a5001acafd4c54efb25705a0dad9e387ee666c927e5eb525795b46",
+    "eco_g2_n0_geometry_sha256": "df8404a51aef2bb6148bb75d95b548b6debbf23c35d517a8da91016774b0932e",
+    "eco_g2_preregistration_sha256": "1a09f8c5e807cce92647bb982d80b65d3bef3ae971ba5797199339606ab65684",
+    "eco_g2_run": "eco_g2_nativecore_dsba3_20260827T212434Z_g2v5",
+    "eco_g2_support_seal_sha256": "9eb369ddecc8b9587e93512fc44f68bb2e1bd5466e6790933afac5fd1d50f81b",
+    "eco_v12_held_aggregate_sha256": "e5c70cdcef737fe37bfe6f4dd14dd4971bb7f929d652c622ea864e032534e78e",
+    "frozen_model_state_sha256": "59a755e385188971c57f52a38773028b508722c804ce6c9279d1dc2ac14ccbe8",
+    "held_commitment_sha256": "b51b6ca946b616fbc2578eaf1b20e54f2f905a52eb51deb9799abf715e5f7460",
+    "post_g2_policy_sha256": "95c0a83b4aeee1a7701661ab9c78c52f91ae4fd85ddf4e20ef9aaad6f6a32239",
+    "v12_lineage_sha256": "903b26bc16cee7aab5d59c4bad034de90afc2d616ee73fe278163b0c19205b28"
+  },
+  "population": {
+    "held_count": 4,
+    "object": "can",
+    "readouts": [
+      "RAW_NATIVE",
+      "STANDARDIZED_NATIVE_L2"
+    ],
+    "signs": [
+      "J0_NEG",
+      "J0_POS"
+    ],
+    "split": "train/good",
+    "support_replay_count": 16
+  },
+  "protocol_id": "eco-o1-lifted-j0-g2-operator-sentinel-20260828-v1",
+  "remote": {
+    "container": "hun_fsad_tta_012",
+    "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+    "gpu_mapping": {
+      "held_0": 0,
+      "held_1": 1,
+      "held_2": 2,
+      "held_3": 3,
+      "repeat_held_0": 0,
+      "support_replay": 0
+    },
+    "host": "hunim@147.47.39.144:2222"
+  },
+  "repeat": "HELD_0_CANONICAL_SCIENTIFIC_BYTES_IDENTICAL",
+  "revision_budget": 0,
+  "schema": "eco-o1-lifted-j0-g2-static-contract-v1",
+  "verdicts": {
+    "invalid": "INVALID_FAIL_CLOSED/END_ECO_FAMILY",
+    "pass": "PROMISING_DIAGNOSTIC/DETECTOR_BRIDGE_AUTHORIZED/NO_SECOND_SENTINEL/NO_LORA",
+    "valid_fail": "VALID_OPERATOR_SENTINEL_NO_SEPARATION/END_ECO_FAMILY"
+  }
+}

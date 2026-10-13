@@ -1,0 +1,121 @@
+\section{방법 (Method)}
+\label{sec:method}
+
+\method(ScopeAD)는 동결된 비전 백본의 다층·다해상도 패치 특징을 사용하여 소수의 정상 서포트 이미지로부터 테스트 쿼리의 결함 영역을 국소화한다.
+관측 단계에서는 4개 해상도와 3개 계층에 대해 총 48개의 독립 뱅크를 구축하고,
+결합 단계에서는 정상 서포트 분위수($q=0.95$)로 단위를 정렬한 뒤 얕은 층을 고정 가중치 $\lambda=0.125$로 제어하여 가산한다.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figures/fig_scopead_overview.pdf}
+\caption{\textbf{ScopeAD 파이프라인 개요.} (A) 서포트 피팅 단계: 정상 서포트로부터 48개 컴포넌트 뱅크를 구축하고 LSO 매칭 거리의 $q=0.95$ 상위 분위수 단위 척도 $c_m$을 사전 1회 계산한다. (B) 쿼리 추론 단계: 4개 고정 해상도와 3개 계층에서 패치 특징을 추출하고 각 뱅크별 1-NN 코사인 거리 $d_m$을 계산한 뒤 $c_m$으로 정규화하여 무차원 점수 $z_m$을 산출한다. (C) 계층 결합: Deep 평균에 Shallow 점수를 고정 가중치 $\lambda=0.125$로 선형 가산한다. (D) 공간 통합: 4-Bag 평균, 원본 크기로의 양선형 보간 역투영, 4-해상도 평균을 거쳐 최종 결함 국소화 맵 및 상위 1\% 픽셀 평균 이미지 점수를 출력한다.}
+\label{fig:scopead-overview}
+\end{figure*}
+
+\subsection{시스템 개요 및 문제 정의}
+\label{sec:method:overview}
+
+
+\noindent\textbf{입력 및 출력 규격.}
+입력은 정상 서포트 이미지 집합 $\mathcal{S} = \{x_1^s, \dots, x_N^s\}$ ($N \in \{1, 2, 4, 8, 16\}$), 테스트 쿼리 이미지 $x^q$, 동결된 DINOv2-L/14 백본~\cite{dinov2}이다.
+고정 계층 집합은 $\mathcal{L} = \{5, 11, 23\}$, 고정 해상도 짧은 변 길이는 $\mathcal{R} = \{448, 672, 896, 1120\}$, 메모리 배그 수는 $B=4$다.
+출력은 픽셀 단위 결함 맵 $A(x^q) \in \mathbb{R}^{H \times W}$ 및 이미지 점수 $s(x^q) \in \mathbb{R}$이다.
+
+
+\noindent\textbf{Support-Referenced Ratio Operator.}
+임의의 관측 통계량 $t$와 정상 서포트 기준 분포 $\mathcal{N}_S[t]$에 대해 분위수 비율 연산자 $\mathcal{T}_q[t] = t / Q_q(\mathcal{N}_S[t])$를 정의한다. 여기서 $Q_q(D)$는 분포 $D$의 $q$-분위수 값이다.
+
+\subsection{정상 서포트 뱅크 구축 및 메모리 배깅}
+\label{sec:method:bank}
+
+
+\noindent\textbf{컴포넌트 뱅크 분리.}
+계층 $l \in \mathcal{L}$, 해상도 $r \in \mathcal{R}$, 배그 $b \in \{1, \dots, B\}$의 조합 $m = (l, r, b)$를 독립 관측 단위인 \textbf{컴포넌트(Component)}로 정의한다 (총 $3 \times 4 \times 4 = 48$개).
+각 컴포넌트 $m$마다 전용 메모리 뱅크 $B_m$을 독립 구축한다.
+
+
+\noindent\textbf{배깅(Bagging) 및 뱅크 생성.}
+해상도 $r$에서 각 서포트 이미지로부터 256개 패치 토큰을 무작위 비복원 추출하여 배그를 구성한다. 4개의 독립 난수 시드로 4개 배그를 생성한다.
+동일 배그 내의 세 계층은 동일한 공간 위치 토큰을 공유한다. 16-shot 조건에서 단일 뱅크 $B_m$은 $16 \times 256 = 4,096$개 토큰을 갖는다.
+
+
+\noindent\textbf{1-NN 코사인 거리 계산.}
+쿼리 위치 $p$의 L2 정규화 특징 벡터 $f_m(x^q, p)$와 뱅크 $B_m$ 사이의 1-NN 코사인 거리는 다음과 같다:
+\begin{equation}
+  d_m(x^q, p) = \min_{u \in B_m} \left[ 1 - f_m(x^q, p)^\top u \right].
+  \label{eq:cosine-dist}
+\end{equation}
+
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_rsg4_mech_bagging.pdf}
+\caption{\textbf{4-Bag 점수 맵 앙상블 및 분산 완화.} 실제 hazelnut 쿼리(1120px)의 4개 독립 Bag 점수 맵과 평균. 각 Bag은 이미지당 256개 토큰을 무작위 추출하여 뱅크를 구성한다. 4-Bag 평균은 표본화 분산을 효과적으로 완화한다.}
+\label{fig:mech-bagging}
+\end{figure}
+
+
+\subsection{Scale Calibration: 분위수 기반 거리 정렬}
+\label{sec:method:scale}
+
+컴포넌트마다 상이한 거리 척도를 공통 단위로 정렬하기 위해, 서포트 내부의 Leave-Source-Out (LSO) 거리를 수집한다.
+각 서포트 이미지 $x_i^s$의 토큰 $v \in B_m^{(i)}$에 대해 나머지 서포트 토큰 집합과의 최근접 거리를 계산하여 LSO 분포 $D_m^{\text{LSO}}$를 얻는다:
+\begin{equation}
+  D_m^{\text{LSO}} = \bigcup_{i=1}^{N} \left\{ \min_{u \in B_m \setminus B_m^{(i)}} \left[1 - v^\top u\right] \;:\; v \in B_m^{(i)} 
+\right\}.
+  \label{eq:lso-dist}
+\end{equation}
+단위 척도 $c_m$은 $D_m^{\text{LSO}}$의 $q$-분위수($q=0.95$)로 결정된다:
+\begin{equation}
+  c_m = Q_q(D_m^{\text{LSO}}).
+  \label{eq:scale-unit}
+\end{equation}
+쿼리 거리 $d_m(x^q, p)$를 단위 척도 $c_m$으로 나누어 무차원 정규화 점수 $z_m(x^q, p)$를 산출한다:
+\begin{equation}
+  z_m(x^q, p) = \frac{d_m(x^q, p)}{c_m}.
+  \label{eq:norm-score}
+\end{equation}
+$z_m = 1.0$은 해당 패치 거리가 정상 서포트의 상위 5\% 경계점과 일치함을 뜻하며, 모든 48개 컴포넌트가 동일한 정상 참조 척도로 정렬된다. 원시 거리 분포와 정규화 이후의 분포 차이는 \cref{fig:scale-calibration-lso}에 제시한다.
+
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_scale_calibration_lso.png}
+\caption{\textbf{Scale calibration of leave-source-out (LSO) normal distances.} Left: raw cosine distances of the normal support patches for Layers 5, 11, and 23 (MVTec AD 2 walnuts, 16-shot, 672px, bag 0). Dashed lines mark each layer's 95th percentile $q_{0.95}$. Right: the same distances divided by their layer-wise $q_{0.95}$, so that the common reference value 1.0 aligns the layers before fusion.}
+\label{fig:scale-calibration-lso}
+\end{figure}
+
+
+\subsection{Contribution Control: 고정 가중 Shallow 결합}
+\label{sec:method:fusion}
+
+정규화 점수 공간에서 심층(Layer 11, 23)의 평균을 신뢰할 수 있는 의미 기준선으로 삼고, 표면 텍스처와 미세 윤곽에 민감한 얕은 층(Layer 5)을 작은 고정 가중치 $\lambda=0.125$로 선형 가산한다:
+\begin{equation}
+  z_{d,r,b}(x^q, p) = \frac{z_{11,r,b}(x^q, p) + z_{23,r,b}(x^q, p)}{2},
+  \label{eq:deep-base}
+\end{equation}
+\begin{equation}
+  S_{r,b}(x^q, p) = z_{d,r,b}(x^q, p) + \lambda \, z_{5,r,b}(x^q, p).
+  \label{eq:linear-fusion}
+\end{equation}
+임계값이나 복잡한 비선형 게이트 대신 단순 선형 가중을 채택하며, $\lambda=0.125$는 개발 평가(AD2 2-shot seed 0)에서 선택 후 완전히 동결된 하이퍼파라미터다.
+
+\subsection{고정 다해상도 결함 맵 공간 통합}
+\label{sec:method:aggregation}
+
+각 해상도 $r$에서 4개 배그의 결합 점수를 산술 평균한다:
+\begin{equation}
+  S_r(x^q, p) = \frac{1}{B} \sum_{b=1}^{B} S_{r,b}(x^q, p).
+  \label{eq:bag-mean}
+\end{equation}
+이후 각 해상도 맵 $S_r(x^q)$를 원본 영상 크기 $(H, W)$로 양선형 보간(Bilinear Interpolation)한 뒤 동일 가중 평균하여 최종 결함 국소화 맵 $A(x^q)$를 생성한다:
+\begin{equation}
+  A(x^q) = \frac{1}{|\mathcal{R}|} \sum_{r \in \mathcal{R}} \operatorname{Resize}_{H,W}\left[ S_r(x^q) \right].
+  \label{eq:scale-mean}
+\end{equation}
+이미지 단위 이상 점수 $s(x^q)$는 결함 맵 $A(x^q)$의 상위 1\% 픽셀 평균(top-1\% mean)으로 정의된다:
+\begin{equation}
+  s(x^q) = \frac{1}{|\Omega_{1\%}|} \sum_{p \in \Omega_{1\%}} A(x^q, p).
+  \label{eq:image-score}
+\end{equation}
+모든 연산은 결정론적이며 테스트 시점의 역전파나 적응 파라미터가 일체 존재하지 않는다.

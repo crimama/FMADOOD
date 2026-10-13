@@ -1,0 +1,42 @@
+method: regad_official
+dataset: mvtec_ad2
+backbone: dinov2_vitl14
+seed: 2
+device: cuda:0
+dataset_config:
+  objects:
+  - can
+  - fabric
+  - fruit_jelly
+  - rice
+  - sheet_metal
+  - vial
+  - wallplugs
+  - walnuts
+  preprocess: no_mask_no_rotation
+backbone_config:
+  smaller_edge_size: 672
+  feature_layers:
+  - 23
+protocol:
+  shots: 16
+  fixed_reference_manifest: configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_16.json
+  warmup_iters: 0
+method_config:
+  source_root: /workspace/isolated_runs/paper_method_reproduction_20260930/RegAD
+  dependency_root: /workspace/isolated_runs/paper_method_reproduction_20260930/deps
+  source_commit: 5e2c1f8c18d302b0354471567846fee3ed2ff063
+  checkpoint_path: /workspace/isolated_runs/paper_method_reproduction_20260930/RegAD/save_checkpoints/rotation_scale/2/bottle/bottle_2_rotation_scale_model.pt
+  checkpoint_sha256: ccc0a792083edc1506d53b3cdbdb9a1ede95437d80c30e4204ca9e181fedb152
+  checkpoint_archive_sha256: 082900cd7ce4fe2d4413a64dc1b985d79a6e4aa7fca8fdc4d86cdbfd781ef9e7
+  stn_mode: rotation_scale
+  image_size: 224
+  support_batch_size: 16
+  covariance_spatial_chunk: 64
+  covariance_ridge: 0.01
+  gaussian_sigma: 4.0
+evaluation:
+  eval_segm: true
+  pro_integration_limit: 0.05
+  binary_postprocess: none
+  condition_strata: true

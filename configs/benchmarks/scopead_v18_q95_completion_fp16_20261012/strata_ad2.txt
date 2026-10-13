@@ -1,0 +1,4 @@
+ad2_linear0125_s01_seed0_strata
+ad2_linear0125_s02_seed0_strata
+ad2_linear0125_s04_seed0_strata
+ad2_linear0125_s08_seed0_strata

@@ -1,0 +1,114 @@
+[
+  {
+    "filename": "259_regular.png",
+    "fold": 2,
+    "path_sha256": "cae7fddf0a9c93835521d3222a6ca4cfe8f2b25d1433200da84c3ab021faa58f",
+    "relative_path": "fruit_jelly/train/good/259_regular.png",
+    "source_id": 0
+  },
+  {
+    "filename": "057_regular.png",
+    "fold": 0,
+    "path_sha256": "7b481c40f77cc574580483dfad11c3094bdb452b93c8b19f20a55dc3ddc6b5fa",
+    "relative_path": "fruit_jelly/train/good/057_regular.png",
+    "source_id": 1
+  },
+  {
+    "filename": "125_regular.png",
+    "fold": 1,
+    "path_sha256": "951353555a76fc86be24f5ed1a5146cfd54214b2aee9c2ee12fd9963b8e4d1b5",
+    "relative_path": "fruit_jelly/train/good/125_regular.png",
+    "source_id": 2
+  },
+  {
+    "filename": "043_regular.png",
+    "fold": 0,
+    "path_sha256": "0f560cfa019ac20ca6f9a5b8549b7110038f6e5d30853515ad21dea5130a4e54",
+    "relative_path": "fruit_jelly/train/good/043_regular.png",
+    "source_id": 3
+  },
+  {
+    "filename": "169_regular.png",
+    "fold": 2,
+    "path_sha256": "f79683d5090e9f3a4e0ee021b620f566ab10ea112ab3f90f77744141604f4cd6",
+    "relative_path": "fruit_jelly/train/good/169_regular.png",
+    "source_id": 4
+  },
+  {
+    "filename": "221_regular.png",
+    "fold": 0,
+    "path_sha256": "1fc158662a120f3f9499aad7729db846dadcc0860b9ac173807e17c9ca41c924",
+    "relative_path": "fruit_jelly/train/good/221_regular.png",
+    "source_id": 5
+  },
+  {
+    "filename": "124_regular.png",
+    "fold": 1,
+    "path_sha256": "1dd35fd9a4a54c0e4f16e46f68cefaa894394bca1093973b5c91f55b4f9cf212",
+    "relative_path": "fruit_jelly/train/good/124_regular.png",
+    "source_id": 6
+  },
+  {
+    "filename": "243_regular.png",
+    "fold": 1,
+    "path_sha256": "8f68000a5fb631783be3937b91e340069a04e197e708ef85fc092bfb70fd01ee",
+    "relative_path": "fruit_jelly/train/good/243_regular.png",
+    "source_id": 7
+  },
+  {
+    "filename": "017_regular.png",
+    "fold": 2,
+    "path_sha256": "c1409227288616057c1d4497c752745820e555b21258c64335b7c0281375af08",
+    "relative_path": "fruit_jelly/train/good/017_regular.png",
+    "source_id": 8
+  },
+  {
+    "filename": "112_regular.png",
+    "fold": 3,
+    "path_sha256": "af8789fce89cf49833d1437c75dde47054b4d8caaedd39424a004a96691a24db",
+    "relative_path": "fruit_jelly/train/good/112_regular.png",
+    "source_id": 9
+  },
+  {
+    "filename": "002_regular.png",
+    "fold": 1,
+    "path_sha256": "dc9fc3c04229781330b7e4a697b7f29cfe7f015c6d77d732774668893324c416",
+    "relative_path": "fruit_jelly/train/good/002_regular.png",
+    "source_id": 10
+  },
+  {
+    "filename": "225_regular.png",
+    "fold": 3,
+    "path_sha256": "3b4daea5f4c6e5478a4b71bba80f92d04007cfec8512289fa494529195b1ef0c",
+    "relative_path": "fruit_jelly/train/good/225_regular.png",
+    "source_id": 11
+  },
+  {
+    "filename": "206_regular.png",
+    "fold": 2,
+    "path_sha256": "9fcd9e78620183d9835fae728311ebe27cfb4613e85cbca719cdff5a5788cac4",
+    "relative_path": "fruit_jelly/train/good/206_regular.png",
+    "source_id": 12
+  },
+  {
+    "filename": "235_regular.png",
+    "fold": 0,
+    "path_sha256": "c02751b5d019c47e8731ab7a88e20215112f132530a9100ef3ef8b4474a98c6c",
+    "relative_path": "fruit_jelly/train/good/235_regular.png",
+    "source_id": 13
+  },
+  {
+    "filename": "202_regular.png",
+    "fold": 3,
+    "path_sha256": "786b3f235e59e9560dd5ba0cb2af47837975a493bd0ec3f5ab1d02f286a1a56e",
+    "relative_path": "fruit_jelly/train/good/202_regular.png",
+    "source_id": 14
+  },
+  {
+    "filename": "014_regular.png",
+    "fold": 3,
+    "path_sha256": "e5af9891de6f47eb49100d6b4ed6b1064e9995b9b175d83fc89cbd7dea97687d",
+    "relative_path": "fruit_jelly/train/good/014_regular.png",
+    "source_id": 15
+  }
+]

@@ -1,0 +1,14 @@
+{
+  "source": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/slides/SCARF_Outline_v16.3_발표.pptx",
+  "source_sha256": "3a15b2858582d3f2c06e5c4b199bc007780f0bc337942e4b468c84a1026ed5e9",
+  "outline_sha256": "1a4804d9c916de56f750ba6a03f3ce09ec231864adbf37b8a3c7bb84ca1853c8",
+  "backup": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/slides/backup/SCARF_Outline_v17.1_발표_before_structure_restore_20261012_122848.pptx",
+  "build": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/slides/build_v17.1/SCARF_v17.1_structure_restored.pptx",
+  "slides": 35,
+  "main": 26,
+  "appendix": 9,
+  "policy": "v16.3 slide topics and body roles retained, linear0125 evidence only; unmeasured results explicitly missing",
+  "output": "PaperWorks/slides/SCARF_Outline_v17.1_발표.pptx",
+  "output_sha256": "00c63b88bbdf103b3832baf132ef1a26e6ba61bc09609ff5fdd7fccdbaa15e19",
+  "checks": "35 slides rendered; contact sheets inspected; corrected table28 and33; ZIP/notes/source preservation checked"
+}

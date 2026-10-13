@@ -2,6 +2,7 @@
 
 import hashlib
 import json
+import os
 from pathlib import Path
 import time
 from contextlib import nullcontext
@@ -16,6 +17,14 @@ from fmad.results import ResultsManager, validate_output_options
 from fmad.evaluation.streaming import StreamingSegmentationAccumulator
 
 _STREAMING_METRIC_CONTRACT = "mvtec_ad2_float16_streaming_v1"
+
+
+def _top_fraction_mean(values: np.ndarray, fraction: float = 0.01) -> float:
+    flat = np.asarray(values).reshape(-1)
+    if flat.size == 0:
+        raise ValueError("cannot aggregate an empty score map")
+    k = max(1, int(np.floor(flat.size * fraction)))
+    return float(np.mean(np.partition(flat, -k)[-k:]))
 
 
 def _input_fingerprint(paths, data_root):
@@ -81,6 +90,11 @@ def _run_streaming_object(
     if isinstance(batch_size, bool) or not isinstance(batch_size, int) or batch_size <= 0:
         raise ValueError("inference_batch_size must be positive")
     config = config or {}
+    cost_profile = config.get("evaluation", {}).get("cost_profile", False)
+    if not isinstance(cost_profile, bool):
+        raise ValueError("evaluation.cost_profile must be a boolean")
+    if cost_profile and batch_size != 1:
+        raise ValueError("cost profiling requires inference_batch_size=1")
     seed_generators(seed)
     obj_info = dataset.get_object_info(object_name)
     train_paths = sorted(dataset.get_train_images(object_name))
@@ -104,15 +118,40 @@ def _run_streaming_object(
         method.backbone.set_resolution(context.resolution)
     if hasattr(method.backbone, "warmup") and support_paths:
         method.backbone.warmup(support_paths[0], iters=warmup_iters)
+    fit_timing = None
+    if cost_profile:
+        import torch
+        from fmad.cost_profile import NvidiaSmiPeakSampler
+
+        profile_device = getattr(method.backbone, "device", "cuda")
+        if not torch.cuda.is_available() or not str(profile_device).startswith("cuda"):
+            raise RuntimeError("cost profiling requires a CUDA device")
+        fit_memory_sampler = NvidiaSmiPeakSampler.from_environment()
+        fit_memory_sampler.start()
+        torch.cuda.synchronize(profile_device)
+        torch.cuda.reset_peak_memory_stats(profile_device)
     started = time.perf_counter()
     training_session = (
         results_mgr.training_session(method, object_name, len(support_paths))
         if results_mgr is not None
         else nullcontext()
     )
-    with training_session:
-        method.fit(support_paths, context)
-    fit_seconds = time.perf_counter() - started
+    try:
+        with training_session:
+            method.fit(support_paths, context)
+    finally:
+        if cost_profile:
+            torch.cuda.synchronize(profile_device)
+            fit_seconds = time.perf_counter() - started
+            fit_torch_peak_gib = torch.cuda.max_memory_allocated(profile_device) / (1024 ** 3)
+            fit_nvidia_smi_peak = fit_memory_sampler.stop()
+            fit_timing = {
+                "seconds": fit_seconds,
+                "torch_peak_allocated_gib": fit_torch_peak_gib,
+                "nvidia_smi_peak": fit_nvidia_smi_peak,
+            }
+        else:
+            fit_seconds = time.perf_counter() - started
     checkpoint_path = (
         results_mgr.save_weights(method, object_name) if results_mgr is not None else None
     )
@@ -154,15 +193,35 @@ def _run_streaming_object(
             raise ValueError("condition_strata must be a boolean")
         condition_strata_enabled = True
     anomaly_scores: dict[str, float] = {}
+    aggregation_diagnostic_enabled = config.get("evaluation", {}).get("image_aggregation_diagnostic", False)
+    if not isinstance(aggregation_diagnostic_enabled, bool):
+        raise ValueError("image_aggregation_diagnostic must be a boolean")
+    aggregation_scores: dict[str, dict[str, float | str]] = {}
+    candidate_scores: dict[str, dict[str, float | str]] = {}
     inference_times: dict[str, float] = {}
     diagnostics: dict[str, dict] = {}
+    cost_query_latencies_seconds: list[float] = []
+    if cost_profile:
+        query_memory_sampler = NvidiaSmiPeakSampler.from_environment()
+        query_memory_sampler.start()
+        torch.cuda.synchronize(profile_device)
+        torch.cuda.reset_peak_memory_stats(profile_device)
     progress_dir = Path(run_dir) / "streaming_metrics" / object_name
     if debug_output:
         progress_dir.mkdir(parents=True, exist_ok=True)
 
     for start in range(0, len(queries), batch_size):
         batch = queries[start : start + batch_size]
+        if cost_profile:
+            torch.cuda.synchronize(profile_device)
+            query_started = time.perf_counter()
         predictions = method.predict_batch([path for _, path in batch])
+        if cost_profile:
+            torch.cuda.synchronize(profile_device)
+            batch_latency_seconds = time.perf_counter() - query_started
+            cost_query_latencies_seconds.extend(
+                [batch_latency_seconds / len(batch)] * len(batch)
+            )
         if len(predictions) != len(batch):
             raise ValueError(
                 f"{object_name}: predict_batch returned {len(predictions)} "
@@ -194,9 +253,36 @@ def _run_streaming_object(
             ):
                 raise ValueError("prediction score and non-negative timing must be finite")
             anomaly_scores[sample_key] = float(prediction.image_score)
-            inference_times[sample_key] = float(prediction.inference_seconds)
+            inference_times[sample_key] = float(
+                batch_latency_seconds / len(batch)
+                if cost_profile
+                else prediction.inference_seconds
+            )
             compact_diagnostics = dict(prediction.diagnostics)
             fusion_auxiliary = compact_diagnostics.pop("fusion_audit", None)
+            image_candidates = compact_diagnostics.pop("image_score_candidates", None)
+            if image_candidates is not None:
+                if not all(np.isfinite(float(v)) for v in image_candidates.values()):
+                    raise ValueError("image score candidates must be finite")
+                candidate_scores[sample_key] = {
+                    "label": "normal" if anomaly_type == "good" else "anomaly",
+                    **{name: float(value) for name, value in image_candidates.items()},
+                }
+            if aggregation_diagnostic_enabled:
+                if fusion_auxiliary is None or "raw_map" not in fusion_auxiliary:
+                    raise ValueError("image_aggregation_diagnostic requires fusion raw_map auxiliary predictions")
+                raw_map = np.asarray(fusion_auxiliary["raw_map"], dtype=np.float32)
+                if raw_map.shape != score_map.shape:
+                    raise ValueError("fusion raw_map must match prediction score map shape")
+                raw_flat = raw_map.reshape(-1)
+                final_flat = score_map.reshape(-1)
+                aggregation_scores[sample_key] = {
+                    "label": "normal" if anomaly_type == "good" else "anomaly",
+                    "max_raw": float(np.max(raw_flat)),
+                    "top1pct_mean_raw": _top_fraction_mean(raw_flat),
+                    "max_final": float(np.max(final_flat)),
+                    "top1pct_mean_final": _top_fraction_mean(final_flat),
+                }
             if fusion_diagnostic is not None:
                 if fusion_auxiliary is None:
                     raise ValueError("fusion_diagnostic requires method auxiliary predictions")
@@ -220,6 +306,11 @@ def _run_streaming_object(
             print(f"    processed {min(start + len(batch), len(queries))}/{len(queries)}")
         elif fusion_diagnostic is not None and (start % 32 == 0 or start + len(batch) == len(queries)):
             print(f"    fusion audit processed {min(start + len(batch), len(queries))}/{len(queries)}", flush=True)
+
+    if cost_profile:
+        torch.cuda.synchronize(profile_device)
+        query_torch_peak_gib = torch.cuda.max_memory_allocated(profile_device) / (1024 ** 3)
+        query_nvidia_smi_peak = query_memory_sampler.stop()
 
     final = accumulator.compute()
     labels = [1 if kind != "good" else 0 for kind, _ in queries]
@@ -264,6 +355,55 @@ def _run_streaming_object(
             method, dataset, object_name, seed, queries, _ground_truth_mask,
             mode=config["evaluation"]["shift_diagnostic"])
     metadata = dict(method.object_metadata())
+    if candidate_scores:
+        from sklearn.metrics import roc_auc_score
+        query_keys = [f"{kind}/{Path(path).name}" for kind, path in queries]
+        if set(candidate_scores) != set(query_keys):
+            raise ValueError("image score candidates must cover every query")
+        names = sorted(set.intersection(*(set(row) - {"label"} for row in candidate_scores.values())))
+        candidate_metrics = {
+            name: (float(roc_auc_score(labels, [candidate_scores[key][name] for key in query_keys]))
+                   if len(set(labels)) > 1 else 0.0)
+            for name in names
+        }
+        primary_key = getattr(method, "image_score_key", None)
+        metadata["image_score_candidates"] = {
+            "metrics": {"image_AUROC": candidate_metrics},
+            "top_fraction": 0.01,
+            "k_rule": "max(1, floor(pixel_count * top_fraction))",
+            "primary_key": primary_key,
+            "primary_matches": primary_key in names and all(
+                np.isclose(candidate_scores[key][primary_key], anomaly_scores[key], rtol=1e-6, atol=1e-7)
+                for key in query_keys),
+            "query_scores": candidate_scores,
+        }
+    if aggregation_diagnostic_enabled:
+        from sklearn.metrics import roc_auc_score
+        aggregate_metrics = {}
+        for score_name in ("max_raw", "top1pct_mean_raw", "max_final", "top1pct_mean_final"):
+            values = [aggregation_scores[f"{kind}/{Path(path).name}"][score_name] for kind, path in queries]
+            aggregate_metrics[score_name] = float(roc_auc_score(labels, values)) if len(set(labels)) > 1 else 0.0
+        quantiles = {}
+        for label_name in ("normal", "anomaly"):
+            label_rows = [row for row in aggregation_scores.values() if row["label"] == label_name]
+            quantiles[label_name] = {
+                score_name: {
+                    str(q): float(np.quantile([row[score_name] for row in label_rows], q))
+                    for q in (0.0, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99, 1.0)
+                }
+                for score_name in aggregate_metrics
+            }
+        metadata["image_aggregation_diagnostic"] = {
+            "metrics": {"image_AUROC": aggregate_metrics},
+            "top_fraction": 0.01,
+            "k_rule": "max(1, floor(pixel_count * top_fraction))",
+            "query_scores": aggregation_scores,
+            "score_quantiles_by_label": quantiles,
+            "max_final_matches_primary": all(
+                np.isclose(aggregation_scores[f"{kind}/{Path(path).name}"]["max_final"], anomaly_scores[f"{kind}/{Path(path).name}"], rtol=1e-6, atol=1e-7)
+                for kind, path in queries
+            ),
+        }
     if fusion_diagnostic is not None:
         metadata["fusion_diagnostic"] = fusion_diagnostic.compute()
     if source_shift is not None:
@@ -308,6 +448,29 @@ def _run_streaming_object(
             },
         }
     )
+    if cost_profile:
+        latency_ms = np.asarray(cost_query_latencies_seconds, dtype=np.float64) * 1000.0
+        metadata["cost_profile"] = {
+            "measurement_version": 1,
+            "gpu_uuid": os.environ.get("CUDA_VISIBLE_DEVICES", "").split(",", 1)[0].strip(),
+            "fit_seconds": fit_timing["seconds"],
+            "fit_includes_support_image_decoding_and_feature_extraction": True,
+            "fit_includes_bank_index_and_support_calibration": True,
+            "fit_torch_peak_allocated_gib": fit_timing["torch_peak_allocated_gib"],
+            "fit_nvidia_smi_peak": fit_timing["nvidia_smi_peak"],
+            "query_count": int(latency_ms.size),
+            "query_mean_ms": float(np.mean(latency_ms)),
+            "query_p95_ms": float(np.percentile(latency_ms, 95)),
+            "query_latencies_ms": latency_ms.tolist(),
+            "query_torch_peak_allocated_gib": query_torch_peak_gib,
+            "query_nvidia_smi_peak": query_nvidia_smi_peak,
+            "query_timer_scope": "method.predict_batch with CUDA synchronization before and after each batch",
+            "batch_size": batch_size,
+            "backbone_warmup_iters_excluded": warmup_iters,
+            "model_loading_excluded": True,
+            "support_selection_and_input_fingerprinting_excluded": True,
+            "checkpoint_loading_excluded": True,
+        }
     metadata["backbone"] = {
         "name": getattr(method.backbone, "model_name", type(method.backbone).__name__),
         "device": str(getattr(method.backbone, "device", "unknown")),

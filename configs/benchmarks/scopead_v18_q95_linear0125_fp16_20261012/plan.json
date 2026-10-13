@@ -1,0 +1,101 @@
+{
+  "suite": "scopead_v18_q95_linear0125_fp16_20261012",
+  "phases": {
+    "multiseed_ad2": [
+      "ad2_linear0125_s01_seed1",
+      "ad2_linear0125_s04_seed1",
+      "ad2_linear0125_s08_seed1",
+      "ad2_linear0125_s01_seed2",
+      "ad2_linear0125_s04_seed2",
+      "ad2_linear0125_s08_seed2"
+    ],
+    "multiseed_mvtec": [
+      "mvtec_linear0125_s01_seed1",
+      "mvtec_linear0125_s04_seed1",
+      "mvtec_linear0125_s08_seed1",
+      "mvtec_linear0125_s01_seed2",
+      "mvtec_linear0125_s04_seed2",
+      "mvtec_linear0125_s08_seed2"
+    ],
+    "multiseed_visa": [
+      "visa_linear0125_s01_seed1",
+      "visa_linear0125_s04_seed1",
+      "visa_linear0125_s08_seed1",
+      "visa_linear0125_s01_seed2",
+      "visa_linear0125_s04_seed2",
+      "visa_linear0125_s08_seed2"
+    ],
+    "capacity_cost_ad2": [
+      "ad2_mr_cap256_s16_seed0_cost_strata",
+      "ad2_r1120_cap256_s16_seed0_cost_strata",
+      "ad2_r1120_cap1024_s16_seed0_cost_strata",
+      "ad2_mr_cap1024_s16_seed0_cost_strata"
+    ],
+    "strata_ad2": [
+      "ad2_linear0125_s01_seed0_strata",
+      "ad2_linear0125_s02_seed0_strata",
+      "ad2_linear0125_s04_seed0_strata",
+      "ad2_linear0125_s08_seed0_strata"
+    ],
+    "corruption_clean": [
+      "mvtec_linear0125_s16_seed0_corruption"
+    ],
+    "corruption_brightness": [
+      "mvtec_linear0125_s16_seed0_corruption"
+    ],
+    "corruption_contrast": [
+      "mvtec_linear0125_s16_seed0_corruption"
+    ],
+    "corruption_defocus_blur": [
+      "mvtec_linear0125_s16_seed0_corruption"
+    ],
+    "corruption_gaussian_noise": [
+      "mvtec_linear0125_s16_seed0_corruption"
+    ]
+  },
+  "order": [
+    "capacity_cost_ad2",
+    "multiseed_ad2",
+    "strata_ad2",
+    "multiseed_mvtec",
+    "multiseed_visa",
+    "corruption_clean",
+    "corruption_brightness",
+    "corruption_contrast",
+    "corruption_defocus_blur",
+    "corruption_gaussian_noise"
+  ],
+  "shards": [
+    [
+      0,
+      "GPU-a164a77e-c3b3-5c6d-d70c-63ee65b2601f",
+      "can fabric",
+      "bottle grid pill transistor",
+      "candle fryum pcb2"
+    ],
+    [
+      1,
+      "GPU-bbb3a0e2-cc7d-ba3c-f956-89214c06a1ae",
+      "fruit_jelly rice",
+      "cable hazelnut screw wood",
+      "capsules macaroni1 pcb3"
+    ],
+    [
+      2,
+      "GPU-eb6182a8-eb72-e8b2-f279-c587d6fa9639",
+      "sheet_metal vial",
+      "capsule leather tile zipper",
+      "cashew macaroni2 pcb4"
+    ],
+    [
+      3,
+      "GPU-7534790f-7c8c-3f2b-5c33-c1b15998ef62",
+      "wallplugs walnuts",
+      "carpet metal_nut toothbrush",
+      "chewinggum pcb1 pipe_fryum"
+    ]
+  ],
+  "expected_class_runs": 349,
+  "expected_component_profiles": 32,
+  "development": true
+}

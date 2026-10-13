@@ -1,0 +1,9 @@
+{
+  "ground_truth_accessed": false,
+  "mode": "smoke",
+  "protocol_id": "fact-rn-stage-minus1-20260817",
+  "query_or_test_access": false,
+  "schema": "fact-rn-stage-minus1-run-v1",
+  "score_finite": true,
+  "score_nonconstant": true
+}

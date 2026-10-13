@@ -1,0 +1,239 @@
+{
+ "suite": "scarf_linear0125_multiseed_fp16_20261010",
+ "seeds": [
+  1,
+  2
+ ],
+ "shots": [
+  2,
+  16
+ ],
+ "arms": [
+  "linear0125",
+  "deep"
+ ],
+ "datasets": {
+  "ad2": [
+   {
+    "label": "ad2_linear0125_s02_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/ad2_linear0125_s02_seed1.yaml",
+    "seed": 1,
+    "shot": 2,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/linear0125_s02.yaml",
+    "config_sha256": "925d6bdc42824e797196b8743fccc199bfcfae652fd7428976812db3d41e08c8"
+   },
+   {
+    "label": "ad2_deep_s02_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/ad2_deep_s02_seed1.yaml",
+    "seed": 1,
+    "shot": 2,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/deep_s02.yaml",
+    "config_sha256": "b5a97850103f325130cd98777fa59d727706a79b8a7d8e4141af0d31a345d71d"
+   },
+   {
+    "label": "ad2_linear0125_s16_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/ad2_linear0125_s16_seed1.yaml",
+    "seed": 1,
+    "shot": 16,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/linear0125_s16.yaml",
+    "config_sha256": "c49dacce2a1ff4cf71238f2270bd8d4d5552ace7e8f3f790725fdbf0e88df5ef"
+   },
+   {
+    "label": "ad2_deep_s16_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/ad2_deep_s16_seed1.yaml",
+    "seed": 1,
+    "shot": 16,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/deep_s16.yaml",
+    "config_sha256": "e65cdc49e6e83c997602b4480271e2e18de59aa90fadc0335b8ac26291619728"
+   },
+   {
+    "label": "ad2_linear0125_s02_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/ad2_linear0125_s02_seed2.yaml",
+    "seed": 2,
+    "shot": 2,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/linear0125_s02.yaml",
+    "config_sha256": "1523c5cba4bd70e59a754131de0226cceb7071e86753c19108b80dc4153cb6e0"
+   },
+   {
+    "label": "ad2_deep_s02_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/ad2_deep_s02_seed2.yaml",
+    "seed": 2,
+    "shot": 2,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/deep_s02.yaml",
+    "config_sha256": "c3b3ec23fa14bcb131716428cdd61f98f067ea4ed0f6dbec5bb56ef21c542c99"
+   },
+   {
+    "label": "ad2_linear0125_s16_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/ad2_linear0125_s16_seed2.yaml",
+    "seed": 2,
+    "shot": 16,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/linear0125_s16.yaml",
+    "config_sha256": "2688ad91256f69e3e3957fe95679a2ad36b6436c3313064bd68a885ad5ce83f6"
+   },
+   {
+    "label": "ad2_deep_s16_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/ad2_deep_s16_seed2.yaml",
+    "seed": 2,
+    "shot": 16,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_fusion_sensitivity_fp16_20261008/deep_s16.yaml",
+    "config_sha256": "bbddf3d3f893c455dea6108a955f609e1302119173dbb4dbd26cccefa91f9112"
+   }
+  ],
+  "mvtec": [
+   {
+    "label": "mvtec_linear0125_s02_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/mvtec_linear0125_s02_seed1.yaml",
+    "seed": 1,
+    "shot": 2,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s02_seed0.yaml",
+    "config_sha256": "36163409de06f1b09ff906adfa57488ef0d5a490455e9a27623e5fe2d41e0314"
+   },
+   {
+    "label": "mvtec_deep_s02_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/mvtec_deep_s02_seed1.yaml",
+    "seed": 1,
+    "shot": 2,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s02_seed0.yaml",
+    "config_sha256": "a1a29577035185a1faa38b539e76e88f10339c440a7288b0fee5415ca2c55ab1"
+   },
+   {
+    "label": "mvtec_linear0125_s16_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/mvtec_linear0125_s16_seed1.yaml",
+    "seed": 1,
+    "shot": 16,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s16_seed0.yaml",
+    "config_sha256": "17797bc97926794f93b4485d31be02de036464c1876aab1d74a1e5e054840037"
+   },
+   {
+    "label": "mvtec_deep_s16_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/mvtec_deep_s16_seed1.yaml",
+    "seed": 1,
+    "shot": 16,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s16_seed0.yaml",
+    "config_sha256": "18af0d3a2aafd9d81120caf4c258a623cdbc20aa7e6a43e45704f815369a5ea1"
+   },
+   {
+    "label": "mvtec_linear0125_s02_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/mvtec_linear0125_s02_seed2.yaml",
+    "seed": 2,
+    "shot": 2,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s02_seed0.yaml",
+    "config_sha256": "b6dfeb7808636f15d447b4c63f602e332b7ad7ac23a9bdf9aff84fcdd8b2d250"
+   },
+   {
+    "label": "mvtec_deep_s02_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/mvtec_deep_s02_seed2.yaml",
+    "seed": 2,
+    "shot": 2,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s02_seed0.yaml",
+    "config_sha256": "e81968ac1e01ac4a166500b5495194218513fe6e3acaf47f1ebbd3a5530a0c5d"
+   },
+   {
+    "label": "mvtec_linear0125_s16_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/mvtec_linear0125_s16_seed2.yaml",
+    "seed": 2,
+    "shot": 16,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/mvtec_linear0125_s16_seed0.yaml",
+    "config_sha256": "de80fd37521189d77150b9761ddda07f7d97961d115dee3525096fa3dd90a9cf"
+   },
+   {
+    "label": "mvtec_deep_s16_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/mvtec_deep_s16_seed2.yaml",
+    "seed": 2,
+    "shot": 16,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s16_seed0.yaml",
+    "config_sha256": "8421f045a32be390fd74db972d5343a2b9556cbba181df76d95c60834e235728"
+   }
+  ],
+  "visa": [
+   {
+    "label": "visa_linear0125_s02_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/visa_linear0125_s02_seed1.yaml",
+    "seed": 1,
+    "shot": 2,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s02_seed0.yaml",
+    "config_sha256": "8134a3a60fc756eef8cfdd6a0b590784a3a666f4cd2d0a488982936e9633fd4f"
+   },
+   {
+    "label": "visa_deep_s02_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/visa_deep_s02_seed1.yaml",
+    "seed": 1,
+    "shot": 2,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s02_seed0.yaml",
+    "config_sha256": "534c16bcb8239b10bd90ff107282b9107dcf674fc4fc487df49b4b3a3b34c075"
+   },
+   {
+    "label": "visa_linear0125_s16_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/visa_linear0125_s16_seed1.yaml",
+    "seed": 1,
+    "shot": 16,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s16_seed0.yaml",
+    "config_sha256": "d8a50aeaadb8953b9929ea1ea50b77ddc3e46365e8bc1fa765c761a4cd689fbb"
+   },
+   {
+    "label": "visa_deep_s16_seed1",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/visa_deep_s16_seed1.yaml",
+    "seed": 1,
+    "shot": 16,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s16_seed0.yaml",
+    "config_sha256": "fb85d0134468d5fbfae698a27031327f01f701698b6eb15a8affa604d1bf0295"
+   },
+   {
+    "label": "visa_linear0125_s02_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/visa_linear0125_s02_seed2.yaml",
+    "seed": 2,
+    "shot": 2,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s02_seed0.yaml",
+    "config_sha256": "f6b236fc90c6f1f08923ef17db21a5346a9f040630c36bcb82fe3e88b32bb0b3"
+   },
+   {
+    "label": "visa_deep_s02_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/visa_deep_s02_seed2.yaml",
+    "seed": 2,
+    "shot": 2,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s02_seed0.yaml",
+    "config_sha256": "4923cc6a37a0c0c076c050e4c83d16e8186f411b9cb5762e3427ef7aeaed83a3"
+   },
+   {
+    "label": "visa_linear0125_s16_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/visa_linear0125_s16_seed2.yaml",
+    "seed": 2,
+    "shot": 16,
+    "arm": "linear0125",
+    "source_config": "configs/benchmarks/scarf_linear0125_seed0_fp16_20261008/visa_linear0125_s16_seed0.yaml",
+    "config_sha256": "50ab394ddd5cbc6d06e4c35906a5d12c2fb0121755fbe79bec7189ba79e3945c"
+   },
+   {
+    "label": "visa_deep_s16_seed2",
+    "config": "configs/benchmarks/scarf_linear0125_multiseed_fp16_20261010/visa_deep_s16_seed2.yaml",
+    "seed": 2,
+    "shot": 16,
+    "arm": "deep",
+    "source_config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s16_seed0.yaml",
+    "config_sha256": "25bbd5890111cafe5841ce760470b149194da8b41b3ce0b12a5074bc29f6cc58"
+   }
+  ]
+ }
+}

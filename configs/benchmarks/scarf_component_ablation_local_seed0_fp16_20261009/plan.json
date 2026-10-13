@@ -1,0 +1,555 @@
+{
+  "suite": "scarf_component_ablation_local_seed0_fp16_20261009",
+  "seed": 0,
+  "shots": [
+    1,
+    2,
+    4,
+    8,
+    16
+  ],
+  "arms": [
+    "nonorm",
+    "deeponly",
+    "layermean",
+    "concat"
+  ],
+  "datasets": {
+    "ad2": {
+      "data_root": "/home/hun/Volume/DATA/mvtec_ad_2",
+      "objects": [
+        "can",
+        "fabric",
+        "fruit_jelly",
+        "rice",
+        "sheet_metal",
+        "vial",
+        "wallplugs",
+        "walnuts"
+      ],
+      "configs": [
+        {
+          "label": "ad2_nonorm_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s01_seed0.yaml",
+          "config_sha256": "c1ccc4b5a2a78c54003efb568650388e558e73b89abbde5491483239ee597ae6",
+          "shot": 1,
+          "arm": "nonorm",
+          "support_manifest": "configs/methods/VOID_support_1.json"
+        },
+        {
+          "label": "ad2_deeponly_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s01_seed0.yaml",
+          "config_sha256": "6abc1417863e7e9e1a764c819b24dac09133e4910e2775a924b2de86f7034c88",
+          "shot": 1,
+          "arm": "deeponly",
+          "support_manifest": "configs/methods/VOID_support_1.json"
+        },
+        {
+          "label": "ad2_layermean_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_layermean_s01_seed0.yaml",
+          "config_sha256": "08e112a02406c0540832742005f33a97a96d1d3ab182e65f9cd8d53a6c493076",
+          "shot": 1,
+          "arm": "layermean",
+          "support_manifest": "configs/methods/VOID_support_1.json"
+        },
+        {
+          "label": "ad2_concat_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_concat_s01_seed0.yaml",
+          "config_sha256": "9e37d9e60a6e77115aacf3e0166bb60562b5d68f368f9faa441185fd24920a63",
+          "shot": 1,
+          "arm": "concat",
+          "support_manifest": "configs/methods/VOID_support_1.json"
+        },
+        {
+          "label": "ad2_nonorm_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s02_seed0.yaml",
+          "config_sha256": "e6e6c5c1bc91b4b496758bcbedfbd45cecd04c7d246f155fcf03e6baff4b18ac",
+          "shot": 2,
+          "arm": "nonorm",
+          "support_manifest": "configs/methods/VOID_support_2.json"
+        },
+        {
+          "label": "ad2_deeponly_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s02_seed0.yaml",
+          "config_sha256": "fae3d097870f7ad4aa6a040bc635508edc32e54b904c25a8d31f1639c6255311",
+          "shot": 2,
+          "arm": "deeponly",
+          "support_manifest": "configs/methods/VOID_support_2.json"
+        },
+        {
+          "label": "ad2_layermean_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_layermean_s02_seed0.yaml",
+          "config_sha256": "0737bb6cff24dfb2efc31ecc0c3622b6aa540c7d52b0beaaefc72b1577add387",
+          "shot": 2,
+          "arm": "layermean",
+          "support_manifest": "configs/methods/VOID_support_2.json"
+        },
+        {
+          "label": "ad2_concat_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_concat_s02_seed0.yaml",
+          "config_sha256": "54d398988ced7351601598a1836ed55e52ef02e020503de8caff57afa6dc0442",
+          "shot": 2,
+          "arm": "concat",
+          "support_manifest": "configs/methods/VOID_support_2.json"
+        },
+        {
+          "label": "ad2_nonorm_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s04_seed0.yaml",
+          "config_sha256": "985aeb4ed252430a1e1edb270c517ab56a943a0c84d13cebf8fa91c85df02bac",
+          "shot": 4,
+          "arm": "nonorm",
+          "support_manifest": "configs/methods/VOID_support_4.json"
+        },
+        {
+          "label": "ad2_deeponly_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s04_seed0.yaml",
+          "config_sha256": "75e59b615fa083b601f17184bdd5a826abb6d4f3c74a113efdec24bacec3a5a7",
+          "shot": 4,
+          "arm": "deeponly",
+          "support_manifest": "configs/methods/VOID_support_4.json"
+        },
+        {
+          "label": "ad2_layermean_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_layermean_s04_seed0.yaml",
+          "config_sha256": "629740d89a0c642be92d2c662be7429769fb2e05401a7917f8652eed0d42d2ee",
+          "shot": 4,
+          "arm": "layermean",
+          "support_manifest": "configs/methods/VOID_support_4.json"
+        },
+        {
+          "label": "ad2_concat_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_concat_s04_seed0.yaml",
+          "config_sha256": "fd2d4f1bab0ae00dd4d9861dca6a098b5c0822ca25859f118ae3022fbfb261fc",
+          "shot": 4,
+          "arm": "concat",
+          "support_manifest": "configs/methods/VOID_support_4.json"
+        },
+        {
+          "label": "ad2_nonorm_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s08_seed0.yaml",
+          "config_sha256": "dd4a4256ad34da6cee9ce966112637c922efa807e700ec165ce81e5edc54209f",
+          "shot": 8,
+          "arm": "nonorm",
+          "support_manifest": "configs/methods/VOID_support_8.json"
+        },
+        {
+          "label": "ad2_deeponly_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s08_seed0.yaml",
+          "config_sha256": "2a2869f84cb8dc301916451e8bd8b7f1c565b85a4c7ac034de712cd622423e16",
+          "shot": 8,
+          "arm": "deeponly",
+          "support_manifest": "configs/methods/VOID_support_8.json"
+        },
+        {
+          "label": "ad2_layermean_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_layermean_s08_seed0.yaml",
+          "config_sha256": "dccefdaed134182a5f28d783f6396c63a1affa9b480804116fb5129bd0b8ffca",
+          "shot": 8,
+          "arm": "layermean",
+          "support_manifest": "configs/methods/VOID_support_8.json"
+        },
+        {
+          "label": "ad2_concat_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_concat_s08_seed0.yaml",
+          "config_sha256": "c81662c57bc317d90f96440fcba896e7efb41f8bdbac53a3af61f87dea873617",
+          "shot": 8,
+          "arm": "concat",
+          "support_manifest": "configs/methods/VOID_support_8.json"
+        },
+        {
+          "label": "ad2_nonorm_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_nonorm_s16_seed0.yaml",
+          "config_sha256": "30484b5eaba158ea6e9e9386b33bbf40a9cc2b0b0c0ae11f48622f665e640f70",
+          "shot": 16,
+          "arm": "nonorm",
+          "support_manifest": "configs/methods/VOID_support_16.json"
+        },
+        {
+          "label": "ad2_deeponly_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_deeponly_s16_seed0.yaml",
+          "config_sha256": "79538549cafa6a779c4f18731843c755f4182808cec3695164505c5414441eec",
+          "shot": 16,
+          "arm": "deeponly",
+          "support_manifest": "configs/methods/VOID_support_16.json"
+        },
+        {
+          "label": "ad2_layermean_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_layermean_s16_seed0.yaml",
+          "config_sha256": "2a881afb1d9520067666dda9fd576c27b5e06f8b188322b83a65fe4ff6002b91",
+          "shot": 16,
+          "arm": "layermean",
+          "support_manifest": "configs/methods/VOID_support_16.json"
+        },
+        {
+          "label": "ad2_concat_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/ad2_concat_s16_seed0.yaml",
+          "config_sha256": "35738c1ecc93f7b50b3e2fe658fa066c1a36ecb4e9e7af0cdea7b8bb97a2e6b7",
+          "shot": 16,
+          "arm": "concat",
+          "support_manifest": "configs/methods/VOID_support_16.json"
+        }
+      ]
+    },
+    "mvtec": {
+      "data_root": "/home/hun/Volume/DATA/MVTecAD",
+      "objects": [
+        "bottle",
+        "cable",
+        "capsule",
+        "carpet",
+        "grid",
+        "hazelnut",
+        "leather",
+        "metal_nut",
+        "pill",
+        "screw",
+        "tile",
+        "toothbrush",
+        "transistor",
+        "wood",
+        "zipper"
+      ],
+      "configs": [
+        {
+          "label": "mvtec_nonorm_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s01_seed0.yaml",
+          "config_sha256": "0be9e72b634c79f2359cebd4c0e651aa04b90704987892eeaee7377ebf51b653",
+          "shot": 1,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json"
+        },
+        {
+          "label": "mvtec_deeponly_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s01_seed0.yaml",
+          "config_sha256": "83b607968d9ac5866e7da13a91b4f86060abc37c1808d3199a5daa7ce9d0f2b1",
+          "shot": 1,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json"
+        },
+        {
+          "label": "mvtec_layermean_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_layermean_s01_seed0.yaml",
+          "config_sha256": "08a6740f680d8ec46648db05a6a5716ef0a416d1c2a36db94109ae6425afce0c",
+          "shot": 1,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json"
+        },
+        {
+          "label": "mvtec_concat_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_concat_s01_seed0.yaml",
+          "config_sha256": "9d59f512b1f605513b03c8da753d137bc738e1bb33cc900f6ee061295dda4114",
+          "shot": 1,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s01.json"
+        },
+        {
+          "label": "mvtec_nonorm_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s02_seed0.yaml",
+          "config_sha256": "b4886921f27ca70c43c1fe1b65c4a318e7428ca9b7f55db21c83e786554bede6",
+          "shot": 2,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json"
+        },
+        {
+          "label": "mvtec_deeponly_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s02_seed0.yaml",
+          "config_sha256": "9fcd245b872809f563c579be29a2d7e7271b43fc08c58f552ac3ae474f16203d",
+          "shot": 2,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json"
+        },
+        {
+          "label": "mvtec_layermean_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_layermean_s02_seed0.yaml",
+          "config_sha256": "e98dd497e330259ba02f5fbf0cff69c40f3fbec61c0222669cee9ef1c950c068",
+          "shot": 2,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json"
+        },
+        {
+          "label": "mvtec_concat_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_concat_s02_seed0.yaml",
+          "config_sha256": "33bfcb4cb81fa000a0e3a6dad95fcc86ea11467c566eb5f64c5319369fd93fec",
+          "shot": 2,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s02.json"
+        },
+        {
+          "label": "mvtec_nonorm_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s04_seed0.yaml",
+          "config_sha256": "e7cde4ee13b2871fc59b239edcb9185c147c773cc391601bc898530e19d26334",
+          "shot": 4,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json"
+        },
+        {
+          "label": "mvtec_deeponly_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s04_seed0.yaml",
+          "config_sha256": "5137210a2042fc849a0f50d118c36d25f17e94c7020da9a185bc2f1e84240afd",
+          "shot": 4,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json"
+        },
+        {
+          "label": "mvtec_layermean_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_layermean_s04_seed0.yaml",
+          "config_sha256": "43693ae302f7f3261530f8fad2c666368ef611200ab7967d7b84d7fe7b04beeb",
+          "shot": 4,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json"
+        },
+        {
+          "label": "mvtec_concat_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_concat_s04_seed0.yaml",
+          "config_sha256": "6cff8cd927baebb75bceafbac9a981a1aa8b36725421adc51e4b76ee5a7a31bf",
+          "shot": 4,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s04.json"
+        },
+        {
+          "label": "mvtec_nonorm_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s08_seed0.yaml",
+          "config_sha256": "7855ec7cba882a69fbb7a5c5d196d50a83e4153147459120db72415ec20f6d02",
+          "shot": 8,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json"
+        },
+        {
+          "label": "mvtec_deeponly_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s08_seed0.yaml",
+          "config_sha256": "0a0fc70e47fae4d0ffa37c5f4f2de9c3e76f385d2c1c98460f91ec0e398803ac",
+          "shot": 8,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json"
+        },
+        {
+          "label": "mvtec_layermean_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_layermean_s08_seed0.yaml",
+          "config_sha256": "5e69bb6259cbd753fab7f6e0896ceee2daa21391b2cea87ad017d8611f8c57fe",
+          "shot": 8,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json"
+        },
+        {
+          "label": "mvtec_concat_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_concat_s08_seed0.yaml",
+          "config_sha256": "0fecb63123bd69118cb49b99ac21d1a4cb0ef2724cd13371c7e2a3fbc98f1e24",
+          "shot": 8,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s08.json"
+        },
+        {
+          "label": "mvtec_nonorm_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_nonorm_s16_seed0.yaml",
+          "config_sha256": "d34570c48a0f32759d4640626a5af1b5f99ea5faacdc5a75bec54c162da55b8a",
+          "shot": 16,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json"
+        },
+        {
+          "label": "mvtec_deeponly_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_deeponly_s16_seed0.yaml",
+          "config_sha256": "c7f287fc7fce1e75b2c32d2ca9e97d5e04f02d74eadc4953a5fdb0ccf86a4d66",
+          "shot": 16,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json"
+        },
+        {
+          "label": "mvtec_layermean_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_layermean_s16_seed0.yaml",
+          "config_sha256": "a81500e94a8fc90e6c2e61e1d9cef4de5498aa977da8c37321035f4b56072cf2",
+          "shot": 16,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json"
+        },
+        {
+          "label": "mvtec_concat_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/mvtec_concat_s16_seed0.yaml",
+          "config_sha256": "f42119a8b40d06cdad47bfe4f2c99e3adf9247a4856aa04e420646044d7f7727",
+          "shot": 16,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/mvtec_seed0_s16_generated.json"
+        }
+      ]
+    },
+    "visa": {
+      "data_root": "/home/hun/Volume/DATA/VisA_pytorch/1cls",
+      "objects": [
+        "candle",
+        "capsules",
+        "cashew",
+        "chewinggum",
+        "fryum",
+        "macaroni1",
+        "macaroni2",
+        "pcb1",
+        "pcb2",
+        "pcb3",
+        "pcb4",
+        "pipe_fryum"
+      ],
+      "configs": [
+        {
+          "label": "visa_nonorm_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s01_seed0.yaml",
+          "config_sha256": "f0c7c32573fa62c2efd2de4705975d77c705edc9389398aec1f01dd5cd6f6809",
+          "shot": 1,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json"
+        },
+        {
+          "label": "visa_deeponly_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s01_seed0.yaml",
+          "config_sha256": "701a3950cf4d08fe6d3b179c946882f7d5377b6ab2c62568bfaecb110515a19e",
+          "shot": 1,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json"
+        },
+        {
+          "label": "visa_layermean_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_layermean_s01_seed0.yaml",
+          "config_sha256": "ef0fce55e97d045c1846703a3ab1e2c069beda065b30bba0912ac300dde4c79b",
+          "shot": 1,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json"
+        },
+        {
+          "label": "visa_concat_s01_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_concat_s01_seed0.yaml",
+          "config_sha256": "01352d1be9ed239d9983cdf89eb9a8e5e46828f3cf767d79a4d054a5ad6b7036",
+          "shot": 1,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s01.json"
+        },
+        {
+          "label": "visa_nonorm_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s02_seed0.yaml",
+          "config_sha256": "21c615b066b399e5c67c6301233dec916570851ce0eeee4dfe34cd12a441be72",
+          "shot": 2,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json"
+        },
+        {
+          "label": "visa_deeponly_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s02_seed0.yaml",
+          "config_sha256": "2c02542ba340e3b8e6165f01c3e81859d33b035a3a125af83611e29cd5feabec",
+          "shot": 2,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json"
+        },
+        {
+          "label": "visa_layermean_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_layermean_s02_seed0.yaml",
+          "config_sha256": "478b44ea139f558c0d095e9f20d0c8788022947757a6923f5d10ba62d7873112",
+          "shot": 2,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json"
+        },
+        {
+          "label": "visa_concat_s02_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_concat_s02_seed0.yaml",
+          "config_sha256": "384bfd5fe841d77bd4f33ccba786cf243c95095be77ced4a7d668973249acb2d",
+          "shot": 2,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s02.json"
+        },
+        {
+          "label": "visa_nonorm_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s04_seed0.yaml",
+          "config_sha256": "97a72fb82f64518f8bfb58fa4d00cd1d97c06a526a4e9a89b23477f8c878ba66",
+          "shot": 4,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json"
+        },
+        {
+          "label": "visa_deeponly_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s04_seed0.yaml",
+          "config_sha256": "d7644331495523b6c4a8858f252be37d644e35222894a0c7503982db229a865e",
+          "shot": 4,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json"
+        },
+        {
+          "label": "visa_layermean_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_layermean_s04_seed0.yaml",
+          "config_sha256": "2144c7de31dcb87c934e71120152063bf31880c1b2918174f79aff32d93e068c",
+          "shot": 4,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json"
+        },
+        {
+          "label": "visa_concat_s04_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_concat_s04_seed0.yaml",
+          "config_sha256": "9b1e1bf7d7509aa23b03f7cee896a857145ee6beee710826971301d9e2930274",
+          "shot": 4,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s04.json"
+        },
+        {
+          "label": "visa_nonorm_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s08_seed0.yaml",
+          "config_sha256": "3a6665efce74db834ca8cacd13c33da69207c9548f192f6fa87167512d16cbf1",
+          "shot": 8,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json"
+        },
+        {
+          "label": "visa_deeponly_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s08_seed0.yaml",
+          "config_sha256": "5f37a616e646e8a5c341fb94e947c76dc61bb6cc696a81ae3402c62330dc440f",
+          "shot": 8,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json"
+        },
+        {
+          "label": "visa_layermean_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_layermean_s08_seed0.yaml",
+          "config_sha256": "5ce51c4940ed4e9db290d9230904588f6c88dab6f68bd0e99dd610234b12328c",
+          "shot": 8,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json"
+        },
+        {
+          "label": "visa_concat_s08_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_concat_s08_seed0.yaml",
+          "config_sha256": "2f63f224fb3d837424083bd68919515e81560189d5f7f8c5dddfe606f6cc8c76",
+          "shot": 8,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json"
+        },
+        {
+          "label": "visa_nonorm_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_nonorm_s16_seed0.yaml",
+          "config_sha256": "4524ed8adf95ad6656c09be241eb6faedb36c09fe663c1b3fd6431aa4553d760",
+          "shot": 16,
+          "arm": "nonorm",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json"
+        },
+        {
+          "label": "visa_deeponly_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_deeponly_s16_seed0.yaml",
+          "config_sha256": "ac9c2729458cc5d0c9940ba69a6a006cbd4c8e50588298e28c96bed9a3a48757",
+          "shot": 16,
+          "arm": "deeponly",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json"
+        },
+        {
+          "label": "visa_layermean_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_layermean_s16_seed0.yaml",
+          "config_sha256": "9f4f342e55c8ff82122225c2278517173e26d7cd68eb804bc1bd540357944897",
+          "shot": 16,
+          "arm": "layermean",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json"
+        },
+        {
+          "label": "visa_concat_s16_seed0",
+          "config": "configs/benchmarks/scarf_component_ablation_local_seed0_fp16_20261009/visa_concat_s16_seed0.yaml",
+          "config_sha256": "de0e182544b6acbc4cafae4ed20e2389890352b14f74680c1cc6113434398d81",
+          "shot": 16,
+          "arm": "concat",
+          "support_manifest": "configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s16.json"
+        }
+      ]
+    }
+  }
+}

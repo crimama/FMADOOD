@@ -1,0 +1,16 @@
+Verdict: KILL_NO_CONTINUE
+Recommendation: invalid aggregate; do not continue this branch
+Validity: FAIL
+Can parity max abs delta: 0.001957106733477265
+Validity failures:
+- can: phase shuffle matches TCCR gain
+- fabric: phase preservation below 0.90
+- fabric: phase shuffle matches TCCR gain
+- vial: phase FPR reduction below 0.20
+- vial: phase shuffle matches TCCR gain
+- rice: phase preservation below 0.90
+- rice: phase shuffle matches TCCR gain
+- can: phase shuffle matches TCCR gain
+- can parity delta 0.0016572 > 0.001 at metrics.geometry_shuffle.I-AP
+- can parity delta 0.00195312 > 0.001 at metrics.geometry_shuffle.I-AUROC
+- can parity delta 0.00195711 > 0.001 at phase_agreement.good_tail_fpr_reduction

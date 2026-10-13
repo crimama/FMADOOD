@@ -1,0 +1,6 @@
+ad2_single_r448_s02_seed0
+ad2_single_r672_s02_seed0
+ad2_single_r896_s02_seed0
+ad2_single_r448_s16_seed0
+ad2_single_r672_s16_seed0
+ad2_single_r896_s16_seed0

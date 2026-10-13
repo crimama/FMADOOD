@@ -1,0 +1,4 @@
+interface:
+  display_name: "FMAD Experiment Protocol"
+  short_description: "SuperAD-gated FMAD experiment workflow"
+  default_prompt: "Use $fmad-experiment-protocol to run this FMAD experiment with SuperAD as the quantitative baseline and unified metrics."

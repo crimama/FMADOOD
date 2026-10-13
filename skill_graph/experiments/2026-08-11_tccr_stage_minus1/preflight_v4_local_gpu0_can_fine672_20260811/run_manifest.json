@@ -1,0 +1,27 @@
+{
+  "created_utc": "2026-08-10T18:07:03.068591+00:00",
+  "dense_maps_persisted": false,
+  "device": "cuda:0",
+  "ground_truth_accessed_after_maps_staged": true,
+  "host_gpu_id": "local:0",
+  "objects": [
+    "can"
+  ],
+  "phase": "mechanism",
+  "protocol_id": "tccr-v2-stage-minus1-compact-20260811",
+  "summary_keys": [
+    "elapsed_sec",
+    "implemented_arms",
+    "objects",
+    "omitted_arms",
+    "peak_gpu_allocated_bytes",
+    "peak_gpu_reserved_bytes",
+    "protocol_id",
+    "scope",
+    "verdict_positive_allowed"
+  ],
+  "support_json": "/home/hun/Volume/RESEARCH/FSAD-TTA/skill_graph/experiments/2026-07-07_flowtte_register_failure_analysis/dinov3_noctx_support_paths.json",
+  "support_manifest_sha256": "9f223f7cdffd4defe37aced6edab98aad4e6e133af6c13df22f5b21be81d18a5",
+  "test_private_accessed": false,
+  "test_public_accessed": true
+}

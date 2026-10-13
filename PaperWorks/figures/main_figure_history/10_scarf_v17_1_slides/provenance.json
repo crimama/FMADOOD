@@ -1,0 +1,19 @@
+{
+  "slide": 8,
+  "deck": "PaperWorks/slides/build_v17.1/SCARF_v17.1_structure_restored.pptx",
+  "images": [
+    {
+      "file": "overview_slide_01.png",
+      "source": "PaperWorks/slides/build_v17.1/render/pg-08.png",
+      "aliases": []
+    },
+    {
+      "file": "overview_slide_02.png",
+      "source": "PaperWorks/slides/build_v17.1/render_structure/pg-08.png",
+      "aliases": [
+        "PaperWorks/slides/build_v17.1/render_structure_final/pg-08.png",
+        "PaperWorks/slides/build_v17.1/render_structure_final2/pg-08.png"
+      ]
+    }
+  ]
+}

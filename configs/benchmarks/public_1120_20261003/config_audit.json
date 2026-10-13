@@ -1,0 +1,50 @@
+{
+  "patchcore": {
+    "source": "configs/benchmarks/paper_v10/collect_declarations/patchcore_s16.yaml",
+    "source_sha256": "ab21500e9fda9d53d80ede60b76fb32cd366ff788d2ebc14ea7ab0967e35c442",
+    "config": "configs/benchmarks/public_1120_20261003/patchcore_s16_seed0.yaml",
+    "config_sha256": "76828a51e3910c71379715ac259336e8bfa5887555d0f06cb6e6c978488e47c2",
+    "changes": {
+      "dataset_config.resolution": 1120,
+      "backbone_config.smaller_edge_size": 1120,
+      "evaluation.cost_profile": true,
+      "debug_output": false,
+      "output": {
+        "save_anomaly_maps": false,
+        "save_weights": false
+      }
+    }
+  },
+  "superad": {
+    "source": "configs/benchmarks/paper_v10/collect_declarations/superad_s16.yaml",
+    "source_sha256": "f5fb9c2c41a656fb449b0f527796e900ab5306ddf27ce248cce31d5a708b81af",
+    "config": "configs/benchmarks/public_1120_20261003/superad_s16_seed0.yaml",
+    "config_sha256": "c4e7eea44c15778e2861b04d8df1c6971dfb8ab82dbe97244b40cc1c56e684c3",
+    "changes": {
+      "dataset_config.resolution": 1120,
+      "backbone_config.smaller_edge_size": 1120,
+      "evaluation.cost_profile": true,
+      "debug_output": false,
+      "output": {
+        "save_anomaly_maps": false,
+        "save_weights": false
+      }
+    }
+  },
+  "anomalydino": {
+    "source": "configs/benchmarks/public_v13_20260929/anomalydino_seed0_s16.yaml",
+    "source_sha256": "eb691e4046bcbcf5dcfec889345616b3a838b6dad60117e7f882cc9ef5401fef",
+    "config": "configs/benchmarks/public_1120_20261003/anomalydino_s16_seed0.yaml",
+    "config_sha256": "b6196c456c127276380f14864f1a9794aa7b4fdc7a755b4ed65a290132cded1c",
+    "changes": {
+      "dataset_config.resolution": 1120,
+      "backbone_config.smaller_edge_size": 1120,
+      "evaluation.cost_profile": true,
+      "debug_output": false,
+      "output": {
+        "save_anomaly_maps": false,
+        "save_weights": false
+      }
+    }
+  }
+}

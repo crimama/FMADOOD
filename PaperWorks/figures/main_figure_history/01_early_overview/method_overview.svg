@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <style>
+      .title{font:700 32px Arial,sans-serif;fill:#17233c}.head{font:700 25px Arial,sans-serif;fill:#17233c}.label{font:700 22px Arial,sans-serif;fill:#17233c}.body{font:600 19px Arial,sans-serif;fill:#34425e}.small{font:600 16px Arial,sans-serif;fill:#53617a}.white{fill:#fff}.box{stroke-width:2}.dash{stroke-dasharray:9 7}.arrow{fill:none;stroke:#52627c;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+    <marker id="arrow" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0,0 L11,5.5 L0,11 z" fill="#52627c"/></marker>
+    <linearGradient id="support" x1="0" x2="1"><stop offset="0" stop-color="#e8f2ff"/><stop offset="1" stop-color="#f4f8ff"/></linearGradient>
+    <linearGradient id="query" x1="0" x2="1"><stop offset="0" stop-color="#fff1e5"/><stop offset="1" stop-color="#fff9f3"/></linearGradient>
+    <linearGradient id="latent" x1="0" x2="1"><stop offset="0" stop-color="#e7f8ef"/><stop offset="1" stop-color="#f4fcf7"/></linearGradient>
+    <linearGradient id="rgb" x1="0" x2="1"><stop offset="0" stop-color="#f2eaff"/><stop offset="1" stop-color="#faf7ff"/></linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#fbfcff"/>
+  <text x="70" y="58" class="title">Shift-Robust Few-Shot Anomaly Detection</text>
+  <text x="70" y="88" class="body">Frozen representation · support-fitted calibration · static memory · query-native spatial refinement</text>
+
+  <!-- stage bands -->
+  <rect x="55" y="115" width="990" height="315" rx="20" fill="url(#support)" stroke="#77a9e8" class="box"/>
+  <text x="80" y="153" class="head">A. Support fitting (normal 16-shot, seed 0)</text>
+  <rect x="55" y="462" width="1490" height="365" rx="20" fill="url(#query)" stroke="#e7a56e" class="box"/>
+  <text x="80" y="501" class="head">B. Frozen inference under support–query distribution shift</text>
+
+  <!-- support lane -->
+  <rect x="85" y="190" width="170" height="115" rx="14" fill="#fff" stroke="#77a9e8" class="box"/>
+  <text x="170" y="224" text-anchor="middle" class="label">Normal</text>
+  <text x="170" y="248" text-anchor="middle" class="label">support</text>
+  <text x="170" y="274" text-anchor="middle" class="body">selected 16-shot</text>
+  <text x="170" y="297" text-anchor="middle" class="small">static after fitting</text>
+
+  <rect x="325" y="180" width="210" height="135" rx="14" fill="#fff" stroke="#446fae" class="box"/>
+  <text x="430" y="218" text-anchor="middle" class="label">Frozen DINOv2-L</text>
+  <text x="430" y="247" text-anchor="middle" class="body">ViT-L/14</text>
+  <text x="430" y="273" text-anchor="middle" class="small">layers 5 / 11 / 17 / 23</text>
+  <text x="430" y="296" text-anchor="middle" class="small">672 (sheet metal: 448)</text>
+
+  <rect x="595" y="180" width="210" height="135" rx="14" fill="#fff" stroke="#328f82" class="box"/>
+  <text x="700" y="218" text-anchor="middle" class="label">PPD</text>
+  <text x="700" y="244" text-anchor="middle" class="small">Patch Positional</text>
+  <text x="700" y="264" text-anchor="middle" class="small">Debiasing</text>
+  <text x="700" y="287" text-anchor="middle" class="body">estimate recurring</text>
+  <text x="700" y="308" text-anchor="middle" class="body">bias</text>
+
+  <rect x="855" y="175" width="160" height="145" rx="14" fill="url(#latent)" stroke="#4da877" class="box"/>
+  <text x="935" y="212" text-anchor="middle" class="label">Normalizing</text>
+  <text x="935" y="236" text-anchor="middle" class="label">Flow</text>
+  <text x="935" y="264" text-anchor="middle" class="body">fit normal latent</text>
+  <text x="935" y="288" text-anchor="middle" class="body">projection</text>
+  <text x="935" y="310" text-anchor="middle" class="small">weak NLL · λ = 0.25</text>
+
+  <path d="M255 247 H315" class="arrow"/><path d="M535 247 H585" class="arrow"/><path d="M805 247 H845" class="arrow"/>
+
+  <!-- static bank -->
+  <rect x="1100" y="145" width="410" height="255" rx="18" fill="url(#latent)" stroke="#4da877" class="box"/>
+  <text x="1305" y="187" text-anchor="middle" class="head">Static Flow-LatentBank</text>
+  <text x="1305" y="220" text-anchor="middle" class="body">standardized normal latent space</text>
+  <g fill="#fff" stroke="#4da877" stroke-width="2">
+    <circle cx="1195" cy="283" r="16"/><circle cx="1250" cy="260" r="16"/><circle cx="1300" cy="300" r="16"/>
+    <circle cx="1360" cy="255" r="16"/><circle cx="1415" cy="292" r="16"/><circle cx="1260" cy="342" r="16"/><circle cx="1360" cy="344" r="16"/>
+  </g>
+  <text x="1305" y="382" text-anchor="middle" class="small">static support · no LOO · no update</text>
+  <path d="M1015 247 H1080 Q1090 247 1090 257 V272 H1100" class="arrow"/>
+
+  <!-- query lane -->
+  <rect x="85" y="555" width="170" height="125" rx="14" fill="#fff" stroke="#e7a56e" class="box"/>
+  <text x="170" y="595" text-anchor="middle" class="label">Shifted query</text>
+  <text x="170" y="625" text-anchor="middle" class="body">lighting · layout</text>
+  <text x="170" y="651" text-anchor="middle" class="body">scale · viewpoint</text>
+
+  <rect x="325" y="550" width="210" height="135" rx="14" fill="#fff" stroke="#446fae" class="box"/>
+  <text x="430" y="589" text-anchor="middle" class="label">Frozen DINOv2-L</text>
+  <text x="430" y="620" text-anchor="middle" class="body">multi-layer patch</text>
+  <text x="430" y="646" text-anchor="middle" class="body">descriptors</text>
+  <text x="430" y="671" text-anchor="middle" class="small">same support pipeline</text>
+
+  <rect x="595" y="550" width="210" height="135" rx="14" fill="#fff" stroke="#328f82" class="box"/>
+  <text x="700" y="589" text-anchor="middle" class="label">PPD</text>
+  <text x="700" y="615" text-anchor="middle" class="small">symmetric correction</text>
+  <text x="700" y="641" text-anchor="middle" class="body">remove fitted</text>
+  <text x="700" y="665" text-anchor="middle" class="small">positional bias</text>
+
+  <rect x="855" y="550" width="190" height="135" rx="14" fill="url(#latent)" stroke="#4da877" class="box"/>
+  <text x="950" y="589" text-anchor="middle" class="label">Flow projection</text>
+  <text x="950" y="620" text-anchor="middle" class="body">query → standard</text>
+  <text x="950" y="646" text-anchor="middle" class="body">latent space</text>
+  <text x="950" y="671" text-anchor="middle" class="small">reference bias ↓</text>
+
+  <rect x="1095" y="535" width="215" height="165" rx="14" fill="#fff" stroke="#4da877" class="box"/>
+  <text x="1205" y="575" text-anchor="middle" class="label">Anomaly evidence</text>
+  <text x="1205" y="607" text-anchor="middle" class="body">latent 1-NN distance</text>
+  <text x="1205" y="635" text-anchor="middle" class="body">+ weak Flow NLL</text>
+  <text x="1205" y="671" text-anchor="middle" class="small">coarse anomaly map</text>
+
+  <path d="M255 617 H315" class="arrow"/><path d="M535 617 H585" class="arrow"/><path d="M805 617 H845" class="arrow"/><path d="M1045 617 H1085" class="arrow"/>
+  <path d="M1305 400 V448 Q1305 470 1285 470 H1245 Q1205 470 1205 525" class="arrow dash"/>
+
+  <!-- RGB guide -->
+  <rect x="1110" y="740" width="190" height="62" rx="14" fill="url(#rgb)" stroke="#8a63c5" class="box"/>
+  <text x="1205" y="778" text-anchor="middle" class="label">Query RGB</text>
+  <path d="M170 680 V772 H1100" class="arrow"/>
+
+  <rect x="1330" y="550" width="185" height="175" rx="14" fill="url(#rgb)" stroke="#8a63c5" class="box"/>
+  <text x="1432" y="588" text-anchor="middle" class="label">RGB Guide</text>
+  <text x="1432" y="619" text-anchor="middle" class="body">guided-r8</text>
+  <text x="1432" y="647" text-anchor="middle" class="body">ε = 0.01</text>
+  <text x="1432" y="678" text-anchor="middle" class="small">query-native</text>
+  <text x="1432" y="700" text-anchor="middle" class="small">boundary refinement</text>
+  <path d="M1310 617 H1320" class="arrow"/><path d="M1300 771 H1310 Q1320 771 1320 751 V690 H1330" class="arrow"/>
+
+  <rect x="1330" y="752" width="185" height="70" rx="14" fill="#253f72" stroke="#253f72" class="box"/>
+  <text x="1422" y="781" text-anchor="middle" class="white label">Final map</text>
+  <text x="1422" y="807" text-anchor="middle" class="white small">refined prediction</text>
+  <path d="M1422 725 V742" class="arrow"/>
+
+  <!-- problem/solution legend -->
+  <rect x="80" y="842" width="1440" height="38" rx="10" fill="#eef2f8"/>
+  <text x="800" y="867" text-anchor="middle" class="body">Representation bias → PPD   ·   Reference bias → Flow-LatentBank   ·   Spatial evidence degradation → RGB Guide</text>
+</svg>

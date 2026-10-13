@@ -1,0 +1,151 @@
+{
+  "activity": {
+    "active_equality": "target_row_l2_norm >= tau",
+    "calibration_contract_id": "eco-audit-v2-source-footprint-equal-image-q10-v11",
+    "calibration_estimand": "equal_image_empirical_q10",
+    "calibration_images": 16,
+    "calibration_stratum": "tokenized_source_mask_pixel_occupancy_ge_0.5",
+    "held_attribution_geometry": "unchanged_interior_boundary_outside_8_neighbor",
+    "interpolation": "none_left_continuous_first_observed",
+    "per_token_mass": "Fraction(1,16*source_token_count_for_image)",
+    "quantile": "1/10",
+    "rejected_estimands": [
+      "pooled_token_q10",
+      "median_of_image_q10",
+      "alternate_percentile",
+      "held_recomputed_threshold",
+      "per_image_interior_else_source_fallback",
+      "drop_empty_interior_support_images",
+      "enlarge_generator_masks"
+    ]
+  },
+  "implementation_amendment": {
+    "active_norm_retention": "candidate_active_frobenius_norm / target_active_frobenius_norm >= 0.90",
+    "boundary_error_share": "interaction_error_energy(ACTIVE intersect BOUNDARY) / interaction_error_energy(ACTIVE)",
+    "boundary_feature_energy": "target_energy(ACTIVE intersect BOUNDARY) / target_energy(ACTIVE)",
+    "boundary_coordinate_validity": "ACTIVE_INTERIOR.status == VALID and ACTIVE_BOUNDARY.status == VALID are required before boundary-vs-local attribution",
+    "boundary_token_share": "count(ACTIVE intersect BOUNDARY) / count(ACTIVE)",
+    "inactive_retains_deficit": "inactive.status == VALID and inactive_coordinate_pass == false",
+    "n5_decision_scope": "ACTIVE_GLOBAL_ONLY; six activity-by-region strata are descriptive invariant/status evidence",
+    "pixel_domain": "normalized_[0,1]",
+    "pixel_invalidity": "undefined pixel denominator or nonfinite pixel metric invalidates the dependent cell; valid over-threshold metrics are operator-confounded",
+    "pixel_preclip_population": "concatenate preclip T(x) and preclip T(A(x)); bitwise reproduce both uint8 outputs",
+    "repeat_scope": "one global held-index-0 exact scientific-signature repeat; not a per-cell asserted field",
+    "seed_namespaces": {
+      "held": "frozen_NCFC_protocol_seed_namespace",
+      "support_calibration": "ECO_protocol_seed_namespace"
+    }
+  },
+  "backbone": {
+    "feature_dim": 1024,
+    "frozen": true,
+    "model": "dinov2_vitl14",
+    "native_canvas_smaller_edge": 672,
+    "pooled_grid": [16, 16],
+    "readout_block_zero_based": 11,
+    "readouts": ["RAW_MODEL_NORM", "STANDARDIZED_L2"],
+    "trainable_parameter_count": 0
+  },
+  "claim_boundary": {
+    "benchmark_comparable": false,
+    "detector_claim": false,
+    "lora_authorized": false,
+    "ncfc_verdict_mutable": false,
+    "superad": "N/A"
+  },
+  "constants": {
+    "active_energy_coverage_gate": 0.95,
+    "boundary_concentration_gate": 2.0,
+    "boundary_feature_energy_gate": 0.5,
+    "coordinate_cosine_gate": 0.9,
+    "eps_energy": 5.820766091346741e-11,
+    "eps_norm": 7.62939453125e-06,
+    "geometry_cka_gate": 0.9,
+    "geometry_rho_gate": 0.9,
+    "metric_accumulator_dtype": "float64",
+    "minimum_decision_rows": 4,
+    "n5_cosine_margin_gate": 0.01,
+    "n5_sre_margin_gate": 0.01,
+    "pixel_band_energy_gate": 0.25,
+    "pixel_kappa_all_gate": 0.1,
+    "pixel_kappa_band_gate": 0.2,
+    "pixel_preclip_rate_gate": 0.01,
+    "sre_gate": 0.4472135954999579
+  },
+  "construction": {
+    "action": {
+      "family": "J0_exposure_ev01333",
+      "orders": ["TA", "AT"],
+      "signs": {"J0_NEG": -0.1333, "J0_POS": 0.1333}
+    },
+    "generator": "G2_structural_scratch",
+    "held_donor_mapping": "fixed_cyclic_by_held_index",
+    "mask_seed": "stable_seed(protocol_id,base_relative,generator,'mask')",
+    "support_commitment": "support_calibration_commitment.json",
+    "support_donor_mapping": "lexical_support_index_j_to_j_plus_1_mod_16",
+    "synthesis_seed": "stable_seed(protocol_id,base_relative,donor_basename,generator,'synthesize')"
+  },
+  "forbidden": [
+    "training",
+    "gradient",
+    "optimizer",
+    "test_public",
+    "test_private",
+    "ground_truth",
+    "query_adaptation",
+    "query_memory_update",
+    "dense_feature_persistence",
+    "dense_mask_persistence",
+    "checkpoint_persistence",
+    "favorable_cell_selection"
+  ],
+  "geometry": {
+    "boundary": "dilation_8_neighbor_minus_erosion_8_neighbor",
+    "inside_rule": "half_open_pixel_footprint_boolean_mean_ge_0.5",
+    "interior": "erosion_8_neighbor_out_of_grid_false",
+    "outside": "not_dilation_8_neighbor_out_of_grid_false",
+    "pixel_band": "BOUNDARY",
+    "pixel_band_energy": "squared_commutator_error_energy_share"
+  },
+  "phases": {
+    "P0": {"cuda_visible_devices": "", "data_access": false, "model_access": false},
+    "P1": {"cuda_visible_devices": "", "data_access": false, "model_access": false},
+    "P2": {"cuda_visible_devices": "0", "held_access": false, "support_count": 16},
+    "HELD": {"cuda_visible_devices": "0,1,2,3", "held_shards": 4, "one_shard_per_gpu": true}
+  },
+  "protocol_id": "eco-audit-v2-ncfc-attribution-20260827-v1",
+  "reducer": {
+    "cell_precedence": [
+      "UNRESOLVED_OR_INVALID",
+      "OPERATOR_CONFOUNDED",
+      "NO_LOCAL_FAILURE",
+      "LOW_ACTIVITY_METRIC_COMPONENT",
+      "BOUNDARY_SPILLOVER",
+      "COORDINATE_DRIFT_CANDIDATE",
+      "GENUINE_LOCAL_MISMATCH_CANDIDATE",
+      "UNRESOLVED_MIXTURE"
+    ],
+    "program": "invalid_first_then_readout_and_order_agreement_then_operator_dominance_remove_only_no_local_failure_require_identical_remaining_label",
+    "universe": "4_base_x_2_sign_x_2_order_x_2_readout_equals_32_cells"
+  },
+  "remote": {
+    "container": "hun_fsad_tta_012",
+    "data_root": "/home/hunim/Volume/DATA/mvtec_ad_2",
+    "host": "hunim@147.47.39.144:2222",
+    "pythonpath": ["snapshot", "snapshot/src", "snapshot/scripts"],
+    "result_root_template": "/workspace/results_remote/{run_name}",
+    "run_name_regex": "^eco_audit_v2_dsba3_[A-Za-z0-9._-]+$",
+    "snapshot_root_template": "/workspace/isolated_runs/{run_name}/repo"
+  },
+  "schema": "eco-audit-v2-static-contract-v1",
+  "status_precedence": [
+    "INVALID_NONFINITE",
+    "EMPTY_STRATUM",
+    "INSUFFICIENT_ACTIVE_SUPPORT",
+    "INVALID_SMALL_STRATUM",
+    "UNDEFINED_ZERO_TARGET",
+    "UNDEFINED_ZERO_CANDIDATE",
+    "UNDEFINED_CONSTANT_GEOMETRY",
+    "VALID"
+  ]
+}

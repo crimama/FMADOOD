@@ -1,0 +1,3 @@
+{"event": "object_start", "object": "can", "time": 1786385078.117392}
+{"event": "query_maps_staged", "object": "can", "relative_path": "can/test_public/bad/011_shift_1.png", "time": 1786385175.6410315}
+{"elapsed_sec": 144.95041251182556, "event": "object_done", "object": "can", "time": 1786385223.067804}

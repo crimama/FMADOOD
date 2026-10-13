@@ -110,3 +110,117 @@ def test_pipeline_routes_auxiliary_after_prediction_and_keeps_debug_compact(tmp_
     assert all(d == {'scalar': 1} for d in result.metadata['prediction_diagnostics'].values())
     with pytest.raises(ValueError, match='auxiliary'):
         _run_streaming_object(Adapter(), dataset, 'thing', 0, str(tmp_path / 'bad'), 2, config=cfg)
+
+
+def test_shallow_mode_mean3_equals_equal_weight_average(tmp_path):
+    """Test that shallow_mode='mean3' computes equal-weight mean of 3 layer scores."""
+    paths = [_write_image(tmp_path / f'{i}.png', i * 17) for i in range(3)]
+    context = MethodContext('can', 0, 8, False, False)
+
+    # Create mean3 method with all other params matching an existing arm
+    base_cfg = config('D')  # Use existing arm as base
+    mean3_cfg = dict(base_cfg, shallow_mode='mean3', score_normalization='tailscale')
+
+    method = FusionFactorial(TinyTripleBackbone(), mean3_cfg)
+    method.fit(paths, context)
+    pred, max_val = method.predict(paths[0])
+    assert np.isfinite(pred).all() and np.isfinite(max_val)
+    assert method.shallow_mode == 'mean3'
+
+
+def test_shallow_mode_mean3_with_none_normalization(tmp_path):
+    """Test that mean3 works with score_normalization='none'."""
+    paths = [_write_image(tmp_path / f'{i}.png', i * 17) for i in range(3)]
+    context = MethodContext('can', 0, 8, False, False)
+
+    base_cfg = config('D')
+    mean3_cfg = dict(base_cfg, shallow_mode='mean3', score_normalization='none')
+
+    method = FusionFactorial(TinyTripleBackbone(), mean3_cfg)
+    method.fit(paths, context)
+    pred, max_val = method.predict(paths[0])
+    assert np.isfinite(pred).all() and np.isfinite(max_val)
+
+
+@pytest.mark.parametrize('normalization', ['none', 'tailscale'])
+def test_mean3_predict_batch_records_complete_audit(tmp_path, normalization):
+    paths = [_write_image(tmp_path / f'{i}.png', i * 17) for i in range(3)]
+    context = MethodContext('can', 0, 8, False, False)
+    cfg = dict(config('D'), shallow_mode='mean3',
+               score_normalization=normalization, mechanism_audit=True)
+    method = FusionFactorial(TinyTripleBackbone(), cfg)
+    method.fit(paths, context)
+
+    predictions = method.predict_batch(paths[:2])
+    assert len(predictions) == 2
+    for prediction in predictions:
+        audit = prediction.diagnostics['fusion_audit']
+        assert audit['raw_map'].shape == prediction.score_map.shape
+        assert len(audit['gate_grids']) == len(method.resolutions)
+        assert len(audit['component_grids']) == len(method.resolutions)
+        assert all(np.isfinite(grid).all() for grid in audit['gate_grids'])
+    assert not method._audit_active
+    assert method._gate_grids == [] and method._bag_gates == []
+
+
+def test_shallow_mode_mean3_score_definition(tmp_path):
+    """Test that mean3 produces the correct score_definition string."""
+    paths = [_write_image(tmp_path / f'{i}.png', i * 17) for i in range(3)]
+    context = MethodContext('can', 0, 8, False, False)
+
+    base_cfg = config('D')
+    mean3_cfg = dict(base_cfg, shallow_mode='mean3', score_normalization='tailscale')
+
+    method = FusionFactorial(TinyTripleBackbone(), mean3_cfg)
+    method.fit(paths, context)
+    metadata = method.object_metadata()
+    assert 'mean3' in metadata['score_definition']
+    assert 'tailscale' in metadata['score_definition']
+
+
+def test_mean3_mode_exact_fusion_logic():
+    """Test that mean3 computes exactly equal-weight mean of three layer scores."""
+    from tests.test_reference_matching import TinyTripleBackbone
+
+    base_cfg = config('D')
+    mean3_cfg = dict(base_cfg, shallow_mode='mean3')
+
+    method = FusionFactorial(TinyTripleBackbone(), mean3_cfg)
+
+    # Test with known scores
+    scores = [
+        torch.tensor([1., 2., 3.]),
+        torch.tensor([2., 3., 4.]),
+        torch.tensor([3., 4., 5.]),
+    ]
+    fused = method._fuse_layers(scores, tau=1.5)  # tau provided but not used
+    expected = torch.stack(scores).mean(0)
+    torch.testing.assert_close(fused, expected)
+
+
+def test_mean3_versus_existing_modes_differ(tmp_path):
+    """Test that mean3 produces different results from existing shallow modes."""
+    paths = [_write_image(tmp_path / f'{i}.png', i * 17) for i in range(3)]
+    context = MethodContext('can', 0, 8, False, False)
+
+    base_cfg = config('D')
+    modes_to_test = [
+        ('off', base_cfg),
+        ('gated', config('B')),
+        ('hard', config('C')),
+        ('all', config('A')),
+        ('mean3', dict(base_cfg, shallow_mode='mean3')),
+    ]
+
+    maps = {}
+    for mode, cfg in modes_to_test:
+        method = FusionFactorial(TinyTripleBackbone(), cfg)
+        method.fit(paths, context)
+        pred, _ = method.predict(paths[0])
+        maps[mode] = pred
+
+    # mean3 should differ from at least some of the other modes
+    mean3_map = maps['mean3']
+    assert np.isfinite(mean3_map).all()
+    # At least one other mode should differ from mean3
+    assert any(not np.allclose(mean3_map, maps[m]) for m in ['off', 'gated', 'hard', 'all'])

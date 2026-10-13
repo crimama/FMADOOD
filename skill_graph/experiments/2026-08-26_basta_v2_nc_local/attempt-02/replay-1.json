@@ -1,0 +1,105 @@
+{
+  "compact_sha256": "85e4fa9ee1bb3ab57f8e0dc62e3f7bb62f7df99fa74481baa653ae529be453a2",
+  "custody_gates": {
+    "bank_hash": true,
+    "delta32_frozen": true,
+    "environment_identity": true,
+    "fixture_dtype": true,
+    "fixture_shape": true,
+    "gradual_underflow": true,
+    "manifest_sidecar": true,
+    "rho32_frozen": true,
+    "round_to_nearest_even": true,
+    "single_thread_environment": true,
+    "source_and_fixture_hashes": true
+  },
+  "manifest_sha256": "5af510aa22ab574308ec5811e9f382079059e2e542fb3f8313d28411ec5fd67c",
+  "pass": true,
+  "replay_id": 1,
+  "schema": "basta-v2-nc-replay-v2",
+  "verification": {
+    "bank_sha256": "e5fa3f54d17e9eeac6a9912fdfad0ce291ffdc8b3d6af7b084b376be0309e726",
+    "branch_worst_exact": {
+      "branch": "minus",
+      "coordinate": [
+        2,
+        0,
+        0,
+        0
+      ],
+      "error": {
+        "denominator": "33554432",
+        "numerator": "1"
+      },
+      "error_to_half_ulp": 1.0,
+      "exact": {
+        "denominator": "33554432",
+        "numerator": "30198989"
+      },
+      "half_ulp_limit": {
+        "denominator": "33554432",
+        "numerator": "1"
+      },
+      "observed_bits": 1063675494
+    },
+    "fixtures": 48,
+    "fp32_acceleration_norm_max": 0.0,
+    "gates": {
+      "branch_half_ulp": true,
+      "finite": true,
+      "literal_box": true,
+      "midpoint_budget": true,
+      "mutation_detected": true,
+      "oracle_parity": true,
+      "patch_identity": true,
+      "subtraction_budget": true,
+      "subtraction_oracle": true
+    },
+    "intermediate_sha256": "0c6de8bfd57a9644c31d745b6f739f959a3f9367dffb1c8ac983f7404a95b5dd",
+    "max_B_branch": 5.960464477539063e-08,
+    "max_B_num": 2.9802322387695312e-08,
+    "max_branch_error": 2.9802322387695312e-08,
+    "max_branch_error_to_half_ulp": 1.0,
+    "max_branch_half_ulp": 5.960464477539063e-08,
+    "max_subtraction_error": 2.9802322387695312e-08,
+    "mutation_detected": true,
+    "mutation_first_difference": [
+      "q",
+      3,
+      0,
+      0,
+      0
+    ],
+    "oracle_checked": 903168,
+    "oracle_mismatch": null,
+    "pass": true,
+    "patch_first_difference": null,
+    "path_asymmetry_inf": 2.9802322387695312e-08,
+    "reference_acceleration_norm_max": 1.1291685785770597e-06,
+    "scalars": 112896,
+    "subtraction_fp32_inf": 0.0,
+    "subtraction_oracle_checked": 338688,
+    "subtraction_oracle_mismatch": null,
+    "subtraction_reference_inf": 2.9802322387695312e-08,
+    "subtraction_worst_exact": {
+      "B_num": {
+        "denominator": "33554432",
+        "numerator": "1"
+      },
+      "coordinate": [
+        2,
+        0,
+        0
+      ],
+      "error": {
+        "denominator": "33554432",
+        "numerator": "1"
+      },
+      "r32_bits": 0,
+      "r_ref": {
+        "denominator": "33554432",
+        "numerator": "-1"
+      }
+    }
+  }
+}

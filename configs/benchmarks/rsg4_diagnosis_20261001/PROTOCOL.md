@@ -1,0 +1,8 @@
+# RSG4 image aggregation and component diagnosis — 2026-10-01
+
+- Hypothesis: image aggregation (max versus top-1% mean), bank density, and shallow fusion explain at least part of the I-AUROC deficits; the existing max score may mask pixel-localization quality.
+- Conditions: full15 MVTec AD and full12 VisA; seed 0; shots 1/2/4; exact paired E9 manifests from `table5_rsg4_20261001`; baseline cap256 gated, cap1024 gated (explicit refit/calibration density ablation), cap256 shallow off/deep-only, cap256 shallow all/ungated. Four arms × six dataset-shot scopes = 24 scopes, 324 class runs.
+- Fixed: RSG4 config otherwise unchanged, DINOv2 ViT-L/14 layers 5/11/23, resolutions 448/672/896/1120, bank bags 4, CQ p99 q1 dilation 0, noise guard k=9 lowres, evaluator and preprocessing. Output maps and weights disabled.
+- Split/status: development/post-hoc on the established test split; query labels and GT are evaluator-only and used for post-hoc AUROC/distribution summaries. Fit/predict receive support image paths/context only.
+- Evaluation-only diagnostic stores per-query normal/anomaly identifier and scalar max/top1%-mean on raw/final map plus AUROC and class-conditional quantiles. Primary image score and all standard metrics remain unchanged. Top-1% uses max(1, floor(N*.01)); max-final/primary equality is checked.
+- Budget/stop: exactly 24 declared scopes; no tuning or expansion. Stop if support/query/GT provenance differs from E9, diagnostic alters standard outputs, or any required arm fails validity checks. Compare image AUROC, full pixel AUROC, AUPRO@.05, paired arm deltas, especially capsule/pill/zipper/candle; summarize actual guard counts.

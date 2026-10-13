@@ -1,0 +1,14 @@
+{
+  "atac_source_sha256": "1b1fe212f03b6f4831e55bf65be28bd473b4ef6c689ba207a90fae3de58086af",
+  "bank_sha256": "437113254db536852fad90b7c602bd8383c70c08da4f5c6f60c7178c907d5fe3",
+  "environment": {
+    "machine": "x86_64",
+    "numpy": "2.4.6",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+    "python": "3.11.15 (main, Mar 24 2026, 22:50:29) [Clang 22.1.1 ]",
+    "threads": "1"
+  },
+  "fixture_sha256": "8c4e2a971164b99abc712fd455ccafb06ba3eb0d22a90ca33c6c504e49feb430",
+  "module_sha256": "500073c206d0e276ea5ca4b3d268b9f932975cb78c4f536c3b7bbb0bd482b671",
+  "runner_sha256": "550dcca1c9a451505608142fb1fbf86ad6e574dfb911653fc99df68a8224fc74"
+}

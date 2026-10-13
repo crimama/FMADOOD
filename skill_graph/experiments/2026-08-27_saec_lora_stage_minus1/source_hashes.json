@@ -1,0 +1,12 @@
+{
+  "aggregator": "39317e5fe7c9eea1a87f40f428ecb18acf00f6e534d5f9fd9a417a5e29e7a546",
+  "core": "95188b0435feed877a9c33505768bf787510368f1724fd4e20b728627b89c9e6",
+  "frozen_cider": "3ec73279cfe4b8c0ac16bf6032a51bbfbeb09d9301d5ee4bafd887f5acb5da2a",
+  "frozen_rn": "27d6bf919dd8731cf3199de4cab66176c7d7288ad465e296188856ea21855ded",
+  "frozen_s2_core": "77805354431ac9d56615a8babad976feae8b9e74fe30d975332a2642ef25fa43",
+  "frozen_s2_runner": "242c51b3953796fd8408bf0fc9af0a9f0d3123a364e9a49b9e8a94d6db156ea5",
+  "frozen_shift": "38a546bd890b2f7fefd1753f872db3e6a46def5186c974895eb3270dbe125ff9",
+  "frozen_spatial": "ddfa9dcb647392b692aba6c30a48da9bf9d10495e39bd0fe033d58be92667c8c",
+  "remote_controller": "59676ee038d1b747c5fe2476bca850b7b5bf6274017404f869b0ef71a9fdd25b",
+  "runner": "c535fb907e75b5bf9becb89a81585593a7aab586e5a3ef7d84fc3d65a5055c8c"
+}

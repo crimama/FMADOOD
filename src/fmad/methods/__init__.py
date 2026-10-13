@@ -55,6 +55,8 @@ def register_methods(method_name: str | None = None) -> None:
         from fmad.methods import family_balanced_paired  # noqa: F401
     elif method_name == "reference_matching":
         from fmad.methods import reference_matching  # noqa: F401
+    elif method_name == "reference_matching_fast":
+        from fmad.methods import reference_matching_fast  # noqa: F401
     elif method_name == "region_recovery":
         from fmad.methods import region_recovery  # noqa: F401
     elif method_name == "fusion_factorial":
@@ -91,5 +93,15 @@ def register_methods(method_name: str | None = None) -> None:
         from fmad.methods import patchcore  # noqa: F401
     elif method_name == "fastrecon":
         from fmad.methods import fastrecon  # noqa: F401
+    elif method_name == "fastrecon_paper":
+        from fmad.methods import fastrecon_paper  # noqa: F401
     elif method_name == "regad":
         from fmad.methods import regad  # noqa: F401
+    elif method_name == "regad_official":
+        from fmad.methods import regad_official  # noqa: F401
+    elif method_name == "anomalydino":
+        from fmad.methods import anomalydino  # noqa: F401
+    elif method_name == "subspacead":
+        from fmad.methods import subspacead  # noqa: F401
+    elif method_name == "rad":
+        from fmad.methods import rad  # noqa: F401

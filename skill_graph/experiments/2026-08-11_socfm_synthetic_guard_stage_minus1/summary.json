@@ -1,0 +1,375 @@
+{
+  "benchmark_comparable": false,
+  "created_utc": "2026-08-11T03:32:25.862636+00:00",
+  "gate_pass_counts": {
+    "anomaly_positive_absorption_stress_visible": 0,
+    "beats_discrete_orbit_bank_retention": 4,
+    "beats_discrete_orbit_bank_tail": 0,
+    "displacement_coverage_ge_0p50": 2,
+    "guard_retention_not_worse_than_normal": 1,
+    "guard_tail_no_more_than_2pp_worse_than_normal": 4,
+    "held_broad_defect_retention_ge_0p95": 3,
+    "held_local_defect_retention_ge_0p95": 4,
+    "mask_shuffle_retention_margin_ge_0p03": 0,
+    "shifted_normal_tail_reduction_ge_0p20": 0,
+    "velocity_shuffle_coverage_margin_ge_0p20": 2
+  },
+  "input_paths": [
+    "results/remote_runs/dsba3/socfm_synthetic_guard_stage_minus1_20260811_dsba3_v3/mechanism/vial/socfm_object_summary.json",
+    "results/remote_runs/dsba5/socfm_synthetic_guard_stage_minus1_20260811_dsba5_v3/mechanism/walnuts/socfm_object_summary.json",
+    "results/socfm_synthetic_guard_stage_minus1_20260811/local/mechanism/can/socfm_object_summary.json",
+    "results/socfm_synthetic_guard_stage_minus1_20260811/local/mechanism/fabric/socfm_object_summary.json"
+  ],
+  "macro": {
+    "A0_raw.held_defect_retention_broad": 1.0,
+    "A0_raw.held_defect_retention_local": 1.0,
+    "A0_raw.shifted_normal_displacement_coverage": 0.0,
+    "A0_raw.shifted_normal_tail_reduction": 0.0,
+    "A1_orbit_bank.held_defect_retention_broad": 0.9481739549584798,
+    "A1_orbit_bank.held_defect_retention_local": 0.9935690876196761,
+    "A1_orbit_bank.shifted_normal_displacement_coverage": 0.7324987976925361,
+    "A1_orbit_bank.shifted_normal_tail_reduction": 0.012623043485750104,
+    "A2_socfm_normal.held_defect_retention_broad": 0.9772434074909921,
+    "A2_socfm_normal.held_defect_retention_local": 1.0002034560719493,
+    "A2_socfm_normal.shifted_normal_displacement_coverage": 0.5196017575489205,
+    "A2_socfm_normal.shifted_normal_tail_reduction": -0.002939529507597422,
+    "A3_socfm_guard.held_defect_retention_broad": 0.9786954944032312,
+    "A3_socfm_guard.held_defect_retention_local": 0.9992428748372515,
+    "A3_socfm_guard.shifted_normal_displacement_coverage": 0.5203636742581992,
+    "A3_socfm_guard.shifted_normal_tail_reduction": -0.0033471192387334943,
+    "A4_socfm_anomaly_positive.held_defect_retention_broad": 0.9696582159034528,
+    "A4_socfm_anomaly_positive.held_defect_retention_local": 0.9988735798670858,
+    "A4_socfm_anomaly_positive.shifted_normal_displacement_coverage": 0.5702088555504597,
+    "A4_socfm_anomaly_positive.shifted_normal_tail_reduction": -0.00023268118094226572,
+    "N1_mask_shuffle.held_defect_retention_broad": 0.9760276278021067,
+    "N1_mask_shuffle.held_defect_retention_local": 0.9983932271638506,
+    "N1_mask_shuffle.shifted_normal_displacement_coverage": 0.5244418399483033,
+    "N1_mask_shuffle.shifted_normal_tail_reduction": -0.0014322078976417448,
+    "N2_velocity_shuffle.held_defect_retention_broad": 0.9941059829178416,
+    "N2_velocity_shuffle.held_defect_retention_local": 0.9998420636938721,
+    "N2_velocity_shuffle.shifted_normal_displacement_coverage": 0.3733404079751287,
+    "N2_velocity_shuffle.shifted_normal_tail_reduction": -0.0016211423028102572
+  },
+  "maximum_verdict": "PROMISING_DIAGNOSTIC",
+  "not_applicable_diagnostics": [
+    "clean_geometry_and_code_drift",
+    "N3_patchwise_code"
+  ],
+  "objects": [
+    "can",
+    "fabric",
+    "vial",
+    "walnuts"
+  ],
+  "per_object": {
+    "can": {
+      "arms": {
+        "A0_raw": {
+          "held_defect_retention_broad": 1.0,
+          "held_defect_retention_local": 1.0,
+          "shifted_normal_displacement_coverage": 0.0,
+          "shifted_normal_tail_reduction": 0.0
+        },
+        "A1_orbit_bank": {
+          "held_defect_retention_broad": 0.9730508893017012,
+          "held_defect_retention_local": 0.9883879384561687,
+          "shifted_normal_displacement_coverage": 0.7216624724559294,
+          "shifted_normal_tail_reduction": 0.006764394901687063
+        },
+        "A2_socfm_normal": {
+          "held_defect_retention_broad": 0.9984391319487718,
+          "held_defect_retention_local": 0.9989226722427456,
+          "shifted_normal_displacement_coverage": 0.43083934294871795,
+          "shifted_normal_tail_reduction": -0.0004680571096197265
+        },
+        "A3_socfm_guard": {
+          "held_defect_retention_broad": 0.9955189923787455,
+          "held_defect_retention_local": 0.9987206236894973,
+          "shifted_normal_displacement_coverage": 0.4227279271834936,
+          "shifted_normal_tail_reduction": -0.0008223054591254613
+        },
+        "A4_socfm_anomaly_positive": {
+          "held_defect_retention_broad": 0.9954307560398561,
+          "held_defect_retention_local": 0.9971698167675074,
+          "shifted_normal_displacement_coverage": 0.5110896183894231,
+          "shifted_normal_tail_reduction": 0.0016789172211798672
+        },
+        "N1_mask_shuffle": {
+          "held_defect_retention_broad": 0.9955189950479455,
+          "held_defect_retention_local": 0.9987206195520387,
+          "shifted_normal_displacement_coverage": 0.4227294921875,
+          "shifted_normal_tail_reduction": -0.0008223055026002511
+        },
+        "N2_velocity_shuffle": {
+          "held_defect_retention_broad": 0.9978116295138351,
+          "held_defect_retention_local": 0.9996989810475788,
+          "shifted_normal_displacement_coverage": 0.44671317858573717,
+          "shifted_normal_tail_reduction": -6.495728622800834e-05
+        }
+      },
+      "container_cuda_slot": "0",
+      "duplicate_count": 1,
+      "gates": {
+        "anomaly_positive_absorption_stress_visible": false,
+        "beats_discrete_orbit_bank_retention": true,
+        "beats_discrete_orbit_bank_tail": false,
+        "displacement_coverage_ge_0p50": false,
+        "guard_retention_not_worse_than_normal": false,
+        "guard_tail_no_more_than_2pp_worse_than_normal": true,
+        "held_broad_defect_retention_ge_0p95": true,
+        "held_local_defect_retention_ge_0p95": true,
+        "mask_shuffle_retention_margin_ge_0p03": false,
+        "shifted_normal_tail_reduction_ge_0p20": false,
+        "velocity_shuffle_coverage_margin_ge_0p20": false
+      },
+      "host_gpu_id": "local:0",
+      "object": "can",
+      "pass": false,
+      "path": "results/socfm_synthetic_guard_stage_minus1_20260811/local/mechanism/can/socfm_object_summary.json",
+      "skipped_arms": {
+        "N3_patchwise_code": "not run: patchwise free code is an intentionally unsafe upper-bound and is reported as skipped in this support-only diagnostic",
+        "clean_geometry_and_code_drift": "not run: clean Spearman, clean nearest-neighbor identity retention, and nuisance-code drift are not implemented in this reduced support-only shard"
+      }
+    },
+    "fabric": {
+      "arms": {
+        "A0_raw": {
+          "held_defect_retention_broad": 1.0,
+          "held_defect_retention_local": 1.0,
+          "shifted_normal_displacement_coverage": 0.0,
+          "shifted_normal_tail_reduction": 0.0
+        },
+        "A1_orbit_bank": {
+          "held_defect_retention_broad": 0.9940902484499206,
+          "held_defect_retention_local": 0.9950830028311619,
+          "shifted_normal_displacement_coverage": 0.6856125502558479,
+          "shifted_normal_tail_reduction": 0.006654996933598197
+        },
+        "A2_socfm_normal": {
+          "held_defect_retention_broad": 0.9982632230152553,
+          "held_defect_retention_local": 0.999282114407893,
+          "shifted_normal_displacement_coverage": 0.6391915661549707,
+          "shifted_normal_tail_reduction": 0.0029189369091562898
+        },
+        "A3_socfm_guard": {
+          "held_defect_retention_broad": 0.9973206741953452,
+          "held_defect_retention_local": 0.9992612899996263,
+          "shifted_normal_displacement_coverage": 0.6379037600511696,
+          "shifted_normal_tail_reduction": 0.002905067032410059
+        },
+        "A4_socfm_anomaly_positive": {
+          "held_defect_retention_broad": 0.9974226119289877,
+          "held_defect_retention_local": 0.9990231660598343,
+          "shifted_normal_displacement_coverage": 0.6681514985380117,
+          "shifted_normal_tail_reduction": 0.0035124909574119206
+        },
+        "N1_mask_shuffle": {
+          "held_defect_retention_broad": 0.9973206758714864,
+          "held_defect_retention_local": 0.9992612883707062,
+          "shifted_normal_displacement_coverage": 0.6379037600511696,
+          "shifted_normal_tail_reduction": 0.0029050680609793668
+        },
+        "N2_velocity_shuffle": {
+          "held_defect_retention_broad": 0.9995248866095119,
+          "held_defect_retention_local": 1.0007248731549936,
+          "shifted_normal_displacement_coverage": 0.37740999634502925,
+          "shifted_normal_tail_reduction": -0.00029669588402903273
+        }
+      },
+      "container_cuda_slot": "0",
+      "duplicate_count": 1,
+      "gates": {
+        "anomaly_positive_absorption_stress_visible": false,
+        "beats_discrete_orbit_bank_retention": true,
+        "beats_discrete_orbit_bank_tail": false,
+        "displacement_coverage_ge_0p50": true,
+        "guard_retention_not_worse_than_normal": false,
+        "guard_tail_no_more_than_2pp_worse_than_normal": true,
+        "held_broad_defect_retention_ge_0p95": true,
+        "held_local_defect_retention_ge_0p95": true,
+        "mask_shuffle_retention_margin_ge_0p03": false,
+        "shifted_normal_tail_reduction_ge_0p20": false,
+        "velocity_shuffle_coverage_margin_ge_0p20": true
+      },
+      "host_gpu_id": "local:0",
+      "object": "fabric",
+      "pass": false,
+      "path": "results/socfm_synthetic_guard_stage_minus1_20260811/local/mechanism/fabric/socfm_object_summary.json",
+      "skipped_arms": {
+        "N3_patchwise_code": "not run: patchwise free code is an intentionally unsafe upper-bound and is reported as skipped in this support-only diagnostic",
+        "clean_geometry_and_code_drift": "not run: clean Spearman, clean nearest-neighbor identity retention, and nuisance-code drift are not implemented in this reduced support-only shard"
+      }
+    },
+    "vial": {
+      "arms": {
+        "A0_raw": {
+          "held_defect_retention_broad": 1.0,
+          "held_defect_retention_local": 1.0,
+          "shifted_normal_displacement_coverage": 0.0,
+          "shifted_normal_tail_reduction": 0.0
+        },
+        "A1_orbit_bank": {
+          "held_defect_retention_broad": 0.8259974930137153,
+          "held_defect_retention_local": 0.9927584246717414,
+          "shifted_normal_displacement_coverage": 0.8239383012820514,
+          "shifted_normal_tail_reduction": 0.030260248031840666
+        },
+        "A2_socfm_normal": {
+          "held_defect_retention_broad": 0.9122475034641656,
+          "held_defect_retention_local": 1.0021091015474992,
+          "shifted_normal_displacement_coverage": 0.3636192908653846,
+          "shifted_normal_tail_reduction": -0.017237989587205765
+        },
+        "A3_socfm_guard": {
+          "held_defect_retention_broad": 0.9211880122727534,
+          "held_defect_retention_local": 0.9996329196805323,
+          "shifted_normal_displacement_coverage": 0.3652468950320513,
+          "shifted_normal_tail_reduction": -0.019147789180453872
+        },
+        "A4_socfm_anomaly_positive": {
+          "held_defect_retention_broad": 0.8852605355832087,
+          "held_defect_retention_local": 0.9997157510348385,
+          "shifted_normal_displacement_coverage": 0.41489383012820513,
+          "shifted_normal_tail_reduction": -0.010706068971548226
+        },
+        "N1_mask_shuffle": {
+          "held_defect_retention_broad": 0.9105165415229138,
+          "held_defect_retention_local": 0.9962343347533078,
+          "shifted_normal_displacement_coverage": 0.38155799278846153,
+          "shifted_normal_tail_reduction": -0.011488144801181394
+        },
+        "N2_velocity_shuffle": {
+          "held_defect_retention_broad": 0.9797121934839503,
+          "held_defect_retention_local": 0.9995478226143295,
+          "shifted_normal_displacement_coverage": 0.3634915865384615,
+          "shifted_normal_tail_reduction": -0.006319723335354538
+        }
+      },
+      "container_cuda_slot": "0",
+      "duplicate_count": 1,
+      "gates": {
+        "anomaly_positive_absorption_stress_visible": false,
+        "beats_discrete_orbit_bank_retention": true,
+        "beats_discrete_orbit_bank_tail": false,
+        "displacement_coverage_ge_0p50": false,
+        "guard_retention_not_worse_than_normal": true,
+        "guard_tail_no_more_than_2pp_worse_than_normal": true,
+        "held_broad_defect_retention_ge_0p95": false,
+        "held_local_defect_retention_ge_0p95": true,
+        "mask_shuffle_retention_margin_ge_0p03": false,
+        "shifted_normal_tail_reduction_ge_0p20": false,
+        "velocity_shuffle_coverage_margin_ge_0p20": false
+      },
+      "host_gpu_id": "dsba3:3",
+      "object": "vial",
+      "pass": false,
+      "path": "results/remote_runs/dsba3/socfm_synthetic_guard_stage_minus1_20260811_dsba3_v3/mechanism/vial/socfm_object_summary.json",
+      "skipped_arms": {
+        "N3_patchwise_code": "not run: patchwise free code is an intentionally unsafe upper-bound and is reported as skipped in this support-only diagnostic",
+        "clean_geometry_and_code_drift": "not run: clean Spearman, clean nearest-neighbor identity retention, and nuisance-code drift are not implemented in this reduced support-only shard"
+      }
+    },
+    "walnuts": {
+      "arms": {
+        "A0_raw": {
+          "held_defect_retention_broad": 1.0,
+          "held_defect_retention_local": 1.0,
+          "shifted_normal_displacement_coverage": 0.0,
+          "shifted_normal_tail_reduction": 0.0
+        },
+        "A1_orbit_bank": {
+          "held_defect_retention_broad": 0.9995571890685822,
+          "held_defect_retention_local": 0.9980469845196325,
+          "shifted_normal_displacement_coverage": 0.6987818667763157,
+          "shifted_normal_tail_reduction": 0.00681253407587449
+        },
+        "A2_socfm_normal": {
+          "held_defect_retention_broad": 1.0000237715357758,
+          "held_defect_retention_local": 1.000499936089659,
+          "shifted_normal_displacement_coverage": 0.6447568302266082,
+          "shifted_normal_tail_reduction": 0.0030289917572795142
+        },
+        "A3_socfm_guard": {
+          "held_defect_retention_broad": 1.000754298766081,
+          "held_defect_retention_local": 0.99935666597935,
+          "shifted_normal_displacement_coverage": 0.6555761147660819,
+          "shifted_normal_tail_reduction": 0.0036765506522352994
+        },
+        "A4_socfm_anomaly_positive": {
+          "held_defect_retention_broad": 1.0005189600617586,
+          "held_defect_retention_local": 0.9995855856061631,
+          "shifted_normal_displacement_coverage": 0.6867004751461988,
+          "shifted_normal_tail_reduction": 0.004583936069187376
+        },
+        "N1_mask_shuffle": {
+          "held_defect_retention_broad": 1.000754298766081,
+          "held_defect_retention_local": 0.99935666597935,
+          "shifted_normal_displacement_coverage": 0.6555761147660819,
+          "shifted_normal_tail_reduction": 0.0036765506522352994
+        },
+        "N2_velocity_shuffle": {
+          "held_defect_retention_broad": 0.999375222064069,
+          "held_defect_retention_local": 0.9993965779585865,
+          "shifted_normal_displacement_coverage": 0.30574687043128657,
+          "shifted_normal_tail_reduction": 0.00019680729437054987
+        }
+      },
+      "container_cuda_slot": "0",
+      "duplicate_count": 1,
+      "gates": {
+        "anomaly_positive_absorption_stress_visible": false,
+        "beats_discrete_orbit_bank_retention": true,
+        "beats_discrete_orbit_bank_tail": false,
+        "displacement_coverage_ge_0p50": true,
+        "guard_retention_not_worse_than_normal": false,
+        "guard_tail_no_more_than_2pp_worse_than_normal": true,
+        "held_broad_defect_retention_ge_0p95": true,
+        "held_local_defect_retention_ge_0p95": true,
+        "mask_shuffle_retention_margin_ge_0p03": false,
+        "shifted_normal_tail_reduction_ge_0p20": false,
+        "velocity_shuffle_coverage_margin_ge_0p20": true
+      },
+      "host_gpu_id": "dsba5:3",
+      "object": "walnuts",
+      "pass": false,
+      "path": "results/remote_runs/dsba5/socfm_synthetic_guard_stage_minus1_20260811_dsba5_v3/mechanism/walnuts/socfm_object_summary.json",
+      "skipped_arms": {
+        "N3_patchwise_code": "not run: patchwise free code is an intentionally unsafe upper-bound and is reported as skipped in this support-only diagnostic",
+        "clean_geometry_and_code_drift": "not run: clean Spearman, clean nearest-neighbor identity retention, and nuisance-code drift are not implemented in this reduced support-only shard"
+      }
+    }
+  },
+  "protocol_id": "socfm-synthetic-guard-stage-minus1-20260811",
+  "required_arms": [
+    "A0_raw",
+    "A1_orbit_bank",
+    "A2_socfm_normal",
+    "A3_socfm_guard",
+    "A4_socfm_anomaly_positive",
+    "N1_mask_shuffle",
+    "N2_velocity_shuffle"
+  ],
+  "rn_fmlk": "N/A",
+  "schema": "socfm-synthetic-guard-stage-minus1-aggregate-v1",
+  "skipped_arms": {
+    "can": {
+      "N3_patchwise_code": "not run: patchwise free code is an intentionally unsafe upper-bound and is reported as skipped in this support-only diagnostic",
+      "clean_geometry_and_code_drift": "not run: clean Spearman, clean nearest-neighbor identity retention, and nuisance-code drift are not implemented in this reduced support-only shard"
+    },
+    "fabric": {
+      "N3_patchwise_code": "not run: patchwise free code is an intentionally unsafe upper-bound and is reported as skipped in this support-only diagnostic",
+      "clean_geometry_and_code_drift": "not run: clean Spearman, clean nearest-neighbor identity retention, and nuisance-code drift are not implemented in this reduced support-only shard"
+    },
+    "vial": {
+      "N3_patchwise_code": "not run: patchwise free code is an intentionally unsafe upper-bound and is reported as skipped in this support-only diagnostic",
+      "clean_geometry_and_code_drift": "not run: clean Spearman, clean nearest-neighbor identity retention, and nuisance-code drift are not implemented in this reduced support-only shard"
+    },
+    "walnuts": {
+      "N3_patchwise_code": "not run: patchwise free code is an intentionally unsafe upper-bound and is reported as skipped in this support-only diagnostic",
+      "clean_geometry_and_code_drift": "not run: clean Spearman, clean nearest-neighbor identity retention, and nuisance-code drift are not implemented in this reduced support-only shard"
+    }
+  },
+  "superad_seg_AUROC_0.05": "N/A",
+  "superad_seg_F1": "N/A",
+  "verdict": "KILL_FOR_CLAIM_CONTINUE_DIAGNOSTIC"
+}

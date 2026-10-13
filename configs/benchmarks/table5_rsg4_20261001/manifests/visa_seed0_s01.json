@@ -1,0 +1,38 @@
+{
+  "pcb2": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0850.JPG"
+  ],
+  "macaroni1": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0850.JPG"
+  ],
+  "chewinggum": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/426.JPG"
+  ],
+  "cashew": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/424.JPG"
+  ],
+  "pcb1": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0852.JPG"
+  ],
+  "candle": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0850.JPG"
+  ],
+  "pcb4": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0852.JPG"
+  ],
+  "pipe_fryum": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/424.JPG"
+  ],
+  "capsules": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/511.JPG"
+  ],
+  "macaroni2": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0850.JPG"
+  ],
+  "fryum": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/424.JPG"
+  ],
+  "pcb3": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0853.JPG"
+  ]
+}

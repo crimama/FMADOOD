@@ -1,0 +1,14 @@
+ad2_cal_tail095_s02_seed0
+ad2_cal_q050_s02_seed0
+ad2_cal_q080_s02_seed0
+ad2_cal_q090_s02_seed0
+ad2_cal_q099_s02_seed0
+ad2_cal_q0999_s02_seed0
+ad2_cal_localscale_s02_seed0
+ad2_cal_tail095_s16_seed0
+ad2_cal_q050_s16_seed0
+ad2_cal_q080_s16_seed0
+ad2_cal_q090_s16_seed0
+ad2_cal_q099_s16_seed0
+ad2_cal_q0999_s16_seed0
+ad2_cal_localscale_s16_seed0

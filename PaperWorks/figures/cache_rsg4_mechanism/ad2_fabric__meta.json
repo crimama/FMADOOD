@@ -1,0 +1,159 @@
+{
+  "support": [
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/115_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/237_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/191_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/015_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/282_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/233_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/309_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/349_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/316_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/028_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/374_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/101_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/193_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/006_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/066_regular.png",
+    "/home/hun/Volume/DATA/mvtec_ad_2/fabric/train/good/248_regular.png"
+  ],
+  "noise_reference_sigma": 1.2798767022483406,
+  "taus": {
+    "448": [
+      1.1795666248054733,
+      1.169219968496853,
+      1.1690473436700914,
+      1.162043188008841
+    ],
+    "672": [
+      1.2036757704106644,
+      1.172097508241355,
+      1.1840630477021563,
+      1.1854635302087735
+    ],
+    "896": [
+      1.1997981627694596,
+      1.2026376492994926,
+      1.231300468941252,
+      1.1873218248361623
+    ],
+    "1120": [
+      1.2020729228563676,
+      1.18177218024779,
+      1.2022394210117755,
+      1.2194062905692449
+    ]
+  },
+  "scales": {
+    "448": [
+      [
+        0.3264208137989044,
+        0.21934443712234497,
+        0.2574947774410248
+      ],
+      [
+        0.32648730278015137,
+        0.2167782485485077,
+        0.26001471281051636
+      ],
+      [
+        0.32441285252571106,
+        0.21926456689834595,
+        0.2582392692565918
+      ],
+      [
+        0.3294471204280853,
+        0.22018885612487793,
+        0.26046574115753174
+      ]
+    ],
+    "672": [
+      [
+        0.2621438503265381,
+        0.1910364180803299,
+        0.24703438580036163
+      ],
+      [
+        0.2679598331451416,
+        0.19118165969848633,
+        0.25022953748703003
+      ],
+      [
+        0.26303765177726746,
+        0.1926100105047226,
+        0.2484121024608612
+      ],
+      [
+        0.2618370056152344,
+        0.19258379936218262,
+        0.24875494837760925
+      ]
+    ],
+    "896": [
+      [
+        0.23760679364204407,
+        0.17251984775066376,
+        0.2261349856853485
+      ],
+      [
+        0.23657919466495514,
+        0.17368115484714508,
+        0.22790738940238953
+      ],
+      [
+        0.23645608127117157,
+        0.1708870381116867,
+        0.22510232031345367
+      ],
+      [
+        0.23842985928058624,
+        0.1727028787136078,
+        0.22596940398216248
+      ]
+    ],
+    "1120": [
+      [
+        0.22559458017349243,
+        0.15946252644062042,
+        0.21133200824260712
+      ],
+      [
+        0.22568893432617188,
+        0.1586179882287979,
+        0.2124723196029663
+      ],
+      [
+        0.22403566539287567,
+        0.15833866596221924,
+        0.21619737148284912
+      ],
+      [
+        0.2250298112630844,
+        0.1596214324235916,
+        0.21010252833366394
+      ]
+    ]
+  },
+  "defect": {
+    "path": "/home/hun/Volume/DATA/mvtec_ad_2/fabric/test_public/bad/000_regular.png",
+    "noise_ratio": 1.0181889704255873,
+    "noise_fired": false,
+    "resolutions": [
+      448,
+      672,
+      896,
+      1120
+    ]
+  },
+  "good": {
+    "path": "/home/hun/Volume/DATA/mvtec_ad_2/fabric/test_public/good/000_regular.png",
+    "noise_ratio": 0.9885785545531993,
+    "noise_fired": false,
+    "resolutions": [
+      448,
+      672,
+      896,
+      1120
+    ]
+  }
+}

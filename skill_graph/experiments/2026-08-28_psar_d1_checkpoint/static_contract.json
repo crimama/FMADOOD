@@ -1,0 +1,98 @@
+{
+  "arms": [
+    "B0_SuperAD16",
+    "B1_RN_FMLK",
+    "I0_ABSOLUTE_HEAD",
+    "N0_PLUS_UNPAIRED_BASE",
+    "N0_MINUS_UNPAIRED_BASE",
+    "M0_PSAR"
+  ],
+  "backbone": {
+    "expected_state_sha256": "59a755e385188971c57f52a38773028b508722c804ce6c9279d1dc2ac14ccbe8",
+    "feature_layers": [5, 11, 17, 23],
+    "frozen": true,
+    "model_name": "dinov2_vitl14",
+    "patch_size": 14,
+    "precision": "bf16_autocast_frozen_forward",
+    "resolution": 672
+  },
+  "bootstrap": {
+    "paired_across_arms": true,
+    "replicates": 2000,
+    "seed": 20260828,
+    "stratified_by_split": true
+  },
+  "calibration": {
+    "active_operator": ">",
+    "indices": [12, 13, 14, 15],
+    "maps_per_arm_object": 16,
+    "memory": "P16-minus-calibration-base=P15",
+    "quantile": 0.95,
+    "rule": "smallest_observed_float32_with_equal_image_mean_ecdf_gte_0.95"
+  },
+  "dataset": {
+    "name": "mvtec_ad2",
+    "preprocess": "no_mask_no_rotation",
+    "query_split": "test_public",
+    "resolution": 672
+  },
+  "fit": {
+    "epochs": 4,
+    "fit_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    "generators": ["G0_poisson_patch", "G1_material_blotch", "G4_frequency_local"],
+    "global_seed": 20260828,
+    "memory_cardinality": 12,
+    "optimizer": {
+      "betas": [0.9, 0.999],
+      "eps": 1e-08,
+      "foreach": false,
+      "fused": false,
+      "grad_clip": 1.0,
+      "lr": 0.0003,
+      "name": "AdamW",
+      "weight_decay": 0.0001
+    },
+    "shifts": ["EV_-0.1333", "EV_+0.1333", "GAUSSIAN_RMS_MATCHED", "SPATIAL_COS_1_1_CV_0.15"],
+    "updates_per_arm_object": 576
+  },
+  "gpu_map": {
+    "fabric": 0,
+    "fabric_repeat": 0,
+    "vial": 1,
+    "walnuts": 2
+  },
+  "held_audit": {
+    "base_count": 4,
+    "cells_per_object": 64,
+    "generators": ["G0_poisson_patch", "G1_material_blotch", "G4_frequency_local", "G2_structural_scratch"],
+    "g2_null_margin_min": 0.03,
+    "g2_pauroc_min": 0.65,
+    "identity_balanced_accuracy_max": 0.35,
+    "memory_cardinality": 14,
+    "nuisances": ["EV_-0.20", "EV_+0.20", "GAUSSIAN_1.5X_RMS", "SPATIAL_COS_1_1_CV_0.225"],
+    "spearman_abs_max": 0.35
+  },
+  "objects": {
+    "fabric": "strong",
+    "vial": "weak_stress",
+    "walnuts": "control"
+  },
+  "primary_metric": "seg_AUROC_0.05",
+  "protocol_id": "psar-d1-checkpoint-20260828-v1",
+  "pro_integration_limit": 0.05,
+  "required_metrics": [
+    "seg_AUROC_0.05",
+    "seg_F1",
+    "AU-PRO@0.05",
+    "map_coverage",
+    "normal_FPR",
+    "runtime",
+    "memory",
+    "object_results",
+    "delta_vs_superad",
+    "delta_vs_rn_fmlk",
+    "delta_vs_hard_null"
+  ],
+  "revision_budget": 0,
+  "support_manifest_sha256": "7e93f15e2efef565354ebe03a9cc5e834464fc4199bd2273067d62eda2ab74b3"
+}

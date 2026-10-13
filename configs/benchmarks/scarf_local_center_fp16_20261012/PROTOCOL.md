@@ -1,0 +1,13 @@
+# Support-neighbour location calibration (AD2 development)
+
+Hypothesis: part of a bank's anomaly distance reflects normal neighbourhood matching difficulty. Subtracting this support-estimated local deviation before dividing by that bank's q95 may improve fusion, without changing features or increasing bank capacity.
+
+For each layer x resolution x bag m, score z_m(x) = [d_m(x) - alpha * (mean(LOO_m[NN_8(x)]) - mean(LOO_m))] / q95_m. LOO_m is the source-excluded normal support distance already computed for each stored token, in bank order. Global location is its arithmetic mean; neighbour k is clamped to available tokens. Alpha is 0.25 or 0.5 and is the full shrinkage coefficient; local_reliability_shrinkage is not applied in center mode. Scores remain signed. The query selects neighbouring tokens but never updates calibration statistics. No labels or dataset objects enter fitting or prediction. This is not a novelty claim; neighbourhood correction needs a literature audit before publication.
+
+Controls: original q95 and no normalization, both rerun from the same staged source. Fixed pipeline: frozen DINOv2 ViT-L/14, layers 5/11/23, resolutions 448/672/896/1120, FP16 backbone inference, cap256, four bags, CQ99, top-1% image aggregation, noise guard k=9, linear0125 shallow fusion. Only method_config changes. No trainable parameters.
+
+Scope: AD2 test_public seen development, full8, shots 2/16, seed 0, fixed VOID_support_2.json and VOID_support_16.json manifests. Eight configs x eight classes = 64 class runs on the existing dsba3 container, GPUs 0-3 by assigned UUID. Existing runner scripts/experiments.py run sequences configs. Quantitative results, manifests, bank feature hashes and logs are retained; maps and weights off.
+
+Decision fixed before results: candidate AUPRO@0.05 must exceed BOTH rerun q95 and none at BOTH shots; pAUROC@0.05 must not fall by more than 0.3 pp against either control at either shot. Report effect size and class losses. A gain >=0.5 pp at both shots is strong development evidence. Any qualifying candidate needs seeds 1/2 confirmation before adoption. No automatic extra variants or multi-seed expansion. Completion of 64 runs is the execution stop condition; failures are retried only after implementation/runtime diagnosis. Repeated evaluation and earlier lambda tuning used this public population, so these are post-hoc development results.
+
+Validation: support/query/GT provenance and bank feature hashes must match within each shot and class. Compare optimized shared-bag scoring with its unoptimized path; alpha=0 must reproduce q95. Collector updates canonical comparisons Markdown and CSV together after quantitative pullback. No paper claim or outline replacement until evidence is evaluated.

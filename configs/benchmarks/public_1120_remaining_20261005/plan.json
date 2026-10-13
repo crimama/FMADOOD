@@ -1,0 +1,486 @@
+{
+  "configs": [
+    {
+      "label": "rad_s01_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s01_seed0_1120.yaml",
+      "method": "rad",
+      "shot": 1,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_1.json",
+      "support_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+      "config_sha256": "7bcda122de5c76665f10deac9ea95af66cff1c11e4e9f66d42034b466ad0bd77"
+    },
+    {
+      "label": "fastrecon_s01_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s01_seed0_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 1,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_1.json",
+      "support_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+      "config_sha256": "3340b6fb38bd7ed86fb58285f4ab4205021a703a873e41a3a8bf34f97093128f"
+    },
+    {
+      "label": "subspacead_s01_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s01_seed0_1120.yaml",
+      "method": "subspacead",
+      "shot": 1,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_1.json",
+      "support_sha256": "71a67eca7e2b9e3d6c8c7e4cf1af9c6e603c0af71fea87e2cfe2abac0441ab10",
+      "config_sha256": "4961d18b56b43750484fcf3656f7460dad4834847c00890df2881d38ce7cdc07"
+    },
+    {
+      "label": "rad_s01_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s01_seed1_1120.yaml",
+      "method": "rad",
+      "shot": 1,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_1.json",
+      "support_sha256": "cf368f0520a44b610db0c2a7f6fb7dc00059b3e32349811d5b5e1fb698d2ad61",
+      "config_sha256": "eac999df4f47d7e248260d9e961f39140830c925ae0b690aa341dbea21f22847"
+    },
+    {
+      "label": "fastrecon_s01_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s01_seed1_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 1,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_1.json",
+      "support_sha256": "cf368f0520a44b610db0c2a7f6fb7dc00059b3e32349811d5b5e1fb698d2ad61",
+      "config_sha256": "9516da1df22794c56fecd4b1a349224a54d6d3528658d0c281bfd220122331e8"
+    },
+    {
+      "label": "subspacead_s01_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s01_seed1_1120.yaml",
+      "method": "subspacead",
+      "shot": 1,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_1.json",
+      "support_sha256": "cf368f0520a44b610db0c2a7f6fb7dc00059b3e32349811d5b5e1fb698d2ad61",
+      "config_sha256": "56b176066e5084c377b46b248155a740483d2532a51ff62f1862f9e16b7f8a38"
+    },
+    {
+      "label": "rad_s01_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s01_seed2_1120.yaml",
+      "method": "rad",
+      "shot": 1,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_1.json",
+      "support_sha256": "5e4f30b56355bdeef5d75e4bf53f4836ebd9602bcdc307381a121369ff17c377",
+      "config_sha256": "0bf4cc1d2a0830e7a73457cf3de3573a687ef3dc8220840cb993869cbe695e43"
+    },
+    {
+      "label": "fastrecon_s01_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s01_seed2_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 1,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_1.json",
+      "support_sha256": "5e4f30b56355bdeef5d75e4bf53f4836ebd9602bcdc307381a121369ff17c377",
+      "config_sha256": "422c1b1191e80a3a0a87fcccddc288a3d71c67173c6ebfd57256efc3d6558a76"
+    },
+    {
+      "label": "subspacead_s01_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s01_seed2_1120.yaml",
+      "method": "subspacead",
+      "shot": 1,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_1.json",
+      "support_sha256": "5e4f30b56355bdeef5d75e4bf53f4836ebd9602bcdc307381a121369ff17c377",
+      "config_sha256": "29e0ccd619fd87e493d431532da25ef9278511fd9dac5adfe6f4ecdc0482aeb3"
+    },
+    {
+      "label": "rad_s02_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s02_seed0_1120.yaml",
+      "method": "rad",
+      "shot": 2,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_2.json",
+      "support_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+      "config_sha256": "ec6696f73f7c14dba53124c85bd859589b812fb122be4da16de3da48e5fed7df"
+    },
+    {
+      "label": "fastrecon_s02_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s02_seed0_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 2,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_2.json",
+      "support_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+      "config_sha256": "e186379ab8c977cc8c48f1deebcc5ce80424163865b5c7adc369ab2f85921092"
+    },
+    {
+      "label": "subspacead_s02_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s02_seed0_1120.yaml",
+      "method": "subspacead",
+      "shot": 2,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_2.json",
+      "support_sha256": "a60198633355f332d13dd9baf27a878c6ebeb2d16730e5ade948bdb17a59ba73",
+      "config_sha256": "6a86404ce04ce55d3acc3a6308106224c09a5cbcf21143bddc7cdb80dc7c4851"
+    },
+    {
+      "label": "rad_s02_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s02_seed1_1120.yaml",
+      "method": "rad",
+      "shot": 2,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_2.json",
+      "support_sha256": "0a31bd5b6d8a150e91649b3f677ee22a39adb5fc9c052ae9147b4e98c88524c3",
+      "config_sha256": "24d7a45a53954d259b3c2e4fd320b429245c23ee062e7fa2d359a8b40db8ecc8"
+    },
+    {
+      "label": "fastrecon_s02_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s02_seed1_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 2,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_2.json",
+      "support_sha256": "0a31bd5b6d8a150e91649b3f677ee22a39adb5fc9c052ae9147b4e98c88524c3",
+      "config_sha256": "b963786828d91c3d0052f6f6338a03d7012905d8c7e3b8d3d5bbfd4df22a1f4e"
+    },
+    {
+      "label": "subspacead_s02_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s02_seed1_1120.yaml",
+      "method": "subspacead",
+      "shot": 2,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_2.json",
+      "support_sha256": "0a31bd5b6d8a150e91649b3f677ee22a39adb5fc9c052ae9147b4e98c88524c3",
+      "config_sha256": "eb97eb43ace4dc1daa6f487cc673fcb5a4e108eda2a5df656ac211dee9c2b1ef"
+    },
+    {
+      "label": "rad_s02_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s02_seed2_1120.yaml",
+      "method": "rad",
+      "shot": 2,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_2.json",
+      "support_sha256": "998930af8fa3b2f0209f3d0776d6886e8459284e0f666c814410e4d2d7c82fb1",
+      "config_sha256": "33821ea1ccc46c21f0b7cd34d6c0834ba834bb0bf4b3f32a6bdb22abc5322a3f"
+    },
+    {
+      "label": "fastrecon_s02_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s02_seed2_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 2,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_2.json",
+      "support_sha256": "998930af8fa3b2f0209f3d0776d6886e8459284e0f666c814410e4d2d7c82fb1",
+      "config_sha256": "da08f67294ed7548e25232c720e8a01f36d88b98237f583bb3af9d90592d1bb4"
+    },
+    {
+      "label": "subspacead_s02_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s02_seed2_1120.yaml",
+      "method": "subspacead",
+      "shot": 2,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_2.json",
+      "support_sha256": "998930af8fa3b2f0209f3d0776d6886e8459284e0f666c814410e4d2d7c82fb1",
+      "config_sha256": "59d72bd4fe68eaca29688cb1ed9d411b44ce2459cf9274e588acc13828bf0f66"
+    },
+    {
+      "label": "rad_s04_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s04_seed0_1120.yaml",
+      "method": "rad",
+      "shot": 4,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_4.json",
+      "support_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+      "config_sha256": "20d34d971cb47cbc02299fa29afa112cf22d64dcc4602a65abacbeb41ddfc3b0"
+    },
+    {
+      "label": "fastrecon_s04_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s04_seed0_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 4,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_4.json",
+      "support_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+      "config_sha256": "cb3e9b2bfbed762961d064b0b961c7de347f9fc7c0406758918a399b81bbec5f"
+    },
+    {
+      "label": "subspacead_s04_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s04_seed0_1120.yaml",
+      "method": "subspacead",
+      "shot": 4,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_4.json",
+      "support_sha256": "5d396dbb1a71635550b3911865834e3f9e270f66fd3837deb3801ab98c5e116b",
+      "config_sha256": "053d057f05aaa2bb0f717f58c570e8058a7635ac0a031dfbcc5202bb8c6eae7d"
+    },
+    {
+      "label": "rad_s04_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s04_seed1_1120.yaml",
+      "method": "rad",
+      "shot": 4,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_4.json",
+      "support_sha256": "9ee29d933f85e8aad502afcb31ffcb2d395822acc365d794a7444b14119f04a3",
+      "config_sha256": "7a7ec1f21453740e716e1cc069f068c3d4a26860c0b040e8704ccddaae24add2"
+    },
+    {
+      "label": "fastrecon_s04_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s04_seed1_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 4,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_4.json",
+      "support_sha256": "9ee29d933f85e8aad502afcb31ffcb2d395822acc365d794a7444b14119f04a3",
+      "config_sha256": "388534c940c894219081f3dfbb5637c2f3b1d71d2651a7889933b7db80ace9e3"
+    },
+    {
+      "label": "subspacead_s04_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s04_seed1_1120.yaml",
+      "method": "subspacead",
+      "shot": 4,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_4.json",
+      "support_sha256": "9ee29d933f85e8aad502afcb31ffcb2d395822acc365d794a7444b14119f04a3",
+      "config_sha256": "4ea441944aea83676766744e5953faf97cd31dd0edcc5e776356135a47b0f131"
+    },
+    {
+      "label": "rad_s04_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s04_seed2_1120.yaml",
+      "method": "rad",
+      "shot": 4,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_4.json",
+      "support_sha256": "6b49e39984871a016080d1fe11c82587e4d3bd4de383ea2fd8215d484e0b4fd0",
+      "config_sha256": "0d44a5ff38a003124ecc8829862b18ce11bfed48c933388fa5139a3868c69f6d"
+    },
+    {
+      "label": "fastrecon_s04_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s04_seed2_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 4,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_4.json",
+      "support_sha256": "6b49e39984871a016080d1fe11c82587e4d3bd4de383ea2fd8215d484e0b4fd0",
+      "config_sha256": "5f21f891688791025d393be99097dff34c8b76edace1a4594cd7e10bef12c620"
+    },
+    {
+      "label": "subspacead_s04_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s04_seed2_1120.yaml",
+      "method": "subspacead",
+      "shot": 4,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_4.json",
+      "support_sha256": "6b49e39984871a016080d1fe11c82587e4d3bd4de383ea2fd8215d484e0b4fd0",
+      "config_sha256": "ec8236edb25d5c90ddbebf573785959d459caa5ebf9eb23e8fe87833e6742119"
+    },
+    {
+      "label": "rad_s08_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s08_seed0_1120.yaml",
+      "method": "rad",
+      "shot": 8,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_8.json",
+      "support_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+      "config_sha256": "84d71c7ff70ce85014b5bbf3091f3034cb3ba310532e2de394357bd98db45655"
+    },
+    {
+      "label": "fastrecon_s08_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s08_seed0_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 8,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_8.json",
+      "support_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+      "config_sha256": "be58ce9193f507a863898affaf71fa131507de0f00211349c5679372914d2fc6"
+    },
+    {
+      "label": "subspacead_s08_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s08_seed0_1120.yaml",
+      "method": "subspacead",
+      "shot": 8,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_8.json",
+      "support_sha256": "428e728461f4b7b10c79780389bd5ede45724e18bed280ea3806d54a79c8227a",
+      "config_sha256": "797f764823bc832c6a6437eca96aa3b877df10953116e53b23195086eb55ebcd"
+    },
+    {
+      "label": "rad_s08_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s08_seed1_1120.yaml",
+      "method": "rad",
+      "shot": 8,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_8.json",
+      "support_sha256": "4897e1bed1c2f05fdb990af5ed012d90d8559919fe22de231c5f3cd1c520925c",
+      "config_sha256": "73b337827f0219977a2260245eb44542e8f26418c89fb1aeabb0010d91cf341c"
+    },
+    {
+      "label": "fastrecon_s08_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s08_seed1_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 8,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_8.json",
+      "support_sha256": "4897e1bed1c2f05fdb990af5ed012d90d8559919fe22de231c5f3cd1c520925c",
+      "config_sha256": "2a7314c4e50633901fd06dfaf39cea8ff99bb6341cddb4f42566a224b6797902"
+    },
+    {
+      "label": "subspacead_s08_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s08_seed1_1120.yaml",
+      "method": "subspacead",
+      "shot": 8,
+      "seed": 1,
+      "support": "configs/benchmarks/public_v13_20260929/seed1_support_8.json",
+      "support_sha256": "4897e1bed1c2f05fdb990af5ed012d90d8559919fe22de231c5f3cd1c520925c",
+      "config_sha256": "de542f4fc80f73fe2427eb07947d00eef511e388170ed01a44ec2fb8c5448ddf"
+    },
+    {
+      "label": "rad_s08_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s08_seed2_1120.yaml",
+      "method": "rad",
+      "shot": 8,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_8.json",
+      "support_sha256": "ccf908b3ae965cebda6b4f5c1184e9eab387d737e0e2b230bb0ede24d78c06b5",
+      "config_sha256": "398b246753f867281242ff9e49242e18c83c97907da0dc0cd48d4242d44c37ae"
+    },
+    {
+      "label": "fastrecon_s08_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s08_seed2_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 8,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_8.json",
+      "support_sha256": "ccf908b3ae965cebda6b4f5c1184e9eab387d737e0e2b230bb0ede24d78c06b5",
+      "config_sha256": "307a8dfb94836de2acd561452ded9906aa717ee39388fe6ac6fc73f4308d4ecc"
+    },
+    {
+      "label": "subspacead_s08_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s08_seed2_1120.yaml",
+      "method": "subspacead",
+      "shot": 8,
+      "seed": 2,
+      "support": "configs/benchmarks/public_v13_20260929/seed2_support_8.json",
+      "support_sha256": "ccf908b3ae965cebda6b4f5c1184e9eab387d737e0e2b230bb0ede24d78c06b5",
+      "config_sha256": "0f76a45661f21a7835305e41aa498f4357bee611131df87d63fb0d29bee5f2ed"
+    },
+    {
+      "label": "rad_s16_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s16_seed0_1120.yaml",
+      "method": "rad",
+      "shot": 16,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_16.json",
+      "support_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+      "config_sha256": "e19a8cb1ac1beebdbc0f54010b1920406dc146b865c1f333784932e200b5e944"
+    },
+    {
+      "label": "fastrecon_s16_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s16_seed0_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 16,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_16.json",
+      "support_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+      "config_sha256": "42dddebdb5302a6f0776d8ce32ca98f83d908d8988c56d3c5d7ca5f2fb0a54da"
+    },
+    {
+      "label": "subspacead_s16_seed0_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s16_seed0_1120.yaml",
+      "method": "subspacead",
+      "shot": 16,
+      "seed": 0,
+      "support": "configs/methods/VOID_support_16.json",
+      "support_sha256": "bc6a0c851eb3ab50f2fb066d99458bd705050b51c7a6cf726676f6415bda7894",
+      "config_sha256": "ddb42602e43664a4afe17dd27ce0c7509b804d97a2e6702d454bdfe9c8ea2960"
+    },
+    {
+      "label": "rad_s16_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s16_seed1_1120.yaml",
+      "method": "rad",
+      "shot": 16,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_16.json",
+      "support_sha256": "8cf3329c03c140e0aa11f005d3bd4c0a42c56c4fdb56c7ac1eb522eb39bf871f",
+      "config_sha256": "c4796ed5b9a4f629417abee7cf7efbda75d9c216628f7151f4fee57b62e37cad"
+    },
+    {
+      "label": "fastrecon_s16_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s16_seed1_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 16,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_16.json",
+      "support_sha256": "8cf3329c03c140e0aa11f005d3bd4c0a42c56c4fdb56c7ac1eb522eb39bf871f",
+      "config_sha256": "c65e9f2f3d4cf38846cac20b195dfe1bb0972c1bcf586ff9bb0a700b4a97ad7c"
+    },
+    {
+      "label": "subspacead_s16_seed1_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s16_seed1_1120.yaml",
+      "method": "subspacead",
+      "shot": 16,
+      "seed": 1,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed1_support_16.json",
+      "support_sha256": "8cf3329c03c140e0aa11f005d3bd4c0a42c56c4fdb56c7ac1eb522eb39bf871f",
+      "config_sha256": "e1989eee24f8070d23cfda746b902c65a92ce49d180067ddc2bcc8d4e72d5039"
+    },
+    {
+      "label": "rad_s16_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/rad_s16_seed2_1120.yaml",
+      "method": "rad",
+      "shot": 16,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_16.json",
+      "support_sha256": "051e63478636d9a78fe22994a1a6943ad19f00a1fc8f1e96704c1f270d7d9f80",
+      "config_sha256": "a78e74d0833066d517ad8b96aab110119922bc7f266c90382b8ab4ebff392b25"
+    },
+    {
+      "label": "fastrecon_s16_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/fastrecon_s16_seed2_1120.yaml",
+      "method": "fastrecon_paper",
+      "shot": 16,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_16.json",
+      "support_sha256": "051e63478636d9a78fe22994a1a6943ad19f00a1fc8f1e96704c1f270d7d9f80",
+      "config_sha256": "94a107c8796fb32b0b7c71c719fc8dd7dfb549eea41d241ac87680374b1b9391"
+    },
+    {
+      "label": "subspacead_s16_seed2_1120",
+      "config": "configs/benchmarks/public_1120_remaining_20261005/subspacead_s16_seed2_1120.yaml",
+      "method": "subspacead",
+      "shot": 16,
+      "seed": 2,
+      "support": "configs/benchmarks/v7_evidence/E1_seeds/manifests/seed2_support_16.json",
+      "support_sha256": "051e63478636d9a78fe22994a1a6943ad19f00a1fc8f1e96704c1f270d7d9f80",
+      "config_sha256": "3d5174dcae78177b26135fdeb73e661eb54869d76c5007e9b8dbb25a624f899c"
+    }
+  ],
+  "objects": [
+    "can",
+    "fabric",
+    "fruit_jelly",
+    "rice",
+    "sheet_metal",
+    "vial",
+    "wallplugs",
+    "walnuts"
+  ],
+  "shards": [
+    [
+      "can",
+      "fruit_jelly"
+    ],
+    [
+      "fabric",
+      "rice"
+    ],
+    [
+      "sheet_metal",
+      "vial"
+    ],
+    [
+      "wallplugs",
+      "walnuts"
+    ]
+  ],
+  "class_runs": 360,
+  "blocked": {
+    "regad_official": "Released STN checkpoint hard-codes 224 spatial FC geometry; genuine1120 requires a separate architecture/weight adaptation."
+  }
+}

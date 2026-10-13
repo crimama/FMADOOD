@@ -1,0 +1,28 @@
+{
+  "method": "ScopeAD",
+  "outline": "../outlines/Outline_v18.md",
+  "style": "restrained academic method schematic, print-first",
+  "figma_file": "pending refreshed academic figure",
+  "layout": "two-stage support fitting / query inference; square-corner modules, white ground, restrained ink and two accents",
+  "width_in": 7.0,
+  "height_in": 3.55,
+  "layers": [
+    5,
+    11,
+    23
+  ],
+  "scales": [
+    448,
+    672,
+    896,
+    1120
+  ],
+  "bags": 4,
+  "tokens_per_image_per_bag": 256,
+  "banks": 48,
+  "calibration_q": 0.95,
+  "fusion": "(z11 + z23)/2 + 0.125*z5",
+  "cq": false,
+  "display_heatmaps": "cached bag-averaged maps; no new inference",
+  "ground_truth": "contour only"
+}

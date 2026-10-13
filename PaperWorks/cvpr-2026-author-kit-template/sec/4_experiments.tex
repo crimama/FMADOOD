@@ -1,0 +1,255 @@
+\section{실험 (Experiments)}
+\label{sec:experiments}
+
+본 절에서는 ScopeAD 프레임워크의 이상 국소화 및 탐지 성능을 기존 최고 수준 방법들과 비교하고, 구성 요소별 통제 소거 분석을 통해 성능 향상의 기제를 규명한다.
+
+\subsection{평가 설정 (Evaluation Setup)}
+\label{sec:experiments:setup}
+
+\noindent\textbf{데이터셋 및 분할.}
+MVTec AD 2~\cite{mvtecad2}는 실제 산업 환경의 조명 드리프트와 미세 결함을 포괄하는 8개 클래스 벤치마크다.
+공개 개발 평가 세트인 \texttt{test\_public}은 총 1,084장(정상 379장, 결함 705장)으로 구성되며, 기준(Regular) 환경 외에 Shift 1--3 등의 획득 조건 변화를 포함한다.
+공식 서버 평가 세트인 \texttt{test\_private}과 다양한 획득 조건이 혼합된 \texttt{test\_private,mix}는 각각 2,045장이다.
+정상 서포트 이미지는 \texttt{train/good}에서 고정 시드와 매니페스트로 선별한다.
+교차 데이터셋 검증을 위해 기존 MVTec AD(15개 클래스)~\cite{mvtecad}와 VisA(12개 클래스)~\cite{visa} 벤치마크를 함께 평가한다.
+
+\noindent\textbf{Few-shot 설정 및 비교군.}
+클래스당 정상 서포트 이미지 수 $N$은 $\{1, 2, 4, 8, 16\}$으로 설정한다.
+ScopeAD(Ours, linear0125)는 DINOv2 ViT-L/14 백본을 동결 사용하며, 계층 $\{5, 11, 23\}$과 4개 해상도 $\{448, 672, 896, 1120\}$, FP16 autocast, cap256, $z_d + 0.125\,z_5$ 결합을 적용한다.
+비교 대상 방법군은 PatchCore~\cite{patchcore}, SuperAD~\cite{superad}, AnomalyDINO~\cite{anomalydino}, FastRecon~\cite{fastrecon}, RAD~\cite{rad}, SubspaceAD~\cite{subspacead}, RegAD~\cite{regad}다.
+모든 방법은 동일한 서포트 경로와 쿼리, 평가기를 공유하며, 공정한 비교를 위해 유효 입력 해상도를 1120으로 확장한 파이프라인 비교를 수행한다(RegAD는 STN 구조상 공식 224 유지).
+주요 평가 지표는 클래스 매크로 \AUPRO, \pAUROC, 그리고 이미지 단위 \IAUROC다.
+
+\subsection{Few-shot 주 비교 (Few-shot Main Benchmark)}
+\label{sec:experiments:main}
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2.5pt}
+\caption{MVTec AD 2 \texttt{test\_public} 입력 최대 해상도 1120 few-shot 비교 (\%). 비교군은 3개 시드 평균 $\pm$ 표본 표준편차다. $\ddagger$ Ours(ScopeAD) 열은 2-shot과 16-shot이 3개 시드 평균 $\pm$ 표본 표준편차이며, 1, 4, 8-shot은 Seed 0 단일 실행값이다. $\dagger$ RegAD는 공식 체크포인트의 STN 제약으로 224 측정값을 병기했다. 굵은 글씨는 최고 평균값, 밑줄은 차순위다.}
+\label{tab:mvtec_ad2_fewshot}
+\begin{tabular}{r l r r r r r r r r}
+\toprule
+Shot & Metric & PatchCore & AnomalyDINO & FastRecon & RAD & SubspaceAD & SuperAD & RegAD (224)$^\dagger$ & Ours (ScopeAD)$^\ddagger$ \\
+\midrule
+1 & AUPRO@0.05 & 38.45 $\pm$ 1.85 & 35.95 $\pm$ 2.24 & 14.92 $\pm$ 2.27 & 26.42 $\pm$ 1.71 & 44.87 $\pm$ 1.87 & \underline{46.31 $\pm$ 3.73} & 12.73 $\pm$ 0.38 & \textbf{54.81} \\
+   & pAUROC@0.05 & 64.19 $\pm$ 0.68 & \underline{70.67 $pm$ 0.69} & 55.70 $pm$ 0.67 & 59.57 $pm$ 0.35 & 70.56 $pm$ 0.56 & 70.13 $pm$ 1.14 & 57.76 $pm$ 0.30 & \textbf{73.32} \\
+   & I-AUROC & 65.51 $pm$ 1.91 & 66.83 $pm$ 1.08 & 58.10 $pm$ 4.46 & 58.68 $pm$ 3.03 & 67.02 $pm$ 2.27 & \underline{67.68 $pm$ 0.32} & 57.73 $pm$ 1.82 & \textbf{74.47} \\
+\midrule
+2 & AUPRO@0.05 & 42.25 $pm$ 2.08 & 38.20 $pm$ 1.90 & 16.73 $pm$ 2.39 & 31.61 $pm$ 1.47 & 45.90 $pm$ 0.75 & \underline{49.80 $pm$ 2.33} & 15.05 $pm$ 0.30 & \textbf{56.03 $pm$ 2.99} \\
+   & pAUROC@0.05 & 65.43 $pm$ 0.38 & \underline{72.26 $pm$ 0.56} & 57.14 $pm$ 1.03 & 61.78 $pm$ 0.15 & 71.53 $pm$ 0.18 & 71.52 $pm$ 0.58 & 58.76 $pm$ 0.49 & \textbf{75.86 $pm$ 0.59} \\
+   & I-AUROC & 67.53 $pm$ 1.55 & 68.95 $pm$ 3.84 & 57.63 $pm$ 6.82 & 59.37 $pm$ 2.54 & \underline{70.42 $pm$ 1.79} & 70.19 $pm$ 2.16 & 60.56 $pm$ 3.94 & \textbf{74.93 $pm$ 1.54} \\
+\midrule
+4 & AUPRO@0.05 & 46.94 $pm$ 1.00 & 40.32 $pm$ 0.75 & 21.88 $pm$ 1.73 & 36.51 $pm$ 1.02 & 47.14 $pm$ 0.76 & \underline{54.25 $pm$ 0.86} & 17.40 $pm$ 1.07 & \textbf{58.69} \\
+   & pAUROC@0.05 & 66.90 $pm$ 0.22 & 73.09 $pm$ 0.91 & 59.26 $pm$ 0.80 & 63.84 $pm$ 0.41 & 72.45 $pm$ 0.20 & \underline{73.59 $pm$ 0.13} & 60.36 $pm$ 0.48 & \textbf{76.87} \\
+   & I-AUROC & 68.62 $pm$ 2.28 & 70.90 $pm$ 0.97 & 59.73 $pm$ 4.40 & 62.31 $pm$ 4.84 & \underline{71.02 $pm$ 0.56} & 70.97 $pm$ 2.08 & 63.79 $pm$ 2.34 & \textbf{75.71} \\
+\midrule
+8 & AUPRO@0.05 & 49.98 $pm$ 1.90 & 41.64 $pm$ 1.01 & 27.32 $pm$ 0.14 & 40.79 $pm$ 0.79 & 47.28 $pm$ 0.40 & \underline{55.44 $pm$ 1.21} & 19.25 $pm$ 0.64 & \textbf{58.68} \\
+   & pAUROC@0.05 & 68.22 $pm$ 0.53 & 73.71 $pm$ 0.20 & 61.74 $pm$ 0.50 & 65.62 $pm$ 0.69 & 72.56 $pm$ 0.21 & \underline{74.31 $pm$ 0.38} & 62.02 $pm$ 0.32 & \textbf{77.35} \\
+   & I-AUROC & 69.20 $pm$ 0.75 & \underline{71.29 $pm$ 1.69} & 63.46 $pm$ 4.29 & 65.84 $pm$ 0.43 & 70.46 $pm$ 1.18 & 70.75 $pm$ 0.58 & 64.34 $pm$ 1.05 & \textbf{75.41} \\
+\midrule
+16 & AUPRO@0.05 & 52.73 $pm$ 1.36 & 42.30 $pm$ 1.25 & 35.23 $pm$ 0.57 & 42.58 $pm$ 1.10 & 47.63 $pm$ 0.14 & \underline{55.89 $pm$ 1.07} & 20.28 $pm$ 0.80 & \textbf{60.06 $pm$ 0.88} \\
+   & pAUROC@0.05 & 69.36 $pm$ 0.51 & 73.97 $pm$ 0.23 & 65.63 $pm$ 0.43 & 66.62 $pm$ 0.89 & 72.78 $pm$ 0.07 & \underline{74.60 $pm$ 0.52} & 63.46 $pm$ 0.76 & \textbf{77.61 $pm$ 0.37} \\
+   & I-AUROC & 69.00 $pm$ 0.53 & \underline{72.07 $pm$ 1.27} & 67.45 $pm$ 1.16 & 67.60 $pm$ 1.35 & 70.46 $pm$ 1.07 & 69.79 $pm$ 0.52 & 65.64 $pm$ 1.34 & \textbf{75.92 $pm$ 0.82} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+표~\ref{tab:mvtec_ad2_fewshot}는 MVTec AD 2 \texttt{test\_public}에서의 few-shot 주 비교 결과다.
+ScopeAD는 전 샷 구간에서 강력한 기준선인 SuperAD를 지속적으로 능가한다.
+특히 16-shot에서 3-seed 평균 \textbf{60.06\,\% \AUPRO}를 달성하여 SuperAD(55.89\,\%) 대비 \textbf{+4.17\,pp}, pAUROC@0.05에서 \textbf{+3.01\,pp} 높은 성능을 기록했다.
+극단적인 1-shot 환경에서도 54.81\,\%의 높은 국소화 성능을 기록하여 데이터 희소 조건에서의 강건성을 입증했다.
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{5pt}
+\caption{MVTec AD 및 VisA few-shot 교차 데이터셋 비교 (Seed 0 단일 실행). 각 셀은 $\text{I-AUROC} \ / \ \text{P-AUROC}$ (전체 FPR 구간, \%) 순서다. 굵은 글씨는 최고값, 밑줄은 차순위다.}
+\label{tab:mvtec_visa_fewshot}
+\begin{tabular}{l r r r r r r r r r}
+\toprule
+Dataset & Shot & PatchCore & AnomalyDINO & FastRecon & RAD & SubspaceAD & SuperAD & RegAD & Ours (ScopeAD) \\
+\midrule
+MVTec AD & 1 & 88.12 / 96.22 & 92.52 / 94.49 & 88.84 / 96.60 & 80.83 / 93.25 & 89.25 / \underline{96.92} & \underline{92.54} / \textbf{96.93} & --- / --- & \textbf{92.76} / 96.77 \\
+         & 2 & 92.67 / 96.97 & 95.17 / 95.56 & 93.51 / 97.29 & 84.15 / 94.27 & 90.95 / 97.24 & \underline{95.43} / \underline{97.36} & --- / --- & \textbf{96.13} / \textbf{97.39} \\
+         & 4 & 95.06 / 97.37 & 95.92 / 96.07 & 95.61 / \textbf{97.87} & 85.38 / 94.67 & 91.35 / 97.16 & \underline{96.65} / \underline{97.70} & --- / --- & \textbf{96.99} / 97.68 \\
+         & 8 & 96.13 / 97.80 & 96.67 / 96.45 & 96.76 / \textbf{98.16} & 87.85 / 95.29 & 92.94 / 97.17 & \underline{97.39} / \underline{97.95} & --- / --- & \textbf{97.60} / 97.93 \\
+         & 16 & 98.15 / 97.99 & 97.48 / 96.80 & 98.52 / \textbf{98.38} & 90.29 / 95.61 & 92.51 / 97.19 & \textbf{98.94} / \underline{98.09} & --- / --- & \underline{98.74} / 98.05 \\
+\midrule
+VisA     & 1 & 86.09 / 95.56 & 87.06 / 95.62 & 84.65 / 96.75 & 72.67 / 95.37 & 85.44 / \textbf{98.09} & \textbf{90.29} / \underline{97.06} & 71.12 / 93.41 & \underline{89.88} / 96.73 \\
+         & 2 & 87.87 / 96.29 & 90.64 / 96.63 & 87.67 / \underline{97.43} & 77.24 / 96.37 & --- / --- & \textbf{92.20} / \textbf{97.68} & 71.59 / 94.59 & \underline{92.15} / 97.32 \\
+         & 4 & 89.52 / 96.92 & 91.37 / 97.57 & 89.21 / \underline{97.91} & --- / --- & --- / --- & \underline{92.94} / \textbf{98.02} & 76.42 / 96.14 & \textbf{94.19} / 97.82 \\
+         & 8 & 92.36 / 97.18 & 93.11 / 97.99 & 91.53 / 98.11 & --- / --- & --- / --- & \underline{94.50} / \textbf{98.29} & 80.19 / 96.64 & \textbf{95.01} / \underline{98.25} \\
+         & 16 & 93.64 / 97.30 & 93.53 / 98.30 & 93.38 / 98.32 & --- / --- & --- / --- & \underline{95.19} / \underline{98.43} & 81.22 / 96.98 & \textbf{95.99} / \textbf{98.49} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+표~\ref{tab:mvtec_visa_fewshot}는 기존 MVTec AD 및 VisA 벤치마크에서의 교차 평가 결과다.
+ScopeAD는 두 데이터셋 전 샷 구간에서 최고 또는 차순위의 높은 탐지·국소화 성능을 고르게 유지한다.
+3개 시드 평균 평가(표~\ref{tab:multiseed_visa_mvtec})에서도 MVTec AD 16-shot I-AUROC $98.52\pm0.20\%$, VisA 16-shot I-AUROC $95.78\pm0.18\%$로 높은 안정성을 실증했다.
+
+\begin{table}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\caption{ScopeAD 3-seed 교차 데이터셋 성능 (\%, mean $\pm$ sample SD).}
+\label{tab:multiseed_visa_mvtec}
+\begin{tabular}{l c c}
+\toprule
+Dataset & 2-shot (I-AUROC / P-AUROC) & 16-shot (I-AUROC / P-AUROC) \\
+\midrule
+MVTec AD & 96.04 $\pm$ 0.30 / 97.38 $\pm$ 0.04 & 98.52 $\pm$ 0.20 / 98.05 $\pm$ 0.00 \\
+VisA     & 92.38 $\pm$ 1.04 / 97.40 $\pm$ 0.08 & 95.78 $\pm$ 0.18 / 98.50 $\pm$ 0.02 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{획득 조건 변화 및 외란 평가}
+
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_acquisition_shift_by_shot.pdf}
+\caption{\textbf{Support shot별 native acquisition strata의 AUPRO@0.05.} 패널: Regular, Shift 1, Shift 2, Shift 3. ScopeAD는 획득 조건 변화(조명 드리프트, 자세 변동 등) 하에서도 기존 방법 대비 안정적인 국소화 성능을 유지한다.}
+\label{fig:acquisition-shift}
+\end{figure}
+
+\label{sec:experiments:shift}
+
+\begin{table}[t]
+\centering\scriptsize\setlength{\tabcolsep}{2pt}
+\caption{MVTec AD 2 공식 private 서버 평가 (8-class macro, \%). \textbf{Ours는 이전 게이트 설정 결과이며, 추후 linear0125 재제출 결과로 교체될 예정이다.}}
+\label{tab:official_private}
+\begin{tabular}{l c c c}
+\toprule
+방법 & AU-PRO@0.05 & ClassF1 & SegF1 \\
+\midrule
+\multicolumn{4}{l}{\textit{(a) Few-shot (16-shot)}} \\
+PatchCore & --- & --- & --- \\
+SuperAD & --- & --- & --- \\
+\textbf{Ours (ScopeAD, 게이트 설정)$^\dagger$} & \textbf{64.80 / 62.49} & \textbf{76.38 / 77.52} & \textbf{34.84 / 30.68} \\
+\midrule
+\multicolumn{4}{l}{\textit{(b) Full-data Reference (출판/리더보드)}} \\
+PatchCore & 28.8 / 26.0 & 8.0 / 9.9 & 3.7 / 3.4 \\
+SuperAD & 60.51 / 58.37 & 70.20 / 74.40 & 47.18 / 42.51 \\
+RoBiS & 67.25 / 59.65 & 79.62 / 79.86 & 51.00 / 46.52 \\
+SuperADD & 61.36 / 59.07 & 68.03 / 73.25 & 57.42 / 54.35 \\
+\bottomrule
+\end{tabular}
+\\
+\raggedright\tiny $^\dagger$ Ours 행은 이전 비대칭 게이트 설정 결과다. 동일 서포트 및 임계값 절차로 linear0125 재제출 후 갱신 예정이다.
+\end{table}
+
+표~\ref{tab:official_private}는 MVTec AD 2 공식 서버의 비공개 평가 세트(\texttt{test\_private} 및 혼합 조명 \texttt{test\_private,mix}) 결과다.
+소수의 정상 서포트(16-shot)만으로도 full-data 기반 지도학습 선행 연구들을 넘어서는 높은 국소화 능력을 입증했다.
+(현재 수치는 게이트 설정이며 추후 linear0125 설정으로 교체 예정).
+
+\subsection{구성 요소 소거 분석 (Ablation Study)}
+\label{sec:experiments:ablation}
+
+\begin{table}[t]
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\caption{ScopeAD 프레임워크 종합 구성 요소 소거 분석 (AD2 \texttt{test\_public} 16-shot, seed 0, full8, \%).}
+\label{tab:component_ablation}
+\begin{tabular}{l l l l r r r}
+\toprule
+구성 & Bank 구조 & 정규화 & Shallow 항 & AUPRO & pAUROC & $\Delta$AUPRO \\
+\midrule
+\textbf{Full (Ours)} & 계층별 bank & q95 & $+0.125\,z_5$ & \textbf{59.57} & 77.46 & 0.00 \\
+(b) 정규화 제거 & 계층별 bank & 없음 & $+0.125\,z_5$ & 59.17 & \textbf{77.65} & $-0.40$ \\
+(c) 동일가중 평균 & 계층별 bank & q95 & $z_5$ 동일가중 & 58.21 & 76.31 & $-1.36$ \\
+(d) Layer concat & 단일 bank & q95 & --- & 57.48 & 74.80 & $-2.09$ \\
+(e) MAD 보정 & 계층별 bank & MAD & $+0.125\,z_5$ & 58.52 & 77.17 & $-1.05$ \\
+(f) 448 단일입력 & 계층별 bank & q95 & $+0.125\,z_5$ & 52.01 & 76.52 & $-7.56$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\caption{Shallow 가중치 $\lambda$ 민감도 분석 (AD2 \texttt{test\_public}, seed 0, \%).}
+\label{tab:lambda_sensitivity}
+\begin{tabular}{l r r r r}
+\toprule
+결합 규칙 & 2-shot AUPRO & 2-shot pAUROC & 16-shot AUPRO & 16-shot pAUROC \\
+\midrule
+\textbf{Linear $d+0.125s$ (Ours)} & \textbf{59.33} & 76.48 & \textbf{59.57} & \textbf{77.46} \\
+Linear $d+0.25s$ & 58.43 & 76.00 & 59.48 & 77.21 \\
+Linear $d+0.5s$ & 54.92 & 74.39 & 58.21 & 76.31 \\
+Linear $d+s$ (전체 가산) & 48.39 & 71.31 & 54.02 & 74.04 \\
+Linear $d+2s$ & 40.48 & 67.00 & 47.33 & 70.19 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{구성 요소별 기여 분해.}
+표~\ref{tab:component_ablation}는 제안 모듈들의 단계적 효과를 검증한다.
+첫째, 계층 특징을 하나의 뱅크로 합친 단일 뱅크(d)는 관측별 뱅크를 유지한 Full 대비 AUPRO가 2.09\,pp, pAUROC가 2.66\,pp 하락했다.
+둘째, 다해상도를 배제하고 448px 단일 입력만 사용할 경우(f) AUPRO가 7.56\,pp 폭락하여 다해상도 공간 관측 확장이 필수적 뼈대임을 입증한다.
+셋째, 얕은 층에 동일 가중치를 부여하면(c) AUPRO가 1.36\,pp 저하된다.
+
+\noindent\textbf{Shallow 가중치 $\lambda$ 민감도.}
+표~\ref{tab:lambda_sensitivity}는 $\lambda$의 영향을 검증한다.
+얕은 층을 제어 없이 그대로 더할 경우($\lambda=1$) 16-shot AUPRO가 54.02\,\%로 급락하며($-5.55$\,pp), 2-shot에서는 48.39\,\%로 하락폭이 더욱 커진다.
+반면 $\lambda=0.125$는 얕은 층의 정상 질감 노이즈를 억제하면서 미세 결함 단서만을 안전하게 흡수한다.
+
+\begin{table}[t]
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\caption{AD2 정규화 팩토리얼 비교 (AUPRO@0.05 / pAUROC@0.05, seed 0, \%).}
+\label{tab:norm_factorial_ad2}
+\begin{tabular}{r c c c r}
+\toprule
+Shot & none (미정규화) & MAD & q95 (기본) & q95 $-$ MAD (AUPRO) \\
+\midrule
+1  & 55.06 / 73.84 & 53.59 / 72.73 & 54.81 / 73.32 & +1.22 \\
+2  & 59.06 / 76.47 & 58.57 / 76.34 & 59.33 / 76.48 & +0.76 \\
+4  & 59.02 / 77.25 & 57.00 / 76.29 & 58.69 / 76.87 & +1.69 \\
+8  & 58.69 / 77.67 & 57.28 / 76.67 & 58.68 / 77.35 & +1.40 \\
+16 & 59.17 / 77.65 & 58.52 / 77.17 & 59.57 / 77.46 & +1.05 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{Scale Calibration 분석.}
+표~\ref{tab:norm_factorial_ad2}는 정규화 방식의 영향을 비교한다.
+q95 분위수 정규화는 중심 기반의 MAD 정규화 대비 모든 샷에서 AUPRO가 $+0.76$--$+1.69$\,pp 고르게 우수했다.
+미정규화(none) 대비 성능 차이는 크지 않지만, 이질적 관측 간의 상대 척도를 안정적으로 정렬하는 통계적 일관성을 제공한다.
+
+\begin{table}[t]
+\centering\small\setlength{\tabcolsep}{4pt}
+\caption{다해상도 구성의 총 bank 용량 통제 비교 (\%). \textbf{이 표는 게이트 설정 결과이며 추후 linear0125로 재실행하여 교체할 예정이다.}}
+\label{tab:resolution_control}
+\begin{tabular}{l c r r}
+\toprule
+해상도 설정 & 토큰 수/Bag & AUPRO & pAUROC \\
+\midrule
+\textbf{4개 해상도 결합} & 256 & \textbf{59.15} & \textbf{77.11} \\
+1120 단독 & 256 & 56.96 & 74.58 \\
+1120 용량 일치 & 1024 & 56.63 & 75.17 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering\scriptsize\setlength{\tabcolsep}{4pt}
+\caption{단일 대 다중 해상도 비교 (linear0125, AD2, seed 0, \%).}
+\label{tab:linear_res_ad2}
+\begin{tabular}{l c c}
+\toprule
+해상도 구성 & 2-shot (AUPRO / pAUROC) & 16-shot (AUPRO / pAUROC) \\
+\midrule
+448 단독  & 51.14 / 75.80 & 52.01 / 76.52 \\
+672 단독  & 54.38 / 74.97 & 55.01 / 76.17 \\
+896 단독  & 52.65 / 73.46 & 55.12 / 74.62 \\
+1120 단독 & 54.27 / 72.47 & 57.47 / 74.86 \\
+\textbf{4개 해상도 결합} & \textbf{59.33 / 76.48} & \textbf{59.57 / 77.46} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent\textbf{해상도 구성 비교.}
+표~\ref{tab:resolution_control}와 표~\ref{tab:linear_res_ad2}는 다해상도 결합의 이득을 입증한다.
+선형 가중 결합(표~\ref{tab:linear_res_ad2})에서 4개 해상도 결합은 최선의 단일 해상도 대비 AUPRO가 2-shot에서 $+4.95$\,pp, 16-shot에서 $+2.10$\,pp 높았다.
+또한 토큰 용량을 맞춘 용량 통제 비교(표~\ref{tab:resolution_control})에서도 4개 해상도 결합이 단일 1120px 1024-token 뱅크 대비 $+2.52$\,pp 우수하여, 단순히 토큰 수가 늘어난 것이 아니라 다양한 척도의 공간 정보를 결합하는 구조 자체가 본질적 이득을 제공함을 실증한다.

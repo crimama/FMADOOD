@@ -1,0 +1,17 @@
+{
+  "source_deck": "PaperWorks/slides/SCARF_Outline_v16.3_발표.pptx",
+  "source_deck_sha256": "3a15b2858582d3f2c06e5c4b199bc007780f0bc337942e4b468c84a1026ed5e9",
+  "outline": "PaperWorks/outlines/Outline_v17.1.md",
+  "outline_sha256": "1a4804d9c916de56f750ba6a03f3ce09ec231864adbf37b8a3c7bb84ca1853c8",
+  "output": "PaperWorks/slides/SCARF_Outline_v17.1_발표.pptx",
+  "slides": 35,
+  "scope": "v17.1 linear0125 only; no layer-removal comparison; prior gated results excluded",
+  "tables_parsed": [
+    "4",
+    "5",
+    "8a",
+    "8d",
+    "11"
+  ],
+  "notes": "Source reports retained; pending local-center described as unconfirmed, no live progress claimed."
+}

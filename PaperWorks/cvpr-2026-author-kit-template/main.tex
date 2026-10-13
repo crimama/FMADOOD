@@ -1,0 +1,29 @@
+% Korean draft based on PaperWorks/outlines/Outline_v16.3.md.
+% Build: LuaLaTeX + BibTeX (see SETUP.md).
+\documentclass[10pt,twocolumn,letterpaper]{article}
+% Load ko.TeX before cvpr.sty under LuaLaTeX; the legacy luatexbase
+% interface otherwise receives CVPR's active-percent definitions in Lua.
+\usepackage{kotex}
+\usepackage[review]{cvpr}
+\input{preamble}
+\definecolor{cvprblue}{rgb}{0.21,0.49,0.74}
+\usepackage[pagebackref,breaklinks,colorlinks,allcolors=cvprblue]{hyperref}
+\def\paperID{*****}
+\def\confName{CVPR}
+\def\confYear{2026}
+\title{ScopeAD: Support-Calibrated Fusion with Observation Expansion\\
+for Few-Shot Industrial Anomaly Localization}
+\author{Anonymous Authors}
+\begin{document}
+\maketitle
+\input{sec/0_abstract}
+\input{sec/1_intro}
+\input{sec/2_related_work}
+\input{sec/3_method}
+\input{sec/4_experiments}
+\input{sec/5_discussion}
+\input{sec/6_conclusion}
+{\small
+\bibliographystyle{ieeenat_fullname}
+\bibliography{main}}
+\end{document}

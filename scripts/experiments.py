@@ -473,7 +473,33 @@ def _most_specific(matches, declared):
 def _condition_root(data_root):
     """Host-independent dataset identity: path below the DATA directory when present."""
     parts = Path(str(data_root)).parts
-    return "/".join(parts[len(parts) - parts[::-1].index("DATA"):]) if "DATA" in parts else str(data_root)
+    for marker in ("DATA", "data"):
+        if marker in parts:
+            return "/".join(parts[len(parts) - parts[::-1].index(marker):])
+    return str(data_root)
+
+
+def _resolution_label(metadata, config):
+    """Return the recorded single or multi-resolution condition for a CSV row."""
+    resolutions = metadata.get("resolutions")
+    if resolutions is None:
+        backbone = metadata.get("backbone") or {}
+        protocol = metadata.get("protocol") or {}
+        context = protocol.get("context") or {}
+        dataset_config = config.get("dataset_config") or {}
+        backbone_config = config.get("backbone_config") or {}
+        method_config = config.get("method_config") or {}
+        resolutions = (
+            backbone.get("resolution")
+            or context.get("resolution")
+            or dataset_config.get("resolution")
+            or backbone_config.get("smaller_edge_size")
+            or method_config.get("resolutions")
+            or []
+        )
+    if isinstance(resolutions, (str, int, float)):
+        resolutions = [resolutions]
+    return "+".join(map(str, resolutions or []))
 
 
 def _import_provenance(config, manifest, obj):
@@ -674,7 +700,7 @@ def update(root, output, labels=None, objects=None, reference_method=None):
                        support_shots=config["protocol"]["shots"], support_policy="see_manifest",
                        seed=config["seed"], support_identity=metadata["protocol"]["support_content_sha256"],
                        training_or_adapter=f"config_hash={manifest['config_hash']};run_id={manifest['run_id']};code_sha256={manifest['code_sha256']};params={metadata.get('trainable_parameters', 'unrecorded')}",
-                       resolution="+".join(map(str, metadata.get("resolutions", config["method_config"].get("resolutions", [])))),
+                       resolution=_resolution_label(metadata, config),
                        evaluator_metric_contract=metrics["metric_contract"], delta_AUPRO_vs_SuperAD="N/A",
                        delta_AUROC_vs_SuperAD="N/A", comparison_status="matched_completed_class" if matched[key] else "unmatched_completed_class",
                        source=str(path.with_name("metrics.json").relative_to(root)))
@@ -758,6 +784,90 @@ def update(root, output, labels=None, objects=None, reference_method=None):
     return status
 
 
+def collect_recorded_results(root, output, artifact):
+    """Register compact external evaluation evidence without fabricating run metrics."""
+    import re
+
+    artifact = Path(artifact).resolve()
+    artifact.relative_to(output)
+    document = json.loads(artifact.read_text())
+    csv_path, md_path = root / LEDGER_CSV, root / "results/comparisons.md"
+    original_csv = csv_path.read_text()
+    fields = csv.DictReader(io.StringIO(original_csv)).fieldnames
+    relative = str(output.relative_to(root))
+    rows = document["ledger_rows"]
+    if not rows:
+        raise ValueError("recorded results contain no ledger rows")
+    for row in rows:
+        if set(row) != set(fields) or row["row_type"] not in ("class", "macro"):
+            raise ValueError("recorded result schema does not match the canonical ledger")
+        if not row["source"].startswith(str(artifact.relative_to(root))):
+            raise ValueError("recorded rows must cite the imported evidence artifact")
+        for key in METRICS[:2]:
+            if row[key] not in ("", "N/A") and not 0 <= float(row[key]) <= 1:
+                raise ValueError("recorded metrics must use the ledger's 0–1 scale")
+    csv_text, _ = merge_csv(original_csv, relative, rows)
+    markdown = md_path.read_text()
+    report_path = output / "comparison.md"
+    original_report = report_path.read_text()
+    marker = "recorded-results"
+    detail = document["report_markdown"]
+    report = (replace_section(original_report, marker, detail)
+              if f"<!-- {marker}:start -->" in original_report else
+              original_report.rstrip() + f"\n\n<!-- {marker}:start -->\n{detail.rstrip()}\n<!-- {marker}:end -->\n")
+    if csv_text == original_csv and report == original_report:
+        print("ledger: recorded results unchanged")
+        return
+    # Update only this run's macro lines and scope keys in the existing index.
+    start, tail = markdown.split("<!-- comparison-index:start -->", 1)
+    index, end = tail.split("<!-- comparison-index:end -->", 1)
+    affected_scopes = {r["scope"] for r in rows}
+    affected_methods = {r["method"] for r in rows}
+    groups = {}
+    for line in index.splitlines():
+        cells = [c.strip() for c in line.strip("|").split("|")]
+        if len(cells) == 3 and re.fullmatch(r"S\d+", cells[0]):
+            groups[cells[1]] = cells[0]
+    next_id = max((int(g[1:]) for g in groups.values()), default=0) + 1
+    for scope in sorted(affected_scopes):
+        if scope not in groups:
+            groups[scope] = f"S{next_id:02d}"
+            next_id += 1
+    affected_groups = {groups[s] for s in affected_scopes}
+    kept = []
+    for line in index.splitlines():
+        cells = [c.strip() for c in line.strip("|").split("|")]
+        if cells and cells[0] in affected_groups and (
+                len(cells) == 3 or (len(cells) == 7 and cells[1] in affected_methods)):
+            continue
+        kept.append(line)
+    index = "\n".join(kept) + "\n"
+    header = "|---|---|---:|---|---|---:|---:|"
+    for full in (True, False):
+        macros = [r for r in rows if r["row_type"] == "macro" and
+                  (str(r["n_classes"]) == "8" and "partial" not in r["scope"]) == full]
+        lines = []
+        for r in macros:
+            values = ["—" if r[k] in ("", "N/A") else f"{float(r[k])*100:.5f}" for k in METRICS[:2]]
+            lines.append("| " + " | ".join([groups[r["scope"]], r["method"], str(r["n_classes"]), str(r["seed"]), str(r["support_shots"]), *values]) + " |")
+        title = "### Full8" if full else "### 기타 범위 — full8과 분리"
+        before, section = index.split(title, 1)
+        if lines:
+            section = section.replace(header, header + "\n" + "\n".join(lines), 1)
+        index = before + title + section
+    scope_lines = []
+    for scope in sorted(affected_scopes):
+        conditions = dict.fromkeys(r["split"] + " / " + r["preprocess"] for r in rows if r["scope"] == scope)
+        scope_lines.append(f"| {groups[scope]} | {scope} | {'; '.join(conditions)} |")
+    index = index.replace("|---|---|---|", "|---|---|---|\n" + "\n".join(scope_lines), 1)
+    markdown = start + "<!-- comparison-index:start -->" + index + "<!-- comparison-index:end -->" + end
+    markdown = replace_section(markdown, "comparison-latest", document["latest_markdown"])
+    atomic_write(report_path, report)
+    atomic_write(csv_path, csv_text)
+    atomic_write(md_path, markdown)
+    print(f"ledger: {len(rows)} recorded rows registered; unrelated rows preserved")
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     subparsers = parser.add_subparsers(dest="action", required=True)
@@ -772,6 +882,7 @@ def main():
     runner.add_argument("--resume", action="store_true",
                         help="resume an invalid queue, preserving completed runs and failure history")
     collector = subparsers.add_parser("collect", help="update the cumulative ledger; no experiments")
+    collector.add_argument("--recorded-results", help="compact external evaluation JSON with ledger rows and report sections")
     collector.add_argument("--watch", action="store_true")
     collector.add_argument("--max-hours", type=float, default=33)
     collector.add_argument("--reference-method", help="optional historical baseline identity to audit")
@@ -790,6 +901,10 @@ def main():
     if args.action == "run":
         return run(args, root)
     output = Path(args.output_dir).resolve()
+    if args.recorded_results:
+        if args.watch or args.import_runs or args.input_dirs:
+            raise ValueError("--recorded-results cannot be combined with other collection modes")
+        return collect_recorded_results(root, output, args.recorded_results)
     if args.import_runs:
         if args.watch:
             raise ValueError("--import-runs requires completed runs, not --watch")

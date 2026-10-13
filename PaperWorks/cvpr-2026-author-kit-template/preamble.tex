@@ -1,0 +1,26 @@
+% Korean prose with the original CVPR page geometry and type size.
+% TeX Gyre keeps the Times/Helvetica/Courier families available to LuaLaTeX.
+\setmainfont{TeX Gyre Termes}
+\setsansfont{TeX Gyre Heros}
+\setmonofont{TeX Gyre Cursor}
+\setmainhangulfont{Noto Serif CJK KR}[AutoFakeSlant=0.2]
+\setsanshangulfont{Noto Sans CJK KR}
+\setmonohangulfont{Noto Sans Mono CJK KR}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{mathtools}
+\usepackage{placeins}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\newcommand{\method}{ScopeAD}
+\newcommand{\AUPRO}{\ensuremath{\mathrm{AUPRO}_{0.05}}}
+\newcommand{\pAUROC}{\ensuremath{\mathrm{pAUROC}_{0.05}}}
+\newcommand{\missing}{\textemdash}
+\newcommand{\red}[1]{{\color{red}#1}}
+\newcommand{\todo}[1]{{\color{red}#1}}
+\newcommand{\TODO}[1]{\textbf{\color{red}[TODO: #1]}}
+\setlength{\emergencystretch}{1em}
+
+\newcommand{\IAUROC}{\ensuremath{\mathrm{I\text{-}AUROC}}}
+\newcommand{\PAUROC}{\ensuremath{\mathrm{P\text{-}AUROC}}}

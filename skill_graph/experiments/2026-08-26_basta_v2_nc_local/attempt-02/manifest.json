@@ -1,0 +1,123 @@
+{
+  "bank_sha256": "e5fa3f54d17e9eeac6a9912fdfad0ce291ffdc8b3d6af7b084b376be0309e726",
+  "claim_ceiling": "LOCAL_NUMERICAL_CONTRACT_ONLY / NO_REMOTE",
+  "constants": {
+    "decision_authority": "exact-rational signed-zero-aware RN32 bitwise parity",
+    "delta32_bits": 964689920,
+    "gradual_underflow": "required",
+    "operation_order": [
+      "one_minus=fl32(1-x)",
+      "m=min(x,one_minus)",
+      "den=max(abs(h),delta32)",
+      "ratio=fl32(h/den)",
+      "q=fl32(m*ratio)",
+      "step=fl32(rho32*q)",
+      "plus=fl32(x+step)",
+      "minus=fl32(x-step)"
+    ],
+    "rho32_bits": 1061997773,
+    "x_negative_zero": "rejected"
+  },
+  "environment": {
+    "cpu_flags": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb ssbd ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid mpx avx512f avx512dq rdseed adx smap avx512ifma clflushopt intel_pt avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp hwp_pkg_req avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm md_clear flush_l1d arch_capabilities",
+    "fegetround": 0,
+    "libc": [
+      "glibc",
+      "2.35"
+    ],
+    "machine": "x86_64",
+    "numpy": "2.4.6",
+    "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.35",
+    "python": "3.11.15 (main, Mar 24 2026, 22:50:29) [Clang 22.1.1 ]",
+    "python_compiler": "Clang 22.1.1 ",
+    "thread_environment": {
+      "MKL_NUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1"
+    }
+  },
+  "excluded": [
+    "dataset",
+    "DINO",
+    "support",
+    "public/private/ground-truth",
+    "PyTorch",
+    "BLAS",
+    "JIT/fusion",
+    "CUDA/GPU/TF32/fp16/bf16",
+    "dsba3"
+  ],
+  "fixture_specification": {
+    "count": 48,
+    "dtype": "float32",
+    "fixture_6_face_locations": [
+      [
+        0,
+        0
+      ],
+      [
+        27,
+        27
+      ],
+      [
+        0,
+        27
+      ],
+      [
+        27,
+        0
+      ],
+      [
+        13,
+        0
+      ],
+      [
+        14,
+        27
+      ]
+    ],
+    "layout": "N-H-W-C; C-contiguous",
+    "ordered_fixed_fixtures": [
+      "all +0 / all +0",
+      "all 1 / all -0",
+      "midgray / +/-delta checkerboard",
+      "minimum-subnormal x / +/-nextafter(delta,0) checkerboard",
+      "nextafter(1,0) x / +/-nextafter(delta,+inf) checkerboard",
+      "spatial 0/1 checkerboard / +/-1 checkerboard",
+      "midgray with per-channel low/high face impulses / matching -1/+1",
+      "channel constants (0.25,0.5,0.75) / (+0,-0,+0)",
+      "horizontal 24-bit dyadic ramp / nextafter(delta,0)",
+      "vertical reverse 24-bit dyadic ramp / -nextafter(delta,+inf)",
+      "midgray / repeating (+0,+delta,-delta,+1,-1)",
+      "midgray / repeated signed exponent sweep 2^-149 through 2^0"
+    ],
+    "random_fixtures": "indices 12..47; PCG64 raw x integers, then exponent words, then sign words per fixture",
+    "seed": 2026082601,
+    "shape": [
+      48,
+      28,
+      28,
+      3
+    ]
+  },
+  "hashes": {
+    "atac_source_sha256": "1b1fe212f03b6f4831e55bf65be28bd473b4ef6c689ba207a90fae3de58086af",
+    "evaluator_sha256": "b28782a57ec4090818174382376819a4587bf5ba9a131e03d19ed67bd8c1f392",
+    "fixture_file_sha256": "cb3b9e902652dc5b3b0f8c53b3f49f2af34348151d7c197c0493936f5e6f56ca",
+    "method_sha256": "76cbfef76f49aad10e65868d3ad3379eeec6dddd8f2e4ea93800c4cd5655f51c",
+    "numeric_module_sha256": "3eb786b5e9599424140e8fdea6adb7ca3000d53a7ea82e5ff4deb86400933431",
+    "patch_tokens_linear_source_sha256": "ed77c3b7f103c80529eb32924e7102c0234525e3d86e4b6a7cf05eae18296d1b",
+    "runner_sha256": "bb83f09340410f8151861d6f652e85033b7faae126935c0197c378038dbc1ee5",
+    "test_sha256": "96225a63990996cf482a0092b4026cb2eb8e75df23983761d72a1d4a59418386"
+  },
+  "schema": "basta-v2-nc-manifest-v2",
+  "status": "FROZEN_BEFORE_EVIDENCE_EXECUTION",
+  "supersedes": "the rejected provisional same-directory attempt; no prior PASS is carried forward",
+  "underflow_sentinel": {
+    "negative_div": true,
+    "negative_mul": true,
+    "positive_div": true,
+    "positive_mul": true
+  }
+}

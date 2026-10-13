@@ -1,0 +1,74 @@
+{
+  "donor_mapping": "lexical_support_index_j_to_j_plus_1_mod_16",
+  "generator": "G2_structural_scratch",
+  "schema": "eco-audit-v2-support-calibration-commitment-v1",
+  "support_count": 16,
+  "support_manifest_sha256": "7e93f15e2efef565354ebe03a9cc5e834464fc4199bd2273067d62eda2ab74b3",
+  "support_pathset_sha256": "4727e11fd630c49372835a64cf9efbeea3ca791427da7d0fce92167eef5c20da",
+  "support_rows": [
+    {
+      "donor_relative": "can/train/good/011_regular.png",
+      "relative_path": "can/train/good/002_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/091_regular.png",
+      "relative_path": "can/train/good/011_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/158_regular.png",
+      "relative_path": "can/train/good/091_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/167_regular.png",
+      "relative_path": "can/train/good/158_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/184_regular.png",
+      "relative_path": "can/train/good/167_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/193_regular.png",
+      "relative_path": "can/train/good/184_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/222_regular.png",
+      "relative_path": "can/train/good/193_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/236_regular.png",
+      "relative_path": "can/train/good/222_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/248_regular.png",
+      "relative_path": "can/train/good/236_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/326_regular.png",
+      "relative_path": "can/train/good/248_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/353_regular.png",
+      "relative_path": "can/train/good/326_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/365_regular.png",
+      "relative_path": "can/train/good/353_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/380_regular.png",
+      "relative_path": "can/train/good/365_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/392_regular.png",
+      "relative_path": "can/train/good/380_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/398_regular.png",
+      "relative_path": "can/train/good/392_regular.png"
+    },
+    {
+      "donor_relative": "can/train/good/002_regular.png",
+      "relative_path": "can/train/good/398_regular.png"
+    }
+  ]
+}

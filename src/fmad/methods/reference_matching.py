@@ -12,6 +12,7 @@ only for the current query and are never accumulated in the method state.
 from __future__ import annotations
 
 import math
+import time
 from typing import Any
 
 import numpy as np
@@ -24,7 +25,7 @@ except ModuleNotFoundError:
     cv2 = None
 
 from fmad.methods.PSMA_MR import _feature_matrix, _read_rgb
-from fmad.methods.base import BaseMethod
+from fmad.methods.base import BaseMethod, Prediction
 from fmad.postprocess import component_quantile
 from fmad.registry import METHOD_REGISTRY
 
@@ -116,6 +117,15 @@ def local_scale(neighbour_index: torch.Tensor, loo: torch.Tensor, global_scale: 
     local_mean = loo[neighbour_index].mean(dim=1)
     sigma_local = (n_eff * local_mean + shrinkage * global_scale) / (n_eff + shrinkage)
     return sigma_local.clamp_min(1e-4)
+
+
+def _top_fraction_mean(values: np.ndarray, fraction: float = 0.01) -> float:
+    """Mean of the top max(1, floor(N * fraction)) values (same rule as SuperAD)."""
+    flat = np.asarray(values).reshape(-1)
+    if flat.size == 0:
+        raise ValueError("cannot aggregate an empty score map")
+    k = max(1, int(np.floor(flat.size * fraction)))
+    return float(np.mean(np.partition(flat, -k)[-k:]))
 
 
 def rank_normalize(scores: torch.Tensor) -> torch.Tensor:
@@ -271,9 +281,10 @@ class ReferenceMatching(BaseMethod):
         # "tail" is the aggressive variant: -log(1 - F) with an exponential tail
         # above q95, which is rank-like inside the normal body and linear in the
         # excess above it. Both are fitted from supports only.
+        # "none" means raw distance with divisor 1 (uncalibrated equal-weight baseline).
         self.score_normalization = str(config.get("score_normalization", "mad"))
-        if self.score_normalization not in {"mad", "tailscale", "tail"}:
-            raise ValueError("score_normalization must be 'mad', 'tailscale' or 'tail'")
+        if self.score_normalization not in {"mad", "tailscale", "tail", "none"}:
+            raise ValueError("score_normalization must be 'mad', 'tailscale', 'tail', or 'none'")
         tail_quantile = config.get("tail_quantile", 0.95)
         if (isinstance(tail_quantile, bool) or not isinstance(tail_quantile, (int, float))
                 or not 0.5 <= float(tail_quantile) < 1.0):
@@ -324,8 +335,10 @@ class ReferenceMatching(BaseMethod):
         # layers; R0 has one layer and R2 fuses layers via shared reference
         # identity, so this option is rejected outside R1.
         self.layer_fusion = str(config.get("layer_fusion", "mean"))
-        if self.layer_fusion not in {"mean", "max", "quantile", "residual_spike"}:
-            raise ValueError("layer_fusion must be 'mean', 'max', 'quantile', or 'residual_spike'")
+        if self.layer_fusion not in {"mean", "max", "quantile", "residual_spike", "deep_plus_shallow"}:
+            raise ValueError(
+                "layer_fusion must be 'mean', 'max', 'quantile', 'residual_spike', or 'deep_plus_shallow'"
+            )
         layer_fusion_q = config.get("layer_fusion_q", 0.9)
         if (isinstance(layer_fusion_q, bool) or not isinstance(layer_fusion_q, (int, float))
                 or not math.isfinite(float(layer_fusion_q)) or not 0.0 < float(layer_fusion_q) <= 1.0):
@@ -354,6 +367,43 @@ class ReferenceMatching(BaseMethod):
                 or layer_fusion_shallow_idx < 0):
             raise ValueError("layer_fusion_shallow_idx must be an integer >= 0")
         self.layer_fusion_shallow_idx = layer_fusion_shallow_idx
+        # Optional bounded negative branch below tau for residual_spike.
+        # alpha=0 keeps the original relu(s - tau) behaviour exactly.
+        layer_fusion_neg_alpha = config.get("layer_fusion_neg_alpha", 0.0)
+        if (isinstance(layer_fusion_neg_alpha, bool) or not isinstance(layer_fusion_neg_alpha, (int, float))
+                or not math.isfinite(float(layer_fusion_neg_alpha)) or float(layer_fusion_neg_alpha) < 0):
+            raise ValueError("layer_fusion_neg_alpha must be a finite number >= 0")
+        self.layer_fusion_neg_alpha = float(layer_fusion_neg_alpha)
+        if self.layer_fusion_neg_alpha > 0 and self.layer_fusion != "residual_spike":
+            raise ValueError("layer_fusion_neg_alpha requires layer_fusion='residual_spike'")
+        # Image-level score options. Defaults (max of the final map, no separate
+        # image gate) reproduce the original image score exactly.
+        self.image_score_aggregation = str(config.get("image_score_aggregation", "max"))
+        if self.image_score_aggregation not in {"max", "top1pct"}:
+            raise ValueError("image_score_aggregation must be 'max' or 'top1pct'")
+        self.image_score_source = str(config.get("image_score_source", "final"))
+        if self.image_score_source not in {"final", "image_gate"}:
+            raise ValueError("image_score_source must be 'final' or 'image_gate'")
+        image_residual_tau_q = config.get("image_residual_tau_q")
+        if image_residual_tau_q is not None:
+            if (isinstance(image_residual_tau_q, bool) or not isinstance(image_residual_tau_q, (int, float))
+                    or not math.isfinite(float(image_residual_tau_q))
+                    or not 0.0 < float(image_residual_tau_q) <= 1.0):
+                raise ValueError("image_residual_tau_q must be a finite number in (0, 1]")
+            image_residual_tau_q = float(image_residual_tau_q)
+            if (self.variant != "R1" or self.layer_fusion != "residual_spike"
+                    or self.layer_fusion_tau_mode != "support_quantile"):
+                raise ValueError("image_residual_tau_q requires R1 residual_spike support_quantile fusion")
+        self.image_residual_tau_q = image_residual_tau_q
+        if self.image_score_source == "image_gate" and self.image_residual_tau_q is None:
+            raise ValueError("image_score_source='image_gate' requires image_residual_tau_q")
+        self.image_score_candidates = config.get("image_score_candidates", False)
+        if type(self.image_score_candidates) is not bool:
+            raise ValueError("image_score_candidates must be a bool")
+        prefix = "max" if self.image_score_aggregation == "max" else "top1pct_mean"
+        self.image_score_key = f"{prefix}_{self.image_score_source}"
+        self._image_token_records = None
+        self._last_image_candidates = None
         if self.layer_fusion != "mean" and self.variant != "R1":
             raise ValueError("layer_fusion is only supported for variant R1")
         # local_reliability calibrates (and, in "weight" mode, fuses) layer
@@ -364,10 +414,23 @@ class ReferenceMatching(BaseMethod):
         # shared reference identity across layers rather than scoring each
         # layer independently.
         self.local_reliability = str(config.get("local_reliability", "off"))
-        if self.local_reliability not in {"off", "scale", "weight"}:
-            raise ValueError("local_reliability must be 'off', 'scale', or 'weight'")
+        if self.local_reliability not in {"off", "scale", "weight", "center"}:
+            raise ValueError("local_reliability must be 'off', 'scale', 'weight', or 'center'")
         if self.local_reliability != "off" and self.variant != "R1":
             raise ValueError("local_reliability is only supported for variant R1")
+        if self.score_normalization == "none" and self.local_reliability != "off":
+            raise ValueError("score_normalization='none' is incompatible with local_reliability")
+        local_center_alpha = config.get("local_center_alpha", 0.0)
+        if (isinstance(local_center_alpha, bool)
+                or not isinstance(local_center_alpha, (int, float))
+                or not math.isfinite(float(local_center_alpha))
+                or not 0.0 <= float(local_center_alpha) <= 1.0):
+            raise ValueError("local_center_alpha must be a finite number in [0, 1]")
+        self.local_center_alpha = float(local_center_alpha)
+        if self.local_reliability == "center" and self.score_normalization != "tailscale":
+            raise ValueError("local_reliability='center' requires tailscale normalization")
+        if self.local_center_alpha and self.local_reliability != "center":
+            raise ValueError("local_center_alpha requires local_reliability='center'")
         local_reliability_k = config.get("local_reliability_k", 8)
         if (isinstance(local_reliability_k, bool) or not isinstance(local_reliability_k, int)
                 or local_reliability_k < 1):
@@ -580,6 +643,14 @@ class ReferenceMatching(BaseMethod):
         "tailscale" divides by the leave-source-out q95 instead, putting the
         layers in common FPR units so a max/quantile across them is fair.
         """
+        if self.layer_fusion == "deep_plus_shallow":
+            if len(scores) < 2:
+                raise ValueError("deep_plus_shallow requires at least two feature layers")
+            shallow_idx = min(self.layer_fusion_shallow_idx, len(scores) - 1)
+            deep = [s for i, s in enumerate(scores) if i != shallow_idx]
+            if self._noise_suppress_shallow:
+                return torch.stack(deep).mean(0)
+            return torch.stack(deep).mean(0) + self.layer_fusion_gamma * scores[shallow_idx]
         if self.layer_fusion == "residual_spike":
             if len(scores) < 2:
                 return scores[0]
@@ -591,7 +662,11 @@ class ReferenceMatching(BaseMethod):
             if self._noise_suppress_shallow:
                 return base
             threshold = tau if tau is not None else self.layer_fusion_tau
-            spike = torch.relu(shallow - threshold)
+            delta = shallow - threshold
+            spike = torch.relu(delta)
+            if self.layer_fusion_neg_alpha > 0:
+                # ELU-style bounded negative contribution in [-alpha, 0].
+                spike = spike - self.layer_fusion_neg_alpha * (1.0 - torch.exp(torch.clamp(delta, max=0.0)))
             return base + self.layer_fusion_gamma * spike
         stacked = torch.stack(scores)
         if self.layer_fusion == "mean":
@@ -617,6 +692,52 @@ class ReferenceMatching(BaseMethod):
     def _observe_layer_scores(self, distances, scores, *, tau):
         """Prediction-only observation hook; never receives evaluation labels."""
 
+    def _image_gate_fuse(self, scores, bag_index):
+        """Residual fusion with the image-level support threshold (no audit hooks)."""
+        tail = self._active_tail(self.layer_fusion_shallow_idx, bag_index)
+        return ReferenceMatching._fuse_layers(self, scores, tau=tail["image_spike_tau"])
+
+    def _record_image_tokens(self, image_bag_scores, grid):
+        if self._image_token_records is not None and image_bag_scores:
+            self._image_token_records.append((torch.stack(image_bag_scores).mean(0), tuple(grid)))
+
+    def _image_score(self, result, image) -> float:
+        """Image score from the final map or the image-gate map; labels never enter."""
+        records = self._image_token_records
+        self._image_token_records = None
+        candidates = {"max_final": float(np.max(result)),
+                      "top1pct_mean_final": _top_fraction_mean(result)}
+        if records is not None:
+            if not records:
+                raise RuntimeError("image gate produced no token scores")
+            natives = []
+            for token_score, grid in records:
+                if self.scale_fusion == "rank":
+                    token_score = rank_normalize(token_score)
+                natives.append(F.interpolate(token_score.reshape(1, 1, *grid), size=result.shape[:2],
+                                             mode="bilinear", align_corners=False)[0, 0])
+            stacked = torch.stack(natives)
+            total = stacked.max(0).values if self.scale_fusion == "max" else stacked.mean(0)
+            image_map = ReferenceMatching._postprocess_prediction(self, total.detach().cpu().numpy(), image)
+            if not np.isfinite(image_map).all():
+                raise RuntimeError("nonfinite image-gate map")
+            candidates["max_image_gate"] = float(np.max(image_map))
+            candidates["top1pct_mean_image_gate"] = _top_fraction_mean(image_map)
+        self._last_image_candidates = candidates
+        return candidates[self.image_score_key]
+
+    def predict_batch(self, test_image_paths):
+        if not self.image_score_candidates:
+            return super().predict_batch(test_image_paths)
+        predictions = []
+        for path in test_image_paths:
+            started = time.perf_counter()
+            score_map, image_score = self.predict(path)
+            predictions.append(Prediction(np.asarray(score_map), float(image_score),
+                                          time.perf_counter() - started,
+                                          {"image_score_candidates": dict(self._last_image_candidates)}))
+        return predictions
+
     def _score_tokens(self, layers, grid, bank, *, normalize=True):
         if self.variant == "R0":
             return _distance_chunks(layers[0], bank["layers"][0], self.chunk)
@@ -626,6 +747,7 @@ class ReferenceMatching(BaseMethod):
             # bags happens after each bag's own per-layer normalisation.
             bags = bank if isinstance(bank, list) else [bank]
             bag_scores = []
+            image_bag_scores = []
             for bag_index, bag_bank in enumerate(bags):
                 scores = []
                 distances = []
@@ -643,10 +765,14 @@ class ReferenceMatching(BaseMethod):
                         neighbour_k = max(self.knn_k, self.local_reliability_k)
                         _, nn_indices = _distance_chunks(query, values, self.chunk,
                                                          k=neighbour_k, return_indices=True)
-                        sigma_local = local_scale(nn_indices, loo, global_scale,
-                                                  self.local_reliability_k,
-                                                  self.local_reliability_shrinkage)
-                    if normalize and self.score_normalization == "tail":
+                        if self.local_reliability != "center":
+                            sigma_local = local_scale(nn_indices, loo, global_scale,
+                                                      self.local_reliability_k,
+                                                      self.local_reliability_shrinkage)
+                    if normalize and self.local_reliability == "center":
+                        scores.append(self._local_center_score(
+                            distance, nn_indices, loo, global_scale))
+                    elif normalize and self.score_normalization == "tail":
                         # The tail CDF mapping already encodes the support's
                         # own distribution shape per token rank; local_scale
                         # calibrates a DIVISOR, which has no role here, so
@@ -669,6 +795,9 @@ class ReferenceMatching(BaseMethod):
                         tau = active_tail_dict.get("spike_tau", self.layer_fusion_tau)
                     self._observe_layer_scores(distances, scores, tau=tau)
                     bag_scores.append(self._fuse_layers(scores, tau=tau))
+                    if self._image_token_records is not None:
+                        image_bag_scores.append(self._image_gate_fuse(scores, bag_index))
+            self._record_image_tokens(image_bag_scores, grid)
             return torch.stack(bag_scores).mean(0)
 
         # R2: choose the reference with late appearance + ring context, then
@@ -714,6 +843,20 @@ class ReferenceMatching(BaseMethod):
         if local and isinstance(local[0], list):
             local = local[bag_index]
         return local[layer_index]
+
+    def _local_center_score(self, distance, neighbour_indices, loo, global_scale):
+        """Subtract support-LOO neighbourhood bias; retain the global q95 unit.
+
+        The query selects neighbours only. Both location estimates are normal
+        support statistics, and signed scores are retained without clipping.
+        Alpha zero reproduces the original q95 score exactly.
+        """
+        if self.local_center_alpha == 0.0:
+            return distance / global_scale
+        sample = loo.float()
+        local_mean = sample[neighbour_indices[:, :self.local_reliability_k]].mean(dim=1)
+        correction = self.local_center_alpha * (local_mean - sample.mean())
+        return (distance - correction) / global_scale
 
     def _fit_scales_for_resolution(self, resolution: int) -> torch.Tensor:
         """Leave-source-out MAD scale for the CURRENT self.records[resolution]."""
@@ -783,15 +926,26 @@ class ReferenceMatching(BaseMethod):
             mad_scale = (1.4826 * mad).clamp_min(1e-4)
             tail_dict = self._tail_params(sample)
             if self.layer_fusion == "residual_spike" and self.layer_fusion_tau_mode == "support_quantile":
-                divisor = tail_dict["u"].item() if self.score_normalization == "tailscale" else mad_scale.item()
+                if self.score_normalization == "tailscale":
+                    divisor = tail_dict["u"].item()
+                elif self.score_normalization == "none":
+                    divisor = 1.0
+                else:
+                    divisor = mad_scale.item()
                 q_val = torch.quantile(sample.detach().float().cpu(), self.layer_fusion_tau_q).item()
                 tail_dict["spike_tau"] = float(q_val / max(divisor, 1e-4))
+                if self.image_residual_tau_q is not None:
+                    q_img = torch.quantile(sample.detach().float().cpu(), self.image_residual_tau_q).item()
+                    tail_dict["image_spike_tau"] = float(q_img / max(divisor, 1e-4))
             tails.append(tail_dict)
             if self.score_normalization == "tailscale":
                 # Normalise by the component's own normal tail instead of its
                 # centre, so every component contributes the same share of the
                 # FPR budget that AUPRO@0.05 actually operates in.
                 scales.append(tails[-1]["u"].clamp_min(1e-4))
+            elif self.score_normalization == "none":
+                # "none" means raw distance with divisor 1 (uncalibrated)
+                scales.append(torch.ones_like(mad_scale))
             else:
                 scales.append(mad_scale)
             if local is not None:
@@ -1003,6 +1157,7 @@ class ReferenceMatching(BaseMethod):
 
     def predict(self, test_image_path: str) -> tuple[np.ndarray, float]:
         image = _read_rgb(test_image_path)
+        self._image_token_records = [] if self.image_residual_tau_q is not None else None
         # Noise guard: check if query is too noisy
         sigma_q = None
         fired = False
@@ -1138,7 +1293,7 @@ class ReferenceMatching(BaseMethod):
         if not np.isfinite(result).all():
             raise RuntimeError("nonfinite reference_matching prediction")
         result = self._postprocess_prediction(result, image)
-        return result, float(np.max(result))
+        return result, self._image_score(result, image)
 
     def _postprocess_prediction(self, result, image):
         """Prediction-only hook; default preserves the original CQ operation."""
@@ -1225,7 +1380,13 @@ class ReferenceMatching(BaseMethod):
             "layer_fusion_tau": self.layer_fusion_tau,
             "layer_fusion_gamma": self.layer_fusion_gamma,
             "layer_fusion_shallow_idx": self.layer_fusion_shallow_idx,
+            "layer_fusion_neg_alpha": self.layer_fusion_neg_alpha,
+            "image_score_aggregation": self.image_score_aggregation,
+            "image_score_source": self.image_score_source,
+            "image_residual_tau_q": self.image_residual_tau_q,
+            "image_score_key": self.image_score_key,
             "local_reliability": self.local_reliability,
+            "local_center_alpha": self.local_center_alpha,
             "local_reliability_k": self.local_reliability_k,
             "local_reliability_shrinkage": self.local_reliability_shrinkage,
             "prediction_postprocess": self.prediction_postprocess,

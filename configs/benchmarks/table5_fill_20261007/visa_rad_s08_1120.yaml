@@ -1,0 +1,54 @@
+method: rad
+dataset: visa
+backbone: dinov3_vitb16
+seed: 0
+dataset_config:
+  preprocess: no_mask_no_rotation
+  resolution: 1120
+backbone_config:
+  smaller_edge_size: 1120
+  feature_layers:
+  - 3
+  - 6
+  - 9
+  - 11
+  normalize_intermediate_features: true
+protocol:
+  shots: 8
+  fixed_reference_manifest: configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json
+  warmup_iters: 0
+method_config:
+  support_manifest: configs/benchmarks/table5_rsg4_20261001/manifests/visa_seed0_s08.json
+  support_objects:
+  - candle
+  - capsules
+  - cashew
+  - chewinggum
+  - fryum
+  - macaroni1
+  - macaroni2
+  - pcb1
+  - pcb2
+  - pcb3
+  - pcb4
+  - pipe_fryum
+  input_size: 1280
+  crop_size: 1120
+  map_size: 256
+  image_neighbors: 150
+  position_radius: 1
+  patch_chunk_size: 64
+  layer_weights:
+  - 0.25
+  - 0.25
+  - 0.25
+  - 0.25
+evaluation:
+  eval_segm: true
+  pro_integration_limit: 0.05
+  binary_postprocess: none
+  condition_strata: false
+  cost_profile: true
+output:
+  save_anomaly_maps: false
+  save_weights: false

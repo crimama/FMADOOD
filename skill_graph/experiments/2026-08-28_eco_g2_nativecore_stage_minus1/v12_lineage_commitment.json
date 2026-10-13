@@ -1,0 +1,357 @@
+{
+  "rows": [
+    {
+      "anomaly_sha256": "a976ac8e10fd8c791b15ad51fe00a4b169077fa7b2f586897a5c5e4260c446c1",
+      "base_sha256": "f35dd159fad2970584234536fb53be0cf84ffadab47df009a1f5b75ad454b25e",
+      "donor_relative": "can/train/good/011_regular.png",
+      "donor_sha256": "927c66b9867538329dfe74a51117618e25d61828e965028826b6f4f0cd5d47cc",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 0,
+      "mask_seed": 1776434254,
+      "relative_path": "can/train/good/002_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "2ca1fd14c4a5eabe2ee7b49c1fcb199f350157cac8d58b9f03dd08e1895f3c8f",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 1315682378
+    },
+    {
+      "anomaly_sha256": "d6e462b761802bb0fc9b3115811555702067ad3519743fa778f71dbb56d3ec4f",
+      "base_sha256": "927c66b9867538329dfe74a51117618e25d61828e965028826b6f4f0cd5d47cc",
+      "donor_relative": "can/train/good/091_regular.png",
+      "donor_sha256": "5a90ab7a3dc2a7d4fbfdb564b31a202756bb8591c923d6ac581a5b25563bda21",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 1,
+      "mask_seed": 470902171,
+      "relative_path": "can/train/good/011_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "30bee1b5a8dfeca4e6d8a328fb431e8d41ee3987220cb9ea805b7229068d123c",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 682817182
+    },
+    {
+      "anomaly_sha256": "223bc33a726b992cfb0d73a6db13b81d16e348302143cd6d9404f9b9f40d1446",
+      "base_sha256": "5a90ab7a3dc2a7d4fbfdb564b31a202756bb8591c923d6ac581a5b25563bda21",
+      "donor_relative": "can/train/good/158_regular.png",
+      "donor_sha256": "9c9bf6826a3fd6c8decd493cb9828ce759b9b2761159bef2a0da8e838573aaf1",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 2,
+      "mask_seed": 1451570141,
+      "relative_path": "can/train/good/091_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "a16560b4e7ad3626ce0557d2620c4300f8d3ec5bd59e20cd36b418d8bdc070fd",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 1965850549
+    },
+    {
+      "anomaly_sha256": "1b7aacd1075e72a74823e7042daf905a126d360dbe0905e76f47faa89ce4e554",
+      "base_sha256": "9c9bf6826a3fd6c8decd493cb9828ce759b9b2761159bef2a0da8e838573aaf1",
+      "donor_relative": "can/train/good/167_regular.png",
+      "donor_sha256": "1c4a1a306ed5b5d5dc5cf77562f5a067dce70c58a9315fc91fbded05ce4dd620",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 3,
+      "mask_seed": 1789388478,
+      "relative_path": "can/train/good/158_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "29617edf861c05cd855f3495c5c40299a43001dd2ab900885448c1fe667fafa5",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 2022008857
+    },
+    {
+      "anomaly_sha256": "69403f6477d1f94ca5249a5b48705d02bccbee97e4fd236151c0327aaf2712a8",
+      "base_sha256": "1c4a1a306ed5b5d5dc5cf77562f5a067dce70c58a9315fc91fbded05ce4dd620",
+      "donor_relative": "can/train/good/184_regular.png",
+      "donor_sha256": "6e2c000abb80b49e1d2ea91f0ae9cb238c22366a22d56518fd1d6a68dce66fe0",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 4,
+      "mask_seed": 130263202,
+      "relative_path": "can/train/good/167_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "063976700dc253d0089089ee790fdbcf9996b08f45d05de70bc617f56ada7a08",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 453337976
+    },
+    {
+      "anomaly_sha256": "a4df520de61f6e7004c520be1663db69a2c225481565dc46875676beb22c2e1e",
+      "base_sha256": "6e2c000abb80b49e1d2ea91f0ae9cb238c22366a22d56518fd1d6a68dce66fe0",
+      "donor_relative": "can/train/good/193_regular.png",
+      "donor_sha256": "9b9f5ba44b8f0774b25819cc078df344257dd57faab67bf06e1ef35a527e9e71",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 5,
+      "mask_seed": 399083755,
+      "relative_path": "can/train/good/184_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "1efe9dac301393ae1d57918a92fdcccb4efbe574decc37b954dd19e07ed71fcb",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 298216310
+    },
+    {
+      "anomaly_sha256": "b9fc61ede5b7cbe548cae74397c7942ed864c1682ea66dc443a17434df11aa35",
+      "base_sha256": "9b9f5ba44b8f0774b25819cc078df344257dd57faab67bf06e1ef35a527e9e71",
+      "donor_relative": "can/train/good/222_regular.png",
+      "donor_sha256": "145f7a806b88b308204c99712c2737f79ab665cd84e23bf12242ed02f775537e",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 6,
+      "mask_seed": 1343632709,
+      "relative_path": "can/train/good/193_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "1c47043952af7ece02790af37612679f7eddd93e857686af9d474ba32dbefbbe",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 1802886819
+    },
+    {
+      "anomaly_sha256": "c7efdb531cd78a6a343408842e3f6fde090c48fe4aad89287c4d950066d349e8",
+      "base_sha256": "145f7a806b88b308204c99712c2737f79ab665cd84e23bf12242ed02f775537e",
+      "donor_relative": "can/train/good/236_regular.png",
+      "donor_sha256": "91fc40d330c73b788bd3de9eb7c80322d4e21cbe9d3f0e8bef99f54099ee9d62",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 7,
+      "mask_seed": 358306687,
+      "relative_path": "can/train/good/222_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "5ee88fe762044c8d1aa16d8a38da04b2b378ab465de2e13c20f3581968d75161",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 1809161014
+    },
+    {
+      "anomaly_sha256": "740b6c871bf6999cf00771ef164ee70f9f69928990cd0521da72715971b7cd6a",
+      "base_sha256": "91fc40d330c73b788bd3de9eb7c80322d4e21cbe9d3f0e8bef99f54099ee9d62",
+      "donor_relative": "can/train/good/248_regular.png",
+      "donor_sha256": "0dfc942329d3039ec911cc1c2294be989d45ba0adeb6f6202c0ea0aec98c5d98",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 8,
+      "mask_seed": 559398406,
+      "relative_path": "can/train/good/236_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "600bb669585aacd07a08f4c572fbb62c40513df732864e02cb4cc7140c20f00e",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 825426006
+    },
+    {
+      "anomaly_sha256": "5a970b8246c99ac5d4ff23d112af637c55bd479914c1fb9cae59ad13ba429f9f",
+      "base_sha256": "0dfc942329d3039ec911cc1c2294be989d45ba0adeb6f6202c0ea0aec98c5d98",
+      "donor_relative": "can/train/good/326_regular.png",
+      "donor_sha256": "6935b0ec702276db070febc0aa3a2584e14dde68f8ee1c8a7a7efe7324756822",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 9,
+      "mask_seed": 41326849,
+      "relative_path": "can/train/good/248_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "1e2a351b20ac0369d8d03a56918a4b26848b71c52047498a0ed54c141cc11abe",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 761632113
+    },
+    {
+      "anomaly_sha256": "a5b655a068612b872a445f56391dd1984f5481777789d1115756974b7825dfbe",
+      "base_sha256": "6935b0ec702276db070febc0aa3a2584e14dde68f8ee1c8a7a7efe7324756822",
+      "donor_relative": "can/train/good/353_regular.png",
+      "donor_sha256": "8b523bd3267bf671417956b82799836cd42e79c52ad460235a79b39a77a40080",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 10,
+      "mask_seed": 949739273,
+      "relative_path": "can/train/good/326_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "239c3e597859e08e0d6b7a1ac470b85b32d99704e2c499f94651dfa8adcbdf73",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 448557938
+    },
+    {
+      "anomaly_sha256": "ea2f892f39c6ee1d5c09e48b1b5dec9f69fba3fa4e63914b0f59f4ff780835d6",
+      "base_sha256": "8b523bd3267bf671417956b82799836cd42e79c52ad460235a79b39a77a40080",
+      "donor_relative": "can/train/good/365_regular.png",
+      "donor_sha256": "a4b4ae87cd30cd3ac084a3b53a1ca9c68c798799d56689ba179c458a5dc7597f",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 11,
+      "mask_seed": 18744898,
+      "relative_path": "can/train/good/353_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "dcf047180cb1b776e5c8f91c78867d43b27d15be5850c495af79e72cf4d6c28c",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 1154933076
+    },
+    {
+      "anomaly_sha256": "9c9f9f5166baa01b2bc3403db81e1beeb7272e67d72d5afb0b109e0bd88a3060",
+      "base_sha256": "a4b4ae87cd30cd3ac084a3b53a1ca9c68c798799d56689ba179c458a5dc7597f",
+      "donor_relative": "can/train/good/380_regular.png",
+      "donor_sha256": "bf97cae5334793f699863007ca79fa1b9c860f25edf35620497382c1dc054d0c",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 12,
+      "mask_seed": 1609325436,
+      "relative_path": "can/train/good/365_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "8416db095c1059cc29eb7f59126682bec9144e1dc2d3d4d348d6c5a1d97e0efa",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 1077389349
+    },
+    {
+      "anomaly_sha256": "e0f7a354d805ac96d95ebd09c4e57639693dfddafeaae9a95807ab5031048ade",
+      "base_sha256": "bf97cae5334793f699863007ca79fa1b9c860f25edf35620497382c1dc054d0c",
+      "donor_relative": "can/train/good/392_regular.png",
+      "donor_sha256": "c09ba2209518254003137fe562bde93445040f40211414850c2929f62279ca34",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 13,
+      "mask_seed": 1382751505,
+      "relative_path": "can/train/good/380_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "6223a1b52a15e5b62329a6f046be38ebdb8eaf9608c3c2b9f4fffde22b3c13f2",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 1509020880
+    },
+    {
+      "anomaly_sha256": "80e155af93e417e824e12d70d1c8995273822817beeb1d0b1a3729ca2ee7d765",
+      "base_sha256": "c09ba2209518254003137fe562bde93445040f40211414850c2929f62279ca34",
+      "donor_relative": "can/train/good/398_regular.png",
+      "donor_sha256": "4e545d4377a0ae0a41bfe205e0c63a43a9be3688723d7b469b226e54d133851e",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 14,
+      "mask_seed": 2041178339,
+      "relative_path": "can/train/good/392_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "c55487007e42a869c70474d2ac1cb9cf54602531ba25d269ded42a8667fc99e1",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 1960733128
+    },
+    {
+      "anomaly_sha256": "749fcba6e24fd903cc30037f5d8bf89f2b8039f19f0f974bc335707555556f15",
+      "base_sha256": "4e545d4377a0ae0a41bfe205e0c63a43a9be3688723d7b469b226e54d133851e",
+      "donor_relative": "can/train/good/002_regular.png",
+      "donor_sha256": "f35dd159fad2970584234536fb53be0cf84ffadab47df009a1f5b75ad454b25e",
+      "hash_contract": "raw_contiguous_bytes",
+      "index": 15,
+      "mask_seed": 1854049108,
+      "relative_path": "can/train/good/398_regular.png",
+      "seed_namespace": "eco-audit-v2-ncfc-attribution-20260827-v1",
+      "source_mask_sha256": "03ad8661c2b202ec9a231873c88bf42a3789bd31b59b81621901c0e3f876126b",
+      "source_shape": [
+        1024,
+        2232
+      ],
+      "split": "support",
+      "synthesis_seed": 582104794
+    },
+    {
+      "anomaly_sha256": "7a803bf0603ffbc40ccfb6e048fa516babbec6af25af4693ad38f3625faf79cb",
+      "base_sha256": "002101fd9dba579d2b202ab40f74230f0caa627e20b7a4d7ef6eb627238b5b87",
+      "donor_relative": "can/train/good/298_regular.png",
+      "donor_sha256": "3c84ffafbaf43ea1cfe79e16baf69f7ae02b8b1ccedf68c78d2ccb4bfce277a7",
+      "hash_contract": "dtype_nul_shape_nul_contiguous_bytes",
+      "index": 0,
+      "mask_seed": 1247910715,
+      "relative_path": "can/train/good/119_regular.png",
+      "seed_namespace": "ncfc-s1-normal-coordinate-frozen-commutation-20260827-v2",
+      "source_mask_sha256": "25222672281cf631676989f94bf5d9ddff03f536050475ac34089fc3dcac162f",
+      "source_shape": null,
+      "split": "held",
+      "synthesis_seed": 1391508281
+    },
+    {
+      "anomaly_sha256": "a52534095c976d5ccf02a16ee8bc14a541c2da51eb55184153c88c83d7fe6bd0",
+      "base_sha256": "3c84ffafbaf43ea1cfe79e16baf69f7ae02b8b1ccedf68c78d2ccb4bfce277a7",
+      "donor_relative": "can/train/good/066_regular.png",
+      "donor_sha256": "cf83b96f14afcc6b7f90352da4f8a2a4972f462acf733836c5390871ab0b91ce",
+      "hash_contract": "dtype_nul_shape_nul_contiguous_bytes",
+      "index": 1,
+      "mask_seed": 1383001922,
+      "relative_path": "can/train/good/298_regular.png",
+      "seed_namespace": "ncfc-s1-normal-coordinate-frozen-commutation-20260827-v2",
+      "source_mask_sha256": "14ecac661f9deffa96de996c0caea9cdf82f5723496ee362a5727979677d69ae",
+      "source_shape": null,
+      "split": "held",
+      "synthesis_seed": 1877066621
+    },
+    {
+      "anomaly_sha256": "003c06901d5088b1c9edbedfef21490d1f867483fa722287df78edcb960e9164",
+      "base_sha256": "cf83b96f14afcc6b7f90352da4f8a2a4972f462acf733836c5390871ab0b91ce",
+      "donor_relative": "can/train/good/169_regular.png",
+      "donor_sha256": "04fe6265408e95f65f745e9ea233694595f580559c0bb0346f675075b3fde0b2",
+      "hash_contract": "dtype_nul_shape_nul_contiguous_bytes",
+      "index": 2,
+      "mask_seed": 161171271,
+      "relative_path": "can/train/good/066_regular.png",
+      "seed_namespace": "ncfc-s1-normal-coordinate-frozen-commutation-20260827-v2",
+      "source_mask_sha256": "77421ad2f34ea2c043a71f54617518ee78b4e91b10cbedf51ef79b40cb4f20cd",
+      "source_shape": null,
+      "split": "held",
+      "synthesis_seed": 1573785072
+    },
+    {
+      "anomaly_sha256": "20cd6f8803b74779dfecde3a5d6b7fc66bf0c3684177a874d5e82ff0b96357fb",
+      "base_sha256": "04fe6265408e95f65f745e9ea233694595f580559c0bb0346f675075b3fde0b2",
+      "donor_relative": "can/train/good/119_regular.png",
+      "donor_sha256": "002101fd9dba579d2b202ab40f74230f0caa627e20b7a4d7ef6eb627238b5b87",
+      "hash_contract": "dtype_nul_shape_nul_contiguous_bytes",
+      "index": 3,
+      "mask_seed": 230907962,
+      "relative_path": "can/train/good/169_regular.png",
+      "seed_namespace": "ncfc-s1-normal-coordinate-frozen-commutation-20260827-v2",
+      "source_mask_sha256": "9248b350ca407fa13ca4acd0f9a06d1a4db1307401290979cde4acf9ac118d4a",
+      "source_shape": null,
+      "split": "held",
+      "synthesis_seed": 274999398
+    }
+  ],
+  "schema": "eco-g2-nativecore-v12-lineage-commitment-v1",
+  "source_model_state_sha256": "59a755e385188971c57f52a38773028b508722c804ce6c9279d1dc2ac14ccbe8",
+  "source_run": "eco_audit_v2_dsba3_20260828Tfrozen12Z_v12",
+  "source_support_seal_sha256": "99d01623dcc2f9c072290ffa95a0098c2cc30fd373f12912e2c2a9ded5e45f61"
+}
+

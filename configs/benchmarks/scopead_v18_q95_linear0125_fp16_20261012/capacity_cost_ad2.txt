@@ -1,0 +1,4 @@
+ad2_mr_cap256_s16_seed0_cost_strata
+ad2_r1120_cap256_s16_seed0_cost_strata
+ad2_r1120_cap1024_s16_seed0_cost_strata
+ad2_mr_cap1024_s16_seed0_cost_strata

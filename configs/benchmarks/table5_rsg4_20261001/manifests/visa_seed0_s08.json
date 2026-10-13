@@ -1,0 +1,122 @@
+{
+  "pcb2": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0843.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0074.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0017.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0501.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0301.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0263.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0042.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb2/train/good/0625.JPG"
+  ],
+  "macaroni1": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0843.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0074.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0017.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0501.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0301.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0263.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0042.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni1/train/good/0624.JPG"
+  ],
+  "chewinggum": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/420.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/037.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/008.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/248.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/151.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/132.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/021.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/chewinggum/train/good/310.JPG"
+  ],
+  "candle": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0843.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0074.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0017.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0501.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0301.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0263.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0042.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/candle/train/good/0624.JPG"
+  ],
+  "pcb1": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0847.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0074.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0017.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0503.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0302.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0264.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0042.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb1/train/good/0626.JPG"
+  ],
+  "cashew": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/418.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/037.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/008.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/248.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/151.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/132.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/021.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/cashew/train/good/308.JPG"
+  ],
+  "capsules": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/505.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/047.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/008.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/305.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/183.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/156.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/028.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/capsules/train/good/378.JPG"
+  ],
+  "pcb4": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0847.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0074.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0017.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0503.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0302.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0264.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0042.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb4/train/good/0626.JPG"
+  ],
+  "pipe_fryum": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/418.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/037.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/008.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/248.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/151.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/132.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/021.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pipe_fryum/train/good/308.JPG"
+  ],
+  "pcb3": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0847.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0075.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0017.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0504.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0302.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0265.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0042.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/pcb3/train/good/0627.JPG"
+  ],
+  "macaroni2": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0843.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0074.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0017.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0501.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0301.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0263.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0042.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/macaroni2/train/good/0624.JPG"
+  ],
+  "fryum": [
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/418.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/037.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/008.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/248.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/151.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/132.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/021.JPG",
+    "/home/hunim/Volume/DATA/VisA_pytorch/1cls/fryum/train/good/308.JPG"
+  ]
+}

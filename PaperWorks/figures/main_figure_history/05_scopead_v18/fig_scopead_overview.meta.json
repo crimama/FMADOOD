@@ -1,0 +1,36 @@
+{
+  "outline": "../outlines/Outline_v18.md",
+  "method": "ScopeAD",
+  "fusion": "deep_mean + 0.125 * normalized_layer5",
+  "scales": [
+    448,
+    672,
+    896,
+    1120
+  ],
+  "layers": [
+    5,
+    11,
+    23
+  ],
+  "bags": 4,
+  "calibration_quantile": 0.95,
+  "image_score": "top-1% pixel mean",
+  "cq": false,
+  "display_map_source": "cache_rsg4_mechanism/overview_walnuts__defect.npz",
+  "display_map_keys": [
+    "r448_normalized_l5",
+    "r448_normalized_l11",
+    "r448_normalized_l23",
+    "r672_normalized_l5",
+    "r672_normalized_l11",
+    "r672_normalized_l23",
+    "r896_normalized_l5",
+    "r896_normalized_l11",
+    "r896_normalized_l23",
+    "r1120_normalized_l5",
+    "r1120_normalized_l11",
+    "r1120_normalized_l23"
+  ],
+  "display_map_status": "reconstructed from FP16 cached bag-averaged layer maps; not a new evaluation"
+}

@@ -1,0 +1,92 @@
+{
+  "hazelnut": [
+    "/home/hunim/Volume/DATA/MVTecAD/hazelnut/train/good/105.png",
+    "/home/hunim/Volume/DATA/MVTecAD/hazelnut/train/good/199.png",
+    "/home/hunim/Volume/DATA/MVTecAD/hazelnut/train/good/330.png",
+    "/home/hunim/Volume/DATA/MVTecAD/hazelnut/train/good/247.png"
+  ],
+  "toothbrush": [
+    "/home/hunim/Volume/DATA/MVTecAD/toothbrush/train/good/016.png",
+    "/home/hunim/Volume/DATA/MVTecAD/toothbrush/train/good/030.png",
+    "/home/hunim/Volume/DATA/MVTecAD/toothbrush/train/good/048.png",
+    "/home/hunim/Volume/DATA/MVTecAD/toothbrush/train/good/036.png"
+  ],
+  "screw": [
+    "/home/hunim/Volume/DATA/MVTecAD/screw/train/good/086.png",
+    "/home/hunim/Volume/DATA/MVTecAD/screw/train/good/163.png",
+    "/home/hunim/Volume/DATA/MVTecAD/screw/train/good/269.png",
+    "/home/hunim/Volume/DATA/MVTecAD/screw/train/good/202.png"
+  ],
+  "carpet": [
+    "/home/hunim/Volume/DATA/MVTecAD/carpet/train/good/075.png",
+    "/home/hunim/Volume/DATA/MVTecAD/carpet/train/good/142.png",
+    "/home/hunim/Volume/DATA/MVTecAD/carpet/train/good/235.png",
+    "/home/hunim/Volume/DATA/MVTecAD/carpet/train/good/177.png"
+  ],
+  "bottle": [
+    "/home/hunim/Volume/DATA/MVTecAD/bottle/train/good/056.png",
+    "/home/hunim/Volume/DATA/MVTecAD/bottle/train/good/106.png",
+    "/home/hunim/Volume/DATA/MVTecAD/bottle/train/good/175.png",
+    "/home/hunim/Volume/DATA/MVTecAD/bottle/train/good/131.png"
+  ],
+  "pill": [
+    "/home/hunim/Volume/DATA/MVTecAD/pill/train/good/072.png",
+    "/home/hunim/Volume/DATA/MVTecAD/pill/train/good/135.png",
+    "/home/hunim/Volume/DATA/MVTecAD/pill/train/good/224.png",
+    "/home/hunim/Volume/DATA/MVTecAD/pill/train/good/168.png"
+  ],
+  "tile": [
+    "/home/hunim/Volume/DATA/MVTecAD/tile/train/good/062.png",
+    "/home/hunim/Volume/DATA/MVTecAD/tile/train/good/117.png",
+    "/home/hunim/Volume/DATA/MVTecAD/tile/train/good/193.png",
+    "/home/hunim/Volume/DATA/MVTecAD/tile/train/good/145.png"
+  ],
+  "wood": [
+    "/home/hunim/Volume/DATA/MVTecAD/wood/train/good/066.png",
+    "/home/hunim/Volume/DATA/MVTecAD/wood/train/good/125.png",
+    "/home/hunim/Volume/DATA/MVTecAD/wood/train/good/207.png",
+    "/home/hunim/Volume/DATA/MVTecAD/wood/train/good/156.png"
+  ],
+  "grid": [
+    "/home/hunim/Volume/DATA/MVTecAD/grid/train/good/071.png",
+    "/home/hunim/Volume/DATA/MVTecAD/grid/train/good/134.png",
+    "/home/hunim/Volume/DATA/MVTecAD/grid/train/good/222.png",
+    "/home/hunim/Volume/DATA/MVTecAD/grid/train/good/166.png"
+  ],
+  "cable": [
+    "/home/hunim/Volume/DATA/MVTecAD/cable/train/good/060.png",
+    "/home/hunim/Volume/DATA/MVTecAD/cable/train/good/113.png",
+    "/home/hunim/Volume/DATA/MVTecAD/cable/train/good/187.png",
+    "/home/hunim/Volume/DATA/MVTecAD/cable/train/good/141.png"
+  ],
+  "transistor": [
+    "/home/hunim/Volume/DATA/MVTecAD/transistor/train/good/057.png",
+    "/home/hunim/Volume/DATA/MVTecAD/transistor/train/good/108.png",
+    "/home/hunim/Volume/DATA/MVTecAD/transistor/train/good/178.png",
+    "/home/hunim/Volume/DATA/MVTecAD/transistor/train/good/134.png"
+  ],
+  "capsule": [
+    "/home/hunim/Volume/DATA/MVTecAD/capsule/train/good/059.png",
+    "/home/hunim/Volume/DATA/MVTecAD/capsule/train/good/111.png",
+    "/home/hunim/Volume/DATA/MVTecAD/capsule/train/good/183.png",
+    "/home/hunim/Volume/DATA/MVTecAD/capsule/train/good/138.png"
+  ],
+  "leather": [
+    "/home/hunim/Volume/DATA/MVTecAD/leather/train/good/066.png",
+    "/home/hunim/Volume/DATA/MVTecAD/leather/train/good/124.png",
+    "/home/hunim/Volume/DATA/MVTecAD/leather/train/good/205.png",
+    "/home/hunim/Volume/DATA/MVTecAD/leather/train/good/154.png"
+  ],
+  "metal_nut": [
+    "/home/hunim/Volume/DATA/MVTecAD/metal_nut/train/good/059.png",
+    "/home/hunim/Volume/DATA/MVTecAD/metal_nut/train/good/111.png",
+    "/home/hunim/Volume/DATA/MVTecAD/metal_nut/train/good/184.png",
+    "/home/hunim/Volume/DATA/MVTecAD/metal_nut/train/good/138.png"
+  ],
+  "zipper": [
+    "/home/hunim/Volume/DATA/MVTecAD/zipper/train/good/064.png",
+    "/home/hunim/Volume/DATA/MVTecAD/zipper/train/good/122.png",
+    "/home/hunim/Volume/DATA/MVTecAD/zipper/train/good/201.png",
+    "/home/hunim/Volume/DATA/MVTecAD/zipper/train/good/151.png"
+  ]
+}

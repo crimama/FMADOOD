@@ -1,0 +1,47 @@
+{
+ "suite": "scarf_single_resolution_fp16_20261012",
+ "configs": [
+  {
+   "label": "ad2_single_r448_s02_seed0",
+   "resolution": 448,
+   "shot": 2,
+   "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s02_seed0.yaml",
+   "config_sha256": "5ffbb014bf64fc54822751ef5ab37abfec1f9be738784b383962672a73d0d29b"
+  },
+  {
+   "label": "ad2_single_r672_s02_seed0",
+   "resolution": 672,
+   "shot": 2,
+   "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s02_seed0.yaml",
+   "config_sha256": "fddec80da8b86e8e212be2a4d81fc2d7eb34189fa54d8d025a917db10b10ec37"
+  },
+  {
+   "label": "ad2_single_r896_s02_seed0",
+   "resolution": 896,
+   "shot": 2,
+   "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s02_seed0.yaml",
+   "config_sha256": "7a9d01b5c3042f3e98e659544d8983d6e5e1780fda6209abf11c1102f0f426ba"
+  },
+  {
+   "label": "ad2_single_r448_s16_seed0",
+   "resolution": 448,
+   "shot": 16,
+   "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s16_seed0.yaml",
+   "config_sha256": "86950e7dbbf72cfed24e10164ccb95a870cae1c187e0772bf885069e10045aa0"
+  },
+  {
+   "label": "ad2_single_r672_s16_seed0",
+   "resolution": 672,
+   "shot": 16,
+   "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s16_seed0.yaml",
+   "config_sha256": "923700cff5493ce1febc22a8b72968985f5b91dddd8deb4ff37c18184f83c753"
+  },
+  {
+   "label": "ad2_single_r896_s16_seed0",
+   "resolution": 896,
+   "shot": 16,
+   "base": "configs/benchmarks/scarf_calibration_factorial_seed0_fp16_20261009/ad2_A_linear0125_tailscale_s16_seed0.yaml",
+   "config_sha256": "2c3785482f4a624c112fb34d3d8e7e2cb45b518cb92b12e33838cd8f7999814f"
+  }
+ ]
+}
