@@ -1,45 +1,52 @@
 \section{서론}
 \label{sec:intro}
 
-\subsection{소수 정상 참조와 High-Score Ambiguity}
-\label{sec:intro:ambiguity}
+다품종 소량 생산과 잦은 라인 전환이 일어나는 제조 현장에서는 제품마다 결함 데이터를 충분히 모으거나 모델을 다시 학습하기 어렵다.
+특히 신제품 도입이나 생산 라인 전환 초기에는 정상 참조 이미지를 소수만 확보한 상태에서 검사를 시작해야 할 수 있다.
+이런 환경에서는 소수의 정상 이미지만으로 결함 위치를 찾는 few-shot 이상 국소화가 실용적인 대안이 된다.
+대표적인 방식은 동결된 사전학습 백본~\cite{dinov2}에서 패치 특징을 추출해 정상 이미지로 참조 뱅크를 만들고, 쿼리 패치와 가장 가까운 정상 패치 사이의 거리를 이상 점수로 쓰는 것이다~\cite{patchcore,anomalydino,superad}.
 
-다품종 소량 생산 및 빈번한 라인 전환이 일어나는 제조 환경에서는 제품마다 충분한 결함 데이터를 수집하거나 모델을 재학습하기 어렵다.
-이 때문에 별도 학습 없이 다양한 시각 과제로 전이되는 동결(frozen) 사전학습 백본~\cite{dinov2}의 패치 특징을 소수 정상 이미지로 구성한 참조 뱅크(reference bank)와 매칭하고, 쿼리 패치와 최근접 정상 패치 사이의 거리로 결함을 국소화하는 방식이 널리 쓰인다~\cite{patchcore,anomalydino}.
-
-이 방식은 정상 쿼리 패치라면 참조 뱅크 안에 가까운 이웃이 있다고 가정한다.
-그러나 몇 장의 서포트로는 실제 공정의 조명 드리프트, 부품 자세 변동, 표면 난반사, 센서 노이즈를 모두 담을 수 없으며, 분포 변화 아래에서 성능과 점수 신뢰도가 유지되지 않는다는 점은 일반 시각 인식에서도 보고되어 왔다~\cite{hendrycks2019benchmarking,ovadia2019can}.
-서포트에 없는 정상 변동이 나타나면 결함이 없는 패치도 최근접 거리가 커지고, 이 값은 실제 결함이 만든 큰 거리와 구별되지 않는다.
-즉, \textbf{큰 거리값만으로는 그 원인이 실제 결함인지 서포트에 없는 정상 외관 변화인지 확정할 수 없다(High-Score Ambiguity)}(\cref{fig:intro-ambiguity}).
-
+이 점수는 정상 쿼리 패치라면 참조 뱅크 안에 가까운 이웃이 있다는 가정에 기댄다.
+그러나 실제 공정에서는 조명 드리프트, 부품 자세 변동, 표면 난반사 같은 획득 조건 변화가 계속 발생하며~\cite{aebad,mvtecad2}, 몇 장의 정상 서포트로는 이를 모두 담을 수 없다.
+서포트에 없는 정상 변동이 나타나면 결함이 없는 패치도 최근접 거리가 커지고, 이 값은 실제 결함이 만든 큰 거리와 같은 구간에 놓일 수 있다.
+따라서 큰 거리값만으로는 그 원인이 결함인지 서포트에 없던 정상 외관 변화인지 확정할 수 없으며, 본 논문은 이를 \textbf{High-Score Ambiguity}라 부른다(\cref{fig:intro-ambiguity}).
+이 모호성은 오경보를 엄격히 제한하는 저-FPR 구간에서 특히 문제가 된다.
+정상 위치의 고점수로 인한 오경보를 제한하려고 판정 임계값을 높이면, 함께 검출할 수 있는 결함 영역도 줄어들기 때문이다~\cite{aupimo}.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{figures/fig_intro_ambiguity.png}
-\caption{\textbf{Conceptual illustration of High-Score Ambiguity in few-shot inspection.} Due to sparse normal support, unobserved normal variations and true defects overlap in the large nearest-neighbor distance regime, making raw distance scores inherently ambiguous for defect identification.}
+\caption{\textbf{Conceptual illustration of High-Score Ambiguity in few-shot inspection.} With sparse normal support, unobserved normal variations and true defects can both produce large nearest-neighbor distances. Raising the decision threshold to limit false alarms from normal high scores can also reduce defect coverage.}
 \label{fig:intro-ambiguity}
 \end{figure}
 
+정상 서포트를 충분히 확보하면 더 다양한 정상 외관을 참조 뱅크에 담을 수 있지만, few-shot 조건에서는 사용할 수 있는 이미지 수가 제한된다.
+따라서 한정된 서포트에서 결함 판단에 쓸 수 있는 시각적 단서를 충분히 확보하는 것이 중요하다.
+본 논문은 이를 위해 주어진 서포트와 쿼리의 관측을 표현 계층과 입력 해상도의 두 축으로 확장한다.
+ViT는 계층마다 국소 외관과 전역 문맥을 반영하는 방식이 다르므로, 여러 계층의 특징은 서로 다른 수준의 비교 단서를 제공한다~\cite{raghu2021vision,ranftl2021vision}.
+입력 해상도는 각 패치가 나타내는 원본 영상의 공간 범위를 바꾸며, 패치 크기가 고정된 백본에서는 해상도가 높을수록 더 작은 영역이 하나의 토큰에 대응한다~\cite{shi2024scaling,fu2024featup}.
+따라서 여러 해상도에서 얻은 비교 결과를 함께 사용하면, 미세한 국소 차이와 더 넓은 영역의 외관 차이를 서로 다른 공간 척도에서 반영할 수 있다.
+이러한 다층·다해상도 관측은 동일한 위치를 서로 다른 표현과 공간 척도에서 비교하여, 단일 관측에서 놓칠 수 있는 결함 단서를 함께 활용하기 위한 것이다.
 
-\subsection{다층·다해상도 관측 확장과 결합의 과제}
-\label{sec:intro:expansion}
+이러한 관측 확장의 이점을 활용하려면, 먼저 서로 다른 계층·해상도에서 얻은 거리의 척도를 맞춰야 한다.
+관측마다 정상 패치 사이의 거리 척도가 다르므로, 같은 거리값도 해당 관측의 정상 참조에 비추어 갖는 상대적 크기가 다르다.
+원시 거리를 그대로 합산하면 동일한 가중치를 주더라도, 결함 단서의 유용성과 무관하게 거리 척도가 큰 관측이 최종 점수에 더 큰 영향을 미칠 수 있다.
+따라서 결합에 앞서 각 거리를 해당 관측의 정상 참조 기준값에 대한 상대적 크기로 표현하는 척도 정렬이 필요하다.
+다만 얕은 계층의 국소 반응처럼 미세 결함과 정상 외관 변화가 함께 반영될 수 있는 점수에서는, 척도를 맞춘 뒤에도 High-Score Ambiguity가 남을 수 있다.
+본 연구는 이에 따라 정상 참조에 기반한 척도 정렬을 먼저 수행하고, 정렬된 각 관측을 최종 판단에 얼마나 반영할지 정하는 기여량 제어를 적용한다.
 
-추가 정상 이미지를 확보하기 어려운 few-shot 환경에서는 주어진 이미지로부터 추출할 수 있는 시각 단서를 최대한 다각화하는 \textbf{관측 확장(Observation Expansion)}이 효과적이다.
-이에 본 논문은 동결 백본의 표현 계층과 입력 해상도라는 두 축을 따라 관측을 확장한다.
-계층 축에서는 심층(Layer 11/23)의 의미 기준선과 얕은 층(Layer 5)의 국소 결함 민감도를 상호 보완하며~\cite{raghu2021vision,ranftl2021vision}, 해상도 축에서는 패치 크기($14 \times 14$)의 표본 밀도 특성을 활용해~\cite{fu2024featup} 저해상도의 형태 안정성과 고해상도의 미세 결함 해상력을 동시에 확보한다~\cite{lin2017fpn,shi2024scaling}.
+이를 위해 본 논문은 관측 확장과 정상 서포트 기반 결합으로 구성된 \textbf{\method}를 제안한다.
+다층 특징을 하나의 뱅크로 연결하는 방식~\cite{patchcore}과 달리, \method는 계층·해상도별 뱅크에서 거리를 개별적으로 계산하여 관측별 척도를 보정할 수 있도록 한다.
+계층별 이상 맵 평균~\cite{superad}과 정상 참조 기반 보정~\cite{freepatch}을 사용하는 기존 접근을 바탕으로, 척도 정렬과 비대칭 계층 결합을 두 단계로 구성한다.
+첫째, \textbf{척도 정렬(Scale Calibration)}은 각 관측의 거리를 정상 서포트 참조 거리의 상위 분위수로 나누어, 해당 정상 기준값에 대한 상대적 크기로 표현한다.
+둘째, \textbf{기여량 제어(Contribution Control)}는 깊은 계층 점수의 평균을 기준선으로 두고 얕은 계층 점수를 작은 고정 가중치로 더한다.
+이는 얕은 계층의 국소 외관 단서를 보조적으로 활용하도록 가산 비중을 낮춘 설계이다.
+이 결합 규칙을 각 해상도에 적용한 뒤, 해상도별 맵을 원본 좌표에서 평균한다.
+\method는 추가 학습이나 쿼리별 적응 없이 동작하며, 결합 가중치는 개발 평가에서 한 번 정한 뒤 모든 데이터셋과 shot 조건에 고정해 사용한다.
 
-그러나 이렇게 확장된 다차원 관측 점수들을 단순 가산하는 것은 심각한 성능 왜곡을 유발한다.
-계층 특징을 단일 뱅크로 병합하면~\cite{patchcore} 계층 간 정상 변동이 뒤섞여 성능이 저하되는 반면(MVTec AD 2 16-shot에서 관측별 뱅크 대비 \AUPRO 2.09\,pp 하락), 관측별 뱅크를 분리하면 서로 다른 정상 거리 척도를 공통 단위로 정렬해야 하는 과제가 생긴다.
-또한 단위를 정렬하더라도 얕은 층의 정상 질감 반응이 누적되어 단순 가산 시($\lambda=1$) \AUPRO가 5.55\,pp 급락한다.
-이에 본 논문은 서포트 상위 분위수로 관측 간 거리 척도를 정규화하는 \textbf{Scale Calibration}~\cite{kim2021normalization,wang2022vim}과, 심층 기준선에 얕은 층을 작은 고정 가중치로 가산해 질감 노이즈를 억제하는 \textbf{Contribution Control}로 결합 문제를 분리하여 정식화한다.
-
-
-\subsection{ScopeAD 프레임워크와 주요 기여}
-\label{sec:intro:contrib}
-
-본 논문은 관측 확장과 서포트 기반 보정 결합을 통합한 \textbf{\method}\ (ScopeAD)를 제안한다. ScopeAD는 추가 학습이나 쿼리 적응 없이 동작하며, 핵심 기여는 다음과 같다:
+본 논문의 기여는 다음과 같다.
 \begin{itemize}
-  \item \textbf{관측 확장}: 백본 재학습 없이 표현 계층(Layer 5/11/23)과 입력 해상도(448--1120px)의 두 축으로 동일 이미지의 관측을 확장하여, 한정된 서포트로부터 추출하는 시각 단서를 극대화한다.
-  \item \textbf{척도 보정과 기여 제어의 분리}: 관측 조건마다 독립 뱅크를 구축하고, 서포트 분위수($q=0.95$) 기반 척도 보정과 고정 가중($\lambda=0.125$) 얕은 층 가산을 별개의 단계로 설계한다.
-  \item \textbf{구성 이득과 결합 이득의 분리 검증}: 4개 해상도 결합이 최선의 단일 해상도 대비 \AUPRO를 2-shot에서 4.95\,pp, 16-shot에서 2.10\,pp 개선함을 입증하고, 관측별 뱅크와 기여 제어의 이득을 통제 실험으로 분리 검증한다. MVTec AD 2 16-shot에서 동일 백본·서포트의 SuperAD보다 3-seed \AUPRO가 4.17\,pp 높다.
+  \item 소수 정상 서포트에서 상보적인 결함 단서를 활용하기 위해, 동결 백본의 계층과 입력 해상도를 함께 확장하고 관측별 참조 뱅크에서 개별 거리를 계산하는 few-shot 국소화 방법을 구성한다.
+  \item 확장된 관측의 결합에서 정상 서포트 분위수에 따른 척도 정렬과 얕은 계층의 기여량 제어를 구분하여 적용하는 학습 없는 결합 방법을 제안한다.
+  \item 해상도 구성, 뱅크 구조, 정규화 방식, 계층 가중을 바꾸는 통제 비교로 관측 확장과 결합 설계의 효과를 분석하고, MVTec AD 2~\cite{mvtecad2}의 저-FPR 국소화 및 MVTec AD, VisA의 교차 데이터셋 평가로 적용 가능성을 검토한다.
 \end{itemize}
