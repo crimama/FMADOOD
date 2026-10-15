@@ -2,8 +2,8 @@
 set -euo pipefail
 cd "$(dirname "$0")/../../.."
 G=${1:?lane}
-WAIT_PID=${2:?existing lane pid}
-WAIT_START=${3:?existing lane start tick}
+WAIT_PID=${2:-0}
+WAIT_START=${3:-0}
 ROOT=/workspace/results_local_compatible/scopead_calibration_diagnostic_20261015
 CFG=configs/benchmarks/scopead_calibration_diagnostic_20261015
 GPUS=(GPU-a164a77e-c3b3-5c6d-d70c-63ee65b2601f GPU-bbb3a0e2-cc7d-ba3c-f956-89214c06a1ae GPU-eb6182a8-eb72-e8b2-f279-c587d6fa9639 GPU-7534790f-7c8c-3f2b-5c33-c1b15998ef62)
@@ -40,5 +40,5 @@ CONFIGS=()
 for label in "${LABELS[@]}"; do CONFIGS+=("$CFG/$label.yaml"); done
 python3 scripts/experiments.py run --configs "${CONFIGS[@]}" --labels "${LABELS[@]}" \
  --objects ${OBJECTS[$G]} --data-root /home/hunim/Volume/DATA/mvtec_ad_2 \
- --device cuda:0 --timeout 10800 --workers 1 --output-dir "$ROOT/gpu$G" \
+ --device cuda:0 --timeout 10800 --workers 1 --output-dir "$ROOT/gpu$G/evaluation" \
  --split mvtec_ad2_test_public_seen_development_calibration_CQoff_seed0
