@@ -8,12 +8,14 @@ and gathers each bag's original members before nearest-neighbour reduction.
 from __future__ import annotations
 
 import hashlib
+import time
 from typing import Any
 
 import torch
 from torch.nn import functional as F
 
 from fmad.methods.PSMA_MR import _infer_grid
+from fmad.methods.base import Prediction
 from fmad.methods.reference_matching import ReferenceMatching
 from fmad.registry import METHOD_REGISTRY
 
@@ -191,6 +193,40 @@ class ReferenceMatchingFast(ReferenceMatching):
             raise ValueError("fast_shared_bag_distances must be a bool")
         self._fast_full_bank_cache: tuple[int, int, dict[str, Any]] | None = None
         self._shared_union_cache: dict[tuple[int, ...], tuple[torch.Tensor, list[torch.Tensor]]] = {}
+        self.calibration_audit = config.get('calibration_audit', False)
+        if type(self.calibration_audit) is not bool:
+            raise ValueError('calibration_audit must be boolean')
+        if self.calibration_audit and (self.variant != 'R1' or self.local_reliability != 'off'
+                or self.score_normalization not in {'none', 'tailscale'}
+                or self.ablation_feature_matching != 'layerwise'):
+            raise ValueError('calibration audit requires plain R1 none/q95 layerwise scoring')
+        self._calibration_bags = None
+        self._calibration_grids = None
+
+    def _observe_layer_scores(self, distances, scores, *, tau):
+        super()._observe_layer_scores(distances, scores, tau=tau)
+        if self._calibration_bags is not None:
+            self._calibration_bags.append(torch.stack([
+                torch.stack(distances), torch.stack(scores)]).detach())
+
+    def predict_batch(self, test_image_paths):
+        if not self.calibration_audit:
+            return super().predict_batch(test_image_paths)
+        predictions = []
+        for path in test_image_paths:
+            self._calibration_grids = []
+            started = time.perf_counter()
+            try:
+                score, image_score = self.predict(path)
+                if len(self._calibration_grids) != len(self.last_resolutions):
+                    raise RuntimeError('incomplete calibration audit')
+                predictions.append(Prediction(score, image_score, time.perf_counter() - started,
+                    {'calibration_audit': {'grids': self._calibration_grids,
+                     'resolutions': list(self.last_resolutions), 'layers': list(self.layers)}}))
+            finally:
+                self._calibration_grids = None
+                self._calibration_bags = None
+        return predictions
 
     def _fuse_layers(self, scores, tau=None):
         if self.ablation_shallow_mode == "gated":
@@ -321,6 +357,18 @@ class ReferenceMatchingFast(ReferenceMatching):
         return torch.stack(scales)
 
     def _score_tokens(self, layers, grid, bank, *, normalize=True):
+        if self._calibration_grids is None:
+            return self._score_tokens_impl(layers, grid, bank, normalize=normalize)
+        self._calibration_bags = []
+        try:
+            score = self._score_tokens_impl(layers, grid, bank, normalize=normalize)
+            values = torch.stack(self._calibration_bags).mean(0)
+            self._calibration_grids.append(values.reshape(2, len(self.layers), *grid).cpu().numpy())
+            return score
+        finally:
+            self._calibration_bags = None
+
+    def _score_tokens_impl(self, layers, grid, bank, *, normalize=True):
         if not (self.fast_shared_bag_distances and self.variant == "R1"
                 and isinstance(bank, list) and len(bank) > 1):
             return super()._score_tokens(layers, grid, bank, normalize=normalize)

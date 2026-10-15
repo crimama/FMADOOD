@@ -176,6 +176,10 @@ def _run_streaming_object(
 
     accumulator = StreamingSegmentationAccumulator(max_fpr=0.05)
     fusion_diagnostic = None
+    calibration_diagnostic = None
+    if config.get('evaluation', {}).get('calibration_diagnostic', False):
+        from fmad.evaluation.calibration_diagnostic import CalibrationDiagnostic
+        calibration_diagnostic = CalibrationDiagnostic()
     if config.get("evaluation", {}).get("fusion_diagnostic", False):
         from fmad.evaluation.fusion_diagnostic import FusionDiagnostic
         fusion_diagnostic = FusionDiagnostic()
@@ -259,6 +263,11 @@ def _run_streaming_object(
                 else prediction.inference_seconds
             )
             compact_diagnostics = dict(prediction.diagnostics)
+            calibration_auxiliary = compact_diagnostics.pop('calibration_audit', None)
+            if calibration_diagnostic is not None:
+                if calibration_auxiliary is None:
+                    raise ValueError('calibration_diagnostic requires calibration_audit')
+                calibration_diagnostic.update(image_path, score_map, masks[-1], calibration_auxiliary)
             fusion_auxiliary = compact_diagnostics.pop("fusion_audit", None)
             image_candidates = compact_diagnostics.pop("image_score_candidates", None)
             if image_candidates is not None:
@@ -355,6 +364,8 @@ def _run_streaming_object(
             method, dataset, object_name, seed, queries, _ground_truth_mask,
             mode=config["evaluation"]["shift_diagnostic"])
     metadata = dict(method.object_metadata())
+    if calibration_diagnostic is not None:
+        metadata['calibration_diagnostic'] = calibration_diagnostic.compute()
     if candidate_scores:
         from sklearn.metrics import roc_auc_score
         query_keys = [f"{kind}/{Path(path).name}" for kind, path in queries]
