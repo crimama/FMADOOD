@@ -2,7 +2,7 @@
 set -euo pipefail
 RESULTS=/workspace/results_local_compatible/scopead_v18_q95_corruption_comparators_20261013
 SUBSPACE="$RESULTS/subspacead"
-RAD_OUT="$RESULTS/rad_cache_retry"
+RAD_OUT="$RESULTS/rad_cache_v2"
 SOURCE=/workspace/isolated_runs/table5_fill_20261007/source
 PYTHON=/workspace/.local-runtime/python311-cu124-036828932804/bin/python3.11
 PYTHONPATH_VALUE=/workspace/.local-runtime/rad_deps_20260930:/workspace/isolated_runs/table5_fill_20261007/source/src
@@ -42,8 +42,7 @@ for index in "${!CONDITIONS[@]}"; do
   condition=${CONDITIONS[$index]}
   device="cuda:$index"
   output="$RAD_OUT/$condition"
-  mkdir -p "$output"
-  "$PYTHON" scripts/experiments.py run --configs "$CONFIG" --output-dir "$output" --objects "${OBJECTS[@]}" --timeout 21600 --device "$device" --data-root "$DATA_ROOT/$condition" --split "mvtec_seen_development_v18_corruption_${condition}_rad_cache_seed0_s16" > "$output/launch.log" 2>&1 &
+  "$PYTHON" scripts/experiments.py run --configs "$CONFIG" --output-dir "$output" --objects "${OBJECTS[@]}" --timeout 21600 --device "$device" --data-root "$DATA_ROOT/$condition" --split "mvtec_seen_development_v18_corruption_${condition}_rad_cache_seed0_s16" > "$RAD_OUT/${condition}_launch.log" 2>&1 &
   pids+=("$!")
 done
 rc=0

@@ -141,6 +141,20 @@ def comparison_index(rows, previous=""):
     return "\n".join(lines)
 
 
+def wait_for_statuses(paths, timeout):
+    """One-shot sequencing gate; never start after a failed predecessor."""
+    deadline = time.monotonic() + timeout
+    while True:
+        states = [json.loads(Path(p).read_text()).get("state") for p in paths]
+        if all(state == "complete" for state in states):
+            return
+        if any(state not in {"running", "waiting", "complete"} for state in states):
+            raise RuntimeError(f"predecessor did not complete successfully: {states}")
+        if time.monotonic() >= deadline:
+            raise TimeoutError("predecessor wait deadline; no experiment started")
+        time.sleep(min(15., max(0., deadline - time.monotonic())))
+
+
 def run(args, root):
     configs = [Path(p).resolve() for p in args.configs]
     labels = args.labels or [p.stem for p in configs]
@@ -213,7 +227,8 @@ def run(args, root):
 
     def command_for(stage, label, config, obj, worker_output=None):
         target = worker_output or (output / label)
-        return [sys.executable, str(root / "run.py"), "--config", str(config),
+        entrypoint = getattr(args, "entrypoint", None) or "run.py"
+        return [sys.executable, str(root / entrypoint), "--config", str(config),
                 "--data-root", args.data_root, "--output-dir", str(target),
                 "--objects", obj, "--device", args.device]
 
@@ -277,6 +292,19 @@ def run(args, root):
                     summaries.extend(lines[1:])
         if summaries:
             atomic_write(stage_output / "summary.tsv", "\n".join(summaries) + "\n")
+
+    after = getattr(args, "after_status", None)
+    if after:
+        status.update(state="waiting", predecessor_status_paths=after)
+        save()
+        try:
+            wait_for_statuses(after, args.after_timeout)
+        except Exception as error:
+            status.update(state="invalid_run", error=str(error), ended=time.time())
+            save()
+            raise
+        status.update(state="running", predecessor_completed_at=time.time())
+        save()
 
     for stage, (label, config) in enumerate(zip(labels, configs)):
         pending = [obj for obj in args.objects if (label, obj) not in completed]
@@ -873,11 +901,17 @@ def main():
     subparsers = parser.add_subparsers(dest="action", required=True)
     runner = subparsers.add_parser("run", help="sequence configs through the existing CLI")
     runner.add_argument("--configs", nargs="+", required=True)
+    runner.add_argument("--entrypoint", default="run.py",
+                        help="CLI entrypoint; default is the common experiment pipeline")
     runner.add_argument("--data-root", required=True)
     runner.add_argument("--device", default="cuda:0")
     runner.add_argument("--timeout", type=int, default=3600)
     runner.add_argument("--workers", type=int, default=1,
                         help="run independent objects concurrently within each stage")
+    runner.add_argument("--after-status", nargs="+",
+                        help="start only after all predecessor status files report complete")
+    runner.add_argument("--after-timeout", type=float, default=86400,
+                        help="maximum predecessor wait in seconds")
     runner.add_argument("--split", required=True, help="declare actual split and development/final exposure")
     runner.add_argument("--resume", action="store_true",
                         help="resume an invalid queue, preserving completed runs and failure history")

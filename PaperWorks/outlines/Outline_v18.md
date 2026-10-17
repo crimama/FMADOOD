@@ -4,7 +4,7 @@
 > **v18 주요 개정 사항 (v16.3 기반)**:
 >
 > 1. **방법 교체**: shallow 결합을 비대칭 초과 게이트에서 고정 선형 가산 $S = z_d + 0.125\,z_5$ (linear0125)로 교체한다. §3과 §4의 결과는 v17.1의 linear0125 실행 결과로 맞추고 게이트 설정의 결과는 제거했다.
-> 2. **결과 갱신**: 표 6(private)은 linear0125 결과 대기 상태다. 표 10의 총 cap 통제 비교는 완료된 linear0125 실행으로 갱신했으며, 단일·다중 해상도 비교는 표 10a·10b에 둔다.
+> 2. **결과 갱신**: 표 6(private)의 ScopeAD 행은 linear0125 공식 리더보드 점수로 교체했다. 표 10의 총 cap 통제 비교는 완료된 linear0125 실행으로 갱신했으며, 단일·다중 해상도 비교는 표 10a·10b에 둔다.
 > 3. **서론**: v16.3의 §1.1–1.3 구성을 개선했다. §1.1에서 저-FPR 파급효과 항목을 제거하고, §1.2에 관측별 bank와 점수 단위 정렬의 논리, 관측·결합의 역할 분담을 추가했다. §1.3 주요 기여에 관측 확장(Observation Expansion) 자체의 기여를 전면 명시하여 서론 전반의 논리 정합성을 확보했다. 일반 Vision 문헌으로 각 단계의 근거를 보강했다.
 > 4. **명칭 및 타이틀 개정**: 비대칭 잔차 게이트에서 고정 선형 가산 및 관측 확장 중심으로 방법이 변경됨에 따라, 방법론 명칭을 **ScopeAD** (*Support-Calibrated Observation-expanded Patch Ensemble for Anomaly Detection*)로 변경하고 타이틀을 *Observation Expansion and Support-Calibrated Fusion for Few-Shot Industrial Anomaly Localization*으로 개정했다.
 > 5. **관련 연구·서지**: §2.1·§2.3의 서지를 갱신하고 부록 A.4에 검증한 서지 표를 추가했다.
@@ -481,12 +481,12 @@ PatchCore·SuperAD·AnomalyDINO·FastRecon·SubspaceAD는 단일 1120 입력, RA
 | 방법                                              |       AU-PRO@0.05       |         ClassF1         |          SegF1          |
 | :------------------------------------------------ | :---------------------: | :---------------------: | :---------------------: |
 | **(a) Few-shot (16-shot)**                  |                        |                        |                        |
-| PatchCore                                         |           —           |           —           |           —           |
+| PatchCore                                         |     58.33 / 57.03     |     78.21 / 78.02     |     29.96 / 27.75     |
 | AnomalyDINO                                       |           —           |           —           |           —           |
 | SuperAD                                           |           —           |           —           |           —           |
 | RAD                                               |           —           |           —           |           —           |
 | SubspaceAD                                        |           —           |           —           |           —           |
-| Ours (ScopeAD, linear0125)                    |           —           |           —           |           —           |
+| Ours (ScopeAD, linear0125)                    |     65.21 / 63.25     |     76.57 / 77.68     |     37.71 / 34.00     |
 | **(b) Full-data Reference (출판/리더보드)** |                        |                        |                        |
 | PatchCore                                         |       28.8 / 26.0       |        8.0 / 9.9        |        3.7 / 3.4        |
 | RD                                                |       26.4 / 25.0       |       70.8 / 72.9       |       18.1 / 16.7       |
@@ -499,7 +499,7 @@ PatchCore·SuperAD·AnomalyDINO·FastRecon·SubspaceAD는 단일 1120 입력, RA
 | RoBiS                                             |      67.25 / 59.65      |      79.62 / 79.86      |      51.00 / 46.52      |
 | SuperADD                                          |      61.36 / 59.07      |      68.03 / 73.25      |      57.42 / 54.35      |
 
-linear0125 결과는 공식 private 서버 재평가 후 기입한다. 이전 비대칭 게이트 제출 결과는 현재 방법과 다르므로 이 표에서 제외했다.
+linear0125 결과는 2026-10-14 공식 private 리더보드(제출 ID c7a8b8f7-cf48-4d12-ba04-7e22a01c83a0, 상태 DONE)에서 확인해 기입했다. PatchCore는 같은 16-shot seed 0 support와 1120 입력, 정규화 임계값 규칙으로 제출했다(제출 ID 40269ae8-8a85-4450-b342-fa9669d03cbb, 상태 DONE, 기록 results/patchcore_private_submission_20261014/). 이전 비대칭 게이트 제출 결과는 현재 방법과 다르므로 이 표에서 제외했다.
 
 ScopeAD의 Score map은 표 4와 동일한 16-shot support(seed 0) 기반이며, ClassF1·SegF1 threshold는 support 제외 `train/good`의 8번째 간격 샘플링(pixel p95 × 1.421)을 사용했다(private labels 미사용). Full-data rows는 원 논문 및 공식 리더보드 발표 수치로 정상 데이터 예산·백본·입력 크기·후처리가 달라 few-shot과 직접 순위화하지 않는다. 출처: [공식 제출 보고서](../../results/rsg4_private_submission_20260928/comparison.md).
 
@@ -537,15 +537,15 @@ Regular 대비 strata 차이는 같은 클래스 집합 기준으로 계산했�
 | PatchCore                          |           83.97 / 88.80           |     83.43 / <u>88.38</u>     |     77.15 / 85.27     |           81.58 / 87.41           | **74.03 / 83.66** |
 | AnomalyDINO                        |       77.62 / 85.31       | 72.54 / 82.61 | 72.08 / 82.48 | 70.69 / 81.06 |              33.02 / 66.81              |
 | FastRecon (project adaptation)†   | **85.74 / 90.82** |     77.53 / 86.35     |     69.72 / 84.47     | **82.35 / 88.90** |           57.70 / 77.37           |
-| RAD                                |       80.12 / 87.03       |        — / —        |        — / —        |              — / —              |              — / —              |
-| SubspaceAD                         |       83.89 / 86.98       |        — / —        |        — / —        |              — / —              |              — / —              |
+| RAD                                |       80.12 / 87.03       | 78.70 / 86.04 | 74.96 / 84.33 | 70.44 / 81.13 | 49.23 / 72.05 |
+| SubspaceAD                         |       83.89 / 86.98       | 80.45 / 84.91 | 78.49 / 83.39 | 78.17 / 83.39 | 64.61 / 78.01 |
 | SuperAD                            |           84.49 / <u>89.15</u>           | <u>83.68</u> / **88.47** | <u>82.27</u> / **87.86** |           <u>82.17</u> / <u>87.74</u>           |           <u>71.10</u> / <u>82.45</u>           |
 | RegAD (DINOv2 project adaptation)‡ |       38.11 / 78.65       |       36.14 / 77.02       |       32.01 / 74.77       |       37.33 / 77.91       |       28.12 / 70.00       |
 | Ours (ScopeAD, linear0125)     | <u>85.42</u> / 88.98 | **84.64** / 88.35 | **83.40** / <u>87.59</u> | 81.46 / 86.38 | 68.43 / 80.19 |
 
 RAD Clean 재집계: AUPRO@0.05 80.12 / pAUROC@0.05 87.03. 네 GPU의 Table 5 MVTec AD 16-shot seed-0 shard summary에서 15/15 클래스가 중복 없이 확인됐고, 두 지표 모두 finite였다. Source: [Table 5 MVTec completed shards](../../results/remote_runs/dsba3/table5_fill_20261007/).
 
-MVTec AD 15 classes; 16 normal support images; seed 0; corruption severity 3; support remains clean. 굵게/밑줄은 실행된 비교군과 Ours의 각 지표별 1·2위이며, 결측 비교군은 순위 판단에서 제외한다. AnomalyDINO와 SubspaceAD의 Clean 값은 Table 5의 15-class, 16-shot, seed-0 실행에서 재사용했다. 해당 실행은 각 방법의 표 4 설정(1120 입력)과 동일한 고정 support manifest 및 지표 계약을 사용한다. AnomalyDINO는 Clean 77.62 / 85.31, SubspaceAD는 Clean 83.89 / 86.98이다. AnomalyDINO의 Brightness, Contrast, Defocus blur, Gaussian noise 결과는 각 15개 클래스의 완료 실행에서 집계했다: [brightness](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/anomalydino_brightness/comparison.md), [contrast](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/anomalydino_contrast/comparison.md), [defocus blur](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/anomalydino_defocus_blur/comparison.md), [Gaussian noise](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/anomalydino_gaussian_noise/comparison.md). RAD·SubspaceAD corruption 조건은 아직 미완료다. Clean 값 출처: [Table 5 MVTec completed shards](../../results/remote_runs/dsba3/table5_fill_20261007/). Corruption별 구분 평가는 Hendrycks and Dietterich (2019)의 연구와 연결된다. 기존 비교군 출처: [MVTec AD corruption comparison](../../results/comparisons/corruption_compare_20260922/comparison.md); Ours 출처: corrected linear0125 suite 완료 보고서.† FastRecon은 기존 `fastrecon` DINOv2-L/14 기반 local-neighbor ridge reconstruction 변형의 완료 결과(5조건 × 15클래스)다. 표 4의 ResNet-50 기반 `fastrecon_paper`와 다른 구성으로, 원 논문 재현 결과로 해석하지 않는다. ‡ RegAD 행은 공식 Table 4 구현과 구별되는 DINOv2 dense-matching 프로젝트 변형이며, 결과를 official RegAD 수치로 해석하지 않는다([구현 차이 감사](../../configs/benchmarks/public_v13_20260929/FASTRECON_REGAD_AUDIT.md)).
+MVTec AD 15 classes; 16 normal support images; seed 0; corruption severity 3; support remains clean. 굵게/밑줄은 실행된 비교군과 Ours의 각 지표별 1·2위이며, 결측 비교군은 순위 판단에서 제외한다. AnomalyDINO와 SubspaceAD의 Clean 값은 Table 5의 15-class, 16-shot, seed-0 실행에서 재사용했다. 해당 실행은 각 방법의 표 4 설정(1120 입력)과 동일한 고정 support manifest 및 지표 계약을 사용한다. AnomalyDINO는 Clean 77.62 / 85.31, SubspaceAD는 Clean 83.89 / 86.98이다. AnomalyDINO의 Brightness, Contrast, Defocus blur, Gaussian noise 결과는 각 15개 클래스의 완료 실행에서 집계했다: [brightness](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/anomalydino_brightness/comparison.md), [contrast](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/anomalydino_contrast/comparison.md), [defocus blur](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/anomalydino_defocus_blur/comparison.md), [Gaussian noise](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/anomalydino_gaussian_noise/comparison.md). SubspaceAD 네 corruption 조건은 각 15/15 클래스 완료, finite 지표 및 prediction/GT shape 검증 후 collector에 등록했다: [brightness](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/subspacead_brightness/comparison.md), [contrast](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/subspacead_contrast/comparison.md), [defocus blur](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/subspacead_defocus_blur/comparison.md), [Gaussian noise](../../results/remote_runs/dsba3/scopead_v18_q95_corruption_comparators_20261013/combined/subspacead_gaussian_noise/comparison.md). RAD는 캐시 경로로 재실행 중이며 아직 미완료다. Clean 값 출처: [Table 5 MVTec completed shards](../../results/remote_runs/dsba3/table5_fill_20261007/). Corruption별 구분 평가는 Hendrycks and Dietterich (2019)의 연구와 연결된다. 기존 비교군 출처: [MVTec AD corruption comparison](../../results/comparisons/corruption_compare_20260922/comparison.md); Ours 출처: corrected linear0125 suite 완료 보고서.† FastRecon은 기존 `fastrecon` DINOv2-L/14 기반 local-neighbor ridge reconstruction 변형의 완료 결과(5조건 × 15클래스)다. 표 4의 ResNet-50 기반 `fastrecon_paper`와 다른 구성으로, 원 논문 재현 결과로 해석하지 않는다. ‡ RegAD 행은 공식 Table 4 구현과 구별되는 DINOv2 dense-matching 프로젝트 변형이며, 결과를 official RegAD 수치로 해석하지 않는다([구현 차이 감사](../../configs/benchmarks/public_v13_20260929/FASTRECON_REGAD_AUDIT.md)).
 
 ---
 
@@ -786,13 +786,13 @@ q95 정렬은 MAD 정렬보다 세 데이터셋에서 높지만, 정규화를 �
 
 ### 5.2. 저-FPR 곡선 메트릭과 고정 배포 임계값의 과제
 
-저-FPR 곡선 지표의 차이는 비교 기준에 따라 해석해야 한다. 표 8에서 q95는 정규화를 생략한 경우보다 AUPRO@0.05가 0.40pp 높지만 pAUROC@0.05는 0.19pp 낮다. support 분위수로 점수 단위를 정렬해도 query 분포의 FPR이 정해지는 것은 아니므로, 고정된 단일 컷오프(cutoff)로 공정에 배포할 때는 획득 조건 변화에 따른 별도의 threshold calibration과 검증이 필요하다. 표 6의 private 결과는 게이트 설정의 결과다. linear0125의 AD2 native acquisition strata는 그림 2 자료로 확보했지만, private 및 synthetic corruption 평가는 아직 수행하지 않았다.
+저-FPR 곡선 지표의 차이는 비교 기준에 따라 해석해야 한다. 표 8에서 q95는 정규화를 생략한 경우보다 AUPRO@0.05가 0.40pp 높지만 pAUROC@0.05는 0.19pp 낮다. support 분위수로 점수 단위를 정렬해도 query 분포의 FPR이 정해지는 것은 아니므로, 고정된 단일 컷오프(cutoff)로 공정에 배포할 때는 획득 조건 변화에 따른 별도의 threshold calibration과 검증이 필요하다. 표 6의 private 결과는 linear0125 공식 리더보드 점수(AU-PRO 65.21 / 63.25)다. linear0125의 AD2 native acquisition strata는 그림 2 자료로 확보했지만, synthetic corruption 평가는 아직 수행하지 않았다.
 
 ---
 
 ## 6. Conclusion — 약 0.15쪽
 
-본 논문은 동결된 시각 표현의 다해상도·다계층 관측마다 별도 bank를 만들고, 정상 support 분위수로 점수 단위를 정렬한 뒤 Deep 기준선에 Shallow를 고정 가중치로 더하는 **ScopeAD**를 제안했다. 해상도와 계층의 확장은 정상 이미지를 늘리지 않고 같은 이미지의 관측을 늘리며, 관측별 bank와 단위 정렬은 이 관측들을 결합 단계에서 같은 기준으로 비교하게 하고, 고정 가중 가산은 shallow 관측의 비중을 정한다. MVTec AD 2 public 16-shot에서 3-seed 60.06 ± 0.88% AUPRO@0.05로 동일 support의 SuperAD보다 4.17pp 높았고, 구성 비교에서 단일 bank 대비 +2.09pp, 최선 단일 해상도 대비 +2.10pp였다. linear0125 설정의 private·synthetic corruption 평가와 MVTec AD·VisA 1·4·8-shot 다중 seed는 후속 과제다.
+본 논문은 동결된 시각 표현의 다해상도·다계층 관측마다 별도 bank를 만들고, 정상 support 분위수로 점수 단위를 정렬한 뒤 Deep 기준선에 Shallow를 고정 가중치로 더하는 **ScopeAD**를 제안했다. 해상도와 계층의 확장은 정상 이미지를 늘리지 않고 같은 이미지의 관측을 늘리며, 관측별 bank와 단위 정렬은 이 관측들을 결합 단계에서 같은 기준으로 비교하게 하고, 고정 가중 가산은 shallow 관측의 비중을 정한다. MVTec AD 2 public 16-shot에서 3-seed 60.06 ± 0.88% AUPRO@0.05로 동일 support의 SuperAD보다 4.17pp 높았고, 구성 비교에서 단일 bank 대비 +2.09pp, 최선 단일 해상도 대비 +2.10pp였다. linear0125 설정의 공식 private 평가(표 6)는 완료했고, synthetic corruption 평가는 후속 과제다.
 
 ---
 
@@ -809,8 +809,8 @@ q95 정렬은 MAD 정렬보다 세 데이터셋에서 높지만, 정규화를 �
 | **다해상도 결합 이득**                           | linear0125 최선 단일 대비 AUPRO +4.95/+2.10pp(2/16-shot, 표 10a); MVTec AD·VisA I/P-AUROC 모두 상승(표 10b); 설정상 cap 일치 비교에서 AUPRO +2.43pp, pAUROC +1.97pp(표 10)                           | seed 0 개발 비교에서 지지됨 | 설정상 cap 합계 비교이며 단일 seed 개발 결과로 한정               |
 | **$\lambda=0.125$ 선택**                       | AD2 public 2-shot seed 0 AUPRO로 선택(표 8b)                                                                                                                                        |          post-hoc          | 개발 평가로 선택했음을 명시; 다른 데이터셋에서 재조정하지 않음 |
 | **SuperAD 등 외부 비교**                         | AD2 2·16-shot은 3-seed 비교(표 4; 16-shot +4.17pp, 2-shot +6.23pp); MVTec AD·VisA Ours는 2·16-shot 3-seed (표 5b) | 2·16-shot은 다중 seed, 기타 AD2 shot도 seed별 비교 가능 | MVTec AD·VisA의 1·4·8-shot은 seed 0 비교로 한정 |
-| **private 성능**                                 | 표 6의 64.80 / 62.49는 게이트 설정 결과                                                                                                                                             |      linear0125 미검증      | 재제출 후 교체; 본문 초록·결론에서는 인용하지 않음            |
-| **shift·corruption 성능**                       | corrected linear0125 AD2 strata와 MVTec AD clean/corruption Ours 값 확보; 표 7 외부 비교군 일부 결측 | 일부 확보 | comparator strata와 그림 합성, private 평가 필요                                            |
+| **private 성능** | 표 6의 linear0125 AU-PRO 65.21 / 63.25 (공식 리더보드) | 확보 | 표 6에 반영 |
+| **shift·corruption 성능**                       | corrected linear0125 AD2 strata와 MVTec AD clean/corruption Ours 값 확보; 표 7 외부 비교군 일부 결측 | 일부 확보 | comparator strata와 그림 합성 필요                                            |
 | **계산 비용**                                    | AD2 fit/query 평균, cap256/1024 paired 비교 및 component profile은 표 12·12a·12b에 기록 | 확보 | component profile은 계측 포함 descriptive profile이며 기본 runtime과 구분                                              |
 
 ### A.2. Controlled Comparison and Decision Rules
@@ -818,7 +818,7 @@ q95 정렬은 MAD 정렬보다 세 데이터셋에서 높지만, 정규화를 �
 - **다중 seed**: AD2 1·2·4·8·16-shot과 MVTec AD·VisA 1·2·4·8·16-shot의 linear0125 seed 0/1/2 결과를 확보했다. 표 4와 표 5b는 각 seed의 class macro를 계산한 뒤 mean ± sample SD로 집계했다.
 - **Score calibration**: 전체 방법의 q95 대 none으로 판단한다. 기존 factorial에서는 일관된 이득이 없었다. 후속 local-center 변형도 사전 기준을 만족하지 못해 기본 방법으로 채택하지 않는다(§4.4.4).
 - **$\lambda$ 선택 기록**: 선택 split·shot·seed·사용 레이블을 보존하고 개발 평가로 선택했음을 명시한다.
-- **남은 교체·보완**: 표 6 private 평가는 아직 linear0125 결과로 교체되지 않았다. 그림 2의 세 방법×5-shot 수치와 coverage 검증은 완료했으며 최종 그림 합성이 남았다. 표 7의 AnomalyDINO Clean/4 corruption과 RAD·SubspaceAD Clean 값은 확보했다. SubspaceAD 네 corruption 조건의 클래스 집계·검증·등록이 남아 있다. RAD 최초 corruption 시도는 gated Hugging Face repo 401로 실패했지만, 로컬 DINOv3 ViT-B/16 캐시 경로를 지정한 Gaussian-noise bottle 단일 클래스 smoke는 완료했다. 네 corruption 전체 실행 및 결과 검증이 남아 있다. local-center는 실행·집계·비교가 완료됐으며 채택 기준을 통과하지 못했다.
+- **남은 교체·보완**: 그림 2의 세 방법×5-shot 수치와 coverage 검증은 완료했으며 최종 그림 합성이 남았다. 표 7의 AnomalyDINO Clean/4 corruption과 RAD·SubspaceAD Clean 값은 확보했다. SubspaceAD 네 corruption 조건의 클래스 집계·검증·등록이 남아 있다. RAD 최초 corruption 시도는 gated Hugging Face repo 401로 실패했지만, 로컬 DINOv3 ViT-B/16 캐시 경로를 지정한 Gaussian-noise bottle 단일 클래스 smoke는 완료했다. 네 corruption 전체 실행(각 15/15 클래스, finite·shape 검증 통과)은 완료되어 표 7에 반영했다. local-center는 실행·집계·비교가 완료됐으며 채택 기준을 통과하지 못했다.
 - 2026-10-13 continuation: AnomalyDINO brightness/contrast/defocus blur/Gaussian noise는 각각 15/15 클래스 완료, finite metric 및 prediction-map/GT shape 검사 후 collector에 등록했다. 표 7에 Gaussian noise 33.02 / 66.81을 추가했다. SubspaceAD brightness·contrast·defocus blur·Gaussian noise는 2026-10-13 08:46 KST live check 기준 각각 6/15, 4/15, 4/15, 6/15 클래스 산출물이 있다. 네 GPU에서 각 lane의 grid 또는 leather 클래스 프로세스가 실행 중이며 08:32 확인 뒤에도 마지막 클래스 결과 개수는 바뀌지 않았다. RAD watcher는 SubspaceAD 네 lane이 각각 15/15가 될 때까지 대기 중이고 RAD 결과는 아직 없다. RAD는 gated model ID로 첫 시도가 실패했으나, DINOV3_MODEL_ID를 로컬 캐시로 지정한 Gaussian-noise bottle smoke는 통과했다. [대기 실행 스크립트](../../configs/benchmarks/scopead_v18_q95_corruption_comparators_20261013/queue_rad_after_subspacead.sh)는 기존 watcher를 유지한다. 각 lane 완료 후 finite metric, class coverage, prediction/GT shape를 확인하고 collector에 등록한 뒤 표 7을 갱신한다.
 - **편집 범위**: 계층 제거 대조는 원고에서 제외했다. 원본 ablation·factorial·multi-seed 보고서는 보존한다.
 - 2026-10-13 10:28 KST continuation check: SubspaceAD corruption 클래스 결과는 brightness 8/15, contrast 6/15, defocus blur 6/15, Gaussian noise 8/15다. Gaussian noise metal_nut의 새 산출물을 회수하고 기존 collector로 등록했다. metrics는 finite 범위, prediction map·GT shape coverage를 통과했으며 partial scope라 macro 값은 계산하지 않았다. 나머지 세 조건도 기존 run을 계속 실행 중이며 네 GPU가 모두 작업 중이다. RAD 대기 watcher는 SubspaceAD 네 조건이 각각 15/15를 채운 뒤 실행을 시작하도록 대기 중이다. 표 7의 SubspaceAD·RAD corruption 값은 전체 클래스 coverage와 유효 지표 검증 전까지 비워 둔다.
@@ -832,7 +832,7 @@ q95 정렬은 MAD 정렬보다 세 데이터셋에서 높지만, 정규화를 �
 - 표 4의 Ours AD2는 corrected linear0125 seed 0/1/2 결과로 1·2·4·8·16-shot을 모두 제시한다. 표 5 비교는 seed 0이고 표 5b는 1·2·4·8·16-shot 3-seed 요약이다.
 - 그림 1(개요도)은 linear0125 구성으로 갱신했다. 그림 M3는 게이트 설정 기준이다. 그림 2의 세 방법×5-shot strata 수치는 수집·검증해 반영했으며 최종 도식 합성이 남았다.
 - 방법 명칭의 Asymmetric은 게이트 제거 후 재검토가 필요하다.
-- 완료: 전체 방법 보정 factorial(표 8c·8d), AD2·MVTec AD·VisA 전 shot multi-seed, 해상도·cap 통제 비교(표 10·10a·10b), q 민감도(표 11), AD2 native strata 수집, MVTec AD clean/corruption Ours 결과, 세부 구성 요소별 비용 프로파일, local-center 후보의 전체 개발 비교. 남음: 표 6 private 평가, 그림 2 comparator strata 및 최종 합성, 표 7 일부 외부 comparator, 정성 패널.
+- 완료: 전체 방법 보정 factorial(표 8c·8d), AD2·MVTec AD·VisA 전 shot multi-seed, 해상도·cap 통제 비교(표 10·10a·10b), q 민감도(표 11), AD2 native strata 수집, MVTec AD clean/corruption Ours 결과, 세부 구성 요소별 비용 프로파일, local-center 후보의 전체 개발 비교. 남음: 그림 2 comparator strata 및 최종 합성, 표 7 일부 외부 comparator, 정성 패널.
 - v16.3과 v17.1의 원문은 [Outline_v16.3.md](Outline_v16.3.md), [Outline_v17.1.md](Outline_v17.1.md)에 보존한다.
 
 ### A.4. Verified Literature

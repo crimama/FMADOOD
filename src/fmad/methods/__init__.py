@@ -57,6 +57,18 @@ def register_methods(method_name: str | None = None) -> None:
         from fmad.methods import reference_matching  # noqa: F401
     elif method_name == "reference_matching_fast":
         from fmad.methods import reference_matching_fast  # noqa: F401
+    elif method_name == "multiscale_aggregation_reference_matching":
+        from fmad.methods import multiscale_aggregation_reference_matching  # noqa: F401
+    elif method_name == "gaussian_scale_reference_matching":
+        from fmad.methods import gaussian_scale_reference_matching  # noqa: F401
+    elif method_name == "directional_reference_matching":
+        from fmad.methods import directional_reference_matching  # noqa: F401
+    elif method_name == "matched_reference_matching":
+        from fmad.methods import matched_reference_matching  # noqa: F401
+    elif method_name == "statistical_reference_matching":
+        from fmad.methods import statistical_reference_matching  # noqa: F401
+    elif method_name == "normal_tail_risk_reference_matching":
+        from fmad.methods import normal_tail_risk_reference_matching  # noqa: F401
     elif method_name == "region_recovery":
         from fmad.methods import region_recovery  # noqa: F401
     elif method_name == "fusion_factorial":

@@ -202,6 +202,7 @@ class ReferenceMatchingFast(ReferenceMatching):
             raise ValueError('calibration audit requires plain R1 none/q95 layerwise scoring')
         self._calibration_bags = None
         self._calibration_grids = None
+        self._calibration_native_bags = None
 
     def _observe_layer_scores(self, distances, scores, *, tau):
         super()._observe_layer_scores(distances, scores, tau=tau)
@@ -215,6 +216,7 @@ class ReferenceMatchingFast(ReferenceMatching):
         predictions = []
         for path in test_image_paths:
             self._calibration_grids = []
+            self._calibration_native_bags = []
             started = time.perf_counter()
             try:
                 score, image_score = self.predict(path)
@@ -222,10 +224,16 @@ class ReferenceMatchingFast(ReferenceMatching):
                     raise RuntimeError('incomplete calibration audit')
                 predictions.append(Prediction(score, image_score, time.perf_counter() - started,
                     {'calibration_audit': {'grids': self._calibration_grids,
-                     'resolutions': list(self.last_resolutions), 'layers': list(self.layers)}}))
+                     'resolutions': list(self.last_resolutions), 'layers': list(self.layers),
+                     'native_bags': self._calibration_native_bags,
+                     'raw_tail_thresholds': [
+                         [[float(t['u']) for t in bag] for bag in
+                          self.bag_tails.get(r, [self.tails[r]])]
+                         for r in self.last_resolutions]}}))
             finally:
                 self._calibration_grids = None
                 self._calibration_bags = None
+                self._calibration_native_bags = None
         return predictions
 
     def _fuse_layers(self, scores, tau=None):
@@ -319,6 +327,10 @@ class ReferenceMatchingFast(ReferenceMatching):
                 )
                 values[layer_index].append(distances.detach().cpu())
 
+        # Keep source groups for calibration estimators that treat images,
+        # rather than correlated tokens, as the independent units.
+        self._last_source_loo_samples = values
+
         # This is the base calibration reducer, kept local to the optimized
         # multi-source branch. One-shot and token-LOO use the unchanged parent
         # implementation above.
@@ -331,21 +343,23 @@ class ReferenceMatchingFast(ReferenceMatching):
             mad = (sample - median).abs().median()
             mad_scale = (1.4826 * mad).clamp_min(1e-4)
             tail_dict = self._tail_params(sample)
+            self._set_tail_center(tail_dict)
             if self.layer_fusion == "residual_spike" and self.layer_fusion_tau_mode == "support_quantile":
                 if self.score_normalization == "tailscale":
-                    divisor = tail_dict["u"].item()
+                    divisor = self._tailscale_divisor(tail_dict).item()
                 elif self.score_normalization == "none":
                     divisor = 1.0
                 else:
                     divisor = mad_scale.item()
                 q_val = torch.quantile(sample.detach().float().cpu(), self.layer_fusion_tau_q).item()
-                tail_dict["spike_tau"] = float(q_val / max(divisor, 1e-4))
+                offset = float(tail_dict.get("center_offset", 0.0))
+                tail_dict["spike_tau"] = float((q_val - offset) / max(divisor, 1e-4))
                 if self.image_residual_tau_q is not None:
                     q_img = torch.quantile(sample.detach().float().cpu(), self.image_residual_tau_q).item()
-                    tail_dict["image_spike_tau"] = float(q_img / max(divisor, 1e-4))
+                    tail_dict["image_spike_tau"] = float((q_img - offset) / max(divisor, 1e-4))
             tails.append(tail_dict)
             if self.score_normalization == "tailscale":
-                scales.append(tails[-1]["u"].clamp_min(1e-4))
+                scales.append(self._tailscale_divisor(tail_dict))
             elif self.score_normalization == "none":
                 scales.append(torch.ones_like(mad_scale))
             else:
@@ -362,7 +376,10 @@ class ReferenceMatchingFast(ReferenceMatching):
         self._calibration_bags = []
         try:
             score = self._score_tokens_impl(layers, grid, bank, normalize=normalize)
-            values = torch.stack(self._calibration_bags).mean(0)
+            bags = torch.stack(self._calibration_bags)
+            values = bags.mean(0)
+            self._calibration_native_bags.append(
+                bags.reshape(len(bags), 2, len(self.layers), *grid).cpu().numpy())
             self._calibration_grids.append(values.reshape(2, len(self.layers), *grid).cpu().numpy())
             return score
         finally:
@@ -421,6 +438,9 @@ class ReferenceMatchingFast(ReferenceMatching):
                         self._active_tail(layer_index, bag_index), distance))
                 elif normalize and sigma_local is not None:
                     scores.append(distance / sigma_local)
+                elif normalize and self.tailscale_center_rho:
+                    scores.append(self._centered_tail_score(
+                        distance, self._active_tail(layer_index, bag_index), global_scale))
                 else:
                     scores.append(distance / (global_scale if normalize else 1.0))
                 if weights is not None:
@@ -473,6 +493,14 @@ class ReferenceMatchingFast(ReferenceMatching):
                 tails = self.bag_tails.get(resolution, [self.tails[resolution]])
                 calibration[str(resolution)] = {
                     "scales": [[float(v) for v in scale] for scale in scales],
+                    "support_loo": [[{
+                        "q50": float(torch.quantile(t["sample"], .5)),
+                        "q95": float(t["u"]),
+                        "offset": float(t.get("center_offset", 0.0)),
+                        "normalized_q50": float((torch.quantile(t["sample"], .5)
+                            - t.get("center_offset", 0.0)) / scale[i]),
+                        "normalized_q95": float((t["u"] - t.get("center_offset", 0.0)) / scale[i]),
+                    } for i, t in enumerate(bag)] for bag, scale in zip(tails, scales)],
                     "shallow_tau": [float(bag[self.layer_fusion_shallow_idx].get("spike_tau", self.layer_fusion_tau))
                                     for bag in tails],
                 }

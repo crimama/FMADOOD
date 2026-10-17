@@ -1,6 +1,28 @@
 # Current research state
 
-> Latest execution reviewed: 2026-09-25; older sections retain dated context.
+## COMPLETED — asymmetric partial axis calibration follow-up, 2026-10-16
+
+All32 class evaluations completed on dsba3 with zero failures and were collected.
+The fixed comparison used AD2 test_public seen development, seed0, VOID normal
+supports, 2/16 shots, full8 and CQ off. Metrics are finite for all 1,084 maps
+per arm. Per-class support identities match the earlier alpha=(0.5,0.5) runs;
+the code hash and shared evaluation conditions also match. The experiment changes
+the calibration exponents only.
+
+For 16 shots, alpha=(0.25,0.5) has 58.51030 AUPRO / 77.63907 pAUROC, versus
+58.56950 / 77.59680 for (0.5,0.5): -0.05920pp AUPRO and +0.04227pp pAUROC.
+Its AUPRO difference remains negative in all eight leave-one-class-out means.
+At alpha=(0.25,1.0), the 16-shot difference is -0.00129pp AUPRO / +0.01086pp
+pAUROC, effectively a near tie; leave-one-class-out AUPRO changes range from
+-0.05145pp to +0.03776pp. At 2 shots, (0.25,1.0) gains +0.06154pp AUPRO and
+loses -0.02720pp pAUROC against (0.5,0.5), with class sensitivity. These are
+single-seed seen-development comparisons, not stable or final-evaluation gains.
+The tested weaker layer exponent does not show a robust AUPRO benefit; do not
+promote asymmetric exponents from this result alone. See the
+[run report](../results/remote_runs/dsba3/scopead_asymmetric_axis_alignment_20261016/comparison.md)
+and [canonical comparison index](../results/comparisons.md).
+
+> Latest execution reviewed: 2026-10-16; older sections retain dated context.
 > This file is the live project status, not a
 > historical experiment log. It records confirmed configuration and pending
 > decisions only; it must not invent results.

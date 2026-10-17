@@ -1,0 +1,43 @@
+{
+  "outline": "../outlines/Outline_v18.md",
+  "method": "ScopeAD",
+  "style_reference": "main_figure_history/07_scarf_initial_20261001/draft_06",
+  "generator": "draw_scopead_overview_initial_style.py",
+  "layout": "two bands: support fitting / query inference",
+  "fusion": "sum_l (alpha_l / c_lrb) * d_lrb; alpha=(0.125,0.5,0.5)",
+  "scales": [
+    448,
+    672,
+    896,
+    1120
+  ],
+  "layers": [
+    5,
+    11,
+    23
+  ],
+  "bags": 4,
+  "tokens_per_image_per_bag": 256,
+  "calibration_quantile": 0.95,
+  "image_score": "top-1% pixel mean of postprocessed A",
+  "display_postprocessed": false,
+  "schematic_postprocessing": "high-score connected-component maximum (CQ); not rendered",
+  "display_map_source": "cache_rsg4_mechanism/overview_walnuts__defect.npz",
+  "display_map_keys": [
+    "r448_normalized_l5",
+    "r448_normalized_l11",
+    "r448_normalized_l23",
+    "r672_normalized_l5",
+    "r672_normalized_l11",
+    "r672_normalized_l23",
+    "r896_normalized_l5",
+    "r896_normalized_l11",
+    "r896_normalized_l23",
+    "r1120_normalized_l5",
+    "r1120_normalized_l11",
+    "r1120_normalized_l23"
+  ],
+  "display_map_status": "linear0125 reconstructed from FP16 cached bag-averaged, resized layer maps; not a new evaluation",
+  "support_histogram_source": "overview_walnuts__support.npz: lso_l5, lso_l23 / lso_u_l5, lso_u_l23",
+  "ground_truth_use": "final display contour only"
+}

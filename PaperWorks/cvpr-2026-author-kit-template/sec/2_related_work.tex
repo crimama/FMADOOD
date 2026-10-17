@@ -8,7 +8,7 @@
 패치 매칭 계열의 PatchCore~\cite{patchcore}는 사전학습 CNN의 다층 특징을 연결한 정상 메모리 뱅크와 최근접 거리를 사용하며, AnomalyDINO~\cite{anomalydino}와 SuperAD~\cite{superad}는 동결 DINOv2 특징을 활용한다.
 RegAD~\cite{regad}와 FastRecon~\cite{fastrecon}는 각각 영상 정합과 특징 복원으로 정상 참조와의 차이를 측정하고, SubspaceAD~\cite{subspacead}는 정상 부분공간에 대한 잔차를 사용한다.
 MVTec AD 2의 few-shot 연구~\cite{fewshotad2baseline}도 동결 특징의 계층 선택과 참조 수에 따른 결과를 분석한다.
-이러한 정상 모델링 방식에 더해, ScopeAD는 최근접 매칭에서 계층·해상도별 관측을 확장하고 각 관측의 거리 척도와 결합 기여량을 다루는 데 초점을 둔다.
+이러한 정상 모델링 방식에 더해, ScopeAD는 최근접 매칭에서 계층·해상도별 관측을 확장하고 정상 참조 척도와 계층별 가중치를 함께 사용하는 점수 결합에 초점을 둔다.
 
 \subsection{Multi-Scale Observation and Score Fusion}
 \label{sec:related:fusion}
@@ -16,9 +16,10 @@ MVTec AD 2의 few-shot 연구~\cite{fewshotad2baseline}도 동결 특징의 계�
 다층·다해상도 관측은 서로 다른 수준의 공간 정보를 결합하는 접근이다.
 DPT~\cite{ranftl2021vision}는 여러 ViT 계층의 토큰을 학습된 디코더로 결합하고, S$^2$~\cite{shi2024scaling}는 동결 백본의 다중 척도 특징을 타일 처리와 재조립으로 구성한다.
 이상 탐지에서는 PatchCore의 특징 연결과 SuperAD의 계층별 이상 맵 평균처럼 특징 또는 점수 단계에서 관측을 결합한다~\cite{patchcore,superad}.
-정상 참조 통계로 점수 척도를 맞추는 FreePatch~\cite{freepatch}는 ResNet-50의 layer2/3 점수를 leave-one-out 통계로 정규화하고, 매칭된 참조 패치의 안정성으로 추가 보정하여 드문 정상 패턴의 오경보를 줄인다.
-ScopeAD도 정상 참조 기반 보정을 사용하지만, 목적은 확장된 관측의 거리 단위를 정렬하고 결합 기여량을 제어하는 것이다.
-이를 위해 DINOv2의 계층·전체 입력 해상도·배그별 거리를 leave-source-out 상위 분위수로 정렬하고, 깊은 계층의 평균에 얕은 계층 점수를 작은 고정 가중치로 더한 뒤 해상도별 맵을 결합한다.
+FreePatch~\cite{freepatch}는 정상 참조 정보를 활용하여 패치 매칭 점수를 보정하는 접근이다.
+이러한 접근은 관측을 특징 단계에서 합칠지 개별 매칭 후 점수 단계에서 합칠지, 그리고 정상 참조 정보를 결합에 어떻게 사용할지에 따라 구분할 수 있다.
+ScopeAD는 계층·입력 해상도별 매칭 거리를 유지하고, 관측별 정상 참조 척도와 계층별 상대 가중치를 함께 사용하는 비대칭 결합으로 이를 통합한다.
+구체적인 결합 계수와 정상 참조 추정은 \cref{sec:method:fusion}에서 정의한다.
 
 \subsection{Distribution Shift and Low-FPR Localization}
 \label{sec:related:shift}

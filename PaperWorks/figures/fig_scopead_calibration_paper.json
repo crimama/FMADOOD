@@ -1,0 +1,111 @@
+{
+  "example": {
+    "shot": 2,
+    "class_name": "vial",
+    "raw": 1.6013731478375248,
+    "calibrated": 1.2374890687394962
+  },
+  "selection": "2-shot lower median rank (4/8) by absolute reduction in normal Q95 max/min; ascending, class-name tie break",
+  "panels_ab": "Same normal query sample; boxes Q25-Q75, whiskers Q05-Q95; actual stage-specific units",
+  "panel_c": "All 8 classes x 2 shots; max/min of 12 observation normal-sample Q95s",
+  "source": "results/remote_runs/dsba3/scopead_calibration_diagnostic_20261015",
+  "paired_cells": 16,
+  "rows": [
+    {
+      "shot": 2,
+      "class_name": "can",
+      "raw": 1.3446643481582288,
+      "calibrated": 1.6455716453632494
+    },
+    {
+      "shot": 2,
+      "class_name": "fabric",
+      "raw": 1.7846679891856734,
+      "calibrated": 1.3267961151021443
+    },
+    {
+      "shot": 2,
+      "class_name": "fruit_jelly",
+      "raw": 2.318879025540439,
+      "calibrated": 1.16574684835023
+    },
+    {
+      "shot": 2,
+      "class_name": "rice",
+      "raw": 1.4968799429281543,
+      "calibrated": 1.127825068108092
+    },
+    {
+      "shot": 2,
+      "class_name": "sheet_metal",
+      "raw": 1.6881066519797152,
+      "calibrated": 1.0727051430771974
+    },
+    {
+      "shot": 2,
+      "class_name": "vial",
+      "raw": 1.6013731478375248,
+      "calibrated": 1.2374890687394962
+    },
+    {
+      "shot": 2,
+      "class_name": "wallplugs",
+      "raw": 1.356554821802246,
+      "calibrated": 1.3330913812175034
+    },
+    {
+      "shot": 2,
+      "class_name": "walnuts",
+      "raw": 1.2785239784883764,
+      "calibrated": 1.1231164340311786
+    },
+    {
+      "shot": 16,
+      "class_name": "can",
+      "raw": 1.47963622984388,
+      "calibrated": 1.1821220326400663
+    },
+    {
+      "shot": 16,
+      "class_name": "fabric",
+      "raw": 2.053361917083763,
+      "calibrated": 1.220086684287237
+    },
+    {
+      "shot": 16,
+      "class_name": "fruit_jelly",
+      "raw": 2.751142282785851,
+      "calibrated": 1.1147862631634133
+    },
+    {
+      "shot": 16,
+      "class_name": "rice",
+      "raw": 1.6386006614433342,
+      "calibrated": 1.1154861646723035
+    },
+    {
+      "shot": 16,
+      "class_name": "sheet_metal",
+      "raw": 1.9070998047398748,
+      "calibrated": 1.1360728817108612
+    },
+    {
+      "shot": 16,
+      "class_name": "vial",
+      "raw": 1.7798628220026436,
+      "calibrated": 1.2610642674298698
+    },
+    {
+      "shot": 16,
+      "class_name": "wallplugs",
+      "raw": 1.4733178408944314,
+      "calibrated": 1.487223278719428
+    },
+    {
+      "shot": 16,
+      "class_name": "walnuts",
+      "raw": 1.357951565538001,
+      "calibrated": 1.076475257376088
+    }
+  ]
+}

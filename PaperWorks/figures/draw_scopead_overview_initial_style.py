@@ -7,6 +7,7 @@ Not a new evaluation. Ground truth is used only as a display contour.
 """
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
@@ -151,8 +152,8 @@ def draw_support_band(c, s, meta):
     c.text(4.76,2.885,r"support $D_m^{\mathrm{LSO}}/c_m$ ($r$=672)",size=5.4,weight="bold")
     c.arrow((5.50,2.52),(5.65,2.52),color=SUPPORT)
     c.box(5.68,2.18,1.20,.68,SUPPORT_BG,SUPPORT)
-    c.text(6.28,2.75,"Scale calibration",size=5.8,weight="bold",color=SUPPORT)
-    c.text(6.28,2.57,r"$c_m=Q_{0.95}(D_m^{\mathrm{LSO}})$",size=5.9)
+    c.text(6.28,2.75,"Normal reference",size=5.8,weight="bold",color=SUPPORT)
+    c.text(6.28,2.57,r"$c_m=\max\{Q_{0.95}(D_m^{\mathrm{LSO}}),\epsilon\}$",size=5.0)
     c.text(6.28,2.41,"one distance unit per bank",size=5.2)
     c.text(6.28,2.28,r"fixed state: $\{B_m,c_m\}_{m=1}^{48}$",size=5.1,color=SUPPORT)
 
@@ -183,8 +184,8 @@ def draw_query_band(c,d,scale_maps,final_map):
 
 def draw_fusion(c,d,fused):
     c.box(1.13,.12,3.49,1.66,"white",SHALLOW,lw=.9,radius=.06,z=-1)
-    c.text(2.875,1.70,"C   Support-calibrated layer fusion",size=6.0,weight="bold",color=SHALLOW)
-    c.text(2.875,1.585,r"per $(r,b)$: deep mean + $0.125\,z_5$; shown at $r$=672, bag mean",
+    c.text(2.875,1.70,"C   Support-referenced asymmetric fusion",size=5.8,weight="bold",color=SHALLOW)
+    c.text(2.875,1.585,r"$w_{l,r,b}=\alpha_l/c_{l,r,b}$; $\alpha=(0.125,0.5,0.5)$; shown: $r$=672, bag mean",
            size=4.9,color=MUTED)
     mw=.52; mh=mw*d["rgb"].shape[0]/d["rgb"].shape[1]
     z={l:np.asarray(d[f"r{RES}_normalized_l{l}"],np.float32) for l in (5,11,23)}
@@ -243,42 +244,51 @@ def draw_aggregation(c,d,scale_maps,final_map):
     c.text(5.72,1.15,"mean",size=4.8,color=MUTED)
     ax=c.image(fx,fy,fw,fh,final_map,NAVY,cmap="inferno")
     ax.contour(d["gt"],levels=[.5],colors=[GT],linewidths=.6)
-    c.text(fx+fw/2,fy-.08,r"final map $A(x^q)$",size=5.8,weight="bold")
+    c.text(fx+fw/2,fy-.08,r"combined map $\widetilde A(x^q)$",size=5.8,weight="bold")
     c.text(fx+fw/2,fy-.18,"cyan: GT (display only)",size=4.7,color=MUTED)
-    c.text(5.77,.39,r"image score $s(x^q)$ = top-1% pixel mean",size=5.1,weight="bold")
-    cax=c.inset(4.86,.24,1.91,.04)
+    c.text(5.77,.40,r"$\widetilde A \;\to\;$ component max (CQ) $\;\to\; A$",size=5.1)
+    c.text(5.77,.29,r"$s(x^q)$ = top-1% pixel mean of $A$",size=5.1,weight="bold")
+    cax=c.inset(4.86,.17,1.91,.04)
     cax.imshow(np.linspace(0,1,256)[None],cmap="inferno",aspect="auto")
     for spine in cax.spines.values(): spine.set_linewidth(.3)
-    c.text(4.86,.17,"0",size=4.6,ha="left")
-    c.text(6.77,.17,f"{Z_MAX:g}",size=4.6,ha="right")
-    c.text(5.82,.17,"z units; support q95 → 1 before fusion",size=4.5,color=MUTED)
+    c.text(4.86,.10,"0",size=4.6,ha="left")
+    c.text(6.77,.10,f"{Z_MAX:g}",size=4.6,ha="right")
+    c.text(5.82,.10,"z units; support q95 → 1 before fusion",size=4.5,color=MUTED)
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=OUT, help="Output stem")
+    parser.add_argument("--formats", nargs="+", choices=("pdf", "svg", "png"), default=("pdf", "svg", "png"))
+    args = parser.parse_args()
+    out = args.output
+    out.parent.mkdir(parents=True, exist_ok=True)
     d,s,meta=load()
     scale_maps,final_map=linear_display_maps(d)
     c=Canvas()
     draw_support_band(c,s,meta)
     draw_query_band(c,d,scale_maps,final_map)
-    for ext in ("pdf","svg","png"):
-        exported=OUT.with_suffix(f".{ext}")
+    for ext in args.formats:
+        exported=out.with_suffix(f".{ext}")
         c.fig.savefig(exported,dpi=400 if ext=="png" else None)
     metadata={
         "outline":"../outlines/Outline_v18.md", "method":"ScopeAD",
         "style_reference":"main_figure_history/07_scarf_initial_20261001/draft_06",
         "generator":Path(__file__).name, "layout":"two bands: support fitting / query inference",
-        "fusion":"deep_mean + 0.125 * normalized_layer5", "scales":list(SCALES),
+        "fusion":"sum_l (alpha_l / c_lrb) * d_lrb; alpha=(0.125,0.5,0.5)", "scales":list(SCALES),
         "layers":[5,11,23], "bags":4, "tokens_per_image_per_bag":256,
-        "calibration_quantile":.95, "image_score":"top-1% pixel mean", "cq":False,
+        "calibration_quantile":.95, "image_score":"top-1% pixel mean of postprocessed A",
+        "display_postprocessed":False,
+        "schematic_postprocessing":"high-score connected-component maximum (CQ); not rendered",
         "display_map_source":"cache_rsg4_mechanism/overview_walnuts__defect.npz",
         "display_map_keys":[f"r{r}_normalized_l{l}" for r in SCALES for l in (5,11,23)],
         "display_map_status":"linear0125 reconstructed from FP16 cached bag-averaged, resized layer maps; not a new evaluation",
         "support_histogram_source":"overview_walnuts__support.npz: lso_l5, lso_l23 / lso_u_l5, lso_u_l23",
         "ground_truth_use":"final display contour only",
     }
-    OUT.with_suffix(".meta.json").write_text(json.dumps(metadata,indent=2)+"\n")
+    out.with_suffix(".meta.json").write_text(json.dumps(metadata,indent=2)+"\n")
     plt.close(c.fig)
-    print(OUT)
+    print(out)
 
 
 if __name__ == "__main__":

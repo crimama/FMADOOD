@@ -26,6 +26,8 @@ LOCAL_OBJECTS=()
 REMOTE_DEVICES=()
 REMOTE_OBJECTS=()
 REMOTE_DATA_ROOT=""
+AFTER_STATUS=()
+ENTRYPOINT="run.py"
 
 usage() {
   cat <<'EOF'
@@ -52,6 +54,8 @@ Options:
   --shard-by objects|stages        partition objects or configs across devices
   --remote-shard-by objects|stages remote partition in both mode (default: objects)
   --resume                        resume an existing invalid lane
+  --after-status PATH...          wait for successful predecessor status files
+  --entrypoint PATH               CLI entrypoint (default: run.py)
 
 For --backend both, also provide --local-device, --local-objects,
 --remote-devices, and --remote-objects. The caller must source the remote
@@ -87,7 +91,7 @@ take_list() {
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
-    --configs|--labels|--objects|--devices|--local-objects|--remote-devices|--remote-objects)
+    --configs|--labels|--objects|--devices|--local-objects|--remote-devices|--remote-objects|--after-status)
       key="${1#--}"; shift
       case "$key" in
         configs) target=CONFIGS ;;
@@ -97,9 +101,11 @@ while [[ $# -gt 0 ]]; do
         local-objects) target=LOCAL_OBJECTS ;;
         remote-devices) target=REMOTE_DEVICES ;;
         remote-objects) target=REMOTE_OBJECTS ;;
+        after-status) target=AFTER_STATUS ;;
       esac
       take_list "$target" "$@"; set -- "${PARSE_REST[@]}"; unset key target; ;;
     --backend) [[ $# -ge 2 ]] || die "--backend needs a value"; BACKEND="$2"; shift 2 ;;
+    --entrypoint) [[ $# -ge 2 ]] || die "--entrypoint needs a value"; ENTRYPOINT="$2"; shift 2 ;;
     --container) [[ $# -ge 2 ]] || die "--container needs a value"; CONTAINER_NAME="$2"; shift 2 ;;
     --local-device) [[ $# -ge 2 ]] || die "--local-device needs a value"; LOCAL_DEVICE="$2"; shift 2 ;;
     --data-root) [[ $# -ge 2 ]] || die "--data-root needs a value"; DATA_ROOT="$2"; shift 2 ;;
@@ -157,6 +163,12 @@ if [[ "$BACKEND" == both ]]; then
                --log-dir "$LOG_DIR/remote" --split "$SPLIT" --timeout "$TIMEOUT" --workers "$WORKERS"
                --shard-by "$REMOTE_SHARD_BY")
   (( RESUME == 1 )) && { local_args+=(--resume); remote_args+=(--resume); }
+  local_args+=(--entrypoint "$ENTRYPOINT")
+  remote_args+=(--entrypoint "$ENTRYPOINT")
+  if (( ${#AFTER_STATUS[@]} > 0 )); then
+    local_args+=(--after-status "${AFTER_STATUS[@]}")
+    remote_args+=(--after-status "${AFTER_STATUS[@]}")
+  fi
   echo "Launching local and remote lanes from one command."
   bash "$ROOT_DIR/scripts/run_experiments.sh" "${local_args[@]}" >>"$LOG_DIR/local.launch.log" 2>&1 &
   local_pid=$!
@@ -229,6 +241,8 @@ for ((lane=0; lane<${#DEVICES[@]}; lane++)); do
   cmd+=" --data-root $(printf '%q' "$DATA_ROOT") --output-dir $(printf '%q' "$OUTPUT_ROOT/lane_$lane")"
   cmd+=" --device cuda:0 --split $(printf '%q' "$SPLIT") --timeout $(printf '%q' "$TIMEOUT") --workers $(printf '%q' "$WORKERS")"
   (( RESUME == 1 )) && cmd+=" --resume"
+  cmd+=" --entrypoint $(printf '%q' "$ENTRYPOINT")"
+  (( ${#AFTER_STATUS[@]} == 0 )) || cmd+=" --after-status $(quote_array "${AFTER_STATUS[@]}")"
   LANE_CMDS+=("$cmd")
   LANE_LOGS+=("$LOG_DIR/lane_$lane.launch.log")
 done

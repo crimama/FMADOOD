@@ -1,0 +1,49 @@
+\section{정상 참조 기반 비대칭 결합의 추가 분석}
+\label{sec:appendix:fusion}
+
+본문의 대표 결합 대안 비교를 보완하기 위해 전체 양의 가중치 탐색과 shot별 정규화 결과를 제시한다.
+모든 값은 AD2 \texttt{test\_public}, seed 0의 8-class macro이며 추가 실행 결과가 아니다.
+
+\subsection{계층 가중치}
+$z_d=(z_{11}+z_{23})/2$에 $\lambda z_5$를 더한다.
+$\lambda=0.5$에서는 각 계층의 계수가 같고, $\lambda=1$에서는 얕은 계층의 계수가 각 깊은 계층의 두 배다.
+가중치는 2-shot 개발 결과에서 선택했으며 이후 고정했다. 표에 deep-only ($\lambda=0$) 결과는 포함되지 않는다.
+
+\begin{table}[t]
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\caption{Shallow 가중치 $\lambda$ 비교 (AD2 \texttt{test\_public}, seed 0, \%; 두 지표 모두 FPR 상한 0.05). $z_d=(z_{11}+z_{23})/2$에 $\lambda z_5$를 더한다. $\lambda=0.5$는 계층 동일가중 평균과 비례한다.}
+\label{tab:lambda_sensitivity}
+\begin{tabular}{r c c}
+\toprule
+$\lambda$ & 2-shot (AUPRO / pAUROC) & 16-shot (AUPRO / pAUROC) \\
+\midrule
+\textbf{0.125} & \textbf{59.33 / 76.48} & \textbf{59.57 / 77.46} \\
+0.25 & 58.43 / 76.00 & 59.48 / 77.21 \\
+0.5 & 54.92 / 74.39 & 58.21 / 76.31 \\
+1 & 48.39 / 71.31 & 54.02 / 74.04 \\
+2 & 40.48 / 67.00 & 47.33 / 70.19 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{정상 참조 척도}
+동일한 계층 가중치를 유지하고 none, MAD, q95를 비교한다.
+q95와 MAD의 AUPRO 차이는 모든 shot에서 양수이나, q95와 none의 차이는 shot과 지표에 따라 방향이 달라진다.
+따라서 이 결과는 q95의 일관된 성능 우위나 정규화의 필수성을 뒷받침하지 않는다.
+
+\begin{table}[t]
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\caption{AD2 정규화 방식 비교 (AUPRO@0.05 / pAUROC@0.05, seed 0, \%). none은 미정규화, $\Delta$AUPRO는 q95 $-$ MAD의 차이(pp)다.}
+\label{tab:norm_factorial_ad2}
+\begin{tabular}{r c c c r}
+\toprule
+Shot & none & MAD & q95 & $\Delta$AUPRO \\
+\midrule
+1  & 55.06 / 73.84 & 53.59 / 72.73 & 54.81 / 73.32 & +1.22 \\
+2  & 59.06 / 76.47 & 58.57 / 76.34 & 59.33 / 76.48 & +0.76 \\
+4  & 59.02 / 77.25 & 57.00 / 76.29 & 58.69 / 76.87 & +1.69 \\
+8  & 58.69 / 77.67 & 57.28 / 76.67 & 58.68 / 77.35 & +1.40 \\
+16 & 59.17 / 77.65 & 58.52 / 77.17 & 59.57 / 77.46 & +1.05 \\
+\bottomrule
+\end{tabular}
+\end{table}

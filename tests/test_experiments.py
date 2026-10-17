@@ -14,6 +14,24 @@ import scripts.experiments as experiments
 from scripts.experiments import LEDGER_CSV, comparison_index, replace_section, run, update
 
 
+def test_predecessor_gate_waits_and_rejects_failed_or_timed_out_runs(tmp_path, monkeypatch):
+    path = tmp_path / 'status.json'
+    path.write_text(json.dumps({'state': 'running'}))
+    calls = []
+    def finish(seconds):
+        calls.append(seconds)
+        path.write_text(json.dumps({'state': 'complete'}))
+    monkeypatch.setattr(experiments.time, 'sleep', finish)
+    experiments.wait_for_statuses([str(path)], 60.)
+    assert len(calls) == 1
+    path.write_text(json.dumps({'state': 'invalid_run'}))
+    with pytest.raises(RuntimeError):
+        experiments.wait_for_statuses([str(path)], 60.)
+    path.write_text(json.dumps({'state': 'running'}))
+    with pytest.raises(TimeoutError):
+        experiments.wait_for_statuses([str(path)], 0.)
+
+
 @pytest.mark.parametrize("active", [None,
     dict(label="D1", object="can"),
     dict(label="D1", workers=[dict(object="can"), dict(object="fabric")])])

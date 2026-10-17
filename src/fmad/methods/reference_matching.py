@@ -290,6 +290,14 @@ class ReferenceMatching(BaseMethod):
                 or not 0.5 <= float(tail_quantile) < 1.0):
             raise ValueError("tail_quantile must be a number in [0.5, 1)")
         self.tail_quantile = float(tail_quantile)
+        rho = config.get("tailscale_center_rho", 0.0)
+        if (isinstance(rho, bool) or not isinstance(rho, (int, float))
+                or not 0.0 <= float(rho) <= 1.0):
+            raise ValueError("tailscale_center_rho must be a number in [0, 1]")
+        self.tailscale_center_rho = float(rho)
+        if self.tailscale_center_rho and (self.score_normalization != "tailscale"
+                or self.variant != "R1" or config.get("local_reliability", "off") != "off"):
+            raise ValueError("centered tailscale requires R1 tailscale with local_reliability off")
         self.cap = int(config.get("bank_tokens_per_source", 256))
         self.chunk = int(config.get("query_chunk_size", 128))
         # Optional override for the bank token subsample only. Support image
@@ -782,6 +790,9 @@ class ReferenceMatching(BaseMethod):
                             self._active_tail(layer_index, bag_index), distance))
                     elif normalize and sigma_local is not None:
                         scores.append(distance / sigma_local)
+                    elif normalize and self.tailscale_center_rho:
+                        scores.append(self._centered_tail_score(
+                            distance, self._active_tail(layer_index, bag_index), global_scale))
                     else:
                         scores.append(distance / (global_scale if normalize else 1.0))
                     if weights is not None:
@@ -925,24 +936,26 @@ class ReferenceMatching(BaseMethod):
             mad = (sample - median).abs().median()
             mad_scale = (1.4826 * mad).clamp_min(1e-4)
             tail_dict = self._tail_params(sample)
+            self._set_tail_center(tail_dict)
             if self.layer_fusion == "residual_spike" and self.layer_fusion_tau_mode == "support_quantile":
                 if self.score_normalization == "tailscale":
-                    divisor = tail_dict["u"].item()
+                    divisor = self._tailscale_divisor(tail_dict).item()
                 elif self.score_normalization == "none":
                     divisor = 1.0
                 else:
                     divisor = mad_scale.item()
                 q_val = torch.quantile(sample.detach().float().cpu(), self.layer_fusion_tau_q).item()
-                tail_dict["spike_tau"] = float(q_val / max(divisor, 1e-4))
+                offset = float(tail_dict.get("center_offset", 0.0))
+                tail_dict["spike_tau"] = float((q_val - offset) / max(divisor, 1e-4))
                 if self.image_residual_tau_q is not None:
                     q_img = torch.quantile(sample.detach().float().cpu(), self.image_residual_tau_q).item()
-                    tail_dict["image_spike_tau"] = float(q_img / max(divisor, 1e-4))
+                    tail_dict["image_spike_tau"] = float((q_img - offset) / max(divisor, 1e-4))
             tails.append(tail_dict)
             if self.score_normalization == "tailscale":
                 # Normalise by the component's own normal tail instead of its
                 # centre, so every component contributes the same share of the
                 # FPR budget that AUPRO@0.05 actually operates in.
-                scales.append(tails[-1]["u"].clamp_min(1e-4))
+                scales.append(self._tailscale_divisor(tail_dict))
             elif self.score_normalization == "none":
                 # "none" means raw distance with divisor 1 (uncalibrated)
                 scales.append(torch.ones_like(mad_scale))
@@ -958,6 +971,19 @@ class ReferenceMatching(BaseMethod):
                 self._test_token_mode_distances = {}
             self._test_token_mode_distances[resolution] = per_record_distances
         return torch.stack(scales)
+
+    def _set_tail_center(self, params):
+        if self.tailscale_center_rho:
+            params["center_offset"] = self.tailscale_center_rho * torch.quantile(params["sample"], 0.5)
+
+    @staticmethod
+    def _tailscale_divisor(params):
+        return (params["u"] - params.get("center_offset", 0.0)).clamp_min(1e-4)
+
+    @staticmethod
+    def _centered_tail_score(distance, params, scale):
+        # Preserve negative scores: clipping would introduce a separate gate.
+        return (distance - params["center_offset"].to(distance.device)) / scale
 
     def _tail_params(self, sample: torch.Tensor) -> dict[str, Any]:
         """Support-only tail description of one component's normal distances.
@@ -1375,6 +1401,7 @@ class ReferenceMatching(BaseMethod):
             "scale_fusion": self.scale_fusion,
             "score_normalization": self.score_normalization,
             "tail_quantile": self.tail_quantile,
+            "tailscale_center_rho": self.tailscale_center_rho,
             "layer_fusion": self.layer_fusion,
             "layer_fusion_q": self.layer_fusion_q,
             "layer_fusion_tau": self.layer_fusion_tau,

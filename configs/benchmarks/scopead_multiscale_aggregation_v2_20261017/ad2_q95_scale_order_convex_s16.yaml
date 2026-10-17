@@ -1,0 +1,75 @@
+backbone: dinov2_vitl14
+backbone_config:
+  feature_layers:
+  - 5
+  - 11
+  - 23
+  feature_output_device: model
+  inference_autocast_dtype: fp16
+  smaller_edge_size: 672
+dataset: mvtec_ad2
+dataset_config:
+  preprocess: no_mask_no_rotation
+evaluation:
+  calibration_diagnostic: false
+  condition_strata: true
+  cost_profile: false
+  eval_clf: false
+  eval_segm: true
+  fusion_diagnostic: false
+  inference_batch_size: 1
+  metric_contract: mvtec_ad2_float16_streaming_v1
+  pro_integration_limit: 0.05
+  streaming: true
+method: multiscale_aggregation_reference_matching
+method_config:
+  ablation_bank_audit: true
+  ablation_shallow_mode: all
+  bank_bags: 4
+  bank_tokens_per_source: 256
+  calibration_audit: false
+  component_dilate_size: 0
+  component_percentile: 99.0
+  component_q: 1.0
+  fast_reuse_calibration_bank: true
+  fast_shared_bag_distances: true
+  feature_layers:
+  - 5
+  - 11
+  - 23
+  image_score_aggregation: top1pct
+  image_score_candidates: false
+  image_score_source: final
+  knn_k: 1
+  layer_fusion: residual_spike
+  layer_fusion_gamma: 0.125
+  layer_fusion_shallow_idx: 0
+  layer_fusion_tau_mode: support_quantile
+  layer_fusion_tau_q: 0.99
+  noise_guard: true
+  noise_guard_action: lowres
+  noise_guard_k: 9.0
+  noise_guard_resolutions:
+  - 448
+  - 672
+  prediction_postprocess: none
+  query_chunk_size: 512
+  resolutions:
+  - 448
+  - 672
+  - 896
+  - 1120
+  score_normalization: tail
+  statistical_normalization: q95
+  tail_quantile: 0.95
+  tailscale_center_rho: 0.0
+  variant: R1
+  multiscale_aggregation: scale_order_convex
+output:
+  save_anomaly_maps: false
+  save_weights: false
+protocol:
+  fixed_reference_manifest: configs/methods/VOID_support_16.json
+  shots: 16
+  warmup_iters: 1
+seed: 0
