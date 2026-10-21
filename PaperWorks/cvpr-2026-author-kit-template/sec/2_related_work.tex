@@ -1,31 +1,34 @@
-\section{Related Work}
+\section{관련 연구}
 \label{sec:related}
 
-\subsection{Frozen-Feature Reference Matching in Few-Shot AD}
+\subsection{Few-shot 이상 탐지의 참조 매칭}
 \label{sec:related:matching}
 
-소수의 정상 참조를 활용하는 이상 탐지 방법은 패치 매칭, 영상 정합, 특징 복원 및 정상 부분공간 모델링으로 나눌 수 있다.
-패치 매칭 계열의 PatchCore~\cite{patchcore}는 사전학습 CNN의 다층 특징을 연결한 정상 메모리 뱅크와 최근접 거리를 사용하며, AnomalyDINO~\cite{anomalydino}와 SuperAD~\cite{superad}는 동결 DINOv2 특징을 활용한다.
-RegAD~\cite{regad}와 FastRecon~\cite{fastrecon}는 각각 영상 정합과 특징 복원으로 정상 참조와의 차이를 측정하고, SubspaceAD~\cite{subspacead}는 정상 부분공간에 대한 잔차를 사용한다.
-MVTec AD 2의 few-shot 연구~\cite{fewshotad2baseline}도 동결 특징의 계층 선택과 참조 수에 따른 결과를 분석한다.
-이러한 정상 모델링 방식에 더해, ScopeAD는 최근접 매칭에서 계층·해상도별 관측을 확장하고 정상 참조 척도와 계층별 가중치를 함께 사용하는 점수 결합에 초점을 둔다.
+Few-shot 이상 탐지는 소수의 정상 이미지에서 얻은 참조와 쿼리를 비교하여 결함을 찾는다.
+제한된 참조를 활용하기 위해 이미지 간 정합을 학습하거나~\cite{regad}, 언어 정보로 정상과 이상의 구분을 보완하는 방법이 연구되었다~\cite{winclip,promptad}.
+관련 접근으로는 보조 데이터에서 비교 규칙이나 프롬프트를 학습하는 방법~\cite{inctrl,anomalyclip}과, 정상 서포트 대신 레이블 없는 테스트 이미지끼리 비교하는 방법~\cite{musc}도 있다.
+본 논문과 같이 정상 서포트와 동결된 시각 특징을 사용하는 접근은 정상 참조와의 차이를 최근접 이웃 거리~\cite{patchcore,anomalydino,superad}, 복원 오차~\cite{fastrecon}, 부분공간 거리~\cite{subspacead}로 측정한다.
+특히 동결 특징의 패치 매칭은 백본의 추가 학습 없이 새로운 제품의 정상 참조를 구성할 수 있으며~\cite{anomalydino,superad}, MVTec AD 2의 few-shot 연구~\cite{fewshotad2baseline}에서도 특징 계층과 서포트 수에 따른 성능 차이가 분석되었다.
+\method는 이러한 참조 매칭을 계층과 해상도의 여러 관측으로 확장하고, 여기서 얻은 거리 점수를 통합하는 데 초점을 둔다.
+비교 단서를 늘리는 동시에 관측마다 다른 거리 단위와 기여도를 조절하여, 서론에서 논의한 정상 변동과 결함의 점수 중첩을 줄이고자 한다.
 
-\subsection{Multi-Scale Observation and Score Fusion}
+\subsection{다중 척도 관측과 점수 결합}
 \label{sec:related:fusion}
 
-다층·다해상도 관측은 서로 다른 수준의 공간 정보를 결합하는 접근이다.
-DPT~\cite{ranftl2021vision}는 여러 ViT 계층의 토큰을 학습된 디코더로 결합하고, S$^2$~\cite{shi2024scaling}는 동결 백본의 다중 척도 특징을 타일 처리와 재조립으로 구성한다.
-이상 탐지에서는 PatchCore의 특징 연결과 SuperAD의 계층별 이상 맵 평균처럼 특징 또는 점수 단계에서 관측을 결합한다~\cite{patchcore,superad}.
-FreePatch~\cite{freepatch}는 정상 참조 정보를 활용하여 패치 매칭 점수를 보정하는 접근이다.
-이러한 접근은 관측을 특징 단계에서 합칠지 개별 매칭 후 점수 단계에서 합칠지, 그리고 정상 참조 정보를 결합에 어떻게 사용할지에 따라 구분할 수 있다.
-ScopeAD는 계층·입력 해상도별 매칭 거리를 유지하고, 관측별 정상 참조 척도와 계층별 상대 가중치를 함께 사용하는 비대칭 결합으로 이를 통합한다.
-구체적인 결합 계수와 정상 참조 추정은 \cref{sec:method:fusion}에서 정의한다.
+여러 계층과 해상도의 특징을 함께 활용하면 국소 질감과 전역 문맥을 서로 다른 관점에서 비교할 수 있다.
+다층 ViT 특징을 재조합하는 DPT~\cite{ranftl2021vision}와 다중 해상도 입력으로 동결 백본의 표현을 확장하는 S$^2$~\cite{shi2024scaling}는 이러한 접근의 예다.
+이상 탐지에서는 여러 특징을 먼저 합쳐 매칭하거나, 개별 매칭 점수를 구한 뒤 결합할 수 있다.
+PatchCore~\cite{patchcore}의 특징 연결 방식은 여러 계층이 하나의 최근접 이웃을 공유하는 반면, SuperAD~\cite{superad}와 FreePatch~\cite{freepatch}는 개별 점수를 결합하는 접근을 사용한다.
+점수 수준의 결합은 각 관측의 비교 결과를 유지할 수 있지만, 관측마다 거리 단위가 다르면 큰 거리값을 내는 관측에 결합 점수가 치우칠 수 있다.
+단위를 맞춘 뒤에도 계층별 정상 변동 민감도와 해상도별 결함 반응이 다르므로, 모든 점수를 같은 비중으로 평균하는 방식에는 한계가 있다.
+\method는 정상 서포트로 거리 단위를 맞춘 뒤 계층별 기여도를 조절하고, 해상도 크기가 아닌 위치별 점수 순위에 따라 집계하여 강한 국소 반응의 희석을 줄이고자 한다(\cref{sec:method:fusion,sec:method:aggregation}).
 
-\subsection{Distribution Shift and Low-FPR Localization}
+\subsection{획득 조건 변화와 저-FPR 국소화}
 \label{sec:related:shift}
 
-획득 조건 변화에 대응하는 연구는 정상 외관의 변화와 결함을 구별하는 문제를 다룬다.
-AeBAD 연구~\cite{aebad}는 실제 도메인 변화를 포함한 데이터셋과 masked multi-scale reconstruction 방법을 제안하며, MVTec AD 2~\cite{mvtecad2}는 조명 변화와 작은 결함을 포함한 평가 환경을 제공한다.
-평가 측면에서 AUPIMO~\cite{aupimo}는 낮은 오경보 허용치에서의 국소화 품질을 측정하여 전체 곡선 지표를 보완한다.
-ScopeAD는 정상 서포트로 정한 점수 척도와 고정 결합 규칙을 쿼리에 적용하며, 추가 학습이나 쿼리 적응 없이 분포 변화 조건의 저-FPR 국소화를 평가한다.
-이때 정상 거리의 척도 보정과 고정 배포 임계값의 오경보율 보장은 구분한다.
+정상 참조와 쿼리의 획득 조건이 달라지면, 결함이 없어도 외관 차이로 인해 매칭 거리가 커질 수 있다.
+이러한 변화를 평가하기 위해 AeBAD~\cite{aebad}는 실제 공정의 도메인 변화를, MVTec AD 2~\cite{mvtecad2}는 학습 자료에 없는 조명 조건을 포함한다.
+Few-shot 설정에서는 정상 서포트가 이러한 변화를 충분히 담기 어려우므로, 정상 영역의 점수 상승이 오경보를 얼마나 유발하는지 살펴볼 필요가 있다.
+전체 FPR 구간을 요약하는 AUROC와 달리, AUPIMO~\cite{aupimo}는 오경보를 낮게 제한한 구간에서 결함 영역을 얼마나 검출하는지 평가한다.
+본 논문은 MVTec AD 2의 정상 서포트 수를 제한하여 적은 참조 표본과 획득 조건 변화가 함께 있는 상황을 구성하고, 백본 추가 학습이나 쿼리 시점 최적화 없이 동작하는 \method의 저-FPR 국소화 성능을 평가한다.
+MVTec AD와 VisA에서는 기존 벤치마크에서도 성능이 유지되는지 함께 확인한다.

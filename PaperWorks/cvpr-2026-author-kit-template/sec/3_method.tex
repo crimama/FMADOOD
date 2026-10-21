@@ -1,111 +1,137 @@
-\section{방법 (Method)}
+\section{방법}
 \label{sec:method}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig_scopead_overview.pdf}
-\caption{\textbf{Overview of the \method{} framework.} (A) Building 48 observation-specific memory banks from normal support images and precomputing upper-quantile normal scales $c_m = \mathcal{Q}_{0.95}(D_m^{\text{LSO}})$ via Leave-Source-Out matching. (B) Observation expansion across 4 resolutions and 3 layers, evaluating 1-NN cosine distances normalized by $c_m$. (C) Layer fusion combining the deep-layer baseline with shrinkage-weighted shallow signals ($z_d + 0.125\,z_5$). (D) Spatial aggregation across bags and resolutions yielding the final anomaly localization map and image-level score.}
+\caption{\textbf{Overview of \method{}.} 
+(a) 정상 서포트 표본으로부터 leave-source-out (1-shot의 경우 leave-token-out) 교차 매칭을 통해 48개의 독립 메모리 뱅크를 구축하고 참조 척도 $c_m$을 추정한다. 
+(b) 코사인 1-NN 거리 $d_m$을 해당 척도로 정규화하여 공통 단위 점수 $z_m = d_m / c_m$을 도출한다. 
+(c) 전역 문맥을 담은 깊은 계층을 주축으로 얕은 계층의 단서를 보조 결합하는 비대칭 선형 가중합을 수행한다. 
+(d) 배그 평균 및 원본 해상도 보간 후, 각 픽셀 위치에서 정렬된 해상도 점수에 Rényi 순서 통계량 가중치를 적용하여 최종 이상 맵을 집계한다. 가중치는 해상도 크기가 아닌 점수 크기 순위에 따라 비대칭적으로 부여된다. 예시는 결함 픽셀 $p$의 실제 점수다(평균 1.41).}
 \label{fig:method}
 \end{figure*}
 
-소수의 정상 참조 이미지만으로 저-FPR 구간에서 신뢰할 수 있는 이상 국소화를 달성하려면, 제한된 표본에서 비교 단서를 극대화함과 동시에 미관측 정상 변이로 인한 추정 분산(High-Score Ambiguity)을 억제해야 한다. 
-이를 위해 \method는 \textbf{(1) 다중 관측의 주변부 매칭 분리}, \textbf{(2) 교차 검증 기반의 비모수적 정상 경계 정렬}, \textbf{(3) 계층 간 민감도 차이를 반영한 가중 선형 결합}, 그리고 \textbf{(4) 공간적 앙상블 및 극값 전파}가 상호 보완적으로 작동하는 통합 프레임워크를 구성한다(\cref{fig:method}).
+\method는 관측 확장(observation expansion)과 정상 참조 기반 점수 통합을 결합하여, 소수 서포트와 환경 변화로 인한 High-Score Ambiguity를 완화하는 이상 국소화 프레임워크다(\cref{fig:method}).
+그 중심에서 \method는 표현 계층과 입력 해상도를 독립 매칭 단위로 분리하는 관측 확장을 수행하여, 특정 계층이나 해상도가 거리 계산을 지배하는 간섭을 배제하고 단일 영역에 대한 다각적 시각 단서를 확보한다.
+이렇게 확보된 다관측 거리들을 효과적으로 결합하기 위해 세 가지 요소를 단계적으로 통합한다:
+(1) 서포트 교차 매칭 분포의 상위 분위수로 기준 단위를 정렬하는 \textbf{정상 참조 척도화(Reference Scaling)},
+(2) 전역 문맥을 담은 심층 특징을 기저로 삼고 얕은 계층의 반응을 수축 결합하는 \textbf{계층별 비대칭 결합(Asymmetric Layer Fusion)},
+그리고 (3) 위치별 해상도 점수 순위에 따라 상위 반응을 안정적으로 보존하는 \textbf{Rényi 순서 통계량 집계(Rényi Order-Rank Aggregation)}이다.
+추론 시 \method는 백본의 추가 학습이나 쿼리 적응 없이, 정상 서포트의 무감독 통계량만을 활용하여 단일 패스에서 픽셀 단위 결함 맵과 이미지 점수를 산출한다.
 
-\subsection{시스템 개요 및 문제 정의}
-\label{sec:method-overview}
+\subsection{문제 설정}
 \label{sec:method:overview}
 
-입력은 $N$장의 정상 서포트 이미지 집합 $\mathcal{S} = \{x_1^s, \dots, x_N^s\}$, 테스트 쿼리 이미지 $x^q$, 그리고 사전학습 후 동결된 비전 트랜스포머 백본이다. 
-특징을 추출할 표현 계층 집합을 $\mathcal{L}$, 입력 해상도(짧은 변 기준) 집합을 $\mathcal{R}$, 서브샘플링 앙상블을 위한 배그(bag) 수를 $B$로 정의한다. 
-모델은 추가 학습이나 쿼리 시점의 파라미터 갱신 없이, 서포트 집합 $\mathcal{S}$의 내재적 통계량만을 피팅하여 픽셀 단위 결함 맵 $A(x^q) \in \mathbb{R}^{H \times W}$와 이미지 단위 이상 점수 $s(x^q) \in \mathbb{R}$를 출력한다.
+입력으로 $N$장의 정상 서포트 이미지 집합 $\mathcal{S} = \{x_1^s, \dots, x_N^s\}$, 테스트 쿼리 이미지 $x^q$, 그리고 동결된 사전학습 비전 트랜스포머(ViT) 백본이 주어진다.
+특징을 추출할 백본 계층 집합을 $\mathcal{L}$, 입력 해상도(짧은 변 기준) 집합을 $\mathcal{R}$, 서브샘플 배그(bag) 수를 $B$로 정의한다.
+본 연구에서는 $\mathcal{L}=\{5, 11, 23\}$, $\mathcal{R}=\{448, 672, 896, 1120\}$, $B=4$를 사용하여 총 $|\mathcal{L}| \times |\mathcal{R}| \times B = 48$개의 독립 관측을 구성한다(\cref{sec:experiments:setup}).
+\method는 백본의 추가 학습이나 쿼리 적응(query adaptation) 없이, 오직 정상 서포트의 무감독 통계량만을 기반으로 픽셀 단위 결함 국소화 맵 $A(x^q) \in \mathbb{R}^{H \times W}$ 및 이미지 단위 이상 점수 $s(x^q) \in \mathbb{R}$를 산출한다.
 
-\subsection{관측 확장과 주변부 참조 매칭}
-\label{sec:method-expansion}
+\subsection{관측 확장과 독립 참조 매칭}
 \label{sec:method:expansion}
 
-\paragraph{주변부 매칭을 위한 컴포넌트 분리.}
-다층 특징을 단일 고차원 벡터로 연결(concatenation)하여 최근접 이웃을 탐색하면, 분산이 큰 특정 계층이 거리 계산을 지배하여 타 계층의 비교 단서가 왜곡된다~\cite{patchcore}. 
-이를 방지하기 위해 계층 $l \in \mathcal{L}$, 해상도 $r \in \mathcal{R}$, 배그 $b \in \{1, \dots, B\}$의 조합 $m = (l, r, b)$를 독립된 주변부(marginal) 관측 단위인 컴포넌트로 정의하고, 각 컴포넌트마다 전용 메모리 뱅크 $B_m$을 분리 구축한다. 
-쿼리 $x^q$의 공간 위치 $p$에서 추출한 $\ell_2$ 정규화 특징 $f_m(x^q, p)$는 각 관측 고유의 표현·공간 척도 안에서 독립적으로 최근접 매칭된다:
+\paragraph{관측별 독립 매칭 (Independent Matching).}
+획득 조건이 달라지면 정상 영역이라도 특정 계층의 국소 질감이나 특정 해상도의 패치에서 거리가 급격히 상승할 수 있다.
+기존처럼 다층 특징을 단일 벡터로 연결해 매칭하면~\cite{patchcore}, 분산이나 척도가 큰 특정 관측이 최근접 이웃 탐색 전체를 지배하여 정상 외관 변화에 따른 국소적 거리 상승이 다른 모든 계층의 비교 단서를 왜곡하게 된다.
+이러한 간섭을 차단하기 위해 \method는 계층 $l \in \mathcal{L}$, 해상도 $r \in \mathcal{R}$, 배그 인덱스 $b \in \{1, \dots, B\}$의 조합 $m = (l, r, b)$를 개별 관측 단위로 분리하고, 각 관측마다 독립적인 정상 메모리 뱅크 $B_m$을 구축한다.
+쿼리 이미지 $x^q$의 공간 위치 $p$에서 추출된 $\ell_2$ 정규화 패치 토큰 $f_m(x^q, p)$는 오직 대응하는 뱅크 $B_m$ 내에서만 독립적으로 최근접 이웃을 탐색하여 코사인 거리 점수를 계산한다:
 \begin{equation}
   d_m(x^q, p) = \min_{u \in B_m} \left[ 1 - f_m(x^q, p)^\top u \right].
   \label{eq:cosine-dist}
 \end{equation}
+이 분리 매칭 구조에서는 각 관측이 고유한 표현·공간 척도 안에서 가장 가까운 정상을 개별적으로 찾는다.
+그 결과 특정 척도에서 발생한 정상 외관 변동의 섭동이 다른 관측으로 전파되지 않고 격리되며, 국소 질감 단서와 전역 문맥 단서가 독립적인 거리 신호로 온전히 보존되어 후속 통합 단계에서 상호 검증의 기반을 마련한다.
 
-\paragraph{표본 추출 분산 제어를 위한 패치 배깅.}
-1-NN 거리 추정량은 유한한 참조 표본의 구성에 민감하며, 다해상도 확장은 참조 토큰 수의 급증을 수반한다. 
-연산 복잡도를 제어하면서 단일 표본 추출의 분산을 완화하기 위해 부트스트랩 집계(bagging) 원리를 도입한다. 
-각 해상도 $r$에서 서포트 이미지마다 $K$개의 패치 토큰을 무작위 비복원 추출하여 단일 배그를 구성하며, 독립된 난수 시드로 $B$개의 배그를 생성한다. 
-동일 배그 내의 모든 계층은 동일한 공간 위치 인덱스를 공유하여 계층 간 공간 정합성을 유지한다.
+\paragraph{패치 서브샘플 배깅 (Patch Subsample Bagging).}
+입력 해상도가 증가함에 따라 서포트 패치 토큰의 수가 급격히 팽창하며, 단일 무작위 샘플링은 토큰 구성에 따른 추정 분산을 유발할 수 있다.
+이를 완화하기 위해 각 해상도 $r$에서 서포트 이미지당 $K$개($K=256$)의 패치 토큰을 비복원 균등 추출하여 단일 배그를 구성하며, 서로 다른 난수 시드로 $B$개의 배그를 생성한다.
+이때 일관된 공간 대응을 유지하기 위해 동일 배그 내의 모든 계층은 완전히 일치하는 공간 좌표의 토큰을 공유한다. 각 배그에서 산출된 이상 점수는 이후 \cref{eq:bag-mean}에서 앙상블 평균된다.
 
-\subsection{정상 참조 기반 선형 결합}
-\label{sec:method-fusion}
+\subsection{정상 참조 기반 비대칭 선형 결합}
 \label{sec:method:fusion}
 
-분리된 컴포넌트에서 산출된 원시 거리 $d_{l,r,b}$들은 관측마다 기저 분포의 척도와 정상 변이에 대한 민감도가 서로 다르다. 
-이를 하나의 일관된 이상 점수로 통합하기 위해, 각 관측의 정상 상한 경계 척도 $c_{l,r,b}$와 계층별 신뢰 가중치 $\alpha_l$이 결합된 선형 추정량을 정의한다:
-\begin{equation}
-  S_{r,b}(x^q, p) = \sum_{l \in \mathcal{L}} w_{l,r,b} \, d_{l,r,b}(x^q, p), \quad w_{l,r,b} = \frac{\alpha_l}{c_{l,r,b}}.
-  \label{eq:linear-fusion}
-\end{equation}
-여기서 $c_{l,r,b}$는 이질적인 관측 간 거리 분포의 척도를 정렬하고, $\alpha_l$은 정렬된 통계적 단위 위에서 계층 간 역할 비중을 조율한다.
+독립적으로 획득한 원시 거리 $d_m$을 통합하기 위해서는 (1) 관측 간 척도 불균형(scale discrepancy)과 (2) 계층별 의미론적 민감도 차이를 단계적으로 다루어야 한다.
+특징 공간의 차원과 표현 특성에 따라 원시 거리의 통계적 척도가 상이하므로(\cref{fig:scale-calib}), 보정 없이 결합하면 스케일이 큰 관측의 오경보가 결합 점수에 그대로 반영된다.
+또한 척도를 정규화하더라도 국소 질감에 민감한 얕은 계층은 조명이나 자세 변화 등 정상 외관 변동에 큰 거리를 유발하기 쉽다.
+따라서 \method는 서포트 교차 매칭 기반의 척도 $c_m$으로 단위를 정렬한 뒤, 비대칭 계층 가중치 $\alpha_l$을 적용하여 선형 결합을 수행한다.
 
 \begin{figure}[t]
 \centering
-\includegraphics[width=\linewidth]{figures/fig_scale_calibration_lso.png}
-\caption{\textbf{Observation-wise distance scale discrepancy and quantile alignment.} Left: Raw Leave-Source-Out (LSO) normal distance distributions across different backbone layers (Layers 5, 11, 23) and resolutions exhibit substantial scale disparities. Right: By dividing each component distance by its empirical upper quantile ($c_m = \mathcal{Q}_{0.95}(D_m^{\text{LSO}})$), the critical threshold $z=1.0$ is unified across all 48 component banks into a dimensionless, comparable coordinate before fusion.}
+\includegraphics[width=\linewidth]{figures/fig_scopead_calibration_paper.pdf}
+\caption{\textbf{정상 참조 보정(Q95)을 통한 관측 간 거리 척도 정렬.}
+(a) Vial 2-shot 정상 쿼리에서 12개 관측(4개 해상도 $\times$ 3개 계층)의 상대 정상 척도. 보정 전(회색)에는 관측마다 정상 거리 척도가 최대 1.60배까지 불균일하여 특정 관측이 결합을 왜곡하지만, Q95 보정 후(청색)에는 모든 관측이 공통 기준선 근처로 균일하게 정렬된다(최대 편차 1.60배 $\rightarrow$ 1.24배).
+(b) MVTec AD 2 전 클래스(8개 클래스 $\times$ 2개 shot)에서 관측 간 척도 불균형(최대/최소 척도 비율). 16개 조건 중 14개 조건에서 보정 후 척도 편차가 대각선($y=x$) 아래로 크게 감소하여 안정적으로 정렬됨을 보인다.}
 \label{fig:scale-calib}
 \end{figure}
 
-\paragraph{교차 검증 기반의 비모수적 정상 경계 추정.}
-테스트 쿼리가 겪는 '미관측 정상 외관과의 비교' 조건을 서포트 집합 내부에서 모사하기 위해, 교차 검증 방식의 최근접 거리 표본 $D_m$을 수집하여 귀무 분포(정상 거리 분포)를 추정한다. 
-다중 샷($N > 1$)에서는 동일 이미지 내 인접 패치와의 자기 매칭으로 인한 낙관적 편향(optimistic bias)을 배제하고자, 각 서포트 이미지 $i$의 패치 집합 $B_m^{(i)}$를 해당 이미지를 제외한 나머지 뱅크에 매칭하는 Leave-Source-Out (LSO) 표본을 구성한다:
+\paragraph{서포트 교차 매칭 기반 척도 추정 (Cross-Validation Scale Estimation).}
+미지의 쿼리 이미지와의 매칭 환경을 모사하기 위해, 서포트 집합 내부의 교차 매칭 거리 표본 $D_m$을 활용하여 관측별 기준 척도를 추정한다.
+다중 샷($N > 1$) 환경에서는 동일 이미지 내의 자기 유사 패치와 매칭되어 거리가 과소 추정되는 편향을 방지하고자, 서포트 이미지 $i$의 토큰 부분집합 $B_m^{(i)}$를 해당 이미지를 제외한 나머지 뱅크 토큰들과 매칭하는 Leave-Source-Out (LSO) 방식을 적용한다:
 \begin{equation}
   D_m^{\text{LSO}} = \bigcup_{i=1}^N \left\{ \min_{u \in B_m \setminus B_m^{(i)}} \left[ 1 - v^\top u \right] : v \in B_m^{(i)} \right\}.
   \label{eq:lso}
 \end{equation}
-단일 샷($N = 1$)에서는 이미지 간 변이를 관측할 수 없으므로, 동일 이미지 내에서 자기 자신의 위치 인덱스만 제외한 Leave-Token-Out (LTO) 표본으로 이미지 내 정상 변이 분포를 대리 추정한다:
+단일 샷($N = 1$) 환경에서는 이미지 간 교차 비교가 불가능하므로, 단일 이미지 내에서 자기 자신을 제외한 타 위치 토큰들과 매칭하는 Leave-Token-Out (LTO) 표본을 대리 통계량으로 사용한다:
 \begin{equation}
   D_m^{\text{LTO}} = \left\{ \min_{j \neq i} \left( 1 - v_i^\top v_j \right) : i = 1, \dots, K \right\}.
   \label{eq:lto}
 \end{equation}
 
-관측별 정상 거리 분포 $D_m$은 계층과 해상도에 따라 비대칭성과 꼬리 두께가 상이하므로, 특정 분포 형태를 가정하는 모수적 통계량 대신 비모수적 순서 통계량(order statistic)을 사용하여 정상 경계를 정의한다. 
-구체적으로 서포트 내 극단적 단일 이상치 패치에 대한 강건성을 확보하면서 정상 변이의 실질적 상한을 포착하도록, 분위수 수준 $q \in (0, 1)$의 경험적 분위수 연산자 $\mathcal{Q}_q(D_m)$으로 기준 척도 $c_m$을 추정한다:
+각 관측의 정상 거리 분포는 비대칭성과 꼬리 두께가 상이하므로, 특정 확률분포 형태를 가정하는 모수적 통계량 대신 비모수적 순서 통계량인 상위 분위수 $\mathcal{Q}_q$로 기준 척도 $c_m$을 정의하고 정규화 점수 $z_m$을 산출한다:
 \begin{equation}
-  c_m = \max \left\{ \mathcal{Q}_q(D_m), \epsilon \right\}, \quad z_m(x^q, p) = \frac{d_m(x^q, p)}{c_m},
+  c_m = \max \left\{ \mathcal{Q}_q(D_m), \, \epsilon \right\}, \qquad z_m(x^q, p) = \frac{d_m(x^q, p)}{c_m},
   \label{eq:scale-cm}
 \end{equation}
-여기서 $\epsilon > 0$은 수치적 하한이다. 이 변환을 통해 모든 관측의 정규화 점수 $z_m(x^q, p)$는 해당 관측의 경험적 정상 경계($z_m = 1$) 대비 상대적 초과 비율이라는 통일된 통계적 의미를 갖는다(\cref{fig:scale-calib}). 
-분위수 연산자의 양의 동차성(positive homogeneity)에 의해 임의의 척도 변환 $a_m > 0$에 대해
+여기서 $q=0.95$는 서포트 집합 내에서 관측되는 정상 거리의 상위 경계를 대표하는 분위수이며, $\epsilon=10^{-4}$는 수치적 안정성을 위한 하한값이다.
+기준 척도 $c_m$은 각 관측 뱅크가 포착한 정상 외관 변동의 실질적 상한선을 뜻한다.
+따라서 $z_m = d_m / c_m$ 변환은 이질적인 원시 거리들을 '정상 변동 상한 대비 초과율'이라는 동일한 무차원 판정선($z_m = 1.0$) 위에 정렬한다(\cref{fig:scale-calib}).
+이를 통해 원시 거리의 절대적인 기저 크기가 큰 특정 계층이나 해상도가 결합 점수를 일방적으로 지배하여, 정상 외관 변동이 결합 점수에서 오경보로 전파되는 왜곡을 완화한다.
+
+\paragraph{계층 간 비대칭 결합 (Asymmetric Layer Fusion).}
+척도가 정렬된 점수 $z_m$ 공간에서도 계층 간 역할 차이가 존재한다.
+조명이나 표면 텍스처 등 획득 조건이 달라지면 국소 외관에 반응하는 얕은 계층은 정상 영역에서도 거리가 크게 치솟기 쉽다.
+반면 전역 문맥을 담은 심층 계층은 획득 환경이 변화하더라도 정상 구조의 의미론적 일관성을 유지하므로, 정상 영역의 점수를 상대적으로 낮게 보존하는 안정적인 기저 판정선을 제공한다.
+이를 반영하여 깊은 계층들($\mathcal{L}_{\text{deep}}=\{11, 23\}$)의 정규화 점수 평균을 기저 점수로 삼고, 정상 변동에 취약한 얕은 계층($l=5$)은 작은 가중치 $\lambda=0.125$로 축소 결합한다:
 \begin{equation}
-  \frac{a_m d_m}{\mathcal{Q}_q(a_m D_m)} = \frac{d_m}{\mathcal{Q}_q(D_m)}
-  \label{eq:scale-invariance}
+  S_{r,b}(x^q, p) = \frac{1}{2} \sum_{l \in \{11, 23\}} z_{l,r,b}(x^q, p) + \lambda \, z_{5,r,b}(x^q, p).
+  \label{eq:layer-fusion}
 \end{equation}
-가 성립하므로, 특정 관측이 원시 거리 스케일 차이만으로 결합 점수를 지배하는 왜곡이 제거된다.
+이 비대칭 결합은 환경 변화로 인한 얕은 계층의 오경보 유입을 전역 문맥 기저선으로 억제하면서, 국소 미세 결함 단서만을 선별적으로 보완한다.
+정규화 점수 정의($z_m = d_m/c_m$)에 따라, 이는 원시 거리 $d_{l,r,b}$를 계층 가중치 $\alpha = (0.125, 0.5, 0.5)$와 각 관측의 기준 척도 $c_{l,r,b}$의 비율인 $w_{l,r,b} = \alpha_l / c_{l,r,b}$로 선형 결합하는 것과 같다.
 
-\paragraph{계층 간 보완적 가중 결합.}
-정상 경계 기준으로 척도가 정렬된 점수 $z_m$ 위에서, 표현 계층의 특성에 따른 오경보 민감도 차이를 제어한다. 
-전역 문맥을 반영하여 정상 외관 변이에 대해 낮은 분산(높은 안정성)을 보이는 심층 집합 $\mathcal{L}_{\text{deep}} \subset \mathcal{L}$의 평균을 기준 추정량($z_{d,r,b}$)으로 삼고, 미세 결함에 민감하나 정상 질감 변화에 따른 분산이 큰 얕은 계층 $l_s \in \mathcal{L}$의 기여를 가중치 $\lambda \ge 0$으로 수축(shrinkage)시켜 결합한다:
-\begin{align}
-  z_{d,r,b}(x^q, p) &= \frac{1}{|\mathcal{L}_{\text{deep}}|} \sum_{l \in \mathcal{L}_{\text{deep}}} z_{l,r,b}(x^q, p), \label{eq:deep-mean} \\
-  S_{r,b}(x^q, p) &= z_{d,r,b}(x^q, p) + \lambda \, z_{l_s,r,b}(x^q, p). \label{eq:layer-fusion}
-\end{align}
-이는 심층 추정량을 통해 저-FPR 구간에서의 결정 경계 안정성을 확보함과 동시에, 제한된 가중치 $\lambda$를 통해 얕은 계층이 포착한 고주파 국소 결함 단서를 보완적으로 수용하는 장치이다.
-
-\subsection{공간 앙상블 및 영역 일관성 보정}
-\label{sec:method-aggregation}
+\subsection{다해상도 순서 통계량 집계}
 \label{sec:method:aggregation}
 
-각 해상도 $r$에서 $B$개 배그의 점수를 평균하여 패치 표본 추출에 따른 분산을 줄인 뒤, 해상도별 맵을 원본 크기 $(H, W)$로 양선형 보간하여 다중 공간 척도의 기댓값 맵 $\tilde{A}(x^q)$를 산출한다:
-\begin{align}
-  S_r(x^q, p) &= \frac{1}{B} \sum_{b=1}^B S_{r,b}(x^q, p), \label{eq:bag-mean} \\
-  \tilde{A}(x^q) &= \frac{1}{|\mathcal{R}|} \sum_{r \in \mathcal{R}} \text{Resize}_{H,W}\left[ S_r(x^q) \right]. \label{eq:scale-mean}
-\end{align}
-패치 단위 매칭은 인접 픽셀 간 공간적 연속성을 명시적으로 강제하지 않으므로, 단일 결함 내부에서도 국소적인 점수 편차가 발생할 수 있다. 
-이를 보완하기 위해 $\tilde{A}(x^q)$의 상위 $\tau$-분위수 이상인 고신뢰 이상 픽셀들이 형성하는 8-연결 영역(connected components)을 검출하고, 각 영역 내부의 점수를 해당 영역의 극값(최댓값)으로 일관되게 전파하여 최종 결함 맵 $A(x^q)$를 얻는다. 
-최종 이미지 단위 이상 점수 $s(x^q)$는 전체 영상 크기 대비 미세 결함의 면적 비율을 고려하여, $A(x^q)$의 상위 $\rho$ 비율 픽셀 집합 $\Omega_\rho$에 대한 극단부 평균(tail mean)으로 산출한다:
+앞선 계층 결합을 거친 이상 점수는 여전히 $R$개의 입력 해상도별 맵으로 분리되어 있다.
+먼저 각 해상도 $r$에서 $B$개 배그의 점수를 평균하여 패치 서브샘플링에 따른 추정 분산을 완화한 뒤, 양선형 보간(bilinear interpolation)을 통해 모든 해상도 맵 $S_r$을 원본 이미지 크기 $(H, W)$로 공간 정렬한다:
 \begin{equation}
-  s(x^q) = \frac{1}{|\Omega_\rho|} \sum_{p \in \Omega_\rho} A(x^q, p).
+  S_r(x^q, p) = \frac{1}{B} \sum_{b=1}^B S_{r,b}(x^q, p).
+  \label{eq:bag-mean}
+\end{equation}
+
+\paragraph{Rényi 순서 통계량 집계 (Order-Statistics Aggregation).} 
+공간 축이 정렬된 다해상도 점수 맵들을 결합할 때, 단순 산술 평균($1/R=0.25$)은 특정 해상도에서만 뚜렷하게 관측되는 유효 결함 피크를 타 해상도의 낮은 점수와 섞어 희석시킨다.
+반대로 결함 피크를 보존하기 위해 단순히 최댓값($\max$)만을 취하면, 정상 영역에서 단일 해상도에 우연히 발생한 단발성 잡음 스파이크가 그대로 최종 결함 점수로 채택되어 오경보를 유발한다.
+따라서 다해상도 결합에는 최상위 반응의 피크는 온전히 보존하면서도, 단일 관측 잡음의 돌출을 다관측 지지 반응으로 완충(damping)하는 비대칭 가중 체계가 필요하다.
+
+이러한 상위 편향 가중치를 자의적인 휴리스틱 튜닝 없이 결정하기 위해, 이상 탐지의 극치 꼬리 거동(tail behavior)을 다루는 표준 지수 분포의 순서 통계량 기댓값 간격(Rényi representation, $a_k = \sum_{j=1}^k \frac{1}{R-j+1}$)을 참조 모형으로 채택한다.
+조화 수열(harmonic sum)에 기반한 이 기댓값 구조는 최상위 순위로 갈수록 가중치가 자연스럽게 완만히 증가하는 특성을 갖는다.
+$R=4$일 때 정규화된 Rényi 순위 가중치 $w = (\frac{1}{16}, \frac{7}{48}, \frac{13}{48}, \frac{25}{48}) \approx (0.063, 0.146, 0.271, 0.521)$를 통해 다해상도 결합 맵을 산출한다:
+\begin{equation}
+  \tilde{A}(x^q, p) = \sum_{k=1}^R w_k \, S_{(k)}(x^q, p).
+  \label{eq:scale-renyi-mean}
+\end{equation}
+이 가중 체계는 다해상도 이상 맵 결합에 두 가지 실질적인 이점을 제공한다:
+(1) 최상위 점수 순위에 약 52.1\%($25/48$)의 지배적인 가중치를 부여하여 특정 해상도에 집중된 결함 피크 신호의 희석을 직접적으로 방어한다.
+(2) 동시에 차상위 순위들($k=2, 3$)에도 약 41.7\%($20/48$)의 완만한 지지 가중치를 분배함으로써, $\max$ 집계처럼 한 해상도에서만 외톨이로 튄 국소 잡음 스파이크가 최종 결함으로 과대 채택되는 불안정성을 효과적으로 완충한다.
+특히 앞 절의 \textbf{정상 참조 척도 보정($c_m$)}이 모든 해상도의 정상 기저 점수를 $z=1.0$ 기준으로 균일화해 두었기 때문에, 특정 해상도의 기저 잡음이 상위 순위를 차지해 오경보를 유발하는 위험 없이 유효 결함 반응만을 안전하게 보존할 수 있다.
+Rényi 집계와 보정의 상호작용 메커니즘 분석은 \cref{sec:experiments:mechanism}에서 다룬다.
+
+\paragraph{이미지 수준 이상 점수.}
+최종 픽셀 단위 결함 국소화 맵은 $A(x^q) = \tilde{A}(x^q)$로 정의된다.
+이미지 수준 이상 점수 $s(x^q)$는 $A(x^q)$ 내 상위 1\% 픽셀 집합 $\Omega_{0.01}$($|\Omega_{0.01}| = \max\{1, \lfloor 0.01HW \rfloor\}$)의 평균값으로 정의된다:
+\begin{equation}
+  s(x^q) = \frac{1}{|\Omega_{0.01}|} \sum_{p \in \Omega_{0.01}} A(x^q, p).
   \label{eq:image-score}
 \end{equation}

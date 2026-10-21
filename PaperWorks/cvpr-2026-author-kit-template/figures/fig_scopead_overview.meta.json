@@ -1,43 +1,55 @@
 {
-  "outline": "../outlines/Outline_v18.md",
   "method": "ScopeAD",
-  "style_reference": "main_figure_history/07_scarf_initial_20261001/draft_06",
-  "generator": "draw_scopead_overview_initial_style.py",
-  "layout": "two bands: support fitting / query inference",
-  "fusion": "sum_l (alpha_l / c_lrb) * d_lrb; alpha=(0.125,0.5,0.5)",
+  "method_source": "sec/3_method.tex",
+  "generator": "figures/source/draw_overview.py",
+  "width_inches": 7.14,
+  "height_inches": 3.94,
+  "minimum_text_size_pt": 6.8,
+  "design": "two-stage overview; open white layout; deep/shallow color coding; explicit rank aggregation",
+  "outer_frame": {
+    "color": "#9AA1A7",
+    "linewidth_pt": 0.7,
+    "content_padding_inches": 0.07,
+    "inset_inches": 0.015
+  },
+  "layers": [
+    5,
+    11,
+    23
+  ],
   "scales": [
     448,
     672,
     896,
     1120
   ],
-  "layers": [
-    5,
-    11,
-    23
-  ],
   "bags": 4,
   "tokens_per_image_per_bag": 256,
-  "calibration_quantile": 0.95,
-  "image_score": "top-1% pixel mean of postprocessed A",
-  "display_postprocessed": false,
-  "schematic_postprocessing": "high-score connected-component maximum (CQ); not rendered",
-  "display_map_source": "cache_rsg4_mechanism/overview_walnuts__defect.npz",
-  "display_map_keys": [
-    "r448_normalized_l5",
-    "r448_normalized_l11",
-    "r448_normalized_l23",
-    "r672_normalized_l5",
-    "r672_normalized_l11",
-    "r672_normalized_l23",
-    "r896_normalized_l5",
-    "r896_normalized_l11",
-    "r896_normalized_l23",
-    "r1120_normalized_l5",
-    "r1120_normalized_l11",
-    "r1120_normalized_l23"
+  "bank_count": 48,
+  "calibration": "c_m=max(Q_0.95(D_m),epsilon); LSO for N>1, LTO for N=1",
+  "layer_weights": [
+    0.125,
+    0.5,
+    0.5
   ],
-  "display_map_status": "linear0125 reconstructed from FP16 cached bag-averaged, resized layer maps; not a new evaluation",
-  "support_histogram_source": "overview_walnuts__support.npz: lso_l5, lso_l23 / lso_u_l5, lso_u_l23",
-  "ground_truth_use": "final display contour only"
+  "aggregation_order": "linear layer fusion -> bag mean -> bilinear resize -> pixelwise ascending sort -> rank-weighted sum",
+  "scale_rank_weights": [
+    0.0625,
+    0.14583333333333334,
+    0.2708333333333333,
+    0.5208333333333334
+  ],
+  "rank_assignment": "score rank at each pixel, not fixed resolution",
+  "rank_example": "measured scores at defect pixel (row 380, col 133) of the cached display maps",
+  "output": "pre-postprocessing map A_tilde; CQ99 and image scoring in method text",
+  "cq_rendered": false,
+  "ground_truth_use": "none",
+  "display_range": [
+    0,
+    2.0
+  ],
+  "layer_map_display": "resolution 672; bag-averaged",
+  "display_source": "cache_rsg4_mechanism/overview_walnuts__defect.npz",
+  "display_source_sha256": "2b078aee1d6e79d8a02bf842ccb428f89a8c3041fcb506efa6035df32e6ba05a",
+  "display_provenance": "linear fusion and Renyi aggregation reconstructed from cached FP16, resized, bag-averaged normalized layer maps; no new inference or evaluation"
 }

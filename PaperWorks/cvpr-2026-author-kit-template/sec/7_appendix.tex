@@ -1,49 +1,188 @@
-\section{정상 참조 기반 비대칭 결합의 추가 분석}
+\section{결합 규칙과 파라미터의 추가 분석}
 \label{sec:appendix:fusion}
 
-본문의 대표 결합 대안 비교를 보완하기 위해 전체 양의 가중치 탐색과 shot별 정규화 결과를 제시한다.
-모든 값은 AD2 \texttt{test\_public}, seed 0의 8-class macro이며 추가 실행 결과가 아니다.
+본문의 분석을 보완하기 위해 계층 가중치와 해상도 집계 대안, 보정과 집계의 메커니즘 분석을 제시한다.
+계층 가중치와 집계 대안 표는 MVTec AD 2 \texttt{test\_public}, seed 0의 8개 클래스 macro이며, 메커니즘 분석은 별도로 명시한 3-seed 결과를 사용한다.
 
 \subsection{계층 가중치}
-$z_d=(z_{11}+z_{23})/2$에 $\lambda z_5$를 더한다.
-$\lambda=0.5$에서는 각 계층의 계수가 같고, $\lambda=1$에서는 얕은 계층의 계수가 각 깊은 계층의 두 배다.
-가중치는 2-shot 개발 결과에서 선택했으며 이후 고정했다. 표에 deep-only ($\lambda=0$) 결과는 포함되지 않는다.
+최종 구성(Q95, Rényi)에서 $z_d=(z_{11}+z_{23})/2$에 더하는 얕은 계층 가중치 $\lambda$를 바꾸어 비교한다(\cref{tab:lambda_final}).
+$\lambda=0.5$에서는 세 계층의 계수가 같다. $\lambda=0$은 얕은 계층의 점수 기여만 제외한다.
 
-\begin{table}[t]
-\centering\scriptsize\setlength{\tabcolsep}{3pt}
-\caption{Shallow 가중치 $\lambda$ 비교 (AD2 \texttt{test\_public}, seed 0, \%; 두 지표 모두 FPR 상한 0.05). $z_d=(z_{11}+z_{23})/2$에 $\lambda z_5$를 더한다. $\lambda=0.5$는 계층 동일가중 평균과 비례한다.}
-\label{tab:lambda_sensitivity}
-\begin{tabular}{r c c}
+\begin{table}[!htbp]
+\centering\small
+\caption{얕은 계층 가중치 $\lambda$의 민감도 (MVTec AD 2, seed 0, Q95, Rényi, \AUPRO, \%). 굵은 값은 최고값이다.}
+\label{tab:lambda_final}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrr}
 \toprule
-$\lambda$ & 2-shot (AUPRO / pAUROC) & 16-shot (AUPRO / pAUROC) \\
+$\lambda$ & 2-shot & 16-shot \\
 \midrule
-\textbf{0.125} & \textbf{59.33 / 76.48} & \textbf{59.57 / 77.46} \\
-0.25 & 58.43 / 76.00 & 59.48 / 77.21 \\
-0.5 & 54.92 / 74.39 & 58.21 / 76.31 \\
-1 & 48.39 / 71.31 & 54.02 / 74.04 \\
-2 & 40.48 / 67.00 & 47.33 / 70.19 \\
+0 & 59.05 & 59.11 \\
+0.0625 & 59.76 & 59.73 \\
+0.125 (사용값) & \textbf{59.92} & 60.16 \\
+0.25 & 59.32 & \textbf{60.36} \\
+0.5 & 56.23 & 59.47 \\
 \bottomrule
-\end{tabular}
+\end{tabular*}
 \end{table}
 
-\subsection{정상 참조 척도}
-동일한 계층 가중치를 유지하고 none, MAD, q95를 비교한다.
-q95와 MAD의 AUPRO 차이는 모든 shot에서 양수이나, q95와 none의 차이는 shot과 지표에 따라 방향이 달라진다.
-따라서 이 결과는 q95의 일관된 성능 우위나 정규화의 필수성을 뒷받침하지 않는다.
+얕은 계층을 제외하거나($\lambda=0$) 가중치를 0.5로 높이면 두 shot 모두 성능이 낮아진다. 16-shot에서는 0.25가 0.125보다 0.20\,pp 높아, 최적값은 shot에 따라 조금 다르다.
 
-\begin{table}[t]
+\subsection{해상도 집계 대안}
+\label{sec:appendix:aggregation}
+최종 구성의 특징, 뱅크, Q95 보정, 계층 가중치를 고정하고 해상도 집계 규칙만 바꾸었다(\cref{tab:aggregation_alternatives}).
+선형 순위 가중치는 $(0.1, 0.2, 0.3, 0.4)$다.
+두 순위 가중 집계는 Mean보다 \AUPRO가 높고, Rényi와 선형 가중의 차이는 0.1\,pp 이내다.
+따라서 이 결과는 높은 순위에 큰 가중치를 주는 집계의 효과를 보여주며, 특정 Rényi 가중치가 다른 순위 가중치보다 뚜렷하게 낫다는 근거는 아니다.
+
+\begin{table}[!htbp]
 \centering\scriptsize\setlength{\tabcolsep}{3pt}
-\caption{AD2 정규화 방식 비교 (AUPRO@0.05 / pAUROC@0.05, seed 0, \%). none은 미정규화, $\Delta$AUPRO는 q95 $-$ MAD의 차이(pp)다.}
-\label{tab:norm_factorial_ad2}
-\begin{tabular}{r c c c r}
+\caption{해상도 집계 대안 (MVTec AD 2, seed 0, Q95, \%). 각 셀은 \AUPRO{} / \pAUROC{}이며, 굵은 값은 열별 최고값이다.}
+\label{tab:aggregation_alternatives}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lcc}
 \toprule
-Shot & none & MAD & q95 & $\Delta$AUPRO \\
+집계 방식 & 2-shot & 16-shot \\
 \midrule
-1  & 55.06 / 73.84 & 53.59 / 72.73 & 54.81 / 73.32 & +1.22 \\
-2  & 59.06 / 76.47 & 58.57 / 76.34 & 59.33 / 76.48 & +0.76 \\
-4  & 59.02 / 77.25 & 57.00 / 76.29 & 58.69 / 76.87 & +1.69 \\
-8  & 58.69 / 77.67 & 57.28 / 76.67 & 58.68 / 77.35 & +1.40 \\
-16 & 59.17 / 77.65 & 58.52 / 77.17 & 59.57 / 77.46 & +1.05 \\
+Mean & 59.33 / \textbf{76.48} & 59.57 / 77.46 \\
+Order (linear) & 59.91 / 76.45 & 60.08 / \textbf{77.55} \\
+Order (Rényi, Ours) & \textbf{59.92} / 76.36 & \textbf{60.16} / 77.52 \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\subsection{보정과 Rényi 집계의 메커니즘 분석}
+\label{sec:appendix:mechanism}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_scopead_calibration_mechanism.pdf}
+\caption{\textbf{Q95 보정과 Rényi 집계의 결합 메커니즘 분석.}
+MVTec AD 2, 2/16-shot, seed 0/1/2에서 같은 특징과 거리를 재사용했다.
+(a) 상대 추가 응답 $E/\mu$의 Q95$-$None 변화. Normal은 정상 이미지, Background는 결함 이미지의 정상 배경, Defect는 결함 영역이다. 같은 픽셀 표본으로 조건 간 차이를 계산하고 이미지·seed·클래스 순으로 평균했다. 작은 점은 3-seed 평균 클래스 효과, 마름모와 오차 막대는 macro와 클래스 bootstrap 95\,\% 구간이다.
+(b) None+Rényi 대비 순위만, 점수 크기만, 둘 다 보정한 경우의 \AUPRO{} 차이. 작은 점과 구간은 (a)와 같다.
+(c) Q95 분모에 평균 1의 log-normal 오차를 넣었을 때 오차가 없는 경우 대비 \AUPRO{} 변화. 각 $\sigma$에서 seed별 3회 오차를 두 집계에 동일하게 주고 평균했다. 색은 shot, 점선/실선은 Mean/Rényi다.}
+\label{fig:calibration-mechanism}
+\end{figure*}
+
+\noindent\textbf{상대 추가 응답($E/\mu$).}
+Rényi 집계에서 정상 이미지의 $E/\mu$는 Q95 보정 후 2-shot에서 $7.74\!\rightarrow\!7.10$\,\%, 16-shot에서 $8.56\!\rightarrow\!7.55$\,\%로 감소했다(\cref{fig:calibration-mechanism}(a)).
+결함 영역에서는 $5.34\!\rightarrow\!5.36$\,\%, $6.36\!\rightarrow\!6.11$\,\%로 변화가 작았다.
+결함과 정상 배경의 $E/\mu$ 차이는 $+0.74/+0.80$\,pp 커졌고, 정상 이미지 $E/\mu$의 Q99는 $-1.30/-1.61$\,pp 줄었다.
+이는 상대 추가 응답 분포의 변화이며, 고정 임계값에서의 오경보율 변화를 직접 측정한 것은 아니다.
+
+\noindent\textbf{순위 변경과 점수 크기 변경의 분리.}
+Q95로 순위만 정하고 원점수를 합산하는 조건과, 원점수 순위를 유지한 채 Q95 점수를 합산하는 조건을 비교했다(\cref{fig:calibration-mechanism}(b)).
+순위만 바꾼 효과는 $+0.05/-0.14$\,pp인 반면, 크기만 바꾼 효과는 $+0.46/+0.70$\,pp로 최종 이득의 대부분을 차지했다.
+따라서 보정의 효과는 주로 점수 크기의 조정에서 나온다.
+
+\noindent\textbf{보정 오차에 대한 민감도.}
+보정 분모에 평균 1의 log-normal 오차를 넣으면(\cref{fig:calibration-mechanism}(c)), $\sigma=0.3$에서 Mean의 \AUPRO 변화는 $-0.03/+0.06$\,pp인 반면 Rényi는 $-0.74/-0.47$\,pp였다.
+Rényi 집계는 Mean보다 분모의 정확도에 더 민감하다.
+
+\noindent\textbf{단위에 따른 분포 비교.}
+$E/\mu$는 해당 픽셀의 평균 응답을 분모로 쓰므로 결함에서 $\mu$가 커지는 효과도 포함한다.
+이를 확인하기 위해 다른 fold 정상 이미지 $\mu$의 Q95로 나눈 $E$도 측정했다.
+이 값의 정상/결함 평균은 2-shot에서 $4.31\!\rightarrow\!3.80$ / $6.18\!\rightarrow\!6.19$\,\%, 16-shot에서 $4.57\!\rightarrow\!3.80$ / $8.01\!\rightarrow\!7.66$\,\%로, 정상 추가 응답이 줄고 결함 응답이 상대적으로 유지되는 방향은 같았다.
+결함$-$배경 $E/\mu$ 차이 변화의 클래스 bootstrap 95\,\% 구간은 $[+0.06,+1.72]/[+0.00,+2.02]$\,pp이며, 16-shot 하한이 0에 가깝다.
+정상 이미지 $E/\mu$의 Q99 변화 구간은 $[-2.29,-0.50]/[-3.00,-0.48]$\,pp이고, 감소한 클래스는 7/8과 6/8이다.
+
+\begin{table*}[t]
+\centering\small\setlength{\tabcolsep}{8pt}
+\caption{\textbf{클래스별 검출 변화와 해상도 응답 집중도의 연관.} MVTec AD 2, 3-seed 평균. Coverage 상호작용은 $(\mathrm{Q95{+}R}-\mathrm{Q95{+}Mean})-(\mathrm{None{+}R}-\mathrm{None{+}Mean})$이며, GT 영역 coverage를 이미지 안에서 평균한 뒤 이미지와 seed를 평균한 값이다. 임계값은 정상 이미지의 교차검증으로 목표 FPR 1\,\%에 맞추었으며, 실제 평가 FPR은 조건마다 다르다. $\rho$는 Q95 상태의 응답 집중도와 Mean$\rightarrow$Rényi coverage 차이의 클래스 내 Spearman 상관이다.}
+\label{tab:mechanism_class_effects}
+\begin{tabular}{l r r r r}
+\toprule
+클래스 & 2-shot 상호작용 (pp) & 16-shot 상호작용 (pp) & 2-shot $\rho$ & 16-shot $\rho$ \\
+\midrule
+can & $-0.05$ & $-0.06$ & 0.48 & 0.39 \\
+fabric & $+7.24$ & $+11.50$ & 0.56 & 0.31 \\
+fruit\_jelly & $+0.23$ & $+0.72$ & 0.48 & 0.46 \\
+rice & $-0.38$ & $-0.71$ & 0.38 & 0.22 \\
+sheet\_metal & $-1.86$ & $-1.78$ & 0.48 & 0.43 \\
+vial & $+0.12$ & $-0.18$ & 0.30 & 0.03 \\
+wallplugs & $-0.19$ & $-0.59$ & 0.51 & 0.52 \\
+walnuts & $+0.05$ & $+0.79$ & 0.29 & 0.30 \\
+\midrule
+Macro & $+0.65$ & $+1.21$ & --- & --- \\
+fabric 제외 & $-0.30$ & $-0.26$ & --- & --- \\
 \bottomrule
 \end{tabular}
+\end{table*}
+
+\noindent\textbf{클래스와 이미지의 불확실성.}
+\cref{tab:mechanism_class_effects}의 coverage 상호작용은 클래스에 따라 부호가 다르다.
+클래스 bootstrap 구간은 0을 포함하지만, 서포트·임계값·클래스를 고정하고 이미지만 재표집한 구간은 $[+0.18,+1.16]/[+0.61,+1.92]$\,pp다.
+두 구간은 서로 다른 변동을 나타내며, 후자는 클래스 구성이나 서포트 선택의 변동을 포함하지 않는다.
+
+\noindent\textbf{결함 크기와 대비.}
+GT 면적이 이미지의 0.1\,\% 미만인 작은 영역의 coverage 상호작용은 $+0.86/+1.53$\,pp지만 fabric을 제외하면 $-0.18/-0.06$\,pp다.
+0.1--1\,\% 및 1\,\% 이상 구간은 can이 없어 7개 클래스 범위다.
+회색조 대비(GT 영역 평균과 8픽셀 주변 정상 영역의 차이를 주변 표준편차로 나눈 값)와 결함 크기의 상관 방향은 클래스마다 달랐다.
+따라서 작은 결함이나 저대비 결함 전반에서 이득이 있다고 보기는 어렵다.
+
+\noindent\textbf{해상도 순위 점유율.}
+\cref{fig:order-rank-diagnostic}는 seed 0에서 각 픽셀의 최고 점수를 낸 해상도의 비율이다.
+Q95 보정 후 448의 정상 점유율은 47.5/50.7\,\%에서 33.9/36.4\,\%로 줄고, 16-shot 작은 결함의 1120 점유율은 14.5\,\%에서 29.2\,\%로 늘었다.
+정상 픽셀의 1120 점유율도 13.7\,\%에서 22.3\,\%로 늘었으므로, 이 그림은 순위 편중의 변화를 보여주는 보조 자료로 사용한다.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_scopead_order_rank_diagnostic.pdf}
+\caption{\textbf{정상 참조 보정과 해상도 순위 점유율.} MVTec AD 2, seed 0, 8개 클래스 macro. 점선은 균등 점유율 25\,\%다.}
+\label{fig:order-rank-diagnostic}
+\end{figure}
+
+\subsection{계층·해상도 보정 축의 분리}
+\label{sec:appendix:calibration-axis}
+
+\begin{table}[!htbp]
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\caption{\textbf{Q95 보정 분모의 계층·해상도 성분 분리.} MVTec AD 2, 2/16-shot, seed 0/1/2 평균 \AUPRO{} (\%). Global은 배그별 공통 배율만, Layer/Resolution은 공통 배율에 해당 축 성분만, Separable은 두 축 성분을 함께 적용한다. Full은 원래 Q95다.}
+\label{tab:calibration_axis}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrrr}
+\toprule
+& \multicolumn{2}{c}{2-shot} & \multicolumn{2}{c}{16-shot} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+분모 & Mean & Rényi & Mean & Rényi \\
+\midrule
+None & 56.12 & 56.32 & 59.73 & 59.72 \\
+Global & 56.12 & 56.32 & 59.73 & 59.72 \\
+Layer & 55.91 & 56.13 & 59.90 & 59.82 \\
+Resolution & 56.26 & 56.87 & 59.89 & 60.55 \\
+Separable & 56.02 & 56.78 & 60.02 & 60.73 \\
+Full Q95 & 56.03 & 56.78 & 60.06 & 60.74 \\
+\bottomrule
+\end{tabular*}
 \end{table}
+
+\noindent\textbf{분모 분해.}
+정상 서포트 Q95 $c_{l,r,b}$의 로그를 각 배그에서 다음과 같이 분해한다:
+\begin{equation}
+  \log c_{l,r,b}=\gamma_b+u_{l,b}+v_{r,b}+h_{l,r,b}.
+  \label{eq:calibration-axis-factor}
+\end{equation}
+$\gamma_b$는 계층·해상도 전체 평균이고, $u_{l,b}$와 $v_{r,b}$는 각 축 평균에서 $\gamma_b$를 뺀 값이며, $h_{l,r,b}$는 잔여 항이다.
+Global, Layer, Resolution, Separable은 각각 $\exp(\gamma_b)$, $\exp(\gamma_b+u_{l,b})$, $\exp(\gamma_b+v_{r,b})$, $\exp(\gamma_b+u_{l,b}+v_{r,b})$를 분모로 쓴다. Full은 원래 $c_{l,r,b}$이며 None은 1이다.
+모든 축 개입은 배그 공통 척도를 유지하므로 Global을 대조로 사용한다.
+특징, 뱅크, 계층 가중치, FP16을 고정하고 분모만 바꾸었으며(8개 클래스 $\times$ 2/16-shot $\times$ 3 seed), None과 Full의 결과는 \cref{tab:interaction_multiseed}와 일치한다.
+
+\noindent\textbf{축 효과.}
+Rényi 아래에서 Resolution$-$Global은 $+0.55/+0.82$\,pp이며, seed별 macro 효과는 2-shot $+0.56/+0.64/+0.45$\,pp, 16-shot $+0.82/+0.78/+0.87$\,pp로 모두 양수다.
+Mean 아래의 같은 효과는 $+0.15/+0.15$\,pp로 작다.
+Layer$-$Global은 Rényi 아래에서 $-0.19/+0.10$\,pp로 shot에 따라 방향이 달랐고, Full$-$Separable은 두 shot 모두 0.01\,pp 이내로 잔여 항의 macro 영향은 작았다.
+다만 Resolution$-$Global에서 양의 효과를 보인 클래스는 두 shot 모두 8개 중 4개이고, fabric의 효과가 $+5.18/+7.26$\,pp로 크다.
+클래스 bootstrap 95\,\% 구간은 $[-0.36,+1.99]/[-0.40,+2.80]$\,pp로 0을 포함하며, fabric을 제외하면 $-0.11/-0.10$\,pp다.
+
+\subsection{평균 응답 조건부 분석과 영역·픽셀 가중}
+\label{sec:appendix:conditional-mechanism}
+
+\noindent\textbf{같은 평균 응답 구간에서의 비교.}
+두 보정 조건의 같은 픽셀을 보정 전 평균 응답 $\mu$의 10분위 구간에 배정했다. 구간 경계는 다른 정상 fold에서 정했다.
+이미지$\rightarrow$seed$\rightarrow$클래스 순으로 집계하면 정상과 배경의 Q95$-$None $E/\mu$ 변화는 두 shot 모두 10개 구간 전체에서 음수였다.
+결함$-$배경 변화는 8개 클래스가 모두 관측된 구간(2-shot 5--9, 16-shot 6--9)에서 모두 양수였다.
+따라서 평균 응답 수준이 다른 픽셀이 섞여서 생긴 현상으로 보기는 어렵다. 다만 보정 후의 $\mu$까지 고정한 비교는 아니다.
+
+\noindent\textbf{Fabric의 영역 수와 결함 픽셀 수.}
+Fabric의 GT 영역 192개 중 180개(93.75\,\%)는 이미지 면적의 0.1\,\% 미만이지만, 이 영역들은 전체 결함 픽셀의 1.39\,\%만 차지한다.
+목표 FPR 1\,\% 임계값에서 Q95+Rényi$-$None+Rényi의 영역 평균 coverage 변화는 작은 영역에서 $+6.85/+10.41$\,pp, 나머지 영역에서 $-1.36/-0.84$\,pp다(2/16-shot).
+같은 변화를 GT 픽셀 수로 가중하면 작은 영역의 TPR 기여는 $+0.06/+0.08$\,pp, 나머지는 $-2.66/-1.64$\,pp다.
+즉 많은 작은 영역의 coverage 증가와 큰 영역의 손실이 함께 나타나며, 영역 단위 지표(\AUPRO)와 픽셀 단위 지표(\pAUROC)가 다르게 움직이는 이유를 설명한다.
