@@ -1,0 +1,54 @@
+{
+  "method_source": "../cvpr-2026-author-kit-template/sec/3_method.tex",
+  "method": "ScopeAD",
+  "style_reference": "cvpr-2026-author-kit-template/figures/fig_scopead_overview.pdf (before 2026-10-18 update)",
+  "generator": "draw_scopead_overview_renyi.py",
+  "layout": "two bands: support fitting / query inference",
+  "fusion": "sum_l (alpha_l / c_lrb) * d_lrb; alpha=(0.125,0.5,0.5)",
+  "scales": [
+    448,
+    672,
+    896,
+    1120
+  ],
+  "layers": [
+    5,
+    11,
+    23
+  ],
+  "bags": 4,
+  "tokens_per_image_per_bag": 256,
+  "calibration_quantile": 0.95,
+  "one_shot_reference": "leave-token-out fallback",
+  "aggregation_order": "layer fusion -> bag mean -> bilinear resize -> ascending pixelwise sort -> Renyi weighted sum",
+  "scale_rank_weights": [
+    0.06250000000000001,
+    0.14583333333333334,
+    0.27083333333333337,
+    0.5208333333333334
+  ],
+  "rank_weight_definition": "a_k=sum_{j=1}^k 1/(R-j+1); w_k=a_k/sum_j a_j; R=4",
+  "rank_weight_assignment": "ascending score rank at each pixel, not fixed input resolution",
+  "image_score": "top-1% pixel mean of unprocessed combined map",
+  "display_postprocessed": false,
+  "cq": false,
+  "schematic_postprocessing": "omitted as requested; optional in manuscript",
+  "display_map_source": "cache_rsg4_mechanism/overview_walnuts__defect.npz",
+  "display_map_keys": [
+    "r448_normalized_l5",
+    "r448_normalized_l11",
+    "r448_normalized_l23",
+    "r672_normalized_l5",
+    "r672_normalized_l11",
+    "r672_normalized_l23",
+    "r896_normalized_l5",
+    "r896_normalized_l11",
+    "r896_normalized_l23",
+    "r1120_normalized_l5",
+    "r1120_normalized_l11",
+    "r1120_normalized_l23"
+  ],
+  "display_map_status": "linear0125 and pixelwise Renyi aggregation reconstructed from FP16 cached bag-averaged, resized layer maps; not a new evaluation",
+  "support_histogram_source": "overview_walnuts__support.npz: lso_l5, lso_l23 / lso_u_l5, lso_u_l23",
+  "ground_truth_use": "final display contour only"
+}

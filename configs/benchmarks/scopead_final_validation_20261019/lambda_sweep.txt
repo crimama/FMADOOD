@@ -1,0 +1,8 @@
+ad2_lambda0p0_s02
+ad2_lambda0p0625_s02
+ad2_lambda0p25_s02
+ad2_lambda0p5_s02
+ad2_lambda0p0_s16
+ad2_lambda0p0625_s16
+ad2_lambda0p25_s16
+ad2_lambda0p5_s16

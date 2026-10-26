@@ -1,0 +1,131 @@
+{
+  "primary_group": "all",
+  "main_figure_groups": [
+    "regular",
+    "nonregular"
+  ],
+  "condition_metrics": {
+    "regular": {
+      "raw": {
+        "recall_percent": 32.94155502912815,
+        "fpr_percent": 0.6506001540899711
+      },
+      "full": {
+        "recall_percent": 44.2160736826594,
+        "fpr_percent": 0.7026669692547554
+      },
+      "delta_recall_pp": 11.274518653531246
+    },
+    "nonregular": {
+      "raw": {
+        "recall_percent": 36.88485498246022,
+        "fpr_percent": 1.0578252850799896
+      },
+      "full": {
+        "recall_percent": 46.29644559377838,
+        "fpr_percent": 1.0500945686910816
+      },
+      "delta_recall_pp": 9.41159061131816
+    }
+  },
+  "representative_class": "vial",
+  "representative_image": {
+    "path": "/home/hunim/Volume/DATA/mvtec_ad_2/vial/test_public/bad/013_overexposed.png",
+    "group": "nonregular",
+    "normal": 2530566,
+    "defect": 129434,
+    "raw_tp": 21020,
+    "full_tp": 31926,
+    "raw_fp": 73618,
+    "full_fp": 71696,
+    "recovered": 19562,
+    "lost": 8656,
+    "corrected_fp": 30306,
+    "introduced_fp": 28384
+  },
+  "failure_class": "walnuts",
+  "failure_image": {
+    "path": "/home/hunim/Volume/DATA/mvtec_ad_2/walnuts/test_public/bad/011_overexposed.png",
+    "group": "nonregular",
+    "normal": 4952199,
+    "defect": 61305,
+    "raw_tp": 54306,
+    "full_tp": 52698,
+    "raw_fp": 60580,
+    "full_fp": 42138,
+    "recovered": 1354,
+    "lost": 2962,
+    "corrected_fp": 37922,
+    "introduced_fp": 19480
+  },
+  "macro_recovered_percent": 13.568934455513489,
+  "macro_lost_percent": 3.853842229747908,
+  "macro_net_pp": 9.71509222576558,
+  "improved_classes": 7,
+  "classes": {
+    "can": {
+      "delta_pp": 9.323690383111806,
+      "recovered_percent": 9.330205890018243,
+      "lost_percent": 0.006515506906437321,
+      "nonregular_delta_pp": 8.733385457388584,
+      "raw_fpr_percent": 0.9958469092826515,
+      "full_fpr_percent": 0.9979571240867994
+    },
+    "fabric": {
+      "delta_pp": 5.732746866688626,
+      "recovered_percent": 11.369643976498836,
+      "lost_percent": 5.636897109810213,
+      "nonregular_delta_pp": 6.11714458740159,
+      "raw_fpr_percent": 1.001699839380108,
+      "full_fpr_percent": 1.0057505349244062
+    },
+    "fruit_jelly": {
+      "delta_pp": 10.24151946224793,
+      "recovered_percent": 14.30955916836017,
+      "lost_percent": 4.0680397061122395,
+      "nonregular_delta_pp": 10.459277122747817,
+      "raw_fpr_percent": 0.9953038197603492,
+      "full_fpr_percent": 1.0443874475279389
+    },
+    "rice": {
+      "delta_pp": 6.209241496615892,
+      "recovered_percent": 7.4341312151169765,
+      "lost_percent": 1.2248897185010847,
+      "nonregular_delta_pp": 6.337319477188896,
+      "raw_fpr_percent": 1.0036682641516281,
+      "full_fpr_percent": 0.9962328983748804
+    },
+    "sheet_metal": {
+      "delta_pp": 6.245472313601452,
+      "recovered_percent": 18.814674312373107,
+      "lost_percent": 12.569201998771657,
+      "nonregular_delta_pp": 3.0252485677247587,
+      "raw_fpr_percent": 0.9948028586420974,
+      "full_fpr_percent": 1.0004735665376396
+    },
+    "vial": {
+      "delta_pp": 7.667962542934778,
+      "recovered_percent": 9.482825646592783,
+      "lost_percent": 1.814863103658007,
+      "nonregular_delta_pp": 7.758935008572462,
+      "raw_fpr_percent": 0.941453442251427,
+      "full_fpr_percent": 0.9014773152770703
+    },
+    "walnuts": {
+      "delta_pp": -3.3617093227019113,
+      "recovered_percent": 1.56869755807582,
+      "lost_percent": 4.930406880777726,
+      "nonregular_delta_pp": -3.407153539925256,
+      "raw_fpr_percent": 0.9935366734753907,
+      "full_fpr_percent": 0.9975240656738891
+    },
+    "wallplugs": {
+      "delta_pp": 35.66181406362606,
+      "recovered_percent": 36.24173787707197,
+      "lost_percent": 0.5799238134458973,
+      "nonregular_delta_pp": 36.26856820944644,
+      "raw_fpr_percent": 1.0005670198367707,
+      "full_fpr_percent": 0.9950750952494434
+    }
+  }
+}

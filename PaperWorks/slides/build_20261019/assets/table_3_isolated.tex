@@ -1,0 +1,22 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage{kotex}
+\usepackage[margin=18mm]{geometry}
+\usepackage{booktabs,amssymb,amsmath,graphicx}
+\setmainfont{TeX Gyre Termes}
+\setmainhangulfont{Noto Serif CJK KR}
+\pagestyle{empty}
+\begin{document}
+\noindent\scriptsize\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{l c c c c c r r}
+\toprule
+구성 & 다중해상도 & 개별bank & Shallow & Scale보정 & Rényi집계 & 2-shot & 16-shot \\
+\midrule
+A. Single-resolution & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & 50.51 & 53.78 \\
+B. + Multi-resolution & \checkmark & $\times$ & $\times$ & $\times$ & $\times$ & 55.62 & 57.90 \\
+C. + Separate banks & \checkmark & \checkmark & $\times$ & $\times$ & $\times$ & 58.23 & 57.93 \\
+D. + Shallow fusion & \checkmark & \checkmark & \checkmark & $\times$ & $\times$ & 59.06 & 59.17 \\
+E. + Scale calibration & \checkmark & \checkmark & \checkmark & \checkmark & $\times$ & 59.33 & 59.57 \\
+\textbf{F. + Rényi aggregation (Ours)} & \textbf{\checkmark} & \textbf{\checkmark} & \textbf{\checkmark} & \textbf{\checkmark} & \textbf{\checkmark} & \textbf{59.92} & \textbf{60.16} \\
+\bottomrule
+\end{tabular}
+\end{document}

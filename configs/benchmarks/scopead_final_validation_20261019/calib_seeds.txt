@@ -1,0 +1,12 @@
+ad2_none_mean_s02_seed1
+ad2_q95_mean_s02_seed1
+ad2_none_renyi_s02_seed1
+ad2_none_mean_s16_seed1
+ad2_q95_mean_s16_seed1
+ad2_none_renyi_s16_seed1
+ad2_none_mean_s02_seed2
+ad2_q95_mean_s02_seed2
+ad2_none_renyi_s02_seed2
+ad2_none_mean_s16_seed2
+ad2_q95_mean_s16_seed2
+ad2_none_renyi_s16_seed2

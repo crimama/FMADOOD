@@ -1,0 +1,10 @@
+visa_renyi_cq_s01_seed1
+visa_renyi_cq_s02_seed1
+visa_renyi_cq_s04_seed1
+visa_renyi_cq_s08_seed1
+visa_renyi_cq_s16_seed1
+visa_renyi_cq_s01_seed2
+visa_renyi_cq_s02_seed2
+visa_renyi_cq_s04_seed2
+visa_renyi_cq_s08_seed2
+visa_renyi_cq_s16_seed2

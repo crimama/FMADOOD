@@ -1,0 +1,275 @@
+{
+  "paper_sha256": "da70f9f4f09d3498f4a35c98d814a8ce8618409b0a2ac1459f7a47f31f0b1c7b",
+  "previous_deck": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/slides/ScopeAD_Rényi_Update_발표_20261018.pptx",
+  "backup": "/home/hun/Volume/RESEARCH/FSAD-TTA/PaperWorks/slides/backup/ScopeAD_Rényi_Update_발표_20261018_재구성전백업_20261019.pptx",
+  "assets": {
+    "main_figure": {
+      "source": "figures/fig_scopead_overview.pdf",
+      "fractional_clip": [
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    "panel_a": {
+      "source": "figures/fig_scopead_overview.pdf",
+      "fractional_clip": [
+        0.01,
+        0.015,
+        0.995,
+        0.295
+      ]
+    },
+    "panel_bc": {
+      "source": "figures/fig_scopead_overview.pdf",
+      "fractional_clip": [
+        0.01,
+        0.325,
+        0.615,
+        0.975
+      ]
+    },
+    "panel_d": {
+      "source": "figures/fig_scopead_overview.pdf",
+      "fractional_clip": [
+        0.62,
+        0.325,
+        0.995,
+        0.99
+      ]
+    },
+    "table_1": {
+      "source": "main.pdf",
+      "page": 6,
+      "clip": [
+        58,
+        100,
+        554,
+        267
+      ]
+    },
+    "table_2": {
+      "source": "main.pdf",
+      "page": 6,
+      "clip": [
+        58,
+        305,
+        554,
+        414
+      ]
+    },
+    "table_5": {
+      "source": "main.pdf",
+      "page": 7,
+      "clip": [
+        58,
+        99,
+        295,
+        183
+      ]
+    },
+    "table_6": {
+      "source": "main.pdf",
+      "page": 7,
+      "clip": [
+        58,
+        235,
+        295,
+        285
+      ]
+    },
+    "table_8": {
+      "source": "main.pdf",
+      "page": 7,
+      "clip": [
+        316,
+        99,
+        554,
+        157
+      ]
+    },
+    "table_9": {
+      "source": "main.pdf",
+      "page": 7,
+      "clip": [
+        345,
+        196,
+        519,
+        239
+      ]
+    },
+    "table_10": {
+      "source": "main.pdf",
+      "page": 10,
+      "clip": [
+        76,
+        110,
+        278,
+        175
+      ]
+    },
+    "table_11": {
+      "source": "main.pdf",
+      "page": 10,
+      "clip": [
+        82,
+        224,
+        272,
+        290
+      ]
+    },
+    "table_3": {
+      "source": "sec/4_experiments.tex",
+      "table_number": 3,
+      "mode": "unmodified tabular, isolated typesetting",
+      "tabular_sha256": "0091570ee57a57269c0f3e28851996744c464ddbd496928468ff7e264157e8c4"
+    },
+    "table_4": {
+      "source": "sec/4_experiments.tex",
+      "table_number": 4,
+      "mode": "unmodified tabular, isolated typesetting",
+      "tabular_sha256": "330fb97e35a13f7e2d6884b8968d08343ec7bbfcc23e7bc98528bc00b5fb3437"
+    },
+    "table_7": {
+      "source": "sec/4_experiments.tex",
+      "table_number": 7,
+      "mode": "unmodified tabular, isolated typesetting",
+      "tabular_sha256": "7117032234c89cf34ab43ff2030a684b102e031983d42d3017a96b7f4a9e2b6f"
+    }
+  },
+  "slides": [
+    {
+      "page": 1,
+      "title": "ScopeAD: 방법론 변경과 실험 근거",
+      "lead": "구성 │ 메인 그림의 변경 동기에서 출발해 논문 표로 효과와 한계를 확인한다",
+      "source": "2026-10-19 | 기준: 현재 main.pdf / sec/3_method.tex / sec/4_experiments.tex"
+    },
+    {
+      "page": 2,
+      "title": "전체 구조: 정상 참조 적합과 쿼리 예측",
+      "lead": "구조 │ 정상 서포트로 뱅크와 척도를 고정하고, 쿼리마다 해상도 점수의 순위를 정한다",
+      "source": "출처: main.pdf Figure 2 원본 | 출력은 CQ99 적용 전 맵"
+    },
+    {
+      "page": 3,
+      "title": "이전 ScopeAD에서 바뀐 결합 규칙",
+      "lead": "변경 │ 독립 매칭과 계층 선형 결합을 유지하고, 해상도 평균을 순위 가중합으로 바꾼다",
+      "source": "출처: 기존 v18 발표자료 및 현재 sec/3_method.tex; 변경점의 설명은 이번 발표용 종합"
+    },
+    {
+      "page": 4,
+      "title": "정상 참조: 쿼리를 보기 전에 비교 기준을 고정",
+      "lead": "동기 │ 같은 이미지의 유사 패치가 정상 거리를 과소추정하는 문제를 줄인다",
+      "source": "출처: Figure 2(a), sec/3_method.tex (관측 확장, LSO/LTO); 단일 샷 LTO는 이미지 간 변동의 대리 추정"
+    },
+    {
+      "page": 5,
+      "title": "척도 보정: 정상 상단 기준을 맞춘 뒤 비교",
+      "lead": "동기 │ 서로 다른 거리 단위가 해상도 점수의 순위를 좌우하지 않도록 한다",
+      "source": "출처: main.pdf Figure 3, sec/3_method.tex Eq. (4–5); ε 하한 생략 표기"
+    },
+    {
+      "page": 6,
+      "title": "계층 결합: 깊은 표현을 기준으로 표층 단서를 더함",
+      "lead": "설계 │ 계층 결합은 기존과 같은 비대칭 선형 결합이다",
+      "source": "출처: Figure 2(b–c), sec/3_method.tex Eq. (6–8); λ는 개발 비교에서 선택 후 고정"
+    },
+    {
+      "page": 7,
+      "title": "해상도 집계: 결함에 맞는 해상도의 반응을 보존",
+      "lead": "동기 │ 한두 해상도에서만 강한 반응이 평균 과정에서 약해질 수 있다",
+      "source": "출처: Figure 2(d), sec/3_method.tex Eq. (9–10); 순위는 픽셀마다 달라짐"
+    },
+    {
+      "page": 8,
+      "title": "Rényi 가중치: 순서 통계량에서 정한 고정 규칙",
+      "lead": "근거 │ 지수 표본의 기대 순서 통계량을 정규화해 상위 순위의 비중을 정한다",
+      "source": "출처: sec/3_method.tex Eq. (11–12); 분포 적합이나 최적성 정리를 주장하지 않음"
+    },
+    {
+      "page": 9,
+      "title": "비음수 집계의 성질과 사후처리의 위치",
+      "lead": "범위 │ 순위 집계의 안정성은 수식으로, 탐지 효과는 실험으로 확인한다",
+      "source": "출처: sec/3_method.tex Eq. (10) 및 사후처리 문단; CQ99의 기여는 CQ-off 실험과 분리"
+    },
+    {
+      "page": 10,
+      "title": "주 비교: AD2의 모든 shot에서 세 지표 최고 평균",
+      "lead": "결과 │ 3개 시드 평균 AUPRO는 1-shot 52.18%, 16-shot 60.74%다",
+      "source": "출처: main.pdf Table 1 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 11,
+      "title": "교차 데이터셋: VisA의 이미지 판별에서도 이득",
+      "lead": "결과 │ VisA 4·8·16-shot I-AUROC가 최고이며, MVTec AD에서는 격차가 작다",
+      "source": "출처: main.pdf Table 2 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 12,
+      "title": "종합 ablation: 각 구성 요소를 차례로 추가",
+      "lead": "결과 │ 2-shot은 50.51 → 59.92%, 16-shot은 53.78 → 60.16%로 오른다",
+      "source": "출처: main.pdf Table 3 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 13,
+      "title": "용량 일치: 토큰 수 증가만으로 설명되지 않는 이득",
+      "lead": "대조 │ 총 cap 1024를 맞춰도 다해상도 60.16%가 단일 해상도 57.14%보다 높다",
+      "source": "출처: main.pdf Table 4 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 14,
+      "title": "독립 매칭: 계층마다 정상 참조를 따로 탐색",
+      "lead": "결과 │ AD2에서 Layer Concat 대비 2-shot +7.21pp, 16-shot +2.09pp다",
+      "source": "출처: main.pdf Table 5 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 15,
+      "title": "척도 진단: 관측마다 다른 정상 거리 분포",
+      "lead": "확인 │ 정상 참조 상단을 맞추는 것과 쿼리에서 척도가 맞는 것은 구분해야 한다",
+      "source": "출처: main.pdf Figure 3; 현재 원고에 수록된 분포 그림을 그대로 사용"
+    },
+    {
+      "page": 16,
+      "title": "사후처리 제외: 집계 자체의 성능 차이",
+      "lead": "결과 │ None 58.35% 대비 보정+Rényi 59.27%로 +0.92pp다",
+      "source": "출처: main.pdf Table 6 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 17,
+      "title": "상호작용: 보정이 순위 집계의 효과를 바꿈",
+      "lead": "근거 │ 16-shot Rényi 효과는 보정 전 −0.01pp, 보정 후 +0.68pp다",
+      "source": "출처: main.pdf Table 7 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 18,
+      "title": "정규화 대안: 보정의 단독 효과를 확인",
+      "lead": "한계 │ 상위 분위수는 MAD보다 높지만, none보다 항상 높은 것은 아니다",
+      "source": "출처: main.pdf Table 11 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 19,
+      "title": "계층 가중치: 얕은 계층의 기여를 제한",
+      "lead": "결과 │ 제시한 양의 가중치 중 0.125가 두 shot에서 가장 높다",
+      "source": "출처: main.pdf Table 10 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 20,
+      "title": "비용: cap을 늘린 만큼 성능이 오르지는 않음",
+      "lead": "결과 │ cap 256 → 1024에서 +0.17pp, 피크 메모리는 3.12 → 6.71 GiB다",
+      "source": "출처: main.pdf Table 8 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 21,
+      "title": "환경 변화: 획득 조건별 성능 범위",
+      "lead": "관측 │ 같은 7개 클래스에서 Shift 조건의 AUPRO는 58.74–60.83%다",
+      "source": "출처: main.pdf Table 9 | 표의 값·행·열·강조 유지; 세부 비교 조건은 발표자 노트 참조"
+    },
+    {
+      "page": 22,
+      "title": "실험으로 확인한 범위와 남은 근거",
+      "lead": "해석 │ 성능 차이와 보정·집계의 상호작용이 현재 핵심 근거다",
+      "source": "출처: main.pdf Tables 1–11; 확인 필요 항목은 발표용 종합이며 새 실험 결과가 아님"
+    }
+  ]
+}

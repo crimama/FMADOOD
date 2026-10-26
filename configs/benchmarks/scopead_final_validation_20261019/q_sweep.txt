@@ -1,0 +1,10 @@
+ad2_q0p5_s02
+ad2_q0p8_s02
+ad2_q0p9_s02
+ad2_q0p99_s02
+ad2_q0p999_s02
+ad2_q0p5_s16
+ad2_q0p8_s16
+ad2_q0p9_s16
+ad2_q0p99_s16
+ad2_q0p999_s16

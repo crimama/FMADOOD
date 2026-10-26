@@ -1,0 +1,10 @@
+ad2_renyi_cq_s01_seed1
+ad2_renyi_cq_s02_seed1
+ad2_renyi_cq_s04_seed1
+ad2_renyi_cq_s08_seed1
+ad2_renyi_cq_s16_seed1
+ad2_renyi_cq_s01_seed2
+ad2_renyi_cq_s02_seed2
+ad2_renyi_cq_s04_seed2
+ad2_renyi_cq_s08_seed2
+ad2_renyi_cq_s16_seed2

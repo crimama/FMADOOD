@@ -124,6 +124,10 @@ class MultiscaleAggregationReferenceMatching(StatisticalReferenceMatching):
         self.deep_layer_fusion = str(config.get("deep_layer_fusion", "mean"))
         if self.deep_layer_fusion not in DEEP_LAYER_MODES:
             raise ValueError(f"deep_layer_fusion must be one of {DEEP_LAYER_MODES}")
+        self.layer_adaptation = str(config.get("layer_adaptation", "fixed"))
+        if self.layer_adaptation not in {"fixed", "support_stability"}:
+            raise ValueError("layer_adaptation must be 'fixed' or 'support_stability'")
+        self.effective_gamma = None
         super().__init__(backbone, config)
         if (
             self.statistical_normalization not in {"q95", "none"}
@@ -136,9 +140,41 @@ class MultiscaleAggregationReferenceMatching(StatisticalReferenceMatching):
                 "multiscale aggregation requires Q95/none settings without pooled/image/audit overrides"
             )
 
+    def fit(self, support_paths, context):
+        super().fit(support_paths, context)
+        if self.layer_adaptation == "support_stability":
+            # Measure relative stability: 1 / ((q95 - q50) / q50) from support LOO
+            spreads = []
+            for res, bags in self.bag_tails.items():
+                for bag in bags:
+                    s_list = []
+                    for t in bag:
+                        q95 = float(t.get("u", 1.0))
+                        q50 = float(torch.quantile(t["sample"], 0.50).item())
+                        s_list.append((q95 - q50) / max(q50, 1e-4))
+                    spreads.append(s_list)
+            mean_spread = np.mean(spreads, axis=0)
+            stabs = 1.0 / np.maximum(mean_spread, 1e-4)
+            # Ratio of shallow stability to mean deep stability
+            shallow_idx = min(self.layer_fusion_shallow_idx, len(stabs) - 1)
+            deep_stabs = [s for i, s in enumerate(stabs) if i != shallow_idx]
+            mean_deep_stab = float(np.mean(deep_stabs)) if deep_stabs else 1.0
+            rel_stab = float(stabs[shallow_idx] / max(mean_deep_stab, 1e-4))
+            # Modulate base gamma by relative stability (bounded in [0.02, 0.25])
+            self.effective_gamma = float(np.clip(self.layer_fusion_gamma * rel_stab, 0.02, 0.25))
+        else:
+            self.effective_gamma = self.layer_fusion_gamma
+
     def _fuse_layers(self, scores, tau=None):
+        gamma = self.effective_gamma if self.effective_gamma is not None else self.layer_fusion_gamma
         if self.deep_layer_fusion == "mean":
-            return super()._fuse_layers(scores, tau=tau)
+            if self.layer_adaptation == "fixed":
+                return super()._fuse_layers(scores, tau=tau)
+            # Deep mean + adaptive gamma * shallow
+            index = min(self.layer_fusion_shallow_idx, len(scores) - 1)
+            shallow = scores[index]
+            deep = torch.stack([s for i, s in enumerate(scores) if i != index]).mean(0)
+            return deep + gamma * shallow
         if len(scores) < 2:
             raise ValueError("shallow ablation requires at least two layers")
         index = min(self.layer_fusion_shallow_idx, len(scores) - 1)
@@ -162,7 +198,7 @@ class MultiscaleAggregationReferenceMatching(StatisticalReferenceMatching):
         if self.ablation_shallow_mode == "hard":
             threshold = self.layer_fusion_tau if tau is None else tau
             contribution = shallow * (shallow > threshold)
-        return deep + self.layer_fusion_gamma * contribution
+        return deep + gamma * contribution
 
     def _predict_resolutions(self, image: np.ndarray, resolutions_to_use: Sequence[int]) -> np.ndarray:
         bagged = self.variant == "R1" and self.bank_bags > 1

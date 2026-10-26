@@ -1,0 +1,19 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage{kotex}
+\usepackage[margin=18mm]{geometry}
+\usepackage{booktabs,amssymb,amsmath,graphicx}
+\setmainfont{TeX Gyre Termes}
+\setmainhangulfont{Noto Serif CJK KR}
+\pagestyle{empty}
+\begin{document}
+\noindent\scriptsize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l r r c c}
+\toprule
+구성 & 해상도별 cap & 총 토큰 cap & AUPRO@0.05 & pAUROC@0.05 \\
+\midrule
+단일 1120 & 256 & 256 & 57.47 & 74.86 \\
+단일 1120 (용량 일치) & 1024 & 1024 & 57.14 & 75.49 \\
+\textbf{4개 해상도 결합 (Ours)} & 256 & 1024 & \textbf{60.16} & \textbf{77.52} \\
+\bottomrule
+\end{tabular}
+\end{document}

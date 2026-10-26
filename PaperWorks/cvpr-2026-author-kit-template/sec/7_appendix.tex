@@ -49,21 +49,97 @@ Order (Rényi, Ours) & \textbf{59.92} / 76.36 & \textbf{60.16} / 77.52 \\
 \end{tabular*}
 \end{table}
 
+\subsection{HSA 진단의 프로토콜과 반례}
+\label{sec:appendix:hsa}
+
+\cref{fig:hsa-direct-evidence}는 MVTec AD 2 \texttt{test\_public}의 2-shot, seed 0 캐시를 재사용한 사후 분석이다.
+동일한 1,084개 쿼리의 원본 크기 점수에서 정상 약 44.25억 픽셀과 결함 약 2,911만 픽셀을 집계했다.
+기준선은 1120 해상도 L23의 원시 거리를 배그 평균한 지도이며, \method는 같은 캐시의 Q95 보정, 계층 가중합, 배그 평균, 해상도별 보간 및 Rényi 집계를 적용한 지도다.
+추가 적합이나 파라미터 변경 없이 재생했으며, 정답 마스크는 점수 산출 이후에만 사용했다.
+
+임계값 $t$는 \cref{tab:hsa_direct_validation}과 동일하게 각 이미지의 정상 픽셀을 100개당 1개씩 추출한 뒤 클래스·방법별로 합친 분포의 99백분위수다.
+정상 이미지와 결함 이미지의 정상 배경을 모두 포함하고, regular 및 비정규 획득 조건을 함께 사용했다.
+이 임계값을 이미지나 획득 조건마다 다시 맞추지 않고, 전체 원본 픽셀에서 FPR과 결함 검출률을 측정했다(\cref{tab:hsa-native-audit}).
+실제 FPR의 macro는 기준선 0.991\,\%, \method 0.992\,\%이며, 표본 추정으로 클래스별 FPR은 목표 1\%와 다를 수 있다.
+\cref{fig:hsa-direct-evidence}의 네 패널은 조건군별로 클래스의 정상·결함 밀도를 각각 계산한 뒤 macro 평균하며, 표시 범위 밖의 픽셀도 정규화에 포함한다.
+따라서 이는 비슷한 오경보 예산에서의 점수 분리도를 비교하는 진단이며, 정답 없이 배포 임계값을 추정하거나 미사용 테스트에서 일반화를 검증하는 실험은 아니다.
+
+\begin{table}[tbp]
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\caption{HSA 진단의 실제 FPR과 결함 픽셀 Recall (2-shot, seed 0, \%). 전체 조건의 테스트 정상 표본에서 추정한 임계값을 고정 적용했다.}
+\label{tab:hsa-native-audit}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrrr}
+\toprule
+& \multicolumn{2}{c}{실제 FPR} & \multicolumn{2}{c}{Recall} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+클래스 & Raw L23 & \method & Raw L23 & \method \\
+\midrule
+can & 0.996 & 0.998 & 6.54 & 15.87 \\
+fabric & 1.002 & 1.006 & 29.68 & 35.41 \\
+fruit\_jelly & 0.995 & 1.044 & 23.16 & 33.40 \\
+rice & 1.004 & 0.996 & 79.53 & 85.74 \\
+sheet\_metal & 0.995 & 1.000 & 46.54 & 52.78 \\
+vial & 0.941 & 0.901 & 19.77 & 27.44 \\
+wallplugs & 1.001 & 0.995 & 8.55 & 44.21 \\
+walnuts & 0.994 & 0.998 & 76.12 & 72.76 \\
+\midrule
+Macro & 0.991 & 0.992 & 36.24 & 45.95 \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+조건별 분석은 regular 184개 쿼리와 비정규 획득 조건 900개 쿼리를 구분한다.
+본문의 shift는 \texttt{overexposed}, \texttt{underexposed} 및 클래스마다 제공되는 \texttt{shift\_1}--\texttt{shift\_4}를 합친 조건군이며, 클래스 내 각 획득 조건과 regular의 정상·결함 장면 ID가 일치함을 확인했다.
+클래스 내 해당 조건군의 전체 픽셀로 지표를 계산한 뒤 8개 클래스를 동일 비중으로 평균한다.
+Regular에서 검출률은 32.94$\rightarrow$44.22\,\%, 실제 FPR은 0.651$\rightarrow$0.703\,\%이고, shift에서는 각각 36.88$\rightarrow$46.30\,\%, 1.058$\rightarrow$1.050\,\%다.
+과노출·저노출을 제외한 \texttt{shift\_*}만의 532개 쿼리에서도 검출률은 39.28$\rightarrow$47.44\,\%(+8.16\,pp), 실제 FPR은 1.271$\rightarrow$1.266\,\%다.
+모든 조건군에 같은 클래스·방법별 임계값을 적용했으므로 조건군별 FPR은 1\%로 고정되지 않으며, regular와 shift 사이의 검출률 차이를 조건 변화로 인한 손실로 해석하지 않는다.
+
+\cref{fig:hsa-recovery}는 전체 획득 조건에서 Raw L23 대비 새로 검출한 결함과 놓치게 된 결함을 분리한다.
+전체 결함 픽셀 대비 검출 회복은 macro 13.57\,\%, 손실은 3.85\,\%로, 순이득은 9.72\,pp다. 8개 클래스 중 7개에서 순이득이 있으며, \texttt{walnuts}는 3.36\,pp 낮아진다.
+정상 픽셀에서도 제거된 오경보와 새로 생긴 오경보가 공존하므로, 이 결과를 모든 정상 고점수의 제거로 해석하지 않는다.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_hsa_recovery.pdf}
+\caption{\textbf{클래스별 결함 검출 회복과 손실.} 전체 획득 조건의 결함 픽셀 대비 비율(2-shot, seed 0). Raw L23 대비 새로 검출한 결함은 파랑, 놓치게 된 결함은 노랑, 순이득은 검은 점이다.}
+\label{fig:hsa-recovery}
+\end{figure}
+
+실패 사례는 클래스 전체의 검출률이 낮아진 \texttt{walnuts}에서 선택했다.
+비정규 조건의 결함 이미지 중 결함 픽셀 500개 이상을 대상으로, 클래스의 비정규 조건 검출률 변화 및 기준선 검출률에 가까운 이미지를 정했다.
+구체적으로 $|\Delta_{\rm image}-\Delta_{\rm class}|+0.25|R^{\rm raw}_{\rm image}-R^{\rm raw}_{\rm class}|$를 최소화하고, 동률은 경로순으로 정했다. 이는 최대 개선 사례를 고르는 규칙은 아니지만, 정답을 사용한 사후 대표 사례 선택이다.
+지표는 모두 원본 픽셀에서 계산하며, 표시용 축소 지도에는 최근접 보간을 사용했다.
+\cref{fig:hsa-failure}의 이미지에서는 오경보가 줄어도 결함 검출률은 88.58$\rightarrow$85.96\,\%로 낮아진다. 클래스 전체에서도 76.12$\rightarrow$72.76\,\%로 낮아져, 개선이 모든 클래스와 이미지에서 성립하지 않음을 보여준다.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_hsa_failure.pdf}
+\caption{\textbf{검출 회복이 보장되지 않는 반례.} \texttt{walnuts}의 과노출 쿼리. 파랑: 검출 결함, 노랑: 미검출 결함, 빨강: 오경보, 하늘색: 정답 윤곽. 검출률은 88.58$\rightarrow$85.96\,\%로 낮아진다.}
+\label{fig:hsa-failure}
+\end{figure*}
+
+저-FPR 검출 회복은 모든 정상·결함 쌍의 점수 순서 개선과도 구분된다.
+별도 진단에서 Q95 보정된 1120 단일 해상도의 정상 고점수와 가까운 결함 점수를 짝지었을 때, 2-shot 비정규 조건의 결함 우위 비율은 단일 해상도 82.79\,\%, 전체 Rényi 결합 72.09\,\%였다(3-seed, 이미지·클래스별 평균).
+이 진단은 기준선 점수로 쌍을 선택하고 정규화·계층 결합을 이미 적용한 비교로, 본문의 원시 L23 기준선 및 전체 픽셀 검출률과 비교 조건이 다르다.
+기준선에 조건화한 쌍의 선택 편향도 있으므로 전체 모집단의 악화로 일반화할 수 없지만, 모든 모호한 쌍이 해소된다는 주장도 뒷받침하지 않는다.
+본 논문의 직접 근거는 명시된 저-FPR 구간의 검출 회복이며, 이 사후 진단 한 시드만으로 미관측 조건의 강건성을 확정하지 않는다.
+
 \subsection{보정과 Rényi 집계의 메커니즘 분석}
 \label{sec:appendix:mechanism}
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/fig_scopead_calibration_mechanism.pdf}
-\caption{\textbf{Q95 보정과 Rényi 집계의 결합 메커니즘 분석.}
-MVTec AD 2, 2/16-shot, seed 0/1/2에서 같은 특징과 거리를 재사용했다.
-(a) 상대 추가 응답 $E/\mu$의 Q95$-$None 변화. Normal은 정상 이미지, Background는 결함 이미지의 정상 배경, Defect는 결함 영역이다. 같은 픽셀 표본으로 조건 간 차이를 계산하고 이미지·seed·클래스 순으로 평균했다. 작은 점은 3-seed 평균 클래스 효과, 마름모와 오차 막대는 macro와 클래스 bootstrap 95\,\% 구간이다.
-(b) None+Rényi 대비 순위만, 점수 크기만, 둘 다 보정한 경우의 \AUPRO{} 차이. 작은 점과 구간은 (a)와 같다.
-(c) Q95 분모에 평균 1의 log-normal 오차를 넣었을 때 오차가 없는 경우 대비 \AUPRO{} 변화. 각 $\sigma$에서 seed별 3회 오차를 두 집계에 동일하게 주고 평균했다. 색은 shot, 점선/실선은 Mean/Rényi다.}
+\caption{\textbf{Q95 보정과 Rényi 집계의 메커니즘 분석} (MVTec AD 2, 2/16-shot, 3-seed).
+(a) Q95$-$None의 $E/\mu$ 변화: Normal은 정상 이미지, Background는 결함 이미지의 정상 배경, Defect는 결함 영역.
+(b) None+Rényi 대비 순위·크기 보정의 \AUPRO{} 변화. (a,b)의 점은 클래스별 평균, 마름모와 막대는 macro와 클래스 bootstrap 95\,\% 구간이다.
+(c) 분모 오차에 따른 \AUPRO{} 변화. 색은 shot, 점선/실선은 Mean/Rényi다.}
 \label{fig:calibration-mechanism}
 \end{figure*}
 
 \noindent\textbf{상대 추가 응답($E/\mu$).}
+분석은 같은 특징과 거리를 재사용한다. 같은 픽셀 표본의 보정 전후 차이를 이미지·seed·클래스 순으로 평균했다.
 Rényi 집계에서 정상 이미지의 $E/\mu$는 Q95 보정 후 2-shot에서 $7.74\!\rightarrow\!7.10$\,\%, 16-shot에서 $8.56\!\rightarrow\!7.55$\,\%로 감소했다(\cref{fig:calibration-mechanism}(a)).
 결함 영역에서는 $5.34\!\rightarrow\!5.36$\,\%, $6.36\!\rightarrow\!6.11$\,\%로 변화가 작았다.
 결함과 정상 배경의 $E/\mu$ 차이는 $+0.74/+0.80$\,pp 커졌고, 정상 이미지 $E/\mu$의 Q99는 $-1.30/-1.61$\,pp 줄었다.
@@ -75,7 +151,8 @@ Q95로 순위만 정하고 원점수를 합산하는 조건과, 원점수 순위
 따라서 보정의 효과는 주로 점수 크기의 조정에서 나온다.
 
 \noindent\textbf{보정 오차에 대한 민감도.}
-보정 분모에 평균 1의 log-normal 오차를 넣으면(\cref{fig:calibration-mechanism}(c)), $\sigma=0.3$에서 Mean의 \AUPRO 변화는 $-0.03/+0.06$\,pp인 반면 Rényi는 $-0.74/-0.47$\,pp였다.
+\cref{fig:calibration-mechanism}(c)는 보정 분모에 평균 1의 log-normal 오차를 넣고 오차가 없는 경우와 비교한다. 각 $\sigma$에서 seed별 3회 동일한 오차를 두 집계에 적용해 평균했다.
+$\sigma=0.3$에서 Mean의 \AUPRO 변화는 $-0.03/+0.06$\,pp인 반면 Rényi는 $-0.74/-0.47$\,pp였다.
 Rényi 집계는 Mean보다 분모의 정확도에 더 민감하다.
 
 \noindent\textbf{단위에 따른 분포 비교.}
@@ -85,9 +162,12 @@ $E/\mu$는 해당 픽셀의 평균 응답을 분모로 쓰므로 결함에서 $\
 결함$-$배경 $E/\mu$ 차이 변화의 클래스 bootstrap 95\,\% 구간은 $[+0.06,+1.72]/[+0.00,+2.02]$\,pp이며, 16-shot 하한이 0에 가깝다.
 정상 이미지 $E/\mu$의 Q99 변화 구간은 $[-2.29,-0.50]/[-3.00,-0.48]$\,pp이고, 감소한 클래스는 7/8과 6/8이다.
 
+\cref{tab:mechanism_class_effects}의 coverage 상호작용은 $(\mathrm{Q95{+}R}-\mathrm{Q95{+}Mean})-(\mathrm{None{+}R}-\mathrm{None{+}Mean})$이다($R$: Rényi).
+GT 영역 coverage를 이미지 안에서 평균한 뒤 이미지와 seed를 평균했다. 임계값은 정상 이미지의 교차검증으로 목표 FPR 1\,\%에 맞추었으며, 실제 평가 FPR은 조건마다 다르다.
+
 \begin{table*}[t]
 \centering\small\setlength{\tabcolsep}{8pt}
-\caption{\textbf{클래스별 검출 변화와 해상도 응답 집중도의 연관.} MVTec AD 2, 3-seed 평균. Coverage 상호작용은 $(\mathrm{Q95{+}R}-\mathrm{Q95{+}Mean})-(\mathrm{None{+}R}-\mathrm{None{+}Mean})$이며, GT 영역 coverage를 이미지 안에서 평균한 뒤 이미지와 seed를 평균한 값이다. 임계값은 정상 이미지의 교차검증으로 목표 FPR 1\,\%에 맞추었으며, 실제 평가 FPR은 조건마다 다르다. $\rho$는 Q95 상태의 응답 집중도와 Mean$\rightarrow$Rényi coverage 차이의 클래스 내 Spearman 상관이다.}
+\caption{\textbf{검출 변화와 해상도 응답 집중도의 연관} (MVTec AD 2, 3-seed 평균). 상호작용은 보정 유무에 따른 Rényi$-$Mean coverage 차이의 변화(pp)다. $\rho$는 Q95 상태의 응답 집중도와 Mean$\rightarrow$Rényi coverage 차이의 클래스 내 Spearman 상관이다.}
 \label{tab:mechanism_class_effects}
 \begin{tabular}{l r r r r}
 \toprule
@@ -136,7 +216,7 @@ Q95 보정 후 448의 정상 점유율은 47.5/50.7\,\%에서 33.9/36.4\,\%로 �
 
 \begin{table}[!htbp]
 \centering\scriptsize\setlength{\tabcolsep}{3pt}
-\caption{\textbf{Q95 보정 분모의 계층·해상도 성분 분리.} MVTec AD 2, 2/16-shot, seed 0/1/2 평균 \AUPRO{} (\%). Global은 배그별 공통 배율만, Layer/Resolution은 공통 배율에 해당 축 성분만, Separable은 두 축 성분을 함께 적용한다. Full은 원래 Q95다.}
+\caption{\textbf{Q95 보정 분모의 축별 성분 분리} (MVTec AD 2, 3-seed 평균 \AUPRO, \%). Global: 배그별 공통 배율, Layer/Resolution: 해당 축 추가, Separable: 두 축 추가, Full: 원래 Q95.}
 \label{tab:calibration_axis}
 \begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrrr}
 \toprule
@@ -186,3 +266,57 @@ Fabric의 GT 영역 192개 중 180개(93.75\,\%)는 이미지 면적의 0.1\,\% 
 목표 FPR 1\,\% 임계값에서 Q95+Rényi$-$None+Rényi의 영역 평균 coverage 변화는 작은 영역에서 $+6.85/+10.41$\,pp, 나머지 영역에서 $-1.36/-0.84$\,pp다(2/16-shot).
 같은 변화를 GT 픽셀 수로 가중하면 작은 영역의 TPR 기여는 $+0.06/+0.08$\,pp, 나머지는 $-2.66/-1.64$\,pp다.
 즉 많은 작은 영역의 coverage 증가와 큰 영역의 손실이 함께 나타나며, 영역 단위 지표(\AUPRO)와 픽셀 단위 지표(\pAUROC)가 다르게 움직이는 이유를 설명한다.
+
+\subsection{획득 조건별 상세 결과}
+\label{sec:appendix:condition}
+
+MVTec AD 2 \texttt{test\_public}은 클래스마다 같은 장면을 기본 조건(regular)과 바뀐 조건(overexposed, underexposed, 클래스별 1--4개의 shift)에서 같은 수로 포함한다.
+조건별 \AUPRO{}는 각 조건 안에서, 단일 임계값 \AUPRO{}는 클래스 내 모든 조건에 공통으로 임계값을 변화시키며 FPR 0.05까지 적분한 값이다. 후자는 \cref{tab:mvtec_ad2_fewshot}과 같다.
+두 표의 손실은 단일 임계값 \AUPRO{}에서 전체 조건별 \AUPRO{}의 평균을 뺀 값(pp)이다. 이는 조건을 함께 평가할 때 생기는 손실이며, 정상·결함 점수의 중첩 정도나 사전에 정한 배포 임계값의 FPR을 직접 나타내지는 않는다.
+\cref{tab:condition_full}은 모든 shot의 결과이고, \cref{tab:condition_variants}는 \method{}의 보정·집계 변형과 단일 해상도 구성의 손실이다.
+손실은 보정 유무와 집계 방식에 따라 2-shot에서 0.06--0.07\,pp, 16-shot에서 0.33--0.39\,pp로 거의 변하지 않았고, 단일 1120 구성(0.18\,pp)도 4해상도 구성(0.33\,pp)보다 크지 않았다.
+따라서 \method{}의 작은 손실을 특정 구성 요소의 효과로 보기는 어렵다.
+
+% Source: condition_strata in run_manifest.json (same runs as Table "tab:mvtec_ad2_fewshot").
+% Variants (seed 0): scopead_order_rank_diagnostic_20261018 (None+Renyi), scopead_renyi_cq_20261018 (Q95+Mean, Q95+Renyi),
+% scopead_final_cost_20261019 (single 1120, cap 256).
+\begin{table*}[t]
+\centering\scriptsize\setlength{\tabcolsep}{2.6pt}
+\caption{획득 조건별 \AUPRO{} (MVTec AD 2 \texttt{test\_public}, 3-seed 평균, \%). 기본: regular, 변화: 비정규 조건 평균. 손실은 단일 임계값 점수에서 전체 조건별 점수의 평균을 뺀 값(pp)이다.}
+\label{tab:condition_full}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l*{15}{r}}
+\toprule
+& \multicolumn{3}{c}{1-shot} & \multicolumn{3}{c}{2-shot} & \multicolumn{3}{c}{4-shot} & \multicolumn{3}{c}{8-shot} & \multicolumn{3}{c}{16-shot} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}\cmidrule(lr){11-13}\cmidrule(lr){14-16}
+방법 & 기본 & 변화 & 손실 & 기본 & 변화 & 손실 & 기본 & 변화 & 손실 & 기본 & 변화 & 손실 & 기본 & 변화 & 손실 \\
+\midrule
+PatchCore & 39.09 & 38.46 & $-$0.11 & 42.98 & 42.30 & $-$0.16 & 47.72 & 47.10 & $-$0.27 & 51.31 & 50.20 & $-$0.40 & 54.32 & 52.97 & $-$0.46 \\
+AnomalyDINO & 39.82 & 37.12 & $-$1.58 & 42.79 & 39.52 & $-$1.83 & 46.31 & 42.04 & $-$2.39 & 48.08 & 43.15 & $-$2.29 & 49.91 & 44.12 & $-$2.74 \\
+FastRecon & 15.61 & 14.87 & $-$0.07 & 17.61 & 16.82 & $-$0.23 & 23.02 & 21.99 & $-$0.28 & 28.77 & 27.52 & $-$0.41 & 38.19 & 35.54 & $-$0.74 \\
+RAD & 26.28 & 26.50 & $-$0.04 & 31.53 & 31.71 & $-$0.06 & 36.37 & 36.74 & $-$0.16 & 41.03 & 41.10 & $-$0.30 & 43.14 & 43.02 & $-$0.46 \\
+SubspaceAD & 56.76 & 48.20 & $-$4.75 & 58.86 & 49.65 & $-$5.28 & 61.27 & 51.35 & $-$5.86 & 62.21 & 51.82 & $-$6.26 & 63.10 & 52.37 & $-$6.52 \\
+SuperAD & 47.08 & 46.46 & $-$0.24 & 51.06 & 49.96 & $-$0.33 & 56.15 & 54.50 & $-$0.51 & 57.92 & 55.71 & $-$0.62 & 58.58 & 56.33 & $-$0.80 \\
+RegAD (224) & 14.09 & 12.67 & $-$0.17 & 16.75 & 14.95 & $-$0.20 & 19.59 & 17.39 & $-$0.35 & 22.09 & 19.38 & $-$0.58 & 24.11 & 20.88 & $-$1.14 \\
+Ours (ScopeAD) & 53.10 & 52.09 & $-$0.06 & 58.09 & 56.60 & $-$0.05 & 60.97 & 59.27 & $-$0.05 & 61.94 & 60.22 & $-$0.10 & 62.42 & 60.74 & $-$0.27 \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+\begin{table}[!htbp]
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\caption{\method{} 변형의 획득 조건별 \AUPRO{} (MVTec AD 2, seed 0, \%). 단일/조건별은 공통/조건별 임계값 평가이며, 손실은 단일$-$조건별(pp)이다.}
+\label{tab:condition_variants}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrrrrr}
+\toprule
+& \multicolumn{3}{c}{2-shot} & \multicolumn{3}{c}{16-shot} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}
+구성 & 단일 & 조건별 & 손실 & 단일 & 조건별 & 손실 \\
+\midrule
+보정 없음 + Rényi & 58.99 & 59.05 & $-$0.06 & 59.03 & 59.41 & $-$0.38 \\
+Q95 + Mean & 59.33 & 59.40 & $-$0.07 & 59.57 & 59.96 & $-$0.39 \\
+Q95 + Rényi (Ours) & 59.92 & 59.98 & $-$0.06 & 60.16 & 60.49 & $-$0.33 \\
+\midrule
+단일 1120 (cap 256) & --- & --- & --- & 57.48 & 57.66 & $-$0.18 \\
+\bottomrule
+\end{tabular*}
+\end{table}

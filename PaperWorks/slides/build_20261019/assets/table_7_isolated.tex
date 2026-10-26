@@ -1,0 +1,20 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage{kotex}
+\usepackage[margin=18mm]{geometry}
+\usepackage{booktabs,amssymb,amsmath,graphicx}
+\setmainfont{TeX Gyre Termes}
+\setmainhangulfont{Noto Serif CJK KR}
+\pagestyle{empty}
+\begin{document}
+\noindent\scriptsize\setlength{\tabcolsep}{4pt}
+\begin{tabular}{l l c c}
+\toprule
+보정 여부 & 집계 방식 & 2-shot & 16-shot \\
+\midrule
+보정 없음 & Mean 집계 & 56.12 $\pm$ 2.76 / 76.10 $\pm$ 0.49 & 59.73 $\pm$ 0.86 / 77.76 $\pm$ 0.32 \\
+보정 없음 & Rényi 집계 & 56.32 $\pm$ 2.49 / 76.18 $\pm$ 0.40 & 59.72 $\pm$ 0.77 / 77.96 $\pm$ 0.25 \\
+Scale 보정 & Mean 집계 & 56.03 $\pm$ 3.00 / 75.86 $\pm$ 0.59 & 60.06 $\pm$ 0.88 / 77.60 $\pm$ 0.37 \\
+\textbf{Scale 보정} & \textbf{Rényi (Ours)} & \textbf{56.78 $\pm$ 2.77 / 75.83 $\pm$ 0.51} & \textbf{60.74 $\pm$ 0.72 / 77.77 $\pm$ 0.34} \\
+\bottomrule
+\end{tabular}
+\end{document}

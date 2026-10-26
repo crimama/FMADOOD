@@ -66,3 +66,19 @@ def test_method_preserves_bank_and_matches_baseline_on_mean(tmp_path, mode):
         bmap, bscore = baseline.predict(paths[0])
         np.testing.assert_allclose(amap, bmap, rtol=1e-6, atol=1e-6)
         assert score == pytest.approx(bscore, abs=1e-6)
+
+
+def test_layer_adaptation_support_stability(tmp_path):
+    paths = [_write_image(tmp_path / f"s{i}.png", i * 37) for i in range(2)]
+    cfg = config(statistical_normalization="q95")
+    cfg["resolutions"] = [8, 12]
+    cfg["calibration_audit"] = False
+    cfg["layer_adaptation"] = "support_stability"
+    context = MethodContext("can", 0, 8, False, False)
+
+    method = MultiscaleAggregationReferenceMatching(TinyTripleBackbone(), cfg)
+    method.fit(paths, context)
+    assert method.effective_gamma is not None
+    assert 0.02 <= method.effective_gamma <= 0.25
+    amap, score = method.predict(paths[0])
+    assert np.isfinite(amap).all() and np.isfinite(score)

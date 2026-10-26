@@ -486,7 +486,15 @@ pull_results() {
   require_remote_host
   local includes=(--include=metrics.json --include=summary.tsv)
   if [[ "$#" -eq 0 ]]; then
-    includes+=(--include=config.yaml --include=run_manifest.json --include=status.json --include=comparison.md)
+    includes+=(--include=config.yaml --include=run_manifest.json --include=status.json --include=comparison.md
+      --include=RESULTS.md --include=STATISTICAL_RESULTS.md
+      --include=calibration_mechanism_analysis.json --include=mechanism_cache_index.json
+      --include=statistical_analysis.json --include=statistical_summary.json
+      --include=response_analysis.json --include=response_summary.json --include=RESPONSE_RESULTS.md
+      --include=axis_analysis.json --include=axis_summary.json --include=AXIS_RESULTS.md
+      --include=conditional_analysis.json --include=conditional_summary.json --include=CONDITIONAL_RESULTS.md
+      --include=source_config.yaml --include=source_metrics.json
+      --include=source_run_manifest.json --include=source_mechanism_cache_index.json)
   elif [[ "$#" -ne 1 || "$1" != --metrics-only ]]; then
     echo "Usage: scripts/run_remote.sh pull [--metrics-only]" >&2
     return 1

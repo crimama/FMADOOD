@@ -793,7 +793,7 @@ def update(root, output, labels=None, objects=None, reference_method=None):
     if status.get("source_shards"):
         lines += ["", "Combined compact evidence from: " + ", ".join(f"`{p}`" for p in status["source_shards"]) + ". Original run IDs/configs/manifests preserved; compare each class within its execution environment."]
     lines += ["", f"Artifacts: `{relative}`. Config/run/code/parameter/support provenance is recorded in the CSV. No maps/weights/log copies; no new evaluation."]
-    report_path = output / "comparison.md"
+    report_path = output / ("RESULTS.md" if (output / "RESULTS.md").exists() else "comparison.md")
     report_link = os.path.relpath(report_path, md_path.parent).replace(os.sep, "/")
     latest_lines += notices + ["", f"[Detailed run report](<{report_link}>) · Artifacts: `{relative}`."]
     original_report = report_path.read_text() if report_path.exists() else ""
@@ -836,7 +836,7 @@ def collect_recorded_results(root, output, artifact):
                 raise ValueError("recorded metrics must use the ledger's 0–1 scale")
     csv_text, _ = merge_csv(original_csv, relative, rows)
     markdown = md_path.read_text()
-    report_path = output / "comparison.md"
+    report_path = output / ("RESULTS.md" if (output / "RESULTS.md").exists() else "comparison.md")
     original_report = report_path.read_text()
     marker = "recorded-results"
     detail = document["report_markdown"]

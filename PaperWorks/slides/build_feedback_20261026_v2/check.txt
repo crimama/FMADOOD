@@ -1,0 +1,8 @@
+../slides/build_feedback_20261026_v2/ScopeAD_Feedback_Response_20261026_v2.pptx: 18 slides
+  fonts outside family: none
+  small text on pages: none
+  ref p18 6–11쪽 -> ['관측 확장과 점수 통합의 설계 논리', 'Q95·순위 집계의 효과와 해석 범위']
+  ref p18 12–13쪽 -> ['서론부터 결론까지의 논증 정리', '피드백 반영 수준과 남은 검증']
+  ref p18 6–11쪽 -> ['관측 확장과 점수 통합의 설계 논리', 'Q95·순위 집계의 효과와 해석 범위']
+  ref p18 5쪽 -> ['MVTec AD 2 선정 근거']
+  ref p18 3–4쪽 -> ['Few-shot·획득 조건 변화의 문제 정의', '실제 사례를 통한 HSA 개념 보강']

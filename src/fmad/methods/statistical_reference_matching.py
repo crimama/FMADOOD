@@ -293,7 +293,7 @@ class StatisticalReferenceMatching(ReferenceMatchingFast):
                 or config.get("ablation_feature_matching", "layerwise") != "layerwise"
                 or config.get("scale_fusion", "mean") != "mean"
                 or config.get("layer_fusion") != "residual_spike"
-                or config.get("prediction_postprocess", "none") != "none"):
+                or config.get("prediction_postprocess", "none") not in {"none", "component_quantile"}):
             raise ValueError("statistical sweep requires R1 linear shallow fusion, tail dispatch, no local/postprocessing")
         audit = config.get("calibration_audit", False)
         if type(audit) is not bool:
