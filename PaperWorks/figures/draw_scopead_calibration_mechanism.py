@@ -5,6 +5,7 @@ No new inference or selection. Error bars resample classes, never pixels.
 from pathlib import Path
 import hashlib
 import json
+import sys
 import numpy as np
 import matplotlib
 matplotlib.use('Agg')
@@ -12,6 +13,8 @@ import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 
 ROOT=Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT/'PaperWorks/cvpr-2026-author-kit-template/figures/source'))
+from figure_style import use_times_new_roman
 RESULT=ROOT/'results/remote_runs/dsba3'
 OUT=ROOT/'PaperWorks/cvpr-2026-author-kit-template/figures'
 CLASSES=('can','fabric','fruit_jelly','rice','sheet_metal','vial','wallplugs','walnuts')
@@ -30,9 +33,10 @@ metadata=dict(scope='AD2 public full8, 2/16-shot, seeds 0/1/2; post-hoc fixed-me
     panel_c='mean-one log-normal denominator factors, sigma .1/.2/.3; three draws paired between mean/Renyi per seed; not actual estimator uncertainty',
     sources=[dict(path=str(p.relative_to(ROOT)),sha256=hashlib.sha256(p.read_bytes()).hexdigest()) for p in response_paths+mechanism_paths+[stats_path]],panels={})
 rng=np.random.default_rng(210026)
-plt.rcParams.update({'font.family':'DejaVu Sans','font.size':8,'axes.titlesize':9,'axes.labelsize':8,
+plt.rcParams.update({'font.size':8,'axes.titlesize':9,'axes.labelsize':8,
     'xtick.labelsize':7.5,'ytick.labelsize':8,'legend.fontsize':7,'axes.spines.top':False,
     'axes.spines.right':False,'pdf.fonttype':42,'ps.fonttype':42,'svg.fonttype':'none'})
+use_times_new_roman()
 fig,axes=plt.subplots(1,3,figsize=(7.15,2.85),gridspec_kw={'width_ratios':[1.05,1.05,1.]},layout='constrained')
 colors={2:'#2c6eac',16:'#d97924'}
 for shot in (2,16):
@@ -72,7 +76,7 @@ for i,(labels,title) in enumerate([(['Normal','Background','Defect'],'(a) Relati
     axes[i].set(yticks=np.arange(3),yticklabels=labels,title=title,ylim=(2.5,-.6))
     axes[i].axvline(0,color='.55',ls=':',lw=.8,zorder=1)
     axes[i].grid(axis='x',alpha=.13)
-axes[0].set_xlabel(r'$\Delta(E/\mu)$: Q95 $-$ none (pp)')
+axes[0].set_xlabel(r'$\Delta(E/\mu)$: Q99 $-$ none (pp)')
 axes[1].set_xlabel('$\\Delta$AUPRO vs none + Rényi (pp)')
 axes[0].legend(handles=[Line2D([],[],marker='D',ms=3.5,color=colors[s],lw=1,label=f'{s}-shot') for s in (2,16)],loc='upper left',bbox_to_anchor=(0,-.25),ncol=2,frameon=False,handlelength=1.)
 axes[2].set(title='(c) Calibration sensitivity',xlabel=r'Log-normal error $\sigma$',ylabel=r'$\Delta$AUPRO (pp)',xticks=[0,.1,.2,.3])

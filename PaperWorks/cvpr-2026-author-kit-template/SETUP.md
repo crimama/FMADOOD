@@ -4,8 +4,8 @@ PaperWorks/outlines/Outline_v16.3.md를 기준으로 2026-10-03 작성했다. CV
 
 ## 빌드
 
-LuaLaTeX, BibTeX, ko.TeX 및 Noto CJK KR 글꼴이 필요하다. Ubuntu 패키지는 texlive-luatex, texlive-lang-korean, fonts-noto-cjk다.
-main.tex는 이 환경에서 ko.TeX의 Lua 초기화를 위해 kotex를 cvpr.sty보다 먼저 불러온다. preamble.tex는 TeX Gyre의 라틴 글꼴과 Noto CJK KR 글꼴을 설정한다. Korean italic 모양은 사용할 글꼴에 별도 이탤릭 면이 없어 기울임을 합성한다.
+LuaLaTeX, BibTeX, ko.TeX, Times New Roman 및 Noto CJK KR 글꼴이 필요하다. Ubuntu TeX·한글 글꼴 패키지는 texlive-luatex, texlive-lang-korean, fonts-noto-cjk다. Times New Roman은 regular, bold, italic, bold italic 네 글꼴을 별도로 설치한다.
+main.tex는 이 환경에서 ko.TeX의 Lua 초기화를 위해 kotex를 cvpr.sty보다 먼저 불러온다. preamble.tex는 영문 본문·제목·표·캡션을 Figure와 같은 Times New Roman으로, 한글을 Noto Serif CJK KR로 설정한다. 코드 식별자의 고정폭 글꼴과 수학 기호용 글꼴, CVPR 리뷰용 행 번호는 별도로 유지한다. 한글 이탤릭은 별도 이탤릭 글꼴이 없어 기울임을 합성한다. Figure 재생성 방법과 글꼴 설치 경로는 figures/source/README.md를 참고한다.
 
     make -C PaperWorks/cvpr-2026-author-kit-template
 

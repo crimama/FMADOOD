@@ -1,7 +1,7 @@
 # PDF memos on main.pdf
 
-## Memo 1 (page 2, resolved)
-Source: sec/2_related_work.tex:12
+## Memo 1 (page 8, resolved)
+Source: main.bbl:1
 > MVTec AD 2의
 
 Few-shot 인데 왜 이 데이터셋을 우선적으로 타겟으로 하는지
@@ -242,7 +242,7 @@ Source: sec/3_method.tex:1
 
 지금 방법론 매커니즘 자체에 대한 전달력은 좋다고 느껴짐. 다만 전반적으로 이 방법이 왜  few-shot distribution shift에 특화된 방법이고, 어떻게 high-score ambiguity를 해결하는지에 대한 서술이 부족하다고 느껴짐.
 
-## Memo 23 (page 5, open)
+## Memo 23 (page 5, resolved)
 Source: sec/4_experiments.tex:1
 > 4. 실험
 
@@ -272,3 +272,186 @@ Source: sec/1_intro.tex:32
 > 을 보인다는 점에 주목한다.
 
 이에 대한 근거? + 이후 문장이랑 다소 중복되는 느낌도 있고, 또 "주목한다" 라는 표현이 다소 어색함
+
+## Memo 27 (page 14, resolved)
+Source: sec/7_appendix.tex:177
+> Regular | Recall +11.27 pp
+
+- 폰트 Times new roman 통일 
+- 언더라인 추가 
+- 폰트 수정
+
+## Memo 28 (page 2, resolved)
+Source: sec/2_related_work.tex:14
+> High-Score Ambiguity
+
+이걸 사전 실험 결과로 보여줄 필요가 하지 않을까
+
+## Memo 29 (page 2, resolved)
+Source: sec/2_related_work.tex:14
+> High-Score Ambiguity
+
+과정에 대한 figure가 있으면 좋겠다. 다해상도, 다관측 -> 방법론 -> high-score ambiguity 이 과정의 브릿지가 되는 figure가 필요
+
+## Memo 30 (page 3, resolved)
+Source: sec/2_related_work.tex:23
+> Figure 2.
+
+텍스트가 너무 많음, 폰트 수정 필요
+
+## Memo 31 (page 2, resolved)
+Source: sec/2_related_work.tex:14
+> High-Score Ambiguity
+
+다해상도, 다관측 특징이 정말 high-score ambiguity 에 도움이 되냐를 직접적으로 보여줄 필요가 있음 -> figure 6으론 부족하다 보임
+
+## Memo 32 (page 18, resolved)
+Source: sec/7_appendix.tex:371
+> Q95 보정에 따른 관측 간 정상 거리 척도의 정렬
+
+좀 더, 특히 b 를 이해하기 쉽게 수정 필요
+
+## Memo 33 (page 1, resolved)
+Source: sec/1_intro.tex:8
+> Figure 1.
+
+- 회색 그림이 무엇을 의미하는지 이해가 안됨 
+- 이 그림을 통해 무엇을 이야기 하고자 하는 바가 명확하지 않음 
+- 이해하는데 시간이 걸림
+
+## Memo 34 (page 8, resolved)
+Source: sec/4_experiments.tex:235
+> Figure 6. Regular와 shift 조건의 저-FPR 결함 검출
+
+이 결과를 차라리 AUPRC 커브로 보여주는것은 어떨지?
+
+## Memo 35 (page 2, resolved)
+Source: sec/1_intro.tex:37
+> 이는 단일 거리값에 의존하는068
+> 대신 계층과 해상도를 확장해 비교 단서를 늘리는 동기가069
+> 된다.
+
+동기가 된다. 라는 표현을 써도 되나
+
+## Memo 36 (page 2, resolved)
+Source: sec/1_intro.tex:33
+> 분석071
+> 조건과 반례는 Appendix A.3에 제시한다.
+
+굳이 필요할까
+
+## Memo 37 (page 2, resolved)
+Source: sec/1_intro.tex:34
+> 표현 계층은 국072
+> 소 외관부터 전역 문맥에 이르는 서로 다른 추상화 수준073
+> 을 제공하고 [13, 14], 입력 해상도는 고정 패치 백본에서074
+> 토큰이 포괄하는 원본 영상의 공간 범위를 바꾼다
+
+앞의 문장과의 연결성이 부족함
+
+## Memo 38 (page 2, resolved)
+Source: sec/1_intro.tex:36
+> 다만 다중 척도의 특징을 단일 고차원 벡터로 연결해079
+> 매칭하면 [15] 분산이 큰 특정 계층이 이웃 탐색을 지배080
+> 하여 다른 척도의 단서가 묻힐 수 있으므로, 각 계층·해081
+> 상도 조합마다 독립된 메모리 뱅크와 개별 1-NN 매칭을082
+> 수행해 국소 결함 단서와 전역 문맥 차이를 별도의 비교083
+> 단서로 보존한다.
+
+여기서 "다만"이라는 접속사가 매끄럽지 않음
+
+## Memo 39 (page 2, resolved)
+Source: sec/1_intro.tex:39
+> 추가 관측에서 얻은 단서를 최종 이상 점수로 통합하는085
+> 것은 별도의 설계 문제다.
+
+이것도 너무 auxiliary의 느낌. 전반적인 서론의 연결성이 부족하다고 느껴짐
+
+## Memo 40 (page 2, resolved)
+Source: sec/1_intro.tex:40
+> 구체적인091
+> 결합 규칙과 가중치는 방법 절에서 정의하고 별도 비교092
+> 실험으로 평가한다
+
+이건 빼도 되지 않을까 싶음
+
+## Memo 41 (page 2, resolved)
+Source: sec/1_intro.tex:42
+> 이에 본 논문은 distribution shift가 수반되는 few-shot094
+> 환경에서 High-Score Ambiguity를 완화
+
+이 부분에 대한 문제는 아니나, 앞 문단들에서 high-score ambiguity에 너무 편향된 나머지, few-shot, distribution shift가 여기서 다소 갑작스럽게 느껴짐
+
+## Memo 42 (page 6, resolved)
+Source: sec/4_experiments.tex:98
+> 획득 조건별 성능. Tab. 2은 기본 조건(regular)과 획득 조 357
+> 건이 바뀐 영상(과노출·저노출·shift_*)의 AUPRO0.05 358
+> 를 나누어 보여준다. 변화 조건에서 ScopeAD는 2-shot 359
+> 56.60 %, 16-shot 60.74 %로 가장 높았다. 다른 shot에서 360
+> 도 같은 결과가 나타났다(Tab. 15). 기본 조건에서는 Sub- 361
+> spaceAD가 가장 높지만, 변화 조건에서는 2/16-shot에서 362
+> 각각 9.21/10.73 pp 낮아졌다. 같은 차이가 ScopeAD에서 363
+> 는 1.49/1.68 pp였다.
+
+가능한 appendix의 테이블은 참조하지 않도록.
+
+## Memo 43 (page 6, resolved)
+Source: sec/4_experiments.tex:130
+> 관측별 독립 뱅크(C)는 2-shot에서 +2.61 pp를 더하지 400
+> 만 16-shot에서는 변화가 거의 없다(+0.03 pp).
+
+변화가 없다는 것을 굳이 명시할 필요가 있을까
+
+## Memo 44 (page 6, resolved)
+Source: sec/4_experiments.tex:130
+> 누적 비교 404
+> 는 추가 순서에 의존하므로, 보정과 집계의 상호작용은 405
+> Sec. 4.4에서 3-seed 요인 비교로 따로 확인한다
+
+이건 굳이 명시하지 않아도 될 것 같음
+
+## Memo 45 (page 6, resolved)
+Source: sec/4_experiments.tex:130
+> 구성 요소. Tab. 5는 단일 해상도 기준선(A)에서 최종 모 397
+> 델(F)까지 구성 요소를 차례로 추가한 결과다. 가장 큰 398
+> 향상은 다해상도 확장(B, +5.11/ + 4.12 pp)에서 나타난 399
+> 다. 관측별 독립 뱅크(C)는 2-shot에서 +2.61 pp를 더하지 400
+> 만 16-shot에서는 변화가 거의 없다(+0.03 pp). 이후 얕은 401
+> 계층 결합(D), 정상 참조 척도 보정(E), Rényi 집계(F)가 402
+> 각각 +0.83/ + 1.24, +0.27/ + 0.40, +0.59/ + 0.59 pp를 403
+> 더해 F는 2-shot 59.92 %, 16-shot 60.16 %다.
+
+단순 수치 나열 서술 경향이 강함
+
+## Memo 46 (page 6, open)
+Source: sec/4_experiments.tex:134
+> 특징 연결 대 관측별 독립 매칭. 세 계층 특징을 단일 벡 410
+> 터로 연결하여 매칭하는 방식(Layer concat)은 독립 뱅크 411
+> 구성(E) 대비 2/16-shot AUPRO0.05가 각각 7.21 pp(52.12
+
+이 파트는 실험 결과 테이블이 없는데, 빼도 되는거 아냐?
+
+## Memo 47 (page 4, resolved)
+Source: sec/3_method.tex:119
+> 결함 크기에 따라 반응이 강한 해상도가 다르므로 259
+> (Fig. 3b), ScopeAD는 해상도별 고정 가중치 대신 각 위 260
+> 치의 점수 순위에 가중치를 부여한다. 산술 평균에 의한 261
+> 강한 반응의 희석과 최댓값 집계의 단일 고점수 의존도를 262
+> 절충하기 위해 상위 순위에 더 큰 비중을 둔다. 263
+> 위치 p에서 R = |R|개 해상도의 점수를 S(1)(xq , p) ≤ 264
+> · · · ≤ S(R)(xq , p)로 정렬한다. 정상 표본만 주어지는 환 265
+> 경에서 가중치 간격을 임의로 정하는 휴리스틱을 배제하 266
+> 기 위해, 관측 수 R만으로 닫힌형태로 정해지는 비모수 267
+> 적 기준을 쓴다. 구체적으로 표준 지수 분포 순서 통계 268
+> 량의 기댓값인 Rényi 표현 ak = ∑k
+> j=1(R − j + 1)−1을 269
+> 정규화하여 wk = ak/ ∑R
+> j=1 aj 로 정한다. R = 4에서는 270
+> w = ( 1
+> 16 , 7
+> 48 , 13
+> 48 , 25
+> 48 )이며, 최종 이상 맵 A(xq ) = ˜A(xq )는 271
+> 다음과 같다:
+
+문장간의 연결성이 매끄럽지가 않아

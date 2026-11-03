@@ -7,14 +7,16 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
+from figure_style import use_times_new_roman
 
 HERE = Path(__file__).resolve().parent
 DATA = HERE / 'hsa_evidence'
 OUT = HERE.parent
 CLASSES = ['can', 'fabric', 'fruit_jelly', 'rice', 'sheet_metal', 'vial', 'walnuts', 'wallplugs']
-plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 7.5,
+plt.rcParams.update({'font.size': 7.5,
                      'pdf.fonttype': 42, 'axes.spines.top': False,
                      'axes.spines.right': False})
+use_times_new_roman()
 NORMAL, DEFECT = '#737C87', '#B03A2E'
 TP, FP, FN, GT = '#287EA3', '#D34A41', '#E8B34C', '#33D4D9'
 

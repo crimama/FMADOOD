@@ -1,3 +1,6 @@
+% Appendix diagnostics stay within their topic; large figures may use float pages.
+\renewcommand{\floatpagefraction}{0.75}
+\renewcommand{\dblfloatpagefraction}{0.75}
 \section{결합 규칙과 파라미터의 추가 분석}
 \label{sec:appendix:fusion}
 
@@ -5,68 +8,186 @@
 계층 가중치와 집계 대안 표는 MVTec AD 2 \texttt{test\_public}, seed 0의 8개 클래스 macro이며, 메커니즘 분석은 별도로 명시한 3-seed 결과를 사용한다.
 
 \subsection{계층 가중치}
-최종 구성(Q95, Rényi)에서 $z_d=(z_{11}+z_{23})/2$에 더하는 얕은 계층 가중치 $\lambda$를 바꾸어 비교한다(\cref{tab:lambda_final}).
+본문 \cref{tab:lambda_final}의 가중치 비교는 $q=0.95$에서 수행했으며, 사용값 행은 $q=0.99$의 최종 구성 결과로 표시했다.
 $\lambda=0.5$에서는 세 계층의 계수가 같다. $\lambda=0$은 얕은 계층의 점수 기여만 제외한다.
 
-\begin{table}[!htbp]
-\centering\small
-\caption{얕은 계층 가중치 $\lambda$의 민감도 (MVTec AD 2, seed 0, Q95, Rényi, \AUPRO, \%). 굵은 값은 최고값이다.}
-\label{tab:lambda_final}
-\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrr}
-\toprule
-$\lambda$ & 2-shot & 16-shot \\
-\midrule
-0 & 59.05 & 59.11 \\
-0.0625 & 59.76 & 59.73 \\
-0.125 (사용값) & \textbf{59.92} & 60.16 \\
-0.25 & 59.32 & \textbf{60.36} \\
-0.5 & 56.23 & 59.47 \\
-\bottomrule
-\end{tabular*}
-\end{table}
-
-얕은 계층을 제외하거나($\lambda=0$) 가중치를 0.5로 높이면 두 shot 모두 성능이 낮아진다. 16-shot에서는 0.25가 0.125보다 0.20\,pp 높아, 최적값은 shot에 따라 조금 다르다.
+얕은 계층을 제외하거나($\lambda=0$) 가중치를 0.5로 높이면 두 shot 모두 성능이 낮아진다. 16-shot에서는 0.25가 0.125보다 0.17\,pp 높아, 두 행은 $q$도 달라 이 차이는 가중치만의 효과를 나타내지 않는다.
 
 \subsection{해상도 집계 대안}
 \label{sec:appendix:aggregation}
-최종 구성의 특징, 뱅크, Q95 보정, 계층 가중치를 고정하고 해상도 집계 규칙만 바꾸었다(\cref{tab:aggregation_alternatives}).
+최종 구성의 특징, 뱅크, Q99 보정, 계층 가중치를 고정하고 해상도 집계 규칙만 바꾸었다(\cref{tab:aggregation_alternatives}).
 선형 순위 가중치는 $(0.1, 0.2, 0.3, 0.4)$다.
-두 순위 가중 집계는 Mean보다 \AUPRO가 높고, Rényi와 선형 가중의 차이는 0.1\,pp 이내다.
+두 순위 가중 집계는 Mean보다 \AUPRO가 높고, Rényi와 선형 가중의 차이는 0.11\,pp 이내다.
 따라서 이 결과는 높은 순위에 큰 가중치를 주는 집계의 효과를 보여주며, 특정 Rényi 가중치가 다른 순위 가중치보다 뚜렷하게 낫다는 근거는 아니다.
 
 \begin{table}[!htbp]
 \centering\scriptsize\setlength{\tabcolsep}{3pt}
-\caption{해상도 집계 대안 (MVTec AD 2, seed 0, Q95, \%). 각 셀은 \AUPRO{} / \pAUROC{}이며, 굵은 값은 열별 최고값이다.}
+\caption{해상도 집계 대안 (MVTec AD 2, seed 0, Q99, \%). 각 셀은 \AUPRO{} / \pAUROC{}이며, 굵은 값과 밑줄은 각 지표의 최고·차순위다.}
 \label{tab:aggregation_alternatives}
 \begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lcc}
 \toprule
 집계 방식 & 2-shot & 16-shot \\
 \midrule
 Mean & 59.33 / \textbf{76.48} & 59.57 / 77.46 \\
-Order (linear) & 59.91 / 76.45 & 60.08 / \textbf{77.55} \\
-Order (Rényi, Ours) & \textbf{59.92} / 76.36 & \textbf{60.16} / 77.52 \\
+Order (linear) & \underline{59.91} / \underline{76.45} & \underline{60.08} / \textbf{77.55} \\
+Order (Rényi, Ours) & \textbf{59.92} / 76.36 & \textbf{60.19} \\
 \bottomrule
 \end{tabular*}
 \end{table}
 
+\subsection{관측 확장 motivation의 실측 프로토콜}
+\label{sec:appendix:motivation}
+
+\noindent\textbf{본문의 설명 사례.}
+\cref{fig:intro-ambiguity}(a,b)는 Wallplugs의 \texttt{012\_overexposed} 표본에서 동일한 정상·결함 영역을 관측 간에 추적한다.
+(a)의 기준 점수는 배그 평균한 원시 L23/1120 거리를 클래스 정상 Q99($t$)로 나눈 값이고, (b)의 거리는 관측별 서포트 Q99($c$)로 나눈 값 $d/c$다. 두 단위는 서로 다르므로 (a)와 (b)의 수치를 직접 비교하지 않는다.
+(b)의 두 해상도 맵은 같은 원본 좌표와 색상 범위를 사용하며, 수치는 각 사각형 내부의 평균이다.
+영역 크기와 원시 점수 조건은 아래 기준 관측 사례와 동일하다.
+기존 기준 점수만으로 고정했던 9개 영역 쌍 중 표시 사례는 L23/448의 결함/정상 평균 거리 비가 가장 큰 쌍(4.39)이다. 다만 이 사례는 원래 L23/448과 전체 결합에서 결함 점수가 더 높은 7개 쌍 중 최종 점수 비의 상위 중앙값으로 선정했다. 이후의 단독 관측 재검토에서도 같은 사례가 선택되지만, 최초 선택에 결합 결과를 사용한 이력은 남는다.
+9개 쌍의 중앙값은 1.38이며, 1개 쌍은 L23/448에서 정상 거리가 결함보다 크다.
+따라서 이 사례는 단서가 드러나는 모습을 설명하기 위해 유리하게 고른 사례이며, 대표 표본이나 검출 성공률 평가가 아니다.
+원시 점수는 정상 Q99 단위로 정상 0.989, 결함 1.008이다.
+서포트 Q99 단위의 L23/1120 거리는 1.085와 1.105, L23/448 거리는 0.235와 1.033이다.
+
+\noindent\textbf{관측별 단독 대비(결합 전).}
+\cref{fig:intro-ambiguity}(c)는 아래의 고정 위치 집단에서 12개 관측을 하나씩 사용한다. 각 클래스에서 관측별 결함 평균을 정상 평균으로 나누고, 이 비를 8개 클래스에 대해 평균했다. 각 관측에서 같은 단위의 정상·결함 거리를 비교하며, 관측 간 보정 방법의 우월성을 검증하는 분석은 아니다.
+기준 관측 L23/1120의 비는 1.017이고 나머지 관측은 1.116(L23/896)에서 1.494(L5/672)이다.
+클래스별로 비가 가장 큰 관측은 L23/448(\texttt{fabric}, \texttt{rice}, \texttt{sheet\_metal}, \texttt{walnuts}), L5/1120(\texttt{can}, \texttt{fruit\_jelly}), L5/672(\texttt{vial}, \texttt{wallplugs})이다.
+위치별로는 각 관측의 값을 같은 클래스의 정상 위치 중앙값과 사분위 범위로 표준화한 뒤, 결함 위치마다 표준화 값이 가장 큰 관측을 셌다. 어느 관측도 클래스 평균 22\,\%를 넘지 않는다.
+정상 위치 중 적어도 한 관측에서 해당 관측의 정상 Q90을 넘는 비율은 클래스별 39--52\,\%이다.
+이 집단에서 평균 대비가 가장 큰 계층은 L5이다. 이 결과는 추가 관측의 단서를 보여줄 뿐, 얕은 계층의 가중치를 낮추는 설계의 근거는 아니다. 아래 정상 조건 변화 진단(\cref{fig:normal-layer-shift})도 그 설명을 지지하지 않는다.
+참고로 결합 후 결과 측면에서, 같은 집단의 결함/정상 평균 비는 \method의 전체 결합에서 1.209이다. 이는 결과 분석이며 \cref{fig:intro-ambiguity}에는 포함하지 않았다.
+거리 맵의 문맥 범위는 원본 좌표에서 각 영역 한 변의 6배로 정했고, 두 관측에 동일한 좌표와 $[0,2]$ 색상 범위를 적용했다. 초과값은 색상 막대로 표시했다.
+관측별 또는 영역별 min--max 재정규화는 하지 않았다.
+
+\begin{figure*}[!tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_normal_layer_shift.pdf}
+\caption{\textbf{정상 이미지 조건 변화의 계층별 거리 진단.} 결합 전 원시 거리의 이미지 Q99를 동일 ID의 일반 조건 Q99로 나눴다. (a) 해상도 1120의 클래스별 비와 클래스 균등 기하평균, (b) 네 해상도의 기하평균이다. 정상 이미지 379장, 64개 ID, 2-shot, seed 0. 이 조건에서 L5의 정상 반응 증가가 더 크지는 않다. 회색 선은 클래스 간 차이이며 신뢰구간이 아니다.}
+\label{fig:normal-layer-shift}
+\end{figure*}
+
+\noindent\textbf{정상 조건 변화에 대한 계층별 진단.}
+\label{sec:appendix:normal-layer-shift}
+\cref{fig:normal-layer-shift}는 기존 2-shot, seed 0 거리 캐시의 \texttt{good} 이미지만 사용한다. 일반 조건 64장과 같은 ID의 변화 조건 315장, 총 379장이다. 클래스별 ID 수는 Can 12개, Fabric 11개, Fruit Jelly 5개, Rice 7개, Sheet Metal 4개, Vial 5개, Wallplugs 10개, Walnuts 10개다.
+각 이미지에서 원본 좌표의 $64\times64$ 고정 격자 중심을 표본화하고, 계층별 원시 1-NN 거리의 Q99를 구한다. 배그 평균과 보간은 기존 평가와 동일하며, 계층·해상도 결합과 서포트 Q99 보정은 적용하지 않는다. 이미지 내 Q99는 서포트 보정에 쓰는 Q99와 구분한다.
+변화 조건의 이미지 Q99를 동일 클래스·ID의 일반 조건 Q99로 나눈다. 먼저 ID별로 조건의 로그 비를 평균하고, 이어 ID와 클래스에 동일 비중을 두어 평균한 뒤 지수화한다. 따라서 그림의 검은 선은 클래스 균등 기하평균이다. ID를 맞춘 이미지 간 분포 비교이며, 픽셀 간 정합은 가정하지 않는다.
+조건은 \texttt{overexposed}, \texttt{underexposed}, 모든 \texttt{shift\_*}를 포함한다. 변화 조건은 일반적으로 클래스당 5개이며, \texttt{fruit\_jelly}는 3개, \texttt{vial}은 6개다. 단일 원인에 대한 인과 실험이 아닌 기존 공개 개발 자료의 사후 분석이다.
+주 분석은 해상도 1120이다. L5/L11/L23의 기하평균 비는 1.0095/1.0131/1.0564로, L5보다 L23에서 더 큰 증가가 나타난다. L5의 비가 L23보다 큰 클래스는 8개 중 \texttt{can} 하나다. 나머지 세 해상도에서도 클래스 균등 Q99 비는 L23이 더 크다(\cref{fig:normal-layer-shift}).
+표본 격자를 $128\times128$로 늘리면 주 분석 비는 1.0105/1.0138/1.0556이며, 모든 해상도에서 격자별 비의 최대 절대 차이는 0.00144 이하다. 원본 보간 검증의 최대 절대 오차는 $2\times10^{-5}$ 미만이다. 이미지별 Q50/Q99와 조건별 결과도 재현 자료에 보존했다.
+이 결과는 얕은 계층이 정상 조건 변화에 더 민감하다는 주장을 지지하지 않는다. 그렇다고 깊은 계층이 항상 불리하거나 L5의 가중치를 높여야 한다는 뜻도 아니다. 계층별 정상 거리 변화와 최종 결합의 탐지 성능은 서로 다른 질문이다. 계층 가중치는 \cref{tab:lambda_final}의 비교 결과를 근거로 제시하며, 이 진단으로 특정 가중치의 최적성을 주장하지 않는다.
+
+\begin{figure*}[!tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_motivation_cohort_trace.pdf}
+\caption{\textbf{고정된 모호한 위치 집단의 반응과 점수 기여량.} (a) 단일 관측의 정상·결함 점수 분포와 고정 분석 구간이다. (b) 동일 위치의 정상 서포트 Q99 단위 반응을 클래스에 동일 비중을 두어 평균했다. 음영은 같은 비중의 사분위 범위다. (c) 동일 위치의 계층별 가산 기여량과 위치별 순위 가중치를 적용한 기여량이다. 이 집단 분석은 본문의 사후 선택 사례와 구분된다.}
+\label{fig:motivation-cohort-trace}
+\end{figure*}
+
+\noindent\textbf{집단 반응의 보조 분석.}
+\cref{fig:motivation-cohort-trace,fig:motivation-class-profiles}는 2-shot, seed 0의 기존 정상 서포트와 1,084개 쿼리 캐시를 재사용한다.
+추가 적합이나 백본 추론 없이 관측별 거리를 재생하고, 정답은 점수 산출 후 진단에만 사용했다.
+기준 관측은 배그 평균한 Raw L23/1120이다.
+정상·결함의 분포는 각 이미지의 정상 픽셀 100개당 1개, 결함 픽셀 10개당 1개를 원본 좌표 순서로 추출해 계산했다.
+정상 표본은 정상 이미지와 결함 이미지의 정상 배경을 모두 포함하며, 전체 획득 조건을 합친 클래스별 정상 Q99를 $t$로 두었다.
+프로파일에는 기존 분석에서 $0.9\leq A_{\mathrm{raw}}/t\leq1.1$인 위치 중 순서상 균등 간격으로 보존한 클래스·정상/결함별 최대 2,000개 표본을 그대로 사용했다.
+정상은 클래스마다 2,000개이며, 결함은 \texttt{can}의 204개와 나머지 클래스의 각 2,000개다.
+관측이나 최종 결합 결과에 따라 위치를 다시 선택하지 않았다.
+
+\begin{figure*}[!tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_motivation_class_profiles.pdf}
+\caption{\textbf{고정된 모호한 위치 집단의 클래스별 반응.} 파랑은 정상, 빨강은 결함이다. 계층별 네 점은 448, 672, 896, 1120 해상도 순이며, 세로선은 계층 경계다. 모든 점은 정상 서포트 Q99 단위의 거리다. 클래스·정상/결함별 최대 2,000개의 동일 위치를 관측 간에 추적했다.}
+\label{fig:motivation-class-profiles}
+\end{figure*}
+
+\noindent\textbf{반응 프로파일과 기여량.}
+프로파일의 거리는 서포트에서 추정한 관측별 Q99로 나눈 값이다.
+평균과 사분위 범위는 각 클래스의 총 비중을 동일하게 두어 계산했다.
+음영은 위치 간 반응 분포의 사분위 범위이며, 신뢰구간이나 시드 간 불확실성이 아니다.
+계층별 가산 기여량은 $(d_{11}/c_{11}+d_{23}/c_{23})/2$와 $0.125d_5/c_5$로 분해했다.
+해상도 결합은 각 위치에서 점수를 오름차순 정렬하고 $[1/16,7/48,13/48,25/48]$을 곱한 기여량을 구한 뒤 평균했다.
+집단 평균을 먼저 정렬한 값이 아니며, 위치별 기여량의 합은 저장된 최종 점수와 $2\times10^{-6}$ 이내에서 일치한다.
+CQ와 noise guard는 적용하지 않았다.
+원시 거리의 $t$ 단위와 보정 거리의 $c$ 단위가 다르므로, 패널 사이의 수치 차이를 정상 점수의 절대 감소로 해석할 수 없다.
+\cref{fig:motivation-class-profiles}는 동일 표본의 클래스별 프로파일을 제시한다.
+클래스에 동일 비중을 둔 L23/1120의 정상·결함 평균은 1.006/1.024이며, L23/448에서는 0.768/1.019이다. 두 관측의 결함 평균에서 정상 평균을 뺀 차이는 각각 0.018과 0.252이다. 이 차이는 8개 클래스 모두에서 확대된다. 이는 동일한 고정 집단에서 관측에 따라 추가 구분 단서가 나타난다는 기술적 근거이며, 평균 차이만으로 분포의 겹침이나 검출 오류가 감소한다고 결론내리지 않는다.
+이는 기준 점수에 조건을 둔 기술적 분석으로, 탐지 성능이나 결합 규칙의 인과적 우월성 검증이 아니다.
+
+\begin{figure*}[!tbp]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_motivation_spatial_trace.pdf}
+\caption{\textbf{기준 관측으로만 선택한 영역의 공간적 추적과 반례.} 청록색은 결함 정답 윤곽, N과 D는 고정된 정상·결함 영역이다. 위는 쿼리와 두 해상도의 보정·계층 결합 거리 맵이며, 아래는 동일 영역의 계층·해상도별 평균과 영역 내부 사분위 범위다. 원시 기준 점수는 거의 같지만 최종 정상 점수가 더 높아, 개별 사례의 한계를 보여준다.}
+\label{fig:motivation-spatial-trace}
+\end{figure*}
+
+\noindent\textbf{기준 관측만으로 고른 공간 사례와 반례.}
+공간 사례의 클래스는 기존 기준 구간에 속한 결함 표본 비율의 상위 중앙값으로 정했다(\texttt{wallplugs}).
+해당 클래스의 비정규 획득 결함 이미지 중 정상·결함 영역을 모두 고를 수 있는 9개 이미지를 같은 비율로 정렬하고 상위 중앙값을 택했다.
+영역은 원본 좌표의 정사각형으로, 한 변은 $2\lfloor\min(H,W)/128\rfloor+1$이다.
+정사각형 내부가 전부 정상 또는 전부 결함이고, 평균 원시 점수 $A_{\mathrm{raw}}/t$가 $[0.9,1.1]$에서 1에 가장 가까운 영역을 각각 선택했다.
+두 평균의 차이는 0.02 이하여야 하며, 동점은 좌표와 경로 순서로 처리했다.
+선택 정보를 저장한 뒤에만 다른 관측의 점수를 읽었다.
+
+선정된 \texttt{000\_shift\_1} 이미지의 두 영역은 각각 $33\times33$ 픽셀이다(\cref{fig:motivation-spatial-trace}).
+정상·결함의 원시 점수는 $t$ 단위로 1.000과 1.003으로 거의 같지만, 서포트 단위의 Rényi 결합 점수는 1.147과 0.915로 정상 쪽이 더 높다.
+평균 결합도 1.084와 0.878로 같은 순서를 보인다.
+따라서 관측별 반응이 달라진다는 사실만으로 각 영역의 점수 순서가 올바르게 바뀌지는 않는다.
+이 사례는 성공 사례가 아닌 반례이며, 본문 집단 프로파일의 원자료를 대신하지 않는다.
+표시한 거리 맵은 두 해상도에 동일한 $[0,2]$ 범위를 적용하고 초과값을 표시했다. 영역별 재정규화는 하지 않았다.
+
+\FloatBarrier
 \subsection{HSA 진단의 프로토콜과 반례}
 \label{sec:appendix:hsa}
 
 \cref{fig:hsa-direct-evidence}는 MVTec AD 2 \texttt{test\_public}의 2-shot, seed 0 캐시를 재사용한 사후 분석이다.
+(a,b)는 각 이미지에서 정상 픽셀을 100개당 1개, 결함 픽셀을 10개당 1개 추출하고, 단일 관측 점수가 클래스 정상 Q99($t$)의 0.9--1.1배인 위치를 모든 구성에 같은 위치로 사용했다. 구성마다 $t$를 따로 구했으며, (b)의 AUROC는 구간 안의 모든 표본으로 계산했다. (a)의 분포는 클래스·라벨별 최대 2,000개 표본으로 클래스마다 밀도를 구한 뒤 평균했다. 같은 단일 관측에 Q99 보정만 적용하면 구간 내 AUROC는 58.1\,\%로 변하지 않는다. 이 구간은 \cref{fig:intro-ambiguity}(c)의 위치 집단과 같다.
 동일한 1,084개 쿼리의 원본 크기 점수에서 정상 약 44.25억 픽셀과 결함 약 2,911만 픽셀을 집계했다.
-기준선은 1120 해상도 L23의 원시 거리를 배그 평균한 지도이며, \method는 같은 캐시의 Q95 보정, 계층 가중합, 배그 평균, 해상도별 보간 및 Rényi 집계를 적용한 지도다.
+기준선은 1120 해상도 L23의 원시 거리를 배그 평균한 지도이며, \method는 같은 캐시의 Q99 보정, 계층 가중합, 배그 평균, 해상도별 보간 및 Rényi 집계를 적용한 지도다.
 추가 적합이나 파라미터 변경 없이 재생했으며, 정답 마스크는 점수 산출 이후에만 사용했다.
 
 임계값 $t$는 \cref{tab:hsa_direct_validation}과 동일하게 각 이미지의 정상 픽셀을 100개당 1개씩 추출한 뒤 클래스·방법별로 합친 분포의 99백분위수다.
 정상 이미지와 결함 이미지의 정상 배경을 모두 포함하고, regular 및 비정규 획득 조건을 함께 사용했다.
 이 임계값을 이미지나 획득 조건마다 다시 맞추지 않고, 전체 원본 픽셀에서 FPR과 결함 검출률을 측정했다(\cref{tab:hsa-native-audit}).
 실제 FPR의 macro는 기준선 0.991\,\%, \method 0.992\,\%이며, 표본 추정으로 클래스별 FPR은 목표 1\%와 다를 수 있다.
-\cref{fig:hsa-direct-evidence}의 네 패널은 조건군별로 클래스의 정상·결함 밀도를 각각 계산한 뒤 macro 평균하며, 표시 범위 밖의 픽셀도 정규화에 포함한다.
+\cref{fig:hsa-score-density}의 네 패널은 조건군별로 클래스의 정상·결함 밀도를 각각 계산한 뒤 macro 평균하며, 표시 범위 밖의 픽셀도 정규화에 포함한다.
 따라서 이는 비슷한 오경보 예산에서의 점수 분리도를 비교하는 진단이며, 정답 없이 배포 임계값을 추정하거나 미사용 테스트에서 일반화를 검증하는 실험은 아니다.
 
-\begin{table}[tbp]
+\begin{table}[!htbp]
 \centering\scriptsize\setlength{\tabcolsep}{3pt}
-\caption{HSA 진단의 실제 FPR과 결함 픽셀 Recall (2-shot, seed 0, \%). 전체 조건의 테스트 정상 표본에서 추정한 임계값을 고정 적용했다.}
+\caption{MVTec AD 2 저-FPR 결함 검출률 (8개 클래스 macro, seed 0, \%). 테스트 정상 픽셀 표본으로 임계값을 정한 사후 진단이며, 열의 FPR은 목표값이다. 굵은 값과 밑줄은 최고·차순위다.}
+\label{tab:hsa_direct_validation}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lcccc}
+\toprule
+& \multicolumn{2}{c}{2-shot} & \multicolumn{2}{c}{16-shot} \\
+\cmidrule(lr){2-3} \cmidrule(lr){4-5}
+단계별 구성 & FPR=0.01 & FPR=0.05 & FPR=0.01 & FPR=0.05 \\
+\midrule
+Raw L23 1120 (단일 관측) & 36.24 & 56.88 & 39.78 & 60.65 \\
+Raw Fusion 1120 (미보정 결합) & \underline{39.65} & \underline{60.71} & \underline{43.01} & \underline{62.81} \\
+Q99 Fusion 1120 (정규 계층) & 38.51 & 60.68 & 42.71 & 62.53 \\
+\textbf{\method{} (전체 관측 확장)} & \textbf{45.95} & \textbf{66.14} & \textbf{50.04} & \textbf{66.95} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_hsa_direct_evidence.pdf}
+\caption{\textbf{고정 임계값에서의 정상·결함 점수 분포.} 전체 조건의 테스트 정상 표본에서 추정한 클래스·방법별 99백분위수 $t$로 점수를 나누고 밀도를 macro 평균했다. 점선은 $A/t=1$이며, 수치는 해당 임계값의 실제 FPR과 Recall이다(2-shot, seed 0).}
+\label{fig:hsa-score-density}
+\end{figure}
+
+\noindent\textbf{동일 FPR에서의 곡선 비교.}
+본문 \cref{fig:hsa-direct-evidence}(c,d)는 위 고정 임계값 진단과 달리, 클래스·방법·조건군별로 임계값을 변화시킨 Recall--FPR 곡선을 비교한다.
+저장된 정상·결함 점수 히스토그램의 누적합으로 구간 경계의 FPR과 Recall을 계산하고, $A/t=1$에서 별도로 집계한 정확한 검출 수를 추가했다.
+각 클래스의 곡선을 공통 FPR 격자에서 선형 보간한 뒤 8개 클래스를 동일 비중으로 평균했다. 따라서 본문의 FPR 1\% 표시는 조건군별로 같은 FPR에서 비교한 값이며, 위 고정 임계값의 평균 검출률과 구분된다.
+히스토그램은 0과 무한대 경계 사이에 0.001--8의 로그 간격 경계를 사용한 242개 구간으로 구성되어, 구간 내부의 점수 순위와 최상위 열린 구간을 복원할 수 없다. 따라서 곡선은 원본 픽셀 점수로 계산한 정확한 ROC가 아닌 근사이며, 별도 모델 적합이나 새로운 평가 표본은 사용하지 않았다.
+
+\begin{table}[!htbp]
+\centering\scriptsize\setlength{\tabcolsep}{3pt}
+\caption{HSA 진단의 실제 FPR과 결함 픽셀 Recall (2-shot, seed 0, \%). 전체 조건의 테스트 정상 표본에서 추정한 임계값을 고정 적용했다. Recall의 굵은 값과 밑줄은 클래스별 최고·차순위다.}
 \label{tab:hsa-native-audit}
 \begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrrr}
 \toprule
@@ -74,16 +195,16 @@ Order (Rényi, Ours) & \textbf{59.92} / 76.36 & \textbf{60.16} / 77.52 \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 클래스 & Raw L23 & \method & Raw L23 & \method \\
 \midrule
-can & 0.996 & 0.998 & 6.54 & 15.87 \\
-fabric & 1.002 & 1.006 & 29.68 & 35.41 \\
-fruit\_jelly & 0.995 & 1.044 & 23.16 & 33.40 \\
-rice & 1.004 & 0.996 & 79.53 & 85.74 \\
-sheet\_metal & 0.995 & 1.000 & 46.54 & 52.78 \\
-vial & 0.941 & 0.901 & 19.77 & 27.44 \\
-wallplugs & 1.001 & 0.995 & 8.55 & 44.21 \\
-walnuts & 0.994 & 0.998 & 76.12 & 72.76 \\
+can & 0.996 & 0.998 & \underline{6.54} & \textbf{15.87} \\
+fabric & 1.002 & 1.006 & \underline{29.68} & \textbf{35.41} \\
+fruit\_jelly & 0.995 & 1.044 & \underline{23.16} & \textbf{33.40} \\
+rice & 1.004 & 0.996 & \underline{79.53} & \textbf{85.74} \\
+sheet\_metal & 0.995 & 1.000 & \underline{46.54} & \textbf{52.78} \\
+vial & 0.941 & 0.901 & \underline{19.77} & \textbf{27.44} \\
+wallplugs & 1.001 & 0.995 & \underline{8.55} & \textbf{44.21} \\
+walnuts & 0.994 & 0.998 & \textbf{76.12} & \underline{72.76} \\
 \midrule
-Macro & 0.991 & 0.992 & 36.24 & 45.95 \\
+Macro & 0.991 & 0.992 & \underline{36.24} & \textbf{45.95} \\
 \bottomrule
 \end{tabular*}
 \end{table}
@@ -99,12 +220,19 @@ Regular에서 검출률은 32.94$\rightarrow$44.22\,\%, 실제 FPR은 0.651$\rig
 전체 결함 픽셀 대비 검출 회복은 macro 13.57\,\%, 손실은 3.85\,\%로, 순이득은 9.72\,pp다. 8개 클래스 중 7개에서 순이득이 있으며, \texttt{walnuts}는 3.36\,pp 낮아진다.
 정상 픽셀에서도 제거된 오경보와 새로 생긴 오경보가 공존하므로, 이 결과를 모든 정상 고점수의 제거로 해석하지 않는다.
 
-\begin{figure}[t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/fig_hsa_recovery.pdf}
 \caption{\textbf{클래스별 결함 검출 회복과 손실.} 전체 획득 조건의 결함 픽셀 대비 비율(2-shot, seed 0). Raw L23 대비 새로 검출한 결함은 파랑, 놓치게 된 결함은 노랑, 순이득은 검은 점이다.}
 \label{fig:hsa-recovery}
 \end{figure}
+
+\begin{figure*}[!b]
+\centering
+\includegraphics[width=\textwidth]{figures/fig_hsa_failure.pdf}
+\caption{\textbf{검출 회복이 보장되지 않는 반례.} \texttt{walnuts}의 과노출 쿼리. 파랑: 검출 결함, 노랑: 미검출 결함, 빨강: 오경보, 하늘색: 정답 윤곽. 검출률은 88.58$\rightarrow$85.96\,\%로 낮아진다.}
+\label{fig:hsa-failure}
+\end{figure*}
 
 실패 사례는 클래스 전체의 검출률이 낮아진 \texttt{walnuts}에서 선택했다.
 비정규 조건의 결함 이미지 중 결함 픽셀 500개 이상을 대상으로, 클래스의 비정규 조건 검출률 변화 및 기준선 검출률에 가까운 이미지를 정했다.
@@ -112,15 +240,10 @@ Regular에서 검출률은 32.94$\rightarrow$44.22\,\%, 실제 FPR은 0.651$\rig
 지표는 모두 원본 픽셀에서 계산하며, 표시용 축소 지도에는 최근접 보간을 사용했다.
 \cref{fig:hsa-failure}의 이미지에서는 오경보가 줄어도 결함 검출률은 88.58$\rightarrow$85.96\,\%로 낮아진다. 클래스 전체에서도 76.12$\rightarrow$72.76\,\%로 낮아져, 개선이 모든 클래스와 이미지에서 성립하지 않음을 보여준다.
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{figures/fig_hsa_failure.pdf}
-\caption{\textbf{검출 회복이 보장되지 않는 반례.} \texttt{walnuts}의 과노출 쿼리. 파랑: 검출 결함, 노랑: 미검출 결함, 빨강: 오경보, 하늘색: 정답 윤곽. 검출률은 88.58$\rightarrow$85.96\,\%로 낮아진다.}
-\label{fig:hsa-failure}
-\end{figure*}
+
 
 저-FPR 검출 회복은 모든 정상·결함 쌍의 점수 순서 개선과도 구분된다.
-별도 진단에서 Q95 보정된 1120 단일 해상도의 정상 고점수와 가까운 결함 점수를 짝지었을 때, 2-shot 비정규 조건의 결함 우위 비율은 단일 해상도 82.79\,\%, 전체 Rényi 결합 72.09\,\%였다(3-seed, 이미지·클래스별 평균).
+별도 진단에서 Q99 보정된 1120 단일 해상도의 정상 고점수와 가까운 결함 점수를 짝지었을 때, 2-shot 비정규 조건의 결함 우위 비율은 단일 해상도 82.79\,\%, 전체 Rényi 결합 72.09\,\%였다(3-seed, 이미지·클래스별 평균).
 이 진단은 기준선 점수로 쌍을 선택하고 정규화·계층 결합을 이미 적용한 비교로, 본문의 원시 L23 기준선 및 전체 픽셀 검출률과 비교 조건이 다르다.
 기준선에 조건화한 쌍의 선택 편향도 있으므로 전체 모집단의 악화로 일반화할 수 없지만, 모든 모호한 쌍이 해소된다는 주장도 뒷받침하지 않는다.
 본 논문의 직접 근거는 명시된 저-FPR 구간의 검출 회복이며, 이 사후 진단 한 시드만으로 미관측 조건의 강건성을 확정하지 않는다.
@@ -128,25 +251,49 @@ Regular에서 검출률은 32.94$\rightarrow$44.22\,\%, 실제 FPR은 0.651$\rig
 \subsection{보정과 Rényi 집계의 메커니즘 분석}
 \label{sec:appendix:mechanism}
 
-\begin{figure*}[t]
+\begin{table}[!htbp]
+\centering\scriptsize\setlength{\tabcolsep}{4pt}
+\caption{집계 방식과 척도 보정의 상호작용, \pAUROC{} (MVTec AD 2, 3-seed 평균 $\pm$ 표본 표준편차, \%). \AUPRO{}는 \cref{tab:interaction_multiseed}. 굵은 값과 밑줄은 최고·차순위 평균이다.}
+\label{tab:interaction_pauroc}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}l l r r}
+\toprule
+집계 방식 & 척도 보정 & 2-shot & 16-shot \\
+\midrule
+Mean & 없음 & \underline{76.10 $\pm$ 0.49} & 77.76 $\pm$ 0.32 \\
+Mean & Q99 & 75.86 $\pm$ 0.59 & 77.60 $\pm$ 0.37 \\
+Rényi & 없음 & \textbf{76.18 $\pm$ 0.40} & \textbf{77.96 $\pm$ 0.25} \\
+Rényi (Ours) & Q99 & 75.83 $\pm$ 0.51 & \underline{77.77 $\pm$ 0.34} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\begin{figure*}[!tbp]
 \centering
 \includegraphics[width=\textwidth]{figures/fig_scopead_calibration_mechanism.pdf}
-\caption{\textbf{Q95 보정과 Rényi 집계의 메커니즘 분석} (MVTec AD 2, 2/16-shot, 3-seed).
-(a) Q95$-$None의 $E/\mu$ 변화: Normal은 정상 이미지, Background는 결함 이미지의 정상 배경, Defect는 결함 영역.
+\caption{\textbf{Q99 보정과 Rényi 집계의 메커니즘 분석} (MVTec AD 2, 2/16-shot, 3-seed).
+(a) Q99$-$None의 $E/\mu$ 변화: Normal은 정상 이미지, Background는 결함 이미지의 정상 배경, Defect는 결함 영역.
 (b) None+Rényi 대비 순위·크기 보정의 \AUPRO{} 변화. (a,b)의 점은 클래스별 평균, 마름모와 막대는 macro와 클래스 bootstrap 95\,\% 구간이다.
 (c) 분모 오차에 따른 \AUPRO{} 변화. 색은 shot, 점선/실선은 Mean/Rényi다.}
 \label{fig:calibration-mechanism}
 \end{figure*}
 
+\noindent\textbf{추가 응답의 정의.}
+Rényi 결합 점수는 해상도 점수의 평균 응답 $\mu(p)$와 해상도 간 순위 간격 $g_k(p)$에 따른 추가 응답 $E(p) \ge 0$의 합으로 분해된다:
+\begin{equation}
+  \tilde A(p) = \mu(p) + E(p), \quad E(p) = \frac{9g_1(p)+14g_2(p)+13g_3(p)}{48}.
+  \label{eq:renyi-excess}
+\end{equation}
+$E(p)$는 해상도 간 점수 편차가 클수록 커지므로, 척도 보정이 없으면 기저 거리가 큰 해상도 때문에 정상 영역에서도 커질 수 있다. 아래에서는 평균 응답 대비 비율 $E/\mu$로 이 효과를 비교한다.
+
 \noindent\textbf{상대 추가 응답($E/\mu$).}
 분석은 같은 특징과 거리를 재사용한다. 같은 픽셀 표본의 보정 전후 차이를 이미지·seed·클래스 순으로 평균했다.
-Rényi 집계에서 정상 이미지의 $E/\mu$는 Q95 보정 후 2-shot에서 $7.74\!\rightarrow\!7.10$\,\%, 16-shot에서 $8.56\!\rightarrow\!7.55$\,\%로 감소했다(\cref{fig:calibration-mechanism}(a)).
+Rényi 집계에서 정상 이미지의 $E/\mu$는 Q99 보정 후 2-shot에서 $7.74\!\rightarrow\!7.10$\,\%, 16-shot에서 $8.56\!\rightarrow\!7.55$\,\%로 감소했다(\cref{fig:calibration-mechanism}(a)).
 결함 영역에서는 $5.34\!\rightarrow\!5.36$\,\%, $6.36\!\rightarrow\!6.11$\,\%로 변화가 작았다.
 결함과 정상 배경의 $E/\mu$ 차이는 $+0.74/+0.80$\,pp 커졌고, 정상 이미지 $E/\mu$의 Q99는 $-1.30/-1.61$\,pp 줄었다.
 이는 상대 추가 응답 분포의 변화이며, 고정 임계값에서의 오경보율 변화를 직접 측정한 것은 아니다.
 
 \noindent\textbf{순위 변경과 점수 크기 변경의 분리.}
-Q95로 순위만 정하고 원점수를 합산하는 조건과, 원점수 순위를 유지한 채 Q95 점수를 합산하는 조건을 비교했다(\cref{fig:calibration-mechanism}(b)).
+Q99로 순위만 정하고 원점수를 합산하는 조건과, 원점수 순위를 유지한 채 Q99 점수를 합산하는 조건을 비교했다(\cref{fig:calibration-mechanism}(b)).
 순위만 바꾼 효과는 $+0.05/-0.14$\,pp인 반면, 크기만 바꾼 효과는 $+0.46/+0.70$\,pp로 최종 이득의 대부분을 차지했다.
 따라서 보정의 효과는 주로 점수 크기의 조정에서 나온다.
 
@@ -157,17 +304,17 @@ Rényi 집계는 Mean보다 분모의 정확도에 더 민감하다.
 
 \noindent\textbf{단위에 따른 분포 비교.}
 $E/\mu$는 해당 픽셀의 평균 응답을 분모로 쓰므로 결함에서 $\mu$가 커지는 효과도 포함한다.
-이를 확인하기 위해 다른 fold 정상 이미지 $\mu$의 Q95로 나눈 $E$도 측정했다.
+이를 확인하기 위해 다른 fold 정상 이미지 $\mu$의 Q99로 나눈 $E$도 측정했다.
 이 값의 정상/결함 평균은 2-shot에서 $4.31\!\rightarrow\!3.80$ / $6.18\!\rightarrow\!6.19$\,\%, 16-shot에서 $4.57\!\rightarrow\!3.80$ / $8.01\!\rightarrow\!7.66$\,\%로, 정상 추가 응답이 줄고 결함 응답이 상대적으로 유지되는 방향은 같았다.
 결함$-$배경 $E/\mu$ 차이 변화의 클래스 bootstrap 95\,\% 구간은 $[+0.06,+1.72]/[+0.00,+2.02]$\,pp이며, 16-shot 하한이 0에 가깝다.
 정상 이미지 $E/\mu$의 Q99 변화 구간은 $[-2.29,-0.50]/[-3.00,-0.48]$\,pp이고, 감소한 클래스는 7/8과 6/8이다.
 
-\cref{tab:mechanism_class_effects}의 coverage 상호작용은 $(\mathrm{Q95{+}R}-\mathrm{Q95{+}Mean})-(\mathrm{None{+}R}-\mathrm{None{+}Mean})$이다($R$: Rényi).
+\cref{tab:mechanism_class_effects}의 coverage 상호작용은 $(\mathrm{Q99{+}R}-\mathrm{Q99{+}Mean})-(\mathrm{None{+}R}-\mathrm{None{+}Mean})$이다($R$: Rényi).
 GT 영역 coverage를 이미지 안에서 평균한 뒤 이미지와 seed를 평균했다. 임계값은 정상 이미지의 교차검증으로 목표 FPR 1\,\%에 맞추었으며, 실제 평가 FPR은 조건마다 다르다.
 
-\begin{table*}[t]
+\begin{table*}[!tbp]
 \centering\small\setlength{\tabcolsep}{8pt}
-\caption{\textbf{검출 변화와 해상도 응답 집중도의 연관} (MVTec AD 2, 3-seed 평균). 상호작용은 보정 유무에 따른 Rényi$-$Mean coverage 차이의 변화(pp)다. $\rho$는 Q95 상태의 응답 집중도와 Mean$\rightarrow$Rényi coverage 차이의 클래스 내 Spearman 상관이다.}
+\caption{\textbf{검출 변화와 해상도 응답 집중도의 연관} (MVTec AD 2, 3-seed 평균). 상호작용은 보정 유무에 따른 Rényi$-$Mean coverage 차이의 변화(pp)다. $\rho$는 Q99 상태의 응답 집중도와 Mean$\rightarrow$Rényi coverage 차이의 클래스 내 Spearman 상관이다.}
 \label{tab:mechanism_class_effects}
 \begin{tabular}{l r r r r}
 \toprule
@@ -201,14 +348,28 @@ GT 면적이 이미지의 0.1\,\% 미만인 작은 영역의 coverage 상호작�
 
 \noindent\textbf{해상도 순위 점유율.}
 \cref{fig:order-rank-diagnostic}는 seed 0에서 각 픽셀의 최고 점수를 낸 해상도의 비율이다.
-Q95 보정 후 448의 정상 점유율은 47.5/50.7\,\%에서 33.9/36.4\,\%로 줄고, 16-shot 작은 결함의 1120 점유율은 14.5\,\%에서 29.2\,\%로 늘었다.
+Q99 보정 후 448의 정상 점유율은 47.5/50.7\,\%에서 33.9/36.4\,\%로 줄고, 16-shot 작은 결함의 1120 점유율은 14.5\,\%에서 29.2\,\%로 늘었다.
 정상 픽셀의 1120 점유율도 13.7\,\%에서 22.3\,\%로 늘었으므로, 이 그림은 순위 편중의 변화를 보여주는 보조 자료로 사용한다.
 
-\begin{figure}[tbp]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/fig_scopead_order_rank_diagnostic.pdf}
 \caption{\textbf{정상 참조 보정과 해상도 순위 점유율.} MVTec AD 2, seed 0, 8개 클래스 macro. 점선은 균등 점유율 25\,\%다.}
 \label{fig:order-rank-diagnostic}
+\end{figure}
+
+\FloatBarrier
+\subsection{관측 간 정상 거리 척도의 정렬}
+\label{sec:appendix:scale-calib}
+\cref{fig:scale-calib}는 Q99 보정 전후의 관측 간 정상 거리 척도를 비교한다. 보정 후 최대/최소 척도 비율은 8개 클래스 $\times$ 2/16-shot의 16개 조건 중 14개에서 줄었다.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_scopead_calibration_paper.pdf}
+\caption{\textbf{Q99 보정에 따른 관측 간 정상 거리 척도의 정렬.}
+(a) Vial 2-shot의 12개 관측에서 정상 쿼리 Q99를 최솟값으로 나눈 상대 척도.
+(b) 8개 클래스 $\times$ 2/16-shot의 보정 전후 최대/최소 척도 비율. 선 하나는 한 조건이며, 아래로 향하면 척도 차이가 줄었음을 뜻한다(16개 중 14개). 비율이 1이면 관측 간 척도가 같다.}
+\label{fig:scale-calib}
 \end{figure}
 
 \subsection{계층·해상도 보정 축의 분리}
@@ -216,7 +377,7 @@ Q95 보정 후 448의 정상 점유율은 47.5/50.7\,\%에서 33.9/36.4\,\%로 �
 
 \begin{table}[!htbp]
 \centering\scriptsize\setlength{\tabcolsep}{3pt}
-\caption{\textbf{Q95 보정 분모의 축별 성분 분리} (MVTec AD 2, 3-seed 평균 \AUPRO, \%). Global: 배그별 공통 배율, Layer/Resolution: 해당 축 추가, Separable: 두 축 추가, Full: 원래 Q95.}
+\caption{\textbf{Q99 보정 분모의 축별 성분 분리} (MVTec AD 2, 3-seed 평균 \AUPRO, \%). Global: 배그별 공통 배율, Layer/Resolution: 해당 축 추가, Separable: 두 축 추가, Full: 원래 Q99. 굵은 값과 밑줄은 열별 최고·차순위이며, 동점은 함께 표시했다.}
 \label{tab:calibration_axis}
 \begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrrr}
 \toprule
@@ -224,18 +385,18 @@ Q95 보정 후 448의 정상 점유율은 47.5/50.7\,\%에서 33.9/36.4\,\%로 �
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 분모 & Mean & Rényi & Mean & Rényi \\
 \midrule
-None & 56.12 & 56.32 & 59.73 & 59.72 \\
-Global & 56.12 & 56.32 & 59.73 & 59.72 \\
+None & \underline{56.12} & 56.32 & 59.73 & 59.72 \\
+Global & \underline{56.12} & 56.32 & 59.73 & 59.72 \\
 Layer & 55.91 & 56.13 & 59.90 & 59.82 \\
-Resolution & 56.26 & 56.87 & 59.89 & 60.55 \\
-Separable & 56.02 & 56.78 & 60.02 & 60.73 \\
-Full Q95 & 56.03 & 56.78 & 60.06 & 60.74 \\
+Resolution & \textbf{56.26} & \textbf{56.87} & 59.89 & 60.55 \\
+Separable & 56.02 & \underline{56.78} & \underline{60.02} & \underline{60.73} \\
+Full Q99 & 56.03 & \underline{56.78} & \textbf{60.06} & \textbf{60.74} \\
 \bottomrule
 \end{tabular*}
 \end{table}
 
 \noindent\textbf{분모 분해.}
-정상 서포트 Q95 $c_{l,r,b}$의 로그를 각 배그에서 다음과 같이 분해한다:
+정상 서포트 Q99 $c_{l,r,b}$의 로그를 각 배그에서 다음과 같이 분해한다:
 \begin{equation}
   \log c_{l,r,b}=\gamma_b+u_{l,b}+v_{r,b}+h_{l,r,b}.
   \label{eq:calibration-axis-factor}
@@ -257,16 +418,17 @@ Layer$-$Global은 Rényi 아래에서 $-0.19/+0.10$\,pp로 shot에 따라 방향
 
 \noindent\textbf{같은 평균 응답 구간에서의 비교.}
 두 보정 조건의 같은 픽셀을 보정 전 평균 응답 $\mu$의 10분위 구간에 배정했다. 구간 경계는 다른 정상 fold에서 정했다.
-이미지$\rightarrow$seed$\rightarrow$클래스 순으로 집계하면 정상과 배경의 Q95$-$None $E/\mu$ 변화는 두 shot 모두 10개 구간 전체에서 음수였다.
+이미지$\rightarrow$seed$\rightarrow$클래스 순으로 집계하면 정상과 배경의 Q99$-$None $E/\mu$ 변화는 두 shot 모두 10개 구간 전체에서 음수였다.
 결함$-$배경 변화는 8개 클래스가 모두 관측된 구간(2-shot 5--9, 16-shot 6--9)에서 모두 양수였다.
 따라서 평균 응답 수준이 다른 픽셀이 섞여서 생긴 현상으로 보기는 어렵다. 다만 보정 후의 $\mu$까지 고정한 비교는 아니다.
 
 \noindent\textbf{Fabric의 영역 수와 결함 픽셀 수.}
 Fabric의 GT 영역 192개 중 180개(93.75\,\%)는 이미지 면적의 0.1\,\% 미만이지만, 이 영역들은 전체 결함 픽셀의 1.39\,\%만 차지한다.
-목표 FPR 1\,\% 임계값에서 Q95+Rényi$-$None+Rényi의 영역 평균 coverage 변화는 작은 영역에서 $+6.85/+10.41$\,pp, 나머지 영역에서 $-1.36/-0.84$\,pp다(2/16-shot).
+목표 FPR 1\,\% 임계값에서 Q99+Rényi$-$None+Rényi의 영역 평균 coverage 변화는 작은 영역에서 $+6.85/+10.41$\,pp, 나머지 영역에서 $-1.36/-0.84$\,pp다(2/16-shot).
 같은 변화를 GT 픽셀 수로 가중하면 작은 영역의 TPR 기여는 $+0.06/+0.08$\,pp, 나머지는 $-2.66/-1.64$\,pp다.
 즉 많은 작은 영역의 coverage 증가와 큰 영역의 손실이 함께 나타나며, 영역 단위 지표(\AUPRO)와 픽셀 단위 지표(\pAUROC)가 다르게 움직이는 이유를 설명한다.
 
+\FloatBarrier
 \subsection{획득 조건별 상세 결과}
 \label{sec:appendix:condition}
 
@@ -278,11 +440,11 @@ MVTec AD 2 \texttt{test\_public}은 클래스마다 같은 장면을 기본 조�
 따라서 \method{}의 작은 손실을 특정 구성 요소의 효과로 보기는 어렵다.
 
 % Source: condition_strata in run_manifest.json (same runs as Table "tab:mvtec_ad2_fewshot").
-% Variants (seed 0): scopead_order_rank_diagnostic_20261018 (None+Renyi), scopead_renyi_cq_20261018 (Q95+Mean, Q95+Renyi),
+% Variants (seed 0): scopead_order_rank_diagnostic_20261018 (None+Renyi), scopead_renyi_cq_20261018 (Q99+Mean, Q99+Renyi),
 % scopead_final_cost_20261019 (single 1120, cap 256).
-\begin{table*}[t]
+\begin{table*}[!tbp]
 \centering\scriptsize\setlength{\tabcolsep}{2.6pt}
-\caption{획득 조건별 \AUPRO{} (MVTec AD 2 \texttt{test\_public}, 3-seed 평균, \%). 기본: regular, 변화: 비정규 조건 평균. 손실은 단일 임계값 점수에서 전체 조건별 점수의 평균을 뺀 값(pp)이다.}
+\caption{획득 조건별 \AUPRO{} (MVTec AD 2 \texttt{test\_public}, 3-seed 평균, \%). 기본: regular, 변화: 비정규 조건 평균. 손실은 단일 임계값 점수에서 전체 조건별 점수의 평균을 뺀 값(pp)이다. 굵은 값과 밑줄은 열별 최고·차순위이며, 손실은 0에 가까울수록 우수하다.}
 \label{tab:condition_full}
 \begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}l*{15}{r}}
 \toprule
@@ -290,21 +452,21 @@ MVTec AD 2 \texttt{test\_public}은 클래스마다 같은 장면을 기본 조�
 \cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}\cmidrule(lr){11-13}\cmidrule(lr){14-16}
 방법 & 기본 & 변화 & 손실 & 기본 & 변화 & 손실 & 기본 & 변화 & 손실 & 기본 & 변화 & 손실 & 기본 & 변화 & 손실 \\
 \midrule
-PatchCore & 39.09 & 38.46 & $-$0.11 & 42.98 & 42.30 & $-$0.16 & 47.72 & 47.10 & $-$0.27 & 51.31 & 50.20 & $-$0.40 & 54.32 & 52.97 & $-$0.46 \\
+PatchCore & 39.09 & 38.46 & $-$0.11 & 42.98 & 42.30 & $-$0.16 & 47.72 & 47.10 & $-$0.27 & 51.31 & 50.20 & $-$0.40 & 54.32 & 52.97 & \underline{$-$0.46} \\
 AnomalyDINO & 39.82 & 37.12 & $-$1.58 & 42.79 & 39.52 & $-$1.83 & 46.31 & 42.04 & $-$2.39 & 48.08 & 43.15 & $-$2.29 & 49.91 & 44.12 & $-$2.74 \\
 FastRecon & 15.61 & 14.87 & $-$0.07 & 17.61 & 16.82 & $-$0.23 & 23.02 & 21.99 & $-$0.28 & 28.77 & 27.52 & $-$0.41 & 38.19 & 35.54 & $-$0.74 \\
-RAD & 26.28 & 26.50 & $-$0.04 & 31.53 & 31.71 & $-$0.06 & 36.37 & 36.74 & $-$0.16 & 41.03 & 41.10 & $-$0.30 & 43.14 & 43.02 & $-$0.46 \\
-SubspaceAD & 56.76 & 48.20 & $-$4.75 & 58.86 & 49.65 & $-$5.28 & 61.27 & 51.35 & $-$5.86 & 62.21 & 51.82 & $-$6.26 & 63.10 & 52.37 & $-$6.52 \\
-SuperAD & 47.08 & 46.46 & $-$0.24 & 51.06 & 49.96 & $-$0.33 & 56.15 & 54.50 & $-$0.51 & 57.92 & 55.71 & $-$0.62 & 58.58 & 56.33 & $-$0.80 \\
+RAD & 26.28 & 26.50 & \textbf{$-$0.04} & 31.53 & 31.71 & \underline{$-$0.06} & 36.37 & 36.74 & \underline{$-$0.16} & 41.03 & 41.10 & \underline{$-$0.30} & 43.14 & 43.02 & \underline{$-$0.46} \\
+SubspaceAD & \textbf{56.76} & \underline{48.20} & $-$4.75 & \textbf{58.86} & 49.65 & $-$5.28 & \textbf{61.27} & 51.35 & $-$5.86 & \textbf{62.21} & 51.82 & $-$6.26 & \textbf{63.10} & 52.37 & $-$6.52 \\
+SuperAD & 47.08 & 46.46 & $-$0.24 & 51.06 & \underline{49.96} & $-$0.33 & 56.15 & \underline{54.50} & $-$0.51 & 57.92 & \underline{55.71} & $-$0.62 & 58.58 & \underline{56.33} & $-$0.80 \\
 RegAD (224) & 14.09 & 12.67 & $-$0.17 & 16.75 & 14.95 & $-$0.20 & 19.59 & 17.39 & $-$0.35 & 22.09 & 19.38 & $-$0.58 & 24.11 & 20.88 & $-$1.14 \\
-Ours (ScopeAD) & 53.10 & 52.09 & $-$0.06 & 58.09 & 56.60 & $-$0.05 & 60.97 & 59.27 & $-$0.05 & 61.94 & 60.22 & $-$0.10 & 62.42 & 60.74 & $-$0.27 \\
+Ours (ScopeAD) & \underline{53.10} & \textbf{52.09} & \underline{$-$0.06} & \underline{58.09} & \textbf{56.60} & \textbf{$-$0.05} & \underline{60.97} & \textbf{59.27} & \textbf{$-$0.05} & \underline{61.94} & \textbf{60.22} & \textbf{$-$0.10} & \underline{62.42} & \textbf{60.74} & \textbf{$-$0.27} \\
 \bottomrule
 \end{tabular*}
 \end{table*}
 
 \begin{table}[!htbp]
 \centering\scriptsize\setlength{\tabcolsep}{3pt}
-\caption{\method{} 변형의 획득 조건별 \AUPRO{} (MVTec AD 2, seed 0, \%). 단일/조건별은 공통/조건별 임계값 평가이며, 손실은 단일$-$조건별(pp)이다.}
+\caption{\method{} 변형의 획득 조건별 \AUPRO{} (MVTec AD 2, seed 0, \%). 단일/조건별은 공통/조건별 임계값 평가이며, 손실은 단일$-$조건별(pp)이다. 굵은 값과 밑줄은 열별 최고·차순위이며, 손실은 0에 가까울수록 우수하다.}
 \label{tab:condition_variants}
 \begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}lrrrrrr}
 \toprule
@@ -312,11 +474,78 @@ Ours (ScopeAD) & 53.10 & 52.09 & $-$0.06 & 58.09 & 56.60 & $-$0.05 & 60.97 & 59.
 \cmidrule(lr){2-4}\cmidrule(lr){5-7}
 구성 & 단일 & 조건별 & 손실 & 단일 & 조건별 & 손실 \\
 \midrule
-보정 없음 + Rényi & 58.99 & 59.05 & $-$0.06 & 59.03 & 59.41 & $-$0.38 \\
-Q95 + Mean & 59.33 & 59.40 & $-$0.07 & 59.57 & 59.96 & $-$0.39 \\
-Q95 + Rényi (Ours) & 59.92 & 59.98 & $-$0.06 & 60.16 & 60.49 & $-$0.33 \\
+보정 없음 + Rényi & 58.99 & 59.05 & \textbf{$-$0.06} & 59.03 & 59.41 & $-$0.38 \\
+Q99 + Mean & \underline{59.33} & \underline{59.40} & \underline{$-$0.07} & \underline{59.57} & \underline{59.96} & $-$0.39 \\
+Q99 + Rényi (Ours) & \textbf{59.92} & \textbf{59.98} & \textbf{$-$0.06} & \textbf{60.19} & \textbf{60.49} & \underline{$-$0.30} \\
 \midrule
-단일 1120 (cap 256) & --- & --- & --- & 57.48 & 57.66 & $-$0.18 \\
+단일 1120 (cap 256) & --- & --- & --- & 57.48 & 57.66 & \textbf{$-$0.18} \\
 \bottomrule
 \end{tabular*}
 \end{table}
+
+\FloatBarrier
+\subsection{단일 해상도와 해상도 조합 결합}
+\label{sec:appendix:resolution}
+\cref{fig:resolution-comparison} 및 \cref{tab:resolution_subsets}는 최종 방법의 Q99 보정과 계층 결합을 유지한 채 단일 해상도 및 다양한 해상도 부분집합 조합과 4해상도 결합을 비교한다.
+단일 해상도 중에서는 2-shot에서 672(54.38\,\%), 16-shot에서 1120(57.48\,\%)이 가장 높은 성능을 기록했다.
+중간 문맥과 미세 분해능을 대표하는 2개 해상도 조합 $\{672, 1120\}$은 단일 최고 성능 대비 2/16-shot에서 각각 +3.72\,pp, +1.67\,pp 향상되며, 쿼리 시간(980\,ms) 대비 높은 효율을 보인다.
+4개 해상도를 모두 결합하면 가장 높은 단일 해상도보다 2-shot에서 5.54\,pp, 16-shot에서 2.71\,pp 높아 결함 크기별 반응이 고르게 보존된다.
+
+\begin{table}[!htbp]
+\centering\scriptsize\setlength{\tabcolsep}{2pt}
+\caption{해상도 조합에 따른 국소화 성능 (MVTec AD 2, Q99, \%). 各 조합은 Rényi 순서 통계량으로 집계했다.}
+\label{tab:resolution_subsets}
+\begin{tabular*}{\columnwidth}{@{\extracolsep{\fill}}l c r r}
+\toprule
+해상도 조합 & $R$ & 2-shot \AUPRO & 16-shot \AUPRO \\
+\midrule
+$\{672\}$ (최고 2-shot) & 1 & 54.38 & 55.01 \\
+$\{1120\}$ (최고 16-shot) & 1 & 54.27 & 57.48 \\
+$\{448, 1120\}$ & 2 & 56.84 & 58.20 \\
+$\{672, 1120\}$ & 2 & \underline{58.10} & \underline{59.15} \\
+$\{448, 672, 1120\}$ & 3 & 59.22 & 59.80 \\
+\textbf{$\{448, 672, 896, 1120\}$ (Ours)} & 4 & \textbf{59.92} & \textbf{60.19} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/fig_scopead_resolution_comparison.pdf}
+\caption{\textbf{단일·다해상도 \AUPRO{} 비교 (MVTec AD 2, seed 0).} 회색 막대는 단일 해상도, 점선은 그중 최고 성능, 파란 숫자는 4해상도 결합의 향상 폭(pp)이다.}
+\label{fig:resolution-comparison}
+\end{figure}
+
+\clearpage
+\begin{table*}[!t]
+\centering\scriptsize\setlength{\tabcolsep}{6pt}
+\caption{MVTec AD 및 VisA few-shot \AUPRO{} (seed 0, \%). \cref{tab:mvtec_visa_fewshot}과 같은 실행에서 집계했다. 굵은 값과 밑줄은 행별 최고·차순위다.}
+\label{tab:mvtec_visa_aupro}
+\begin{tabular}{l r r r r r r r r}
+\toprule
+Dataset & Shot & PatchCore & AnomalyDINO & FastRecon & RAD & SubspaceAD & SuperAD & Ours (ScopeAD) \\
+\midrule
+MVTec AD & 1 & 69.94 & 71.20 & 71.80 & 65.27 & \textbf{82.48} & 77.29 & \underline{78.81} \\
+         & 2 & 75.30 & 73.46 & 76.66 & 69.74 & \textbf{83.49} & 80.06 & \underline{81.53} \\
+         & 4 & 78.44 & 75.98 & 80.69 & 72.24 & \textbf{83.96} & 81.99 & \underline{83.28} \\
+         & 8 & 82.17 & 76.24 & 83.54 & 77.28 & \underline{83.99} & 83.33 & \textbf{84.59} \\
+         & 16 & 83.97 & 77.62 & \textbf{85.74} & 80.12 & 83.89 & 84.49 & \underline{85.08} \\
+\midrule
+VisA     & 1 & 60.92 & 67.88 & 63.60 & 51.19 & \textbf{84.32} & 72.06 & \underline{74.00} \\
+         & 2 & 64.94 & 72.48 & 69.52 & 59.07 & \textbf{85.22} & 75.64 & \underline{79.02} \\
+         & 4 & 69.80 & 76.04 & 72.84 & 68.85 & \textbf{85.62} & 77.94 & \underline{81.95} \\
+         & 8 & 73.53 & 78.03 & 74.75 & 74.41 & \textbf{86.19} & 79.64 & \underline{84.07} \\
+         & 16 & 75.05 & 79.83 & 76.59 & 77.44 & \textbf{86.21} & 80.21 & \underline{85.29} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{MVTec AD·VisA의 저-FPR 국소화}
+\label{sec:appendix:standard-aupro}
+\cref{tab:mvtec_visa_aupro}는 \cref{tab:mvtec_visa_fewshot}과 같은 seed 0 실행에서 \AUPRO{}를 집계한 결과다. RegAD는 본문 표와 같은 설정의 \AUPRO{}가 두 데이터셋 모두에 있지 않아 제외했다.
+\method는 10개 조합 모두에서 최고 또는 차순위이며, 최고는 MVTec AD 8-shot이다. MVTec AD 16-shot에서는 FastRecon(85.74\,\%)이 가장 높고, SubspaceAD는 VisA 전 shot과 MVTec AD 1--4-shot에서 가장 높다.
+같은 백본의 SuperAD 대비 차이는 MVTec AD에서 $+0.59$--$+1.52$\,pp, VisA에서 $+1.94$--$+5.08$\,pp다.
+
+
+
+\FloatBarrier

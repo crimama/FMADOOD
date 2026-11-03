@@ -3,9 +3,9 @@
   "method_source": "sec/3_method.tex",
   "generator": "figures/source/draw_overview.py",
   "width_inches": 7.14,
-  "height_inches": 3.94,
-  "minimum_text_size_pt": 6.8,
-  "design": "two-stage overview; open white layout; deep/shallow color coding; explicit rank aggregation",
+  "height_inches": 3.35,
+  "minimum_text_size_pt": 7.0,
+  "design": "compact two-stage overview; aligned modules; weighted sum node; paired pixelwise score and rank-weight bars; one aggregation equation",
   "outer_frame": {
     "color": "#9AA1A7",
     "linewidth_pt": 0.7,
@@ -41,6 +41,14 @@
   ],
   "rank_assignment": "score rank at each pixel, not fixed resolution",
   "rank_example": "measured scores at defect pixel (row 380, col 133) of the cached display maps",
+  "rank_example_scores_by_scale": [
+    1.89697265625,
+    1.9664306640625,
+    0.95086669921875,
+    0.811920166015625
+  ],
+  "rank_score_bar_heights": "proportional to ascending scores, normalized to the largest score",
+  "rank_weight_bar_heights": "proportional to Renyi weights, normalized to the largest weight",
   "output": "pre-postprocessing map A_tilde; CQ99 and image scoring in method text",
   "cq_rendered": false,
   "ground_truth_use": "none",

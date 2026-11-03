@@ -37,8 +37,10 @@ def plot(docs, report, output):
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     import numpy as np
-    plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 9, 'pdf.fonttype': 42,
+    from figure_style import use_times_new_roman
+    plt.rcParams.update({'font.size': 9, 'pdf.fonttype': 42,
                          'axes.spines.top': False, 'axes.spines.right': False})
+    use_times_new_roman()
     fig, axes = plt.subplots(2, 3, figsize=(10, 5.8), gridspec_kw={'width_ratios': [1, 1, 1.2]})
     edges = np.asarray(docs[0]['histogram_edges'][:-1])
     centers, widths = (edges[1:]+edges[:-1])/2, np.diff(edges)

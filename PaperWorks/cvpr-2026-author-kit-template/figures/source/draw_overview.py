@@ -10,7 +10,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import shutil
 from pathlib import Path
 
 import matplotlib
@@ -18,6 +17,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.patches import Circle, FancyArrowPatch, Rectangle
+from figure_style import use_times_new_roman
 
 HERE = Path(__file__).resolve().parent
 PAPER = HERE.parents[1]
@@ -26,7 +26,7 @@ OUT = PAPER / "figures/fig_scopead_overview"
 SCALES = (448, 672, 896, 1120)
 LAYERS = (5, 11, 23)
 RANK_WEIGHTS = np.array([1 / 16, 7 / 48, 13 / 48, 25 / 48])
-WIDTH, HEIGHT = 7.0, 3.80
+WIDTH, HEIGHT = 7.0, 3.21
 INK = "#22282D"
 GRAY = "#60676D"
 RULE = "#CED3D6"
@@ -39,14 +39,13 @@ ZMAX = 2.0
 PIXEL = (380, 133)  # (row, col) of the defect pixel followed in panel (d)
 
 plt.rcParams.update({
-    "font.family": "DejaVu Sans",
-    "mathtext.fontset": "dejavusans",
     "font.size": 7.2,
     "svg.fonttype": "none",
     "pdf.fonttype": 42,
     "ps.fonttype": 42,
     "axes.linewidth": .6,
 })
+use_times_new_roman()
 
 
 class Canvas:
@@ -147,157 +146,119 @@ def load_maps():
     return rgb, layers, scale_maps, combined, thumbs
 
 
-def support(c, thumbs):
-    c.text(.08, 3.65, "(a) Normal-reference fitting", 8.5, weight="bold", ha="left")
-    c.text(6.92, 3.65, "Normal images only; frozen backbone", 7.1,
-           GRAY, ha="right")
-
+def support(c, thumbs, dy=-.08):
+    """Panel (a). dy shifts the whole row down to tighten the vertical layout."""
+    c.text(.08, 3.18 + dy, "(a) Normal-reference fitting", 8.2,
+           weight="bold", ha="left")
     for i in reversed(range(3)):
-        c.image(.11 + .075 * i, 3.00 + .045 * i, .43,
+        c.image(.14 + .055 * i, 2.61 + .035 * i + dy, .36,
                 thumbs[i], color="white")
-    c.text(.40, 2.87, r"$N$ supports", 7.1)
-    c.arrow((.73, 3.21), (.91, 3.21))
-
-    c.box(.95, 3.00, 1.22, .47, fill=PALE)
-    c.text(1.56, 3.35, "Frozen DINOv2", 7.4, weight="bold")
-    c.text(1.56, 3.18, "ViT-L/14", 7.4)
-    c.text(1.56, 2.87, "3 layers × 4 scales", 7.0)
-    c.arrow((2.20, 3.21), (2.38, 3.21))
-
+    c.text(.39, 2.46 + dy, "Normal supports", 7.2)
+    c.arrow((.68, 2.79 + dy), (.87, 2.79 + dy))
+    c.box(.90, 2.60 + dy, 1.10, .38, fill=PALE)
+    c.text(1.45, 2.79 + dy, "Frozen DINOv2", 7.5)
+    c.text(1.45, 2.46 + dy, "Layers × scales", 7.2, GRAY)
+    c.arrow((2.03, 2.79 + dy), (2.23, 2.79 + dy))
     for j, color in enumerate((ORANGE, BLUE, BLUE)):
         for i in range(4):
-            c.box(2.49 + i * .105 + j * .022, 3.08 + j * .09,
-                  .072, .065, fill=color, edge="white", lw=.3)
-    c.text(2.79, 3.48, r"48 banks $B_m$", 7.4, weight="bold")
-    c.text(2.79, 2.98, r"$m=(l,r,b)$", 7.2)
-    c.text(2.79, 2.83, "4 bags; 256 tokens/image", 6.8)
-    c.arrow((3.11, 3.21), (3.34, 3.21))
-
-    c.text(4.08, 3.48, "Leave-source-out 1-NN", 7.4, weight="bold")
-    for i in range(4):
-        x = 3.53 + i * .27
-        c.box(x, 3.06, .19, .19,
-              fill="white" if i == 0 else "#DFECE8",
-              edge=ORANGE if i == 0 else TEAL)
-    c.arrow((3.63, 3.31), (4.02, 3.31), ORANGE, rad=-.30)
-    c.text(3.63, 2.98, "hold out", 6.8, ORANGE)
-    c.text(4.31, 2.98, r"match to rest: $D_m$", 6.8, TEAL)
-    c.text(4.08, 2.82, "LTO for one shot", 6.8, GRAY)
-    c.arrow((4.65, 3.21), (4.96, 3.21))
-
-    c.text(5.98, 3.48, "Normal reference", 7.5, weight="bold")
-    c.text(5.98, 3.23, r"$c_m=\max\{Q_{0.95}(D_m),\epsilon\}$", 8.2)
-    c.text(5.98, 2.97, r"Fixed state: $\{B_m,c_m\}_{m=1}^{48}$", 7.4, TEAL)
-
-    # One fitted-state wire, outside the query content, feeds matching and
-    # normalization together. No query arrow enters the support-fitting path.
-    c.line([(5.98, 2.85), (5.98, 2.68), (.035, 2.68), (.035, 1.06)],
-           TEAL, .75, (0, (3, 2)))
-    c.arrow((.035, 1.06), (.13, 1.06), TEAL, .75)
+            c.box(2.33 + i * .095 + j * .018, 2.65 + j * .08 + dy,
+                  .065, .057, fill=color, edge="white", lw=.25)
+    c.text(2.53, 3.06 + dy, "Independent banks", 7.2)
+    c.text(2.53, 2.48 + dy, r"$B_m$", 8.0)
+    c.arrow((2.86, 2.79 + dy), (3.10, 2.79 + dy))
+    c.box(3.13, 2.60 + dy, 1.24, .38, fill=PALE)
+    c.text(3.75, 2.79 + dy, "Cross-fit 1-NN", 7.5)
+    c.arrow((4.40, 2.79 + dy), (4.76, 2.79 + dy))
+    c.text(5.76, 3.06 + dy, "Normal reference", 7.2)
+    c.box(4.79, 2.60 + dy, 1.94, .38, fill="#EDF3F1", edge=TEAL, lw=.65)
+    c.text(5.76, 2.79 + dy, r"$B_m,\ c_m$", 9.0, TEAL)
+    c.text(5.76, 2.46 + dy, "Fixed during inference", 7.2, GRAY)
+    c.line([(5.76, 2.36 + dy), (5.76, 2.25), (.035, 2.25), (.035, .93)],
+           TEAL, .65, (0, (3, 2)))
+    c.arrow((.035, .93), (.13, .93), TEAL, .65)
 
 
 def matching(c, rgb):
-    c.text(.08, 2.47, "(b) Multi-scale 1-NN", 8.1, weight="bold", ha="left")
-    c.text(.45, 2.24, r"Query $x^q$", 7.3)
-    c.image(.12, 1.61, .65, rgb)
-    c.arrow((.80, 1.87), (.95, 1.87))
-    c.box(.99, 1.63, .49, .49, PALE)
-    c.text(1.235, 1.94, "same", 7.0, GRAY)
-    c.text(1.235, 1.77, "ViT", 7.8, weight="bold")
-    c.text(.62, 1.47, "Per bank", 7.0, GRAY)
-    c.arrow((1.235, 1.60), (1.235, 1.32))
-
-    c.box(.14, .83, 1.35, .49, fill="white", edge=RULE)
-    c.text(.815, 1.15, r"$d_m=\min_{u\in B_m}(1-f_m^\top u)$", 7.6)
-    c.text(.815, .95, "cosine distance", 6.8, GRAY)
-    c.arrow((.815, .80), (.815, .68))
-    c.text(.815, .51, r"$z_m=d_m/c_m$", 9.4, TEAL)
-    c.text(.815, .31, "Normal-reference units", 6.8, GRAY)
-    c.line([(1.47, .51), (1.66, .51), (1.66, 1.92)], TEAL, .75)
+    c.text(.08, 2.13, "(b) Multi-scale matching", 8.2, weight="bold", ha="left")
+    c.text(.43, 1.97, r"Query $x^q$", 7.2)
+    c.image(.17, 1.42, .51, rgb)
+    c.arrow((.72, 1.63), (.94, 1.63))
+    c.box(.97, 1.44, .51, .38, PALE)
+    c.text(1.225, 1.63, "ViT", 7.5)
+    c.arrow((1.225, 1.41), (1.225, 1.13))
+    c.box(.16, .77, 1.32, .33, fill=PALE)
+    c.text(.82, .935, "Independent 1-NN", 7.5)
+    c.arrow((.82, .74), (.82, .61))
+    c.text(.82, .48, r"$z_m=d_m/c_m$", 9.0, TEAL)
+    c.line([(1.40, .48), (1.64, .48), (1.64, 1.73)], TEAL, .65)
 
 
 def layer_fusion(c, layers, scale_maps):
-    c.text(1.79, 2.47, "(c) Asymmetric layer fusion", 8.1,
+    c.text(1.82, 2.13, "(c) Asymmetric layer fusion", 8.2,
            weight="bold", ha="left")
-    c.text(2.99, 2.25, "Deep reference + shallow detail", 7.0, GRAY)
-    size = .50
+    c.text(2.195, 1.99, "Deep", 7.2, BLUE)
+    c.text(2.195, .36, "Shallow", 7.2, ORANGE)
+    size = .43
     aspect = layers[5].shape[0] / layers[5].shape[1]
-    for l, y, color in [(23, 1.71, BLUE), (11, 1.13, BLUE), (5, .55, ORANGE)]:
+    for l, y, color in [(23, 1.50, BLUE), (11, .99, BLUE), (5, .48, ORANGE)]:
         center = y + size * aspect / 2
-        c.image(1.95, y, size, layers[l], color, score=True)
-        c.arrow((1.66, center), (1.91, center), TEAL, .75)
-        c.text(1.79, center + .14, rf"$z_{{{l}}}$", 7.8, color)
-        c.arrow((2.49, center), (2.76, 1.38 + (.2 if l == 23 else -.2 if l == 5 else 0)),
-                color, .9)
-    c.box(2.79, 1.04, .68, .68, PALE)
-    c.text(3.13, 1.38, "Weighted\nsum", 7.6, weight="bold")
-    c.arrow((3.49, 1.38), (3.63, 1.38), INK)
-    c.image(3.66, 1.145, .48, scale_maps[672], INK, score=True)
-    c.text(3.90, 1.00, r"$S_{r,b}$", 8.6)
-    c.text(2.96, .29, r"$S_{r,b}=\sum_l \alpha_l z_{l,r,b}$", 8.6)
-    c.line([(4.17, 1.38), (4.28, 1.38), (4.28, 2.25)], INK, .8)
-    c.arrow((4.28, 2.25), (4.80, 2.25), INK)
+        c.image(1.98, y, size, layers[l], color, score=True)
+        c.arrow((1.64, center), (1.94, center), TEAL, .65)
+        c.text(1.83, center + .115, rf"$z_{{{l}}}$", 7.5, color)
+        target = (2.96, 1.25) if l == 23 else (2.90, 1.18) if l == 11 else (2.96, 1.10)
+        c.arrow((2.45, center), target, color, 1.5 if l in (23, 11) else .55)
+    c.ax.add_patch(Circle((3.02, 1.18), .115, facecolor="white",
+                          edgecolor=GRAY, linewidth=.65, zorder=4))
+    c.text(3.02, 1.18, "+", 11, zorder=5)
+    c.arrow((3.16, 1.18), (3.41, 1.18), INK, .75)
+    c.image(3.45, .995, .42, scale_maps[672], INK, score=True)
+    c.text(3.66, .87, r"$S_{r,b}$", 8.2)
+    c.line([(3.91, 1.18), (4.06, 1.18), (4.06, 1.96)], INK, .75)
+    c.arrow((4.06, 1.96), (4.49, 1.96), INK, .75)
 
 
 def rank_fusion(c, scale_maps, combined):
-    c.text(4.40, 2.47, "(d) Rényi rank aggregation", 8.1,
+    c.text(4.21, 2.13, "(d) Rényi rank aggregation", 8.2,
            weight="bold", ha="left")
-    c.text(5.90, 2.25, "Bag mean, resize; follow one pixel $p$", 7.0, GRAY)
-    # One real defect pixel whose score order differs from resolution order.
+    c.text(5.69, 1.97, "Bag mean + resize", 7.2, GRAY)
     py, px = PIXEL
-    scores = [float(scale_maps[r][py, px]) for r in SCALES]
-    order = np.argsort(scores)
-    centers = [4.695 + i * .65 for i in range(4)]
-    size = .43
-    h = size * combined.shape[0] / combined.shape[1]
+    scores = np.array([float(scale_maps[r][py, px]) for r in SCALES])
+    ordered = np.sort(scores)
+    centers = [4.50 + i * .65 for i in range(4)]
+    size = .39
     for i, r in enumerate(SCALES):
-        x = centers[i] - size / 2
-        ax = c.image(x, 1.84, size, scale_maps[r], score=True)
-        ax.plot(px, py, "o", ms=5, mfc="none", mec="white", mew=1.0)
-        c.text(centers[i], 1.74, str(r), 6.8, GRAY)
-        c.box(centers[i] - .17, 1.52, .34, .15, fill="white", edge=GRAY, lw=.6)
-        c.text(centers[i], 1.595, f"{scores[i]:.2f}", 7.2, weight="bold")
-    c.text(4.43, 1.595, r"$p$", 7.4, ha="right")
-    c.text(5.67, 1.375, "sort ascending", 6.8, GRAY,
-           bbox={"facecolor": "white", "edgecolor": "none", "pad": 2.5},
-           zorder=6)
-    weights = ["1/16", "7/48", "13/48", "25/48"]
-    for k, i in enumerate(order):
-        c.line([(centers[i], 1.51), (centers[k], 1.24)], GRAY, .7, zorder=2)
-        edge = BLUE if k == 3 else GRAY
-        c.box(centers[k] - .17, 1.09, .34, .15, fill=PALE, edge=edge,
-              lw=.9 if k == 3 else .6)
-        c.text(centers[k], 1.165, f"{scores[i]:.2f}", 7.2, weight="bold")
-        c.text(centers[k], 1.00, f"from {SCALES[i]}", 6.8, GRAY)
-        c.text(centers[k], .84, rf"$\times$ {weights[k]}", 7.2, BLUE,
-               weight="bold" if k == 3 else "normal")
-        if k:
-            c.text((centers[k] + centers[k - 1]) / 2, .84, "+", 7.6, BLUE)
-    c.text(4.43, 1.165, r"$S_{(k)}$", 7.4, ha="right")
-    c.text(4.43, .84, r"$w_k$", 7.4, BLUE, ha="right")
-    value = float(np.dot(RANK_WEIGHTS, np.sort(scores)))
-    c.line([(4.55, .74), (6.79, .74)], BLUE, .7)
-    c.arrow((5.42, .74), (5.42, .63), BLUE, .7)
-    c.text(5.42, .54, rf"$\widetilde A(p)={value:.2f}$", 8.2, weight="bold")
-    c.text(5.42, .37, f"plain mean = {np.mean(scores):.2f}", 6.8, GRAY)
-    c.text(5.42, .14, r"$\widetilde A(p)=\sum_k w_k\,S_{(k)}(p)$", 7.2)
-    # Output map with the same pixel marked.
-    x0, y0, w = 6.32, .10, .56
-    hh = w * combined.shape[0] / combined.shape[1]
-    ax = c.image(x0, y0, w, combined, INK, score=True)
-    ax.plot(px, py, "o", ms=5, mfc="none", mec="white", mew=1.0)
-    c.arrow((5.98, .54), (x0 - .04, .54), INK, .8)
-    c.text(x0 + w / 2, y0 + hh + .08, r"Map $\widetilde A$", 7.2)
+        ax = c.image(centers[i] - size / 2, 1.57, size, scale_maps[r], score=True)
+        ax.plot(px, py, "o", ms=4.5, mfc="none", mec="white", mew=.9)
+        c.text(centers[i], 1.47, str(r), 7.0, GRAY)
+    for x in centers:
+        c.line([(x, 1.41), (x, 1.36)], GRAY, .55)
+    c.line([(centers[0], 1.36), (centers[-1], 1.36)], GRAY, .55)
+    c.arrow((5.475, 1.36), (5.475, 1.28), GRAY, .65)
+    c.text(5.475, 1.20, "Sort at each pixel", 7.5)
+    # Paired bars occupy score-rank positions, not resolution positions.
+    for k, x in enumerate(centers):
+        c.box(x - .12, .84, .24, .23 * ordered[k] / ordered[-1],
+              fill="#ACB6C2", edge="#ACB6C2", lw=.4)
+        c.text(x, .735, r"$\times$", 7.5, GRAY)
+        c.box(x - .12, .42, .24, .22 * RANK_WEIGHTS[k] / RANK_WEIGHTS[-1],
+              fill=BLUE, edge=BLUE, lw=.4)
+    c.line([(4.32, .84), (6.63, .84)], RULE, .5)
+    c.line([(4.32, .42), (6.63, .42)], RULE, .5)
+    c.text(4.32, .61, "Rank weights", 7.0, BLUE, ha="left")
+    c.text(5.19, .19, r"$\widetilde A(p)=\sum_k w_k S_{(k)}(p)$", 8.2)
+    c.arrow((6.03, .19), (6.37, .19), INK, .75)
+    ax = c.image(6.41, .055, .40, combined, INK, score=True)
+    ax.plot(px, py, "o", ms=4.5, mfc="none", mec="white", mew=.9)
 
 
 def footer(c):
-    c.text(.08, .065, "Maps: common color scale", 6.8, GRAY, ha="left")
-    ax = c.fig.add_axes([1.97 / WIDTH, .035 / HEIGHT, .65 / WIDTH, .055 / HEIGHT])
+    c.text(.08, .075, "Shared map scale", 7.0, GRAY, ha="left")
+    ax = c.fig.add_axes([1.16 / WIDTH, .045 / HEIGHT, .55 / WIDTH, .055 / HEIGHT])
     ax.imshow(np.linspace(0, ZMAX, 256)[None, :], cmap="inferno", aspect="auto",
               vmin=0, vmax=ZMAX)
     ax.set_axis_off()
-    c.text(1.89, .065, "0", 6.8)
-    c.text(2.68, .065, "2+", 6.8, ha="left")
+    c.text(1.09, .075, "0", 7.0)
+    c.text(1.77, .075, "2+", 7.0, ha="left")
 
 
 def main():
@@ -326,7 +287,7 @@ def main():
         "width_inches": float(c.fig.get_figwidth()),
         "height_inches": float(c.fig.get_figheight()),
         "minimum_text_size_pt": min(t.get_fontsize() for t in c.labels),
-        "design": "two-stage overview; open white layout; deep/shallow color coding; explicit rank aggregation",
+        "design": "compact two-stage overview; aligned modules; weighted sum node; paired pixelwise score and rank-weight bars; one aggregation equation",
         "outer_frame": {"color": "#9AA1A7", "linewidth_pt": .7,
                         "content_padding_inches": .07, "inset_inches": .015},
         "layers": list(LAYERS), "scales": list(SCALES), "bags": 4,
@@ -337,6 +298,9 @@ def main():
         "scale_rank_weights": RANK_WEIGHTS.tolist(),
         "rank_assignment": "score rank at each pixel, not fixed resolution",
         "rank_example": "measured scores at defect pixel (row 380, col 133) of the cached display maps",
+        "rank_example_scores_by_scale": [float(scale_maps[r][PIXEL]) for r in SCALES],
+        "rank_score_bar_heights": "proportional to ascending scores, normalized to the largest score",
+        "rank_weight_bar_heights": "proportional to Renyi weights, normalized to the largest weight",
         "output": "pre-postprocessing map A_tilde; CQ99 and image scoring in method text",
         "cq_rendered": False,
         "ground_truth_use": "none",

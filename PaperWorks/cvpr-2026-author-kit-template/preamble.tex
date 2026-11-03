@@ -1,16 +1,21 @@
-% Korean prose with the original CVPR page geometry and type size.
-% TeX Gyre keeps the Times/Helvetica/Courier families available to LuaLaTeX.
-\setmainfont{TeX Gyre Termes}
-\setsansfont{TeX Gyre Heros}
+% Match the figures with actual Times New Roman; retain CVPR sizes and geometry.
+\setmainfont{Times New Roman}
+\setsansfont{Times New Roman}
 \setmonofont{TeX Gyre Cursor}
 \setmainhangulfont{Noto Serif CJK KR}[AutoFakeSlant=0.2]
-\setsanshangulfont{Noto Sans CJK KR}
+\setsanshangulfont{Noto Serif CJK KR}[AutoFakeSlant=0.2]
 \setmonohangulfont{Noto Sans Mono CJK KR}[AutoFakeSlant=0.2]
+% CVPR selects legacy Type 1 Times directly for these headings.
+% Use the document family while preserving the template's 11 pt / 10 pt sizes.
+\renewcommand{\elvbf}{\rmfamily\fontsize{11}{\baselineskip}\selectfont\bfseries}
+\renewcommand{\tenbf}{\rmfamily\fontsize{10}{\baselineskip}\selectfont\bfseries}
 \usepackage{multirow}
 \usepackage{array}
 \usepackage{tabularx}
 \usepackage{mathtools}
 \usepackage{placeins}
+% Allow wide floats at the bottom of a two-column page near their discussion.
+\usepackage{stfloats}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
 \newcommand{\method}{ScopeAD}
